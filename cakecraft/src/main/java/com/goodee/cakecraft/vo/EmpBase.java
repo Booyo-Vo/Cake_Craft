@@ -3,7 +3,7 @@ package com.goodee.cakecraft.vo;
 import lombok.Data;
 
 @Data
-public class Emp {
+public class EmpBase {
 	private String id;
 	private String name;
 	private String socialNo;

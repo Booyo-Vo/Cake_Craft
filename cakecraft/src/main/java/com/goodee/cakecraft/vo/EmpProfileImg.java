@@ -3,11 +3,11 @@ package com.goodee.cakecraft.vo;
 import lombok.Data;
 
 @Data
-public class Signimg {
+public class EmpProfileImg {
 	private String id;
-	private String signFilename;
-	private String signPath;
-	private String signType;
+	private String profileFilename;
+	private String profilePath;
+	private String profileType;
 	private String regDtime;
 	private String modDtime;
 	private String regId;
