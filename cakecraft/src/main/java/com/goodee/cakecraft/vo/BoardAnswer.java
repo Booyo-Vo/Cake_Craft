@@ -3,12 +3,10 @@ package com.goodee.cakecraft.vo;
 import lombok.Data;
 
 @Data
-public class Board {
-	private int boardNo;
+public class BoardAnswer {
+	private int questionNo;
 	private String id;
-	private int likeCnt;
-	private String boardTitle;
-	private String boardContent;
+	private String answerContent;
 	private String regDtime;
 	private String modDtime;
 	private String regId;

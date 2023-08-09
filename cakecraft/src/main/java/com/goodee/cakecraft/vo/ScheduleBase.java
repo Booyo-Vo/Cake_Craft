@@ -3,7 +3,7 @@ package com.goodee.cakecraft.vo;
 import lombok.Data;
 
 @Data
-public class Schedule {
+public class ScheduleBase {
 	private int scheduleNo;
 	private String id;
 	private String scheduleCategory;
