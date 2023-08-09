@@ -3,7 +3,7 @@ package com.goodee.cakecraft.vo;
 import lombok.Data;
 
 @Data
-public class Dayoff {
+public class EmpDayoff {
 	private String dayoffNo;
 	private String id;
 	private String dayoffStatus;
