@@ -1,5 +1,8 @@
 package com.goodee.cakecraft.vo;
 
+import lombok.Data;
+
+@Data
 public class Emp {
 	private String id;
 	private String name;
