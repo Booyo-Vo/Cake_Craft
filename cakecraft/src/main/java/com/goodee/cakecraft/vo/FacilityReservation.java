@@ -3,7 +3,7 @@ package com.goodee.cakecraft.vo;
 import lombok.Data;
 
 @Data
-public class Reservation {
+public class FacilityReservation {
 	private int reservationNo;
 	private int facilityNo;
 	private String teamCd;
@@ -16,3 +16,4 @@ public class Reservation {
 	private String regId;
 	private String modId;
 }
+
