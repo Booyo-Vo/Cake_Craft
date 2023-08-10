@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.ScheduleMapper">
+	<!-- 월간 일정 목록 출력 (달력에 일정 출력) -->
+	<select id="selectScheduleListByMonth" 
+			parameterType="java.util.Map" 
+			resultType="com.goodee.cakecraft.vo.ScheduleBase">
+			SELECT 
+				schedule_no scheduleNo, 
+				id, 
+				schedule_category scheduleCategory, 
+				team_cd teamCd, 
+				schedule_content scheduleContent, 
+				start_dtime startDtime, 
+				end_dtime endDtime, 
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM schedule_base 
+			<where>
+				id = #{id} 
+				AND YEAR(startDtime)= #{targetYear} 
+				AND MONTH(startDtime)=#{targetMonth}
+			</where>
+			ORDER BY start_dtime ASC
+	</select>
+	<!-- 개별 일정 출력 -->
+	<select id="selectScheduleByNo"
+			parameterType="com.goodee.cakecraft.vo.ScheduleBase"
+			resultType="com.goodee.cakecraft.vo.ScheduleBase">
+			SELECT 
+				schedule_no scheduleNo, 
+				id, 
+				schedule_category scheduleCategory, 
+				team_cd teamCd, 
+				schedule_content scheduleContent, 
+				start_dtime startDtime, 
+				end_dtime endDtime, 
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM schedule_base 
+			<where>
+				scheduleNo = #{scheduleNo}
+			</where>
+	</select>
+	<!-- 일정 추가 -->
+	<insert id="insertSchedule" 
+			parameterType="com.goodee.cakecraft.vo.ScheduleBase">
+		INSERT INTO schedule_base(
+			schedule_no scheduleNo, 
+			id, 
+			schedule_category scheduleCategory, 
+			team_cd teamCd, 
+			schedule_content scheduleContent, 
+			start_dtime startDtime, 
+			end_dtime endDtime, 
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		)VALUES(
+			#{scheduleNo},
+			#{id},
+			#{scheduleCategory},
+			#{teamCd},
+			#{scheduleContent},
+			#{startDtime},
+			#{endDtime},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+	<!-- 일정 수정 -->
+	<update id="updateSchedule" parameterType="com.goodee.cakecraft.vo.ScheduleBase">
+		UPDATE schedule_base
+		SET schedule_category = #{scheduleCategory},
+			schedule_content = #{scheduleContent},
+			start_dtime = #{startDtime},
+			end_dtime = #{endDtime}, 
+			reg_dtime = NOW(),
+			mod_dtime = NOW(), 
+			mod_id modId= #{id}
+		WHERE schedule_no = #{scheduleNo}
+		AND id = #{id}
+	</update>
+	<!-- 일정 삭제 -->
+	<delete id="deleteSchedule" parameterType="com.goodee.cakecraft.vo.ScheduleBase">
+		DELETE FROM schedule_base 
+		<where>
+			schedule_no = #{scheduleNo}
+			AND id = #{id}
+		</where>
+	</delete>
+</mapper>
