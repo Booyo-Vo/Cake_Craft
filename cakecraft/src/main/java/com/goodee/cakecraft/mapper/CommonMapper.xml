@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goodee.cakecraft.mapper.CommonMapper">
-	<select id="getCode" parameterType="String" resultType="String">
-		SELECT CONCAT(grp_cd, cd) codeStr
+	<!-- 이름 받아서 코드 반환 -->
+	<select id="getCode" 
+			parameterType="String" 
+			resultType="Map">
+		SELECT grp_cd grpCd, cd
 		FROM st_std_cd
 		<where>
-			cd_nm = #{name}
+			cd_nm = #{cdNm}
 		</where>
 	</select>
 	
-	<select id="getName" parameterType="Map" resultType="String">
+	<!-- 코드 받아서 이름 반환 -->
+	<select id="getName" 
+			parameterType="Map" 
+			resultType="String">
 		SELECT cd_nm cdNm
 		FROM st_std_cd
 		<where>

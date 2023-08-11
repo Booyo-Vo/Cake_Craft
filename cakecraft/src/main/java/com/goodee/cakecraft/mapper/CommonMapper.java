@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface CommonMapper {
+	//코드 받아서 이름반환
 	String getName(Map<String, Object> paramMap);
 	
-	String getCode(String name);
+	//이름 받아서 코드 반환
+	Map<String, Object> getCode(String cdNm);
 }
