@@ -1,3 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.goodee.cakecraft.mapper.EmpMapper"></mapper>
+<mapper namespace="com.goodee.cakecraft.mapper.EmpMapper">
+<!-- 사원번호생성 -->
+	<select id="selectEmpId" 
+			parameterType="com.goodee.cakecraft.vo.EmpBase" 
+			resultType="String">
+ 			SELECT
+ 			CONCAT
+	 			(RIGHT(YEAR(CURRENT_TIMESTAMP), 2),
+	 			#{deptCd},
+	 			#{teamCd},
+	 			RIGHT(CURRENT_TIMESTAMP(4), 4)) AS id;
+	</select>
+	
+	<!-- 사원추가 -->
+	<insert id="insertEmp"
+		parameterType="com.goodee.cakecraft.vo.EmpBase">
+		INSERT INTO emp_base(
+			id, 
+			emp_name, 
+			social_no, 
+			dept_cd, 
+			team_cd, 
+			position_cd, 
+			email,
+			hire_date,
+			address,
+			reg_dtime, 
+			mod_dtime, 
+			reg_id, 
+			mod_id
+		)VALUES(
+			#{id},
+			#{empName},
+			#{socialNo},
+			#{deptCd},
+			#{teamCd},
+			#{positionCd},
+			#{email},
+			#{hireDate},
+			#{address},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id})
+	</insert>
+		
+	<!-- 사원리스트 출력 -->	
+	<select id = "selectEmpList"
+		resultType="com.goodee.cakecraft.vo.EmpBase">
+		select 
+			id, 
+			emp_name empName, 
+			social_no socialNo, 
+			dept_cd deptCd, 
+			team_cd teamCd, 
+			position_cd positionCd, 
+			email,
+			hire_date hireDate,
+			retire_date retireDate,
+			emp_status empStatus,
+			dayoff_cnt dayoffCnt,
+			address,
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM emp_base
+	</select>
+</mapper>
