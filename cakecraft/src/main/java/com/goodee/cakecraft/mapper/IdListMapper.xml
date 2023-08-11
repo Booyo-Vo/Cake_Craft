@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.IdListMapper">
+	<!-- 아이디 비밀번호 추가-->
+	<insert id="insertIdList" 
+			parameterType="com.goodee.cakecraft.vo.EmpIdList">
+		INSERT INTO emp_id_list( 
+			id,
+			pw,
+			reg_dtime, 
+			mod_dtime, 
+			reg_id, 
+			mod_id
+			)VALUES(
+			#{id},
+			password(1234),
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+</mapper>

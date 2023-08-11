@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class EmpBase {
 	private String id;
-	private String name;
+	private String empName;
 	private String socialNo;
 	private String deptCd;
 	private String teamCd;
-	private String position;
+	private String positionCd;
 	private String email;
 	private String hireDate;
 	private String retireDate;
@@ -20,4 +20,8 @@ public class EmpBase {
 	private String modDtime;
 	private String regId;
 	private String modId;
+	
+    private String deptNm; // 부서명을 저장할 필드
+    private String teamNm; // 팀명을 저장할 필드
+    private String positionNm; // 직급명을 저장할 필드
 }
