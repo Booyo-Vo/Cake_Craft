@@ -2,6 +2,8 @@ package com.goodee.cakecraft.service;
 
 import java.util.HashMap;
 
+
+
 import java.util.List;
 
 import java.util.Map;
@@ -14,9 +16,8 @@ import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.mapper.IdListMapper;
 import com.goodee.cakecraft.vo.EmpBase;
-import com.goodee.cakecraft.vo.ScheduleBase;
-
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Service
 @Transactional
@@ -37,6 +38,7 @@ public class AdminEmpService {
 		Map<String, Object> deptCdMap = commonMapper.getCode(empbase.getDeptNm());
 		//cd가 int이으로 toString() 해준다
 		String deptCd = deptCdMap.get("cd").toString();
+		
 		// 팀 코드 받아오기
 		Map<String, Object> teamCdMap = commonMapper.getCode(empbase.getTeamNm());
 		String teamCd = teamCdMap.get("cd").toString();
@@ -74,6 +76,7 @@ public class AdminEmpService {
 	
 	// 관리자가 보는 사원리스트
 	public List<EmpBase> getEmpList(){
+		//사원리스트 받아오기
 		List<EmpBase> adminEmpList = empMapper.selectEmpList();
 		
 		for (EmpBase empbase : adminEmpList) {
@@ -89,7 +92,7 @@ public class AdminEmpService {
 			String teamNm = commonMapper.getName(teamparamMap);
 			//직급 이름 받아오기
 			Map<String, Object> positionparamMap = new HashMap<String, Object>();
-			positionparamMap.put("grpCd", "Ps001");
+			positionparamMap.put("grpCd", "P001");
 			positionparamMap.put("cd", empbase.getPositionCd());
 			String positionNm = commonMapper.getName(positionparamMap);
 			//받아온 이름값 저장하기
@@ -98,6 +101,34 @@ public class AdminEmpService {
 	        empbase.setPositionNm(positionNm);
 		} 
 		return adminEmpList;
+	}
+	
+	// 관리자가 보는 사원상세내역
+	public EmpBase getAdminEmpById(String id) {
+		//사원상세내역 받아오기
+		EmpBase empbase = empMapper.selectEmpById(id);
+		 if (empbase != null) { 
+			//직급 이름 받아오기
+			Map<String, Object> deptparamMap = new HashMap<String, Object>();
+			deptparamMap.put("grpCd", "D001");
+			deptparamMap.put("cd", empbase.getDeptCd());
+			String deptNm = commonMapper.getName(deptparamMap);
+			//부서 이름 받아오기
+			Map<String, Object> teamparamMap = new HashMap<String, Object>();
+			teamparamMap.put("grpCd", "T001");
+			teamparamMap.put("cd", empbase.getTeamCd());
+			String teamNm = commonMapper.getName(teamparamMap);
+			//직급 이름 받아오기
+			Map<String, Object> positionparamMap = new HashMap<String, Object>();
+			positionparamMap.put("grpCd", "P001");
+			positionparamMap.put("cd", empbase.getPositionCd());
+			String positionNm = commonMapper.getName(positionparamMap);
+			//받아온 이름값 저장하기
+			empbase.setDeptNm(deptNm);
+	        empbase.setTeamNm(teamNm);
+	        empbase.setPositionNm(positionNm);
+		 }
+		return empbase;
 	}
 }
 

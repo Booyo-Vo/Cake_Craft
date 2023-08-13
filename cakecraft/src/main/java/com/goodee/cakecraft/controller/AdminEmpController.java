@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.vo.EmpBase;
@@ -32,9 +34,23 @@ public class AdminEmpController {
 	
 	// 관리자가 보는 사원리스트 출력
 	@GetMapping("/emp/adminEmpList")
-	 	public String adminEmpList() {
+	 	public String adminEmpList(Model model) {
 		List<EmpBase> adminEmpList = adminempService.getEmpList();
-		return "redirect:/emp/adminEmpList";
+		
+		//뷰로 값넘기기
+		model.addAttribute("adminEmpList", adminEmpList);
+		return "/emp/adminEmpList";
+	}
+	
+	// 관리자가 보는 사원상세내역 출력
+	@GetMapping("/emp/adminEmpById")
+	 	public String adminEmpList(Model model,
+	 								@RequestParam String id) {
+		EmpBase empbase = adminempService.getAdminEmpById(id); 
+		
+		//뷰로 값넘기기
+		model.addAttribute("empbase", empbase);
+		return "/emp/adminEmpById";
 	}
 }
 

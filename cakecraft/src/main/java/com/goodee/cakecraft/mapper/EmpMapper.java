@@ -12,7 +12,8 @@ public interface EmpMapper {
 	String selectEmpId(EmpBase empbase);
 	// 사원추가
 	int insertEmp(EmpBase empbase);
-	
 	// 사원리스트
 	List<EmpBase> selectEmpList();
+	// 사원상세내역
+	EmpBase selectEmpById(String id);
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goodee.cakecraft.mapper.EmpMapper">
-<!-- 사원번호생성 -->
+	<!-- 사원번호생성 -->
 	<select id="selectEmpId" 
 			parameterType="com.goodee.cakecraft.vo.EmpBase" 
 			resultType="String">
@@ -42,7 +42,7 @@
 			#{address},
 			NOW(),
 			NOW(),
-			#{id},
+`			#{id},
 			#{id})
 	</insert>
 		
@@ -67,5 +67,30 @@
 			reg_id regId, 
 			mod_id modId
 		FROM emp_base
+	</select>
+	
+	<!-- 사원상세내역 출력 -->	
+	<select id = "selectEmpById"
+		parameterType="string"
+		resultType="com.goodee.cakecraft.vo.EmpBase">
+		select 
+			id, 
+			emp_name empName, 
+			social_no socialNo, 
+			dept_cd deptCd, 
+			team_cd teamCd, 
+			position_cd positionCd, 
+			email,
+			hire_date hireDate,
+			retire_date retireDate,
+			emp_status empStatus,
+			dayoff_cnt dayoffCnt,
+			address,
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM emp_base
+		WHERE id = #{id}
 	</select>
 </mapper>
