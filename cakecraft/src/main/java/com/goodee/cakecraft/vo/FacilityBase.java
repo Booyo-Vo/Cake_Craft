@@ -6,6 +6,7 @@ import lombok.Data;
 public class FacilityBase {
 	private int facilityNo;
 	private String categoryCd;
+	private String facilityName;
 	private String facilityNote;
 	private String useYn;
 	private String regDtime;

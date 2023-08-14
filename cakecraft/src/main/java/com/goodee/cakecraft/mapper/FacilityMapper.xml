@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.FacilityMapper">
+	<!-- 시설비품 리스트 출력 : 사용여부, 카테고리 -->
+	<select id="selectFacilityList"
+			parameterType="java.util.Map"
+			resultType="com.goodee.cakecraft.vo.FacilityBase">
+		SELECT 
+			facility_no facilityNo,
+			category_cd categoryCd, 
+			facility_name facilityName,
+			facility_note facilityNote,
+			use_yn useYn,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM facility_base
+		WHERE 1 = 1
+		<where>
+			<if test='!useYn.equals("A")'>
+				AND use_yn = #{useYn}
+			</if>
+			<if test='!categoryCd.equals("A")'>
+				AND category_cd = #{categoryCd}
+			</if>
+		</where>
+		ORDER BY category_cd ASC
+	</select>
+	
+	<!-- 시설비품 1개 -->
+	<select id="selectFacilityByNo"
+			parameterType="com.goodee.cakecraft.vo.FacilityBase"
+			resultType="com.goodee.cakecraft.vo.FacilityBase">
+		SELECT 
+			facility_no facilityNo,
+			category_cd categoryCd, 
+			facility_name facilityName,
+			facility_note facilityNote,
+			use_yn useYn,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM facility_base
+		WHERE facility_no = #{facilityNo}
+	</select>
+	
+	<!-- 이름 중복검사 -->
+	<select id="selectFacilityName"
+			parameterType="com.goodee.cakecraft.vo.FacilityBase"
+			resultType="Integer">
+		SELECT COUNT(*) cnt
+		FROM facility_base
+		<where>
+			facility_name = #{facilityName}
+		</where>
+	</select>
+	
+	<insert id="insertFacility"
+			parameterType="java.util.Map">
+		INSERT INTO facility_base(
+			category_cd,
+			facility_name,
+			facility_note,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id)
+		VALUES (
+			#{categoryCd},
+			#{facilityName},
+			#{facilityNote},
+			NOW(),
+			NOW(),
+			#{regId},
+			#{regId})
+	</insert>
+	
+	<update id="updateFacility"
+			parameterType="java.util.Map">
+		UPDATE facility_base
+		SET 
+			category_cd = #{categoryCd},
+			facility_name = #{facilityName},
+			facility_note = #{facilityNote},
+			use_yn = #{useYn},
+			mod_dtime = NOW(),
+			mod_id = #{regId}
+		WHERE facility_no = #{facilityNo}
+	</update>
+</mapper>
