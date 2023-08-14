@@ -24,8 +24,8 @@ public class ScheduleService {
 	final String RESET = "\u001B[0m";	
 	final String GEH = "\u001B[45m";
 	
-	// 월간 일정 목록 출력 (달력에 일정 출력)
-	public Map<String, Object> getScheduleListByMonth(String id, Integer targetYear, Integer targetMonth){
+	// 일정 목록 출력(월간, 일간)
+	public Map<String, Object> getSchedule(String id, Integer targetYear, Integer targetMonth){
 		
 		Calendar firstDate = Calendar.getInstance();
 		// 첫번째 날짜
@@ -43,6 +43,11 @@ public class ScheduleService {
 		// 마지막 날짜
 		int lastDate = firstDate.getActualMaximum(Calendar.DATE);
 		
+
+		// 오늘 날짜 
+		Calendar today = Calendar.getInstance();
+		int todayDate = today.get(Calendar.DATE);
+		
 		// 1일의 요일을 이용하여 출력할 시작 공백 수 -> 요일 맵핑 수 - 1
 		int beginBlank = firstDate.get(Calendar.DAY_OF_WEEK) - 1;
 		
@@ -58,6 +63,7 @@ public class ScheduleService {
 		log.debug(GEH + "ScheduleService targetYear --> "+ targetYear + RESET);
 		log.debug(GEH + "ScheduleService targetMonth --> "+ targetMonth + RESET);
 		log.debug(GEH + "ScheduleService lastDate --> "+ lastDate + RESET);
+		log.debug(GEH + "ScheduleService todayDate --> "+ todayDate + RESET);
 		log.debug(GEH + "ScheduleService beginBlank --> "+ beginBlank + RESET);
 		log.debug(GEH + "ScheduleService endBlank --> "+ endBlank + RESET);
 		log.debug(GEH + "ScheduleService totalTd --> "+ totalTd + RESET);
@@ -76,12 +82,19 @@ public class ScheduleService {
 		paramMap.put("id", id);
 		paramMap.put("targetYear", targetYear);
 		paramMap.put("targetMonth", targetMonth+1);
+		paramMap.put("todayDate", todayDate);
 		
+		// 월간 일정 목록 가져오기
 		List<ScheduleBase> scheduleList = scheduleMapper.selectScheduleListByMonth(paramMap);
 		log.debug(GEH + "scheduleList.size --> "+ scheduleList.size() + RESET);
 		
+		// 일간 일정 목록 가져오기
+		List<ScheduleBase> scheduleListByDate = scheduleMapper.selectScheduleListByDate(paramMap);
+		log.debug(GEH + "scheduleListByDate --> "+ scheduleListByDate.toString() + RESET);
+		
 		// 반환값
 		resultMap.put("scheduleList",scheduleList);
+		resultMap.put("scheduleListByDate",scheduleListByDate);
 		
 		return resultMap;
 	}

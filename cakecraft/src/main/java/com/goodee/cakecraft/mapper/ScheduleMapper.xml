@@ -25,6 +25,31 @@
 			</where>
 			ORDER BY start_dtime ASC
 	</select>
+	<!-- 일간 일정 목록 출력 (오늘의 일정 출력) -->
+	<select id="selectScheduleListByDate" 
+			parameterType="java.util.Map" 
+			resultType="com.goodee.cakecraft.vo.ScheduleBase">
+			SELECT 
+				schedule_no scheduleNo, 
+				id, 
+				category_cd categoryCd, 
+				team_cd teamCd, 
+				schedule_content scheduleContent, 
+				start_dtime startDtime, 
+				end_dtime endDtime, 
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM schedule_base 
+			<where>
+				id = #{id} 
+				AND YEAR(start_dtime)= #{targetYear} 
+				AND MONTH(start_dtime)= #{targetMonth}
+				AND #{todayDate} BETWEEN DAY(start_dtime) AND DAY(end_dtime)
+			</where>
+			ORDER BY start_dtime ASC
+	</select>
 	<!-- 개별 일정 출력 -->
 	<select id="selectScheduleByNo"
 			parameterType="com.goodee.cakecraft.vo.ScheduleBase"

@@ -21,8 +21,8 @@ public class ScheduleController {
 		// ** test용 loginId
 		String loginId = "user1";
 		
-		// 월간 일정 목록 출력 (달력에 일정 출력)
-		Map<String, Object> resultMap = scheduleService.getScheduleListByMonth(loginId, targetYear, targetMonth);
+		// 일정 목록 출력 (월간, 일간)
+		Map<String, Object> resultMap = scheduleService.getSchedule(loginId, targetYear, targetMonth);
 		
 		model.addAttribute("targetYear",resultMap.get("targetYear"));
 		model.addAttribute("targetMonth",resultMap.get("targetMonth"));
@@ -32,7 +32,7 @@ public class ScheduleController {
 		model.addAttribute("totalTd",resultMap.get("totalTd"));
 		
 		model.addAttribute("scheduleList",resultMap.get("scheduleList"));
-		
+		model.addAttribute("scheduleListByDate",resultMap.get("scheduleListByDate"));
 		
 		return "schedule";
 	}
