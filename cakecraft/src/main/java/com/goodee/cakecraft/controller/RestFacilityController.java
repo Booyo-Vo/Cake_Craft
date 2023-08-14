@@ -26,9 +26,11 @@ public class RestFacilityController {
 	
 	//추가,수정 시 이름 중복검사
 	@PostMapping("/rest/nameCheck")
-	public int nameCheck(@RequestParam(name="facilityName") String facilityName) {
+	public int nameCheck(@RequestParam(name="facilityName") String facilityName,
+						@RequestParam(name="facilityNo", defaultValue = "-1") Integer facilityNo) {
 		FacilityBase facility = new FacilityBase();
 		facility.setFacilityName(facilityName);
+		facility.setFacilityNo(facilityNo);
 		
 		int cnt = facilityService.getNameCheck(facility);
 		

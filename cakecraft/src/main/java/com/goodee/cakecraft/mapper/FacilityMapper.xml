@@ -54,6 +54,9 @@
 		FROM facility_base
 		<where>
 			facility_name = #{facilityName}
+			<if test="facilityNo != -1">
+				AND facility_no != #{facilityNo}
+			</if>
 		</where>
 	</select>
 	

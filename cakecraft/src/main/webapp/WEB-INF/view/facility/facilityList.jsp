@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery -->
@@ -50,8 +49,8 @@
 				<form id="addFcltForm">
 					<input type="hidden" name="loginId" value="${loginId}">
 					<div class="mb-3">
-						<label for="categoryCd" class="col-form-label">카테고리</label>
-						<select name="categoryCd" id="categoryCd">
+						<label for="addCategoryCd" class="col-form-label">카테고리</label>
+						<select name="categoryCd" id="addCategoryCd">
 							<option value="11">회의실</option>
 							<option value="21">노트북</option>
 							<option value="22">빔프로젝터</option>
@@ -59,17 +58,19 @@
 						</select>
 					</div>
 					<div class="mb-3">
-						<label for="facilityName" class="col-form-label">이름</label>
-						<input type="text" class="form-control" name="facilityName" id="facilityName" onblur="nameCheck()" required>
-						<span class="msg"></span>
+						<label for="addFacilityName" class="col-form-label">이름</label>
+						<input type="text" class="form-control" name="facilityName" id="addFacilityName" required>
+						<span id="addNameMsg"></span>
 					</div>
 					<div class="mb-3">
-						<label for="facilityNote" class="col-form-label">설명</label>
-						<textarea class="form-control" name="facilityNote" id="facilityNote" required></textarea>
+						<label for="addFacilityNote" class="col-form-label">설명</label>
+						<textarea class="form-control" name="facilityNote" id="addFacilityNote" required></textarea>
+						<span id="addCount">0</span>자 / 100자
+						<span id="addNoteMsg"></span>
 					</div>
 					<div class="mb-3">
-						<label for="useYn" class="col-form-label">사용여부</label>
-						<select name="useYn" id="useYn">
+						<label for="addUseYn" class="col-form-label">사용여부</label>
+						<select name="useYn" id="addUseYn">
 							<option value="Y" selected>사용가능</option>
 							<option value="N">사용불가</option>
 						</select>
@@ -123,7 +124,7 @@
 					<input type="hidden" name="facilityNo" id="modFacilityNo">
 					<input type="hidden" name="loginId" value="${loginId}">
 					<div class="mb-3">
-						<label for="categoryCd" class="col-form-label">카테고리</label>
+						<label for="modCategoryCd" class="col-form-label">카테고리</label>
 						<select name="categoryCd" id="modCategoryCd">
 							<option value="11">회의실</option>
 							<option value="21">노트북</option>
@@ -132,16 +133,18 @@
 						</select>
 					</div>
 					<div class="mb-3">
-						<label for="facilityName" class="col-form-label">이름</label>
-						<input type="text" class="form-control" name="facilityName" id="modFacilityName" onblur="nameCheck()" required>
-						<span class="msg"></span>
+						<label for="modFacilityName" class="col-form-label">이름</label>
+						<input type="text" class="form-control" name="facilityName" id="modFacilityName" required>
+						<span id="modNameMsg"></span>
 					</div>
 					<div class="mb-3">
-						<label for="facilityNote" class="col-form-label">설명</label>
+						<label for="modFacilityNote" class="col-form-label">설명</label>
 						<textarea class="form-control" name="facilityNote" id="modFacilityNote" required></textarea>
+						<span id="modCount">0</span>자 / 100자
+						<span id="modNoteMsg"></span>
 					</div>
 					<div class="mb-3">
-						<label for="useYn" class="col-form-label">사용여부</label>
+						<label for="modUseYn" class="col-form-label">사용여부</label>
 						<select name="useYn" id="modUseYn">
 							<option value="Y">사용가능</option>
 							<option value="N">사용불가</option>
@@ -159,7 +162,7 @@
 <!-- 시설비품 수정 모달창 끝 -->
 
 <script>
-var addFcltModal = document.getElementById('#addFcltModal')
+/* var addFcltModal = document.getElementById('#addFcltModal')
 addFcltModal.addEventListener('show.bs.modal', function (event) {
   // Button that triggered the modal
   var button = event.relatedTarget
@@ -174,9 +177,9 @@ addFcltModal.addEventListener('show.bs.modal', function (event) {
 
   modalTitle.textContent = 'New message to ' + recipient
   modalBodyInput.value = recipient
-})
+}) */
 
-var modFcltModal = document.getElementById('#modFcltModal')
+/* var modFcltModal = document.getElementById('#modFcltModal')
 modFcltModal.addEventListener('show.bs.modal', function (event) {
   // Button that triggered the modal
   var button = event.relatedTarget
@@ -191,9 +194,52 @@ modFcltModal.addEventListener('show.bs.modal', function (event) {
 
   modalTitle.textContent = 'New message to ' + recipient
   modalBodyInput.value = recipient
+}) */
+
+//추가폼 유효성 검사(이름 공백금지/중복검사, 모든 입력폼 필수입력)
+// 이름 유효성검사
+$('#addFacilityName').val('');
+$('#addFacilityNote').val('');
+
+$('#addFacilityName').blur(function() {
+	if ($('#addFacilityName').val() == ''){
+		$('#addNameMsg').text('이름을 작성해주세요');
+		$('#addFacilityName').focus();
+	} else {
+		console.log($('#addFacilityName').val()); 
+		$('#addFacilityName').val($('#addFacilityName').val().replace(/ /g,'')); //모든 공백제거
+		$.ajax({
+			url : '${pageContext.request.contextPath}/rest/nameCheck',
+			type : 'post',
+			data : {
+				facilityName : $('#addFacilityName').val()
+			},
+			success : function(param){
+				if(param > 0){
+					$('#addNameMsg').text('이미 사용 중인 이름입니다');
+					$('#addFacilityName').focus();
+				}
+			}
+		})
+		$('#addNameMsg').text('');
+		$('#addFacilityNote').focus();
+	}
+});
+
+//설명 유효성검사
+$('#addFacilityNote').keyup(function(){
+	const MAX_COUNT = 100;
+	let len = $('#addFacilityNote').val().length;
+	if(len > MAX_COUNT) {
+		let str = $('#addFacilityNote').val().substring(0, MAX_COUNT);
+		$('#addFacilityNote').val(str);
+		$('#addNoteMsg').text(MAX_COUNT +'자 이하로 입력해주세요');
+	} else {
+		$('#addCount').text(len);
+	}
 })
 
-//입력값 유효성 검사(이름 공백금지/중복검사, 모든 입력폼 필수입력)
+
 
 //추가 버튼 클릭 시 폼 제출
 function addFacility(){
@@ -227,6 +273,47 @@ function facilityNo(facilityNo){
 	})
 	$('#modFcltModal').modal('show');
 }
+
+//수정폼 유효성 검사(이름 공백금지/중복검사, 모든 입력폼 필수입력)
+//이름 유효성검사
+$('#modFacilityName').blur(function() {
+	if ($('#modFacilityName').val() == ''){
+		$('#modNameMsg').text('이름을 작성해주세요');
+		$('#modFacilityName').focus();
+	} else {
+		console.log($('#modFacilityName').val()); 
+		$('#modFacilityName').val($('#modFacilityName').val().replace(/ /g,'')); //모든 공백제거
+		$.ajax({
+			url : '${pageContext.request.contextPath}/rest/nameCheck',
+			type : 'post',
+			data : {
+				facilityName : $('#modFacilityName').val(),
+				facilityNo: $('#modFacilityNo').val()
+			},
+			success : function(param){
+				if(param > 0){
+					$('#modNameMsg').text('이미 사용 중인 이름입니다');
+					$('#modFacilityName').focus();
+				}
+			}
+		})
+		$('#modNameMsg').text('');
+		$('#modFacilityNote').focus();
+ }
+});
+  
+//설명 유효성검사
+$('#modFacilityNote').keyup(function(){
+	const MAX_COUNT = 100;
+	let len = $('#modFacilityNote').val().length;
+	if(len > MAX_COUNT) {
+		let str = $('#modFacilityNote').val().substring(0, MAX_COUNT);
+		$('#modFacilityNote').val(str);
+		$('#modNoteMsg').text(MAX_COUNT +'자 이하로 입력해주세요');
+	} else {
+		$('#modCount').text(len);
+	}
+})
 
 //수정버튼 클릭 시 폼 제출
 function modFacility(){
