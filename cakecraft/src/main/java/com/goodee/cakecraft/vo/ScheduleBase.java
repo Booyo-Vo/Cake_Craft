@@ -6,7 +6,7 @@ import lombok.Data;
 public class ScheduleBase {
 	private int scheduleNo;
 	private String id;
-	private String scheduleCategory;
+	private String categoryCd;
 	private String teamCd;
 	private String scheduleContent;
 	private String startDtime;

@@ -8,7 +8,7 @@
 			SELECT 
 				schedule_no scheduleNo, 
 				id, 
-				schedule_category scheduleCategory, 
+				category_cd categoryCd, 
 				team_cd teamCd, 
 				schedule_content scheduleContent, 
 				start_dtime startDtime, 
@@ -20,8 +20,8 @@
 			FROM schedule_base 
 			<where>
 				id = #{id} 
-				AND YEAR(startDtime)= #{targetYear} 
-				AND MONTH(startDtime)=#{targetMonth}
+				AND YEAR(start_dtime)= #{targetYear} 
+				AND MONTH(start_dtime)= #{targetMonth}
 			</where>
 			ORDER BY start_dtime ASC
 	</select>
@@ -32,7 +32,7 @@
 			SELECT 
 				schedule_no scheduleNo, 
 				id, 
-				schedule_category scheduleCategory, 
+				category_cd categoryCd, 
 				team_cd teamCd, 
 				schedule_content scheduleContent, 
 				start_dtime startDtime, 
@@ -43,7 +43,7 @@
 				mod_id modId
 			FROM schedule_base 
 			<where>
-				scheduleNo = #{scheduleNo}
+				schedule_no = #{scheduleNo}
 			</where>
 	</select>
 	<!-- 일정 추가 -->
@@ -52,7 +52,7 @@
 		INSERT INTO schedule_base(
 			schedule_no scheduleNo, 
 			id, 
-			schedule_category scheduleCategory, 
+			category_cd categoryCd,
 			team_cd teamCd, 
 			schedule_content scheduleContent, 
 			start_dtime startDtime, 
@@ -64,7 +64,7 @@
 		)VALUES(
 			#{scheduleNo},
 			#{id},
-			#{scheduleCategory},
+			#{categoryCd},
 			#{teamCd},
 			#{scheduleContent},
 			#{startDtime},
@@ -78,7 +78,7 @@
 	<!-- 일정 수정 -->
 	<update id="updateSchedule" parameterType="com.goodee.cakecraft.vo.ScheduleBase">
 		UPDATE schedule_base
-		SET schedule_category = #{scheduleCategory},
+		SET category_cd = #{categoryCd},
 			schedule_content = #{scheduleContent},
 			start_dtime = #{startDtime},
 			end_dtime = #{endDtime}, 
