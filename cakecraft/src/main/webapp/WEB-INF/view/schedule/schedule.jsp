@@ -47,13 +47,13 @@
 									<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
 										<div>
 											<c:if test="${c.categoryCd == '1'}">
-												<span style="color:blue">●</span><span> ${c.scheduleContent}</span>
+												<span style="color:blue">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
 											</c:if>
 											<c:if test="${c.categoryCd == '2'}">
-												<span style="color:red">●</span><span> ${c.scheduleContent}</span>
+												<span style="color:red">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
 											</c:if>
 											<c:if test="${c.categoryCd == '3'}">
-												<span style="color:black">●</span><span> ${c.scheduleContent}</span>
+												<span style="color:black">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
 											</c:if>
 										</div>
 									</c:if>
@@ -115,7 +115,7 @@
 							<input type="hidden" name="teamCd" value="${empBase.teamCd}">
 							<div class="mb-3">
 								<label for="categoryCd" class="col-form-label">카테고리</label>
-								<select name="categoryCd" id="categoryCd">
+								<select class="form-control" name="categoryCd" id="categoryCd">
 									<option value= "">==선택해주세요==</option>
 									<!-- '인사팀'인 경우에만 '전사일정' 드랍다운 항목 표시 -->
 									<c:if test="${empBase.teamCd == '11'}">
@@ -140,17 +140,65 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary" id="addScheduleBtn" onclick="addSchedule()">추가</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="addScheduleBtn" onclick="addSchedule()">확인</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- 일정 추가 모달창 끝 -->
+		
+		<!-- 일정 수정 모달창 시작 -->
+		<div class="modal fade" id="modifyScheduleModal" tabindex="-1" aria-labelledby="modifyScheduleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modifyScheduleModalLabel">일정 수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form id="modifyScheduleForm">
+							<input type="hidden" name="scheduleNo" id="modScheduleNo">
+							<input type="hidden" name="loginId" value="${loginId}">
+							<input type="hidden" name="teamCd" value="${empBase.teamCd}">
+							<div class="mb-3">
+								<label for="modCategoryCd" class="col-form-label">카테고리</label>
+								<select class="form-control" name="categoryCd" id="modCategoryCd">
+									<option value= "">==선택해주세요==</option>
+									<!-- '인사팀'인 경우에만 '전사일정' 드랍다운 항목 표시 -->
+									<c:if test="${empBase.teamCd == '11'}">
+										<option value="1">전사 일정</option>
+									</c:if>
+									<option value="2">팀 일정</option>
+									<option value="3">개인 일정</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="modScheduleContent" class="col-form-label">일정내용</label>
+								<textarea class="form-control" name="scheduleContent" id="modScheduleContent"></textarea>
+							</div>
+							<div class="mb-3">
+								<label for="modStartDtime" class="col-form-label">시작일</label>
+								<input type="date" class="form-control" name="startDtime" id="modStartDtime">
+							</div>
+							<div class="mb-3">
+								<label for="modEndDtime" class="col-form-label">종료일</label>
+								<input type="date" class="form-control" name="endDtime" id="modEndDtime">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="modifyScheduleBtn" onclick="modifySchedule()">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 일정 수정 모달창 끝 -->
 	</div>
 </div>
 <script>
-// 날짜 클릭 시 일정추가 모달창에 날짜값 넘겨주기
+// 날짜 클릭 시 일정추가 모달창에 날짜값 넘겨주기 및 모달 띄우기
 function date(d, targetYear, targetMonth){
 	$.ajax({
 		url : '${pageContext.request.contextPath}/rest/addSchedule',
@@ -179,6 +227,39 @@ function addSchedule(){
 	addScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/addSchedule');
 	addScheduleForm.attr('method', 'post');
 	addScheduleForm.submit();
+}
+
+// 일정 클릭 시 상세보기 및 일정수정 모달 띄우기
+function scheduleNo(scheduleNo){
+	$.ajax({
+		url : '${pageContext.request.contextPath}/rest/modifySchedule',
+		type : 'post',
+		data : {
+			scheduleNo : scheduleNo
+		},
+		success : function(model){
+			console.log('modifySchedule ajax성공');
+			console.log(model);
+			$('#modScheduleNo').val(model.scheduleNo);
+			$('#modCategoryCd').val(model.categoryCd);
+			$('#modScheduleContent').val(model.scheduleContent);
+			$('#modStartDtime').val(model.startDtime.substring(0,10));
+			$('#modEndDtime').val(model.endDtime.substring(0,10));
+			$('#modifyScheduleModal').modal('show');
+		},
+		error : function(){
+			console.log('modifySchedule ajax실패');
+		},
+	});
+}
+
+// 일정 수정 버튼 클릭 시 폼 제출
+function modifySchedule(){
+	console.log('수정버튼 클릭');
+	const modifyScheduleForm = $('#modifyScheduleForm');
+	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
+	modifyScheduleForm.attr('method', 'post');
+	modifyScheduleForm.submit();
 }
 </script>
 </body>

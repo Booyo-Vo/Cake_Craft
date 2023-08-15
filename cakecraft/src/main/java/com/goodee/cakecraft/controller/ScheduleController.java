@@ -44,9 +44,9 @@ public class ScheduleController {
 		return "/schedule/schedule";
 	}
 	
-	//시설비품 추가 액션
+	// 일정 추가 액션
 	@PostMapping("/schedule/addSchedule")
-	public String addFacility(HttpSession session,
+	public String addSchedule(HttpSession session,
 							  @RequestParam(name="loginId") String loginId,
 							  @RequestParam(name="teamCd") String teamCd,
 							  @RequestParam(name="categoryCd") String categoryCd,
@@ -63,6 +63,29 @@ public class ScheduleController {
 		schedule.setEndDtime(endDtime);
 	
 		scheduleService.addSchedule(schedule);
+		
+		return "redirect:/schedule/schedule";
+	}
+	
+	// 일정 수정 액션
+	@PostMapping("/schedule/modifySchedule")
+	public String modifySchedule(HttpSession session,
+							@RequestParam(name="scheduleNo") Integer scheduleNo,
+							@RequestParam(name="loginId") String loginId,
+							@RequestParam(name="categoryCd") String categoryCd,
+							@RequestParam(name="scheduleContent") String scheduleContent,
+							@RequestParam(name="startDtime") String startDtime,
+							@RequestParam(name="endDtime") String endDtime) {
+		
+		ScheduleBase schedule = new ScheduleBase();
+		schedule.setScheduleNo(scheduleNo);
+		schedule.setId(loginId);
+		schedule.setCategoryCd(categoryCd);
+		schedule.setScheduleContent(scheduleContent);
+		schedule.setStartDtime(startDtime);
+		schedule.setEndDtime(endDtime);
+	
+		scheduleService.modifySchedule(schedule);
 		
 		return "redirect:/schedule/schedule";
 	}

@@ -105,11 +105,9 @@
 			schedule_content = #{scheduleContent},
 			start_dtime = #{startDtime},
 			end_dtime = #{endDtime}, 
-			reg_dtime = NOW(),
 			mod_dtime = NOW(), 
-			mod_id modId= #{id}
+			mod_id = #{id}
 		WHERE schedule_no = #{scheduleNo}
-		AND id = #{id}
 	</update>
 	<!-- 일정 삭제 -->
 	<delete id="deleteSchedule" parameterType="com.goodee.cakecraft.vo.ScheduleBase">
