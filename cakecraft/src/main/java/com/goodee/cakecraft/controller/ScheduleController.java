@@ -89,4 +89,19 @@ public class ScheduleController {
 		
 		return "redirect:/schedule/schedule";
 	}
+	
+	// 일정 삭제 액션
+	@GetMapping("/schedule/removeSchedule")
+	public String removeSchedule(HttpSession session,
+							@RequestParam(name="scheduleNo") Integer scheduleNo,
+							@RequestParam(name="loginId") String loginId) {
+		
+		ScheduleBase schedule = new ScheduleBase();
+		schedule.setScheduleNo(scheduleNo);
+		schedule.setId(loginId);
+	
+		scheduleService.removeSchedule(schedule);
+		
+		return "redirect:/schedule/schedule";
+	}
 }

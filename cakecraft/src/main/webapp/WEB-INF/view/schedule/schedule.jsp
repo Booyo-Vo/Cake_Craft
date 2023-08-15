@@ -46,8 +46,16 @@
 								<c:forEach var="c" items="${scheduleList}">
 									<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
 										<div>
-											<c:if test="${c.categoryCd == '1'}">
-												<span style="color:blue">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
+											<!-- 인사팀인 경우만 전사일정 수정,삭제 가능 -->
+											<c:if test="${c.teamCd == '11'}">
+												<c:if test="${c.categoryCd == '1'}">
+													<span style="color:blue">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
+												</c:if>
+											</c:if>
+											<c:if test="${c.teamCd != '11'}">
+												<c:if test="${c.categoryCd == '1'}">
+													<span style="color:blue">●</span><span>${c.scheduleContent}</span>
+												</c:if>
 											</c:if>
 											<c:if test="${c.categoryCd == '2'}">
 												<span style="color:red">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
@@ -189,6 +197,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" onclick="removeSchedule()">삭제</button>
 						<button type="button" class="btn btn-primary" id="modifyScheduleBtn" onclick="modifySchedule()">확인</button>
 					</div>
 				</div>
@@ -222,7 +231,6 @@ function date(d, targetYear, targetMonth){
 
 // 일정 추가 버튼 클릭 시 폼 제출
 function addSchedule(){
-	console.log('추가버튼 클릭');
 	const addScheduleForm = $('#addScheduleForm');
 	addScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/addSchedule');
 	addScheduleForm.attr('method', 'post');
@@ -240,6 +248,7 @@ function scheduleNo(scheduleNo){
 		success : function(model){
 			console.log('modifySchedule ajax성공');
 			console.log(model);
+			const scheduleNo = model.scheduleNo;
 			$('#modScheduleNo').val(model.scheduleNo);
 			$('#modCategoryCd').val(model.categoryCd);
 			$('#modScheduleContent').val(model.scheduleContent);
@@ -255,11 +264,20 @@ function scheduleNo(scheduleNo){
 
 // 일정 수정 버튼 클릭 시 폼 제출
 function modifySchedule(){
-	console.log('수정버튼 클릭');
 	const modifyScheduleForm = $('#modifyScheduleForm');
 	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
 	modifyScheduleForm.attr('method', 'post');
 	modifyScheduleForm.submit();
+}
+
+// 일정 삭제 버튼 클릭 시
+function removeSchedule() {
+    const scheduleNo = $('#modScheduleNo').val(); 
+    const loginId = '${loginId}';
+
+    if (confirm('일정을 삭제하시겠습니까?')) {
+        window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&loginId=' + loginId;
+    }
 }
 </script>
 </body>
