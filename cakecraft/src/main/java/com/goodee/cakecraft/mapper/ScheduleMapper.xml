@@ -75,19 +75,17 @@
 	<insert id="insertSchedule" 
 			parameterType="com.goodee.cakecraft.vo.ScheduleBase">
 		INSERT INTO schedule_base(
-			schedule_no scheduleNo, 
 			id, 
-			category_cd categoryCd,
-			team_cd teamCd, 
-			schedule_content scheduleContent, 
-			start_dtime startDtime, 
-			end_dtime endDtime, 
-			reg_dtime regDtime, 
-			mod_dtime modDtime, 
-			reg_id regId, 
-			mod_id modId
+			category_cd,
+			team_cd, 
+			schedule_content, 
+			start_dtime, 
+			end_dtime, 
+			reg_dtime, 
+			mod_dtime, 
+			reg_id, 
+			mod_id
 		)VALUES(
-			#{scheduleNo},
 			#{id},
 			#{categoryCd},
 			#{teamCd},

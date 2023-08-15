@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.mapper.ScheduleMapper;
+import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.ScheduleBase;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class ScheduleService {
 	@Autowired ScheduleMapper scheduleMapper;
+	@Autowired EmpMapper empMapper;
 	
 	// Ansi코드
 	final String RESET = "\u001B[0m";	
@@ -92,9 +95,14 @@ public class ScheduleService {
 		List<ScheduleBase> scheduleListByDate = scheduleMapper.selectScheduleListByDate(paramMap);
 		log.debug(GEH + "scheduleListByDate --> "+ scheduleListByDate.toString() + RESET);
 		
+		// 로그인한 사원정보 가져오기
+		EmpBase empBase = empMapper.selectEmpById(id);
+		log.debug(GEH + "empBase --> "+ empBase.toString() + RESET);
+		
 		// 반환값
 		resultMap.put("scheduleList",scheduleList);
 		resultMap.put("scheduleListByDate",scheduleListByDate);
+		resultMap.put("empBase",empBase);
 		
 		return resultMap;
 	}
