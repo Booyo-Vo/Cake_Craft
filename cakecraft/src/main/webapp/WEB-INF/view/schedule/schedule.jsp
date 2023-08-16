@@ -17,6 +17,9 @@
 <h1>${targetYear}년 ${targetMonth+1}월 </h1>
 <a href="/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
 <a href="/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
+<div>
+	<button type="button" onclick="logout()">로그아웃</button>
+</div>
 <div class="container">
 	<div class="row">
 		<!-- 달력 시작 -->
@@ -323,6 +326,27 @@ function removeSchedule() {
 
     if (confirm('일정을 삭제하시겠습니까?')) {
         window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&loginId=' + loginId;
+    }
+}
+//로그아웃 버튼 클릭시
+function logout() {
+    if (localStorage.getItem('rememberedId') !== null) {
+        localStorage.removeItem('rememberedId');
+
+        // 로컬스토리지 + 세션 정보 삭제
+        fetch('/logout', {
+            method: 'GET',
+            credentials: 'same-origin'
+        }).then(response => {
+            if (response.ok) {
+                alert('로그아웃 완료');
+                location.reload(); // 페이지 새로고침
+            } else {
+                alert('로그아웃 실패');
+            }
+        });
+    } else {
+        alert('로그인하세요!');
     }
 }
 </script>

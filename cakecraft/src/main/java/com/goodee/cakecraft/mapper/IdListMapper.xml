@@ -25,4 +25,15 @@
 	<delete id = "deleteIdList" parameterType="String">
 		DELETE FROM emp_id_list WHERE id = #{id}
 	</delete>
+	
+	<!-- 로그인 -->
+	<select id="selectMemberById" parameterType="com.goodee.cakecraft.vo.EmpIdList" resultType="com.goodee.cakecraft.vo.EmpIdList">
+        SELECT 
+        	id
+        FROM emp_id_list 
+        <where>
+        	id = #{id} 
+        	AND pw = PASSWORD(#{pw})
+        </where> 
+    </select>
 </mapper>
