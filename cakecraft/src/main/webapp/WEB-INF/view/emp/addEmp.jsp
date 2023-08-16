@@ -32,6 +32,25 @@ $(document).ready(function() {
     });
 });
 </script>
+<!-- 공백이 입력되않도록 -->
+<script>
+$(document).ready(function() {
+    $('form').submit(function(event) {
+        var empName = $('input[name="empName"]').val();
+        var socialNo = $('input[name="socialNo"]').val();
+        var email = $('input[name="email"]').val();
+        var empPhone = $('input[name="empPhone"]').val();
+        var hireDate = $('input[name="hireDate"]').val();
+        var address = $('input[name="address"]').val();
+        
+        // 공백 제거 후 검사
+        if (empName.trim() === '' || socialNo.trim() === '' || email.trim() === '' || empPhone.trim() === '' || hireDate.trim() === '' || address.trim() === '') {
+            alert('필수 입력 항목을 모두 입력해주세요.');
+            event.preventDefault(); // 폼 제출 중지
+        }
+    });
+});
+</script>
 </head>
 <body>
     <form action="/emp/addEmp" method="post">

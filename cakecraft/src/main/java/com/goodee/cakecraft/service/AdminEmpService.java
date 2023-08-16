@@ -40,7 +40,7 @@ public class AdminEmpService {
 		// 부서이름과 팀이름 직급이름이 넘어오면, DB에 입력할 코드 받아오기
 		// 부서 코드 받아오기
 		Map<String, Object> deptCdMap = commonMapper.getCode(empBase.getDeptNm());
-		//cd가 int이으로 toString() 해준다
+		//맵에서 풀면서 toString 해준다 Object
 		String deptCd = deptCdMap.get("cd").toString();
 		log.debug(GREEN+"addEmp deptCd :"+ deptCd +RESET);
 		

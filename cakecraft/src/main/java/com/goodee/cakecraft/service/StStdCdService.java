@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,33 @@ public class StStdCdService {
 		log.debug(GREEN+"getTeamListByDept teamListbyEmpt :"+ teamListbyEmpt +RESET);	
 
 	   return teamListbyEmpt;
+	   
+	  
     }
+	 //관리자가 보는 부서, 팀관리 리스트
+	public Map<String, Object> getStdStdCdList(){
+		//부서,팀 코드 설정
+		String deptCode = "D001";
+	    // 부서리스트 받아오기
+	    List<StStdCd> deptList = stStdCdMapper.selectStStdCdList(deptCode);
+	    
+	    //리스트를 담아 보낼 맵선언
+	    Map<String, Object> StdStdCdListMap = new HashMap<>();
+	    
+	    //부서 리스트 안에서
+	    for (StStdCd dept : deptList) {
+	    	// 부서 코드를 가져옴 int 타입이라 String 으로 반환함
+	    	String deptCd = dept.getCd();
+	    	log.debug(GREEN + "getStdStdCdList deptCd :"+ deptCd + RESET);	
+	    	//코드를 받아와 해당 팀리스트 받아오기
+	    	List<StStdCd> teamList = stStdCdMapper.selectTeamListByDept(deptCd);
+	    	//부서코드마다 고유한 키를 생성하여 담기
+	    	StdStdCdListMap.put(deptCd, teamList);
+	    }
+	    //맵에 부서 리스트 담기
+	    StdStdCdListMap.put("deptList", deptList);
+	    return StdStdCdListMap; 
+	}
 }
 	
 	
