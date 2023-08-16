@@ -5,121 +5,121 @@
 	<select id="selectScheduleListByCateAll" 
 			parameterType="java.util.Map" 
 			resultType="com.goodee.cakecraft.vo.ScheduleBase">
-			SELECT 
-				schedule_no scheduleNo, 
-				id, 
-				category_cd categoryCd, 
-				team_cd teamCd, 
-				schedule_content scheduleContent, 
-				start_dtime startDtime, 
-				end_dtime endDtime, 
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
-			FROM schedule_base 
-			<where>
-				category_cd = '1'
-				AND YEAR(start_dtime)= #{targetYear} 
-				AND MONTH(start_dtime)= #{targetMonth}
-			</where>
-			ORDER BY start_dtime ASC
+		SELECT 
+			schedule_no scheduleNo, 
+			id, 
+			category_cd categoryCd, 
+			team_cd teamCd, 
+			schedule_content scheduleContent, 
+			start_dtime startDtime, 
+			end_dtime endDtime, 
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM schedule_base 
+		<where>
+			category_cd = '1'
+			AND YEAR(start_dtime)= #{targetYear} 
+			AND MONTH(start_dtime)= #{targetMonth}
+		</where>
+		ORDER BY start_dtime ASC
 	</select>
 	<!-- 월간 팀일정 목록 조회 -->
 	<select id="selectScheduleListByCateTeam" 
 			parameterType="java.util.Map" 
 			resultType="com.goodee.cakecraft.vo.ScheduleBase">
-			SELECT 
-				schedule_no scheduleNo, 
-				id, 
-				category_cd categoryCd, 
-				team_cd teamCd, 
-				schedule_content scheduleContent, 
-				start_dtime startDtime, 
-				end_dtime endDtime, 
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
-			FROM schedule_base 
-			<where>
-				category_cd = '2'
-				AND team_cd = #{teamCd}
-				AND YEAR(start_dtime)= #{targetYear} 
-				AND MONTH(start_dtime)= #{targetMonth}
-			</where>
-			ORDER BY start_dtime ASC
+		SELECT 
+			schedule_no scheduleNo, 
+			id, 
+			category_cd categoryCd, 
+			team_cd teamCd, 
+			schedule_content scheduleContent, 
+			start_dtime startDtime, 
+			end_dtime endDtime, 
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM schedule_base 
+		<where>
+			category_cd = '2'
+			AND team_cd = #{teamCd}
+			AND YEAR(start_dtime)= #{targetYear} 
+			AND MONTH(start_dtime)= #{targetMonth}
+		</where>
+		ORDER BY start_dtime ASC
 	</select>
 	<!-- 월간 개인일정 목록 조회 -->
 	<select id="selectScheduleListByCateId" 
 			parameterType="java.util.Map" 
 			resultType="com.goodee.cakecraft.vo.ScheduleBase">
-			SELECT 
-				schedule_no scheduleNo, 
-				id, 
-				category_cd categoryCd, 
-				team_cd teamCd, 
-				schedule_content scheduleContent, 
-				start_dtime startDtime, 
-				end_dtime endDtime, 
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
-			FROM schedule_base 
-			<where>
-				category_cd = '3'
-				AND id = #{id} 
-				AND YEAR(start_dtime)= #{targetYear} 
-				AND MONTH(start_dtime)= #{targetMonth}
-			</where>
-			ORDER BY start_dtime ASC
+		SELECT 
+			schedule_no scheduleNo, 
+			id, 
+			category_cd categoryCd, 
+			team_cd teamCd, 
+			schedule_content scheduleContent, 
+			start_dtime startDtime, 
+			end_dtime endDtime, 
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM schedule_base 
+		<where>
+			category_cd = '3'
+			AND id = #{id} 
+			AND YEAR(start_dtime)= #{targetYear} 
+			AND MONTH(start_dtime)= #{targetMonth}
+		</where>
+		ORDER BY start_dtime ASC
 	</select>
 	<!-- 일간 일정 목록 조회 (오늘의 일정 출력) -->
 	<select id="selectScheduleListByDate" 
 			parameterType="java.util.Map" 
 			resultType="com.goodee.cakecraft.vo.ScheduleBase">
-			SELECT 
-				schedule_no scheduleNo, 
-				id, 
-				category_cd categoryCd, 
-				team_cd teamCd, 
-				schedule_content scheduleContent, 
-				start_dtime startDtime, 
-				end_dtime endDtime, 
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
-			FROM schedule_base 
-			<where>
-				id = #{id} 
-				AND YEAR(start_dtime)= #{targetYear} 
-				AND MONTH(start_dtime)= #{targetMonth}
-				AND #{todayDate} BETWEEN DAY(start_dtime) AND DAY(end_dtime)
-			</where>
-			ORDER BY start_dtime ASC
+		SELECT 
+			schedule_no scheduleNo, 
+			id, 
+			category_cd categoryCd, 
+			team_cd teamCd, 
+			schedule_content scheduleContent, 
+			start_dtime startDtime, 
+			end_dtime endDtime, 
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM schedule_base 
+		<where>
+			id = #{id} 
+			AND YEAR(start_dtime)= #{targetYear} 
+			AND MONTH(start_dtime)= #{targetMonth}
+			AND #{todayDate} BETWEEN DAY(start_dtime) AND DAY(end_dtime)
+		</where>
+		ORDER BY start_dtime ASC
 	</select>
 	<!-- 개별 일정 출력 -->
 	<select id="selectScheduleByNo"
 			parameterType="com.goodee.cakecraft.vo.ScheduleBase"
 			resultType="com.goodee.cakecraft.vo.ScheduleBase">
-			SELECT 
-				schedule_no scheduleNo, 
-				id, 
-				category_cd categoryCd, 
-				team_cd teamCd, 
-				schedule_content scheduleContent, 
-				start_dtime startDtime, 
-				end_dtime endDtime, 
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
-			FROM schedule_base 
-			<where>
-				schedule_no = #{scheduleNo}
-			</where>
+		SELECT 
+			schedule_no scheduleNo, 
+			id, 
+			category_cd categoryCd, 
+			team_cd teamCd, 
+			schedule_content scheduleContent, 
+			start_dtime startDtime, 
+			end_dtime endDtime, 
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM schedule_base 
+		<where>
+			schedule_no = #{scheduleNo}
+		</where>
 	</select>
 	<!-- 일정 추가 -->
 	<insert id="insertSchedule" 
@@ -149,7 +149,8 @@
 		)
 	</insert>
 	<!-- 일정 수정 -->
-	<update id="updateSchedule" parameterType="com.goodee.cakecraft.vo.ScheduleBase">
+	<update id="updateSchedule" 
+			parameterType="com.goodee.cakecraft.vo.ScheduleBase">
 		UPDATE schedule_base
 		SET category_cd = #{categoryCd},
 			schedule_content = #{scheduleContent},
@@ -157,10 +158,13 @@
 			end_dtime = #{endDtime}, 
 			mod_dtime = NOW(), 
 			mod_id = #{id}
-		WHERE schedule_no = #{scheduleNo}
+		<where>
+			schedule_no = #{scheduleNo}
+		</where>
 	</update>
 	<!-- 일정 삭제 -->
-	<delete id="deleteSchedule" parameterType="com.goodee.cakecraft.vo.ScheduleBase">
+	<delete id="deleteSchedule" 
+			parameterType="com.goodee.cakecraft.vo.ScheduleBase">
 		DELETE FROM schedule_base 
 		<where>
 			schedule_no = #{scheduleNo}
