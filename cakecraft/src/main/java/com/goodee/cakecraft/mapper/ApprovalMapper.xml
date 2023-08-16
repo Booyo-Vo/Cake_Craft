@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.ApprovalMapper">
+<!-- 결재 문서 : ApprovalDocument -->	
+	<!-- 결재 문서 목록 출력 -->
+	<select id="selectApprDocListByPage"
+			parameterType="String"
+			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
+			SELECT
+				document_no documentNo,
+				id,
+				document_title documentTitle,
+				approval_document_cd approvalDocumentCd,
+				temp_save tempSave,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM approval_document
+			<where>
+				id = #{loginId} 
+			</where>
+	</select>
+	
+	<!-- 결재 문서 개수 출력 -->
+	<select id="selectApprDocCnt"
+			parameterType="String"
+			resultType="int">
+			SELECT COUNT(*) as apprDocCnt
+			FROM approval_document
+			<where>
+				id = #{loginId}
+			</where>
+	</select>
+	
+	<!-- 개별 결재 문서 상세정보 출력 -->
+	<select id="selectApprDocByNo"
+			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
+			SELECT
+				document_no documentNo,
+				id,
+				document_title documentTitle,
+				document_content documentContent,
+				approval_status_cd approvalStatusCd,
+				temp_save tempSave,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM approval_document
+			<where>
+				id = #{loginId} 
+				documentNo = #{documentNo}
+			</where>
+	</select>
+	
+	<!-- 결재 문서 추가 -->
+	<insert id="insertApprDoc"
+			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
+			INSERT INTO approval_document(
+				document_no documentNo,
+				id,
+				document_title documentTitle,
+				document_content documentContent,
+				approval_status_cd approvalStatusCd,
+				temp_save tempSave,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			)VALUES(
+				#{documentNo},
+				#{loginId},
+				#{documentContent},
+				#{approvalStatusCd},
+				#{tempSave},
+				NOW(),
+				NOW(),
+				#{loginId},
+				#{loginId}
+			)
+	</insert>
+	
+	<!-- 결재 문서 수정 -->
+	<update id="updateApprDoc"
+			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
+			UPDATE approval_document
+			SET document_title documentTitle,
+				document_content = #{documentContent},
+				approval_status_cd = #{approvalStatusCd},
+				temp_save = #{tempSave},
+				reg_dtime = NOW(),
+				mod_dtime = NOW(), 
+				mod_id = #{loginId}
+			WHERE document_no = #{documentNo}
+			AND id = #{loginId}
+	</update>
+	
+	<!-- 결재 문서 삭제 -->
+	<delete id="deleteApprDoc"
+			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
+			DELETE FROM approval_document 
+			<where>
+				document_no = #{documentNo}
+				AND id = #{loginId}
+			</where>
+	</delete>
+	
+	
+<!-- 결재 파일 : ApprovalFile -->
+	<!-- 결재 파일 추가 -->
+	<insert id="insertApprFile"
+			parameterType="com.goodee.cakecraft.vo.ApprovalFile">
+			INSERT INTO approval_file(
+				file_no fileNo,
+				document_no documentNo,
+				approval_filename approvalFilename,
+				approval_path approvalPath,
+				approval_type approvalType,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			)VALUES(
+				#{fileNo},
+				#{documentNo},
+				#{approvalFilename},
+				#{approvalPath},
+				#{approvalType},
+				NOW(),
+				NOW(),
+				#{loginId},
+				#{loginId}
+			)
+	</insert>
+	
+	<!-- 결재 파일 삭제 -->
+	<delete id="deleteApprFile"
+			parameterType="com.goodee.cakecraft.vo.ApprovalFile">
+			DELETE FROM approval_file
+			<where>
+				file_no = #{fileNo}
+				document_no = #{documentNo}
+				AND id = #{loginId}
+			</where>
+	</delete>
+
+	
+<!-- 결재 참조자 : ApprovalRef -->
+	<!-- 결재 참조자 추가 -->
+	<insert id="insertApprRef"
+			parameterType="com.goodee.cakecraft.vo.ApprovalRef">
+			INSERT INTO approval_ref(
+				ref_no refNo,
+				ref_id refId,
+				document_no documentNo,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			)VALUES(
+				#{refNo},
+				#{refId},
+				#{documentNo},
+				NOW(),
+				NOW(),
+				#{loginId},
+				#{loginId}
+			)
+	</insert>
+	
+	<!-- 결재 참조자 삭제 -->
+	<delete id="deleteApprRef"
+			parameterType="com.goodee.cakecraft.vo.ApprovalRef">
+			DELETE FROM approval_ref
+			<where>
+				ref_no = #{refNo}
+				document_no = #{documentNo}
+				AND id = #{loginId} <!-- 문서 작성자가 삭제해야함 -->
+			</where>
+	</delete>
+	
+	
+<!-- 결재 이력 : ApprovalHistory -->
+	<!-- 결재 이력 목록 출력 -->
+	<select id="selectApprHistListByPage"
+			parameterType="com.goodee.cakecraft.vo.ApprovalHistory">
+			SELECT
+				approval_no approvalNo,
+				approval_id approvalId,
+				document_no documentNo,
+				approval_level approvalLevel,
+				approval_status_cd approvalStatusCd,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM approval_history
+			<where>
+				approvalId = #{loginId}
+				approvalLevel = #{approvalLevel}
+				approvalStatusCd = #{approvalStatusCd}
+			</where>
+	</select>
+	
+	<!-- 결재 이력 추가 -->
+	<insert id="insertApprHistory"
+			parameterType="com.goodee.cakecraft.vo.ApprovalHistory">
+			INSERT INTO approval_history(
+				approval_no approvalNo,
+				approval_id approvalId,
+				document_no documentNo,
+				approval_level approvalLevel,
+				approval_status_cd approvalStatusCd,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			)VALUES(
+				#{approvalNo},
+				#{approvalId},
+				#{documentNo},
+				#{approvalLevel},
+				#{approvalStatusCd},
+				NOW(),
+				NOW(),
+				#{loginId}, 	<!-- 만든사람 = 문서작성자 이름 -->
+				#{loginId}	
+			)
+	</insert>
+	
+	<!-- 결재 이력 수정 -->
+	<update id="updateApprHistory"
+			parameterType="com.goodee.cakecraft.vo.ApprovalHistory">
+			UPDATE approval_history
+			SET approval_status_cd = #{approvalStatusCd},
+				reg_dtime = NOW(),
+				mod_dtime = NOW(), 
+				mod_id = #{loginId}
+			WHERE document_no = #{documentNo}
+			AND approval_level = #{approvalLevel}
+			AND approval_id = #{loginId}	 <!-- 수정한사람 = 결재자 이름 -->
+	</update>
+</mapper>

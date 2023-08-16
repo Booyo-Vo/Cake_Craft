@@ -15,7 +15,7 @@
 		reg_id regId, 
 		mod_id modId
 	FROM st_std_cd
-	WHERE grp_cd = #{code}
+	WHERE grp_cd = #{code} AND use_yn = 'y'
 </select>
 
 <!-- 부서에 따른 팀 받아오기 -->
@@ -32,6 +32,6 @@
 		reg_id regId, 
 		mod_id modId
 	FROM st_std_cd
-	WHERE grp_cd = 'T001' AND CD LIKE CONCAT(#{deptCd}, '%')
+	WHERE grp_cd = 'T001' AND CD LIKE CONCAT(#{deptCd}, '%') AND use_yn = 'y'
 </select>
 </mapper>

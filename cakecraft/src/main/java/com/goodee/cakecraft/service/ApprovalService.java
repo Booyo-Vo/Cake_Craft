@@ -19,13 +19,16 @@ public class ApprovalService {
 	
 	/* 결재 문서 : ApprovalDocument */
 	// 결재 문서 목록 출력
-	public List<ApprovalDocument> getApprDocListByPage(String id){
+	// public List<ApprovalDocument> getApprDocListByPage(Map<String, Object> paramMap){
+	public List<ApprovalDocument> getApprDocListByPage(){
 		// 컨트롤러(Controller)로부터 받은 데이터를, 데이터베이스에 접근하는 DAO(Data Access Object) 레이어에서 사용할 수 있는 형태로 변환 
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("id", id);
+		// Map<String, Object> paramMap = new HashMap<String, Object>();
+		// paramMap.put("id", id);
+		String loginId = "232211558";
 		
 		// 반환값
-		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListByPage(paramMap);
+		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListByPage(loginId);
+		// List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListByPage(paramMap);
 				
 		return apprDocList;
 	}

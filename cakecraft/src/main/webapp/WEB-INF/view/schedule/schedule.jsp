@@ -15,8 +15,8 @@
 </head>
 <body>
 <h1>${targetYear}년 ${targetMonth+1}월 </h1>
-<a href="/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
-<a href="/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
+<a href="/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
+<a href="/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
 <div>
 	<button type="button" onclick="logout()">로그아웃</button>
 </div>

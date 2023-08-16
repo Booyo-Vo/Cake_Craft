@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ApprovalRef {
 	private int refNo;
-	private String refNd;
+	private String refId;
 	private int documentNo;
 	private String regDtime;
 	private String modDtime;

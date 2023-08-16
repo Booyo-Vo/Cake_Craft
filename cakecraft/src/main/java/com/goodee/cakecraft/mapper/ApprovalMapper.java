@@ -15,7 +15,8 @@ public interface ApprovalMapper {
 	
 	/* 결재 문서 : ApprovalDocument */
 	// 결재 문서 목록 출력
-	List<ApprovalDocument> selectApprDocListByPage(Map<String, Object> apprDocListByPageMap);
+	// List<ApprovalDocument> selectApprDocListByPage(Map<String, Object> apprDocListByPageMap);
+	List<ApprovalDocument> selectApprDocListByPage(String loginId);
 	
 	// 결재 문서 개수 출력
 	int selectApprDocCnt();
