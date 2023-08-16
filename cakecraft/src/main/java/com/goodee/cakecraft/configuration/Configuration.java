@@ -31,10 +31,10 @@ public class Configuration implements WebMvcConfigurer {
 	    public void addInterceptors(InterceptorRegistry registry) {
 	    	// myLoginInterceptor() 메서드를 호출하여 빈을 가져옴
 	        registry.addInterceptor(myLoginInterceptor())
-	                .addPathPatterns("/emp/**","/facility/**","/schedule/**")
+	                .addPathPatterns("/emp/**","/facility/**","/schedule/**","/approval/**")
 	                // /board로 시작하는 경로에 대해서 인터셉터 적용
 	                .excludePathPatterns("/login");
-	        		// /login, /home 경로는 인터셉터에서 제외
+	        		// /login 경로는 인터셉터에서 제외
 	        log.debug(BLUE + "Configuration 활성화" + RESET);
 	    }
 }
