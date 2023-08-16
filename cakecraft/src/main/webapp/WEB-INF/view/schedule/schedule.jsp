@@ -146,11 +146,11 @@
 							</div>
 							<div class="mb-3">
 								<label for="scheduleContent" class="col-form-label">일정내용</label>
-								<textarea class="form-control" name="scheduleContent" id="scheduleContent"></textarea>
+								<input type="text" class="form-control" name="scheduleContent" id="scheduleContent">
 							</div>
 							<div class="mb-3">
 								<label for="startDtime" class="col-form-label">시작일</label>
-								<input type="date" class="form-control" name="startDtime" id="startDtime">
+								<input type="date" class="form-control" name="startDtime" id="startDtime" readonly="readonly">
 							</div>
 							<div class="mb-3">
 								<label for="endDtime" class="col-form-label">종료일</label>
@@ -160,7 +160,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary" id="addScheduleBtn" onclick="addSchedule()">확인</button>
+						<button type="button" class="btn btn-primary" onclick="addSchedule()">확인</button>
 					</div>
 				</div>
 			</div>
@@ -194,7 +194,7 @@
 							</div>
 							<div class="mb-3">
 								<label for="modScheduleContent" class="col-form-label">일정내용</label>
-								<textarea class="form-control" name="scheduleContent" id="modScheduleContent"></textarea>
+								<input type="text" class="form-control" name="scheduleContent" id="modScheduleContent">
 							</div>
 							<div class="mb-3">
 								<label for="modStartDtime" class="col-form-label">시작일</label>
@@ -209,7 +209,7 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 						<button type="button" class="btn btn-primary" onclick="removeSchedule()">삭제</button>
-						<button type="button" class="btn btn-primary" id="modifyScheduleBtn" onclick="modifySchedule()">확인</button>
+						<button type="button" class="btn btn-primary" onclick="modifySchedule()">확인</button>
 					</div>
 				</div>
 			</div>
@@ -240,8 +240,25 @@ function date(d, targetYear, targetMonth){
 	});
 }
 
-// 일정 추가 버튼 클릭 시 폼 제출
+// 일정 추가 버튼 클릭 시
 function addSchedule(){
+	// 입력폼 유효성 검사
+	if($('#categoryCd').val() == ''){
+		alert('카테고리를 설정해주세요');
+		return;
+	}else if($('#scheduleContent').val() == ''){
+		alert('일정내용을 입력해주세요');
+		return;
+	}else if($('#endDtime').val() == ''){
+		alert('종료일을 설정해주세요');
+		return;
+	}else if($('#endDtime').val() < $('#startDtime').val()){
+		alert('종료일을 재설정해주세요');
+		$('#endDtime').val('');
+		$('#endDtime').focus();
+		return;
+	}
+	// 입력폼 제출
 	const addScheduleForm = $('#addScheduleForm');
 	addScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/addSchedule');
 	addScheduleForm.attr('method', 'post');
@@ -273,8 +290,26 @@ function scheduleNo(scheduleNo){
 	});
 }
 
-// 일정 수정 버튼 클릭 시 폼 제출
+// 일정 수정 버튼 클릭 시
 function modifySchedule(){
+	// 수정폼 유효성 검사
+	if($('#modCategoryCd').val() == ''){
+		alert('카테고리를 설정해주세요');
+		return;
+	}else if($('#modScheduleContent').val() == ''){
+		alert('일정내용을 입력해주세요');
+		return;
+	}else if($('#modEndDtime').val() == ''){
+		alert('종료일을 설정해주세요');
+		return;
+	}else if($('#modEndDtime').val() < $('#modStartDtime').val()){
+		alert('종료일을 재설정해주세요');
+		$('#modEndDtime').val('');
+		$('#modEndDtime').focus();
+		return;
+	}
+	
+	// 수정폼 제출
 	const modifyScheduleForm = $('#modifyScheduleForm');
 	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
 	modifyScheduleForm.attr('method', 'post');
