@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FacilityController {
 	@Autowired FacilityService facilityService;
 	//ANSI코드
-	final String BG_YELLOW = "\u001B[43m";
+	final String KMJ = "\u001B[43m";
 	final String RESET = "\u001B[0m";
 	
 	//시설비품리스트 view
