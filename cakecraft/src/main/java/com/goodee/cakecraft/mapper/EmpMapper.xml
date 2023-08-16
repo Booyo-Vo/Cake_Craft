@@ -3,47 +3,50 @@
 <mapper namespace="com.goodee.cakecraft.mapper.EmpMapper">
 	<!-- 사원번호생성 -->
 	<select id="selectEmpId" 
-			parameterType="com.goodee.cakecraft.vo.EmpBase" 
-			resultType="String">
- 			SELECT
- 			CONCAT
-	 			(RIGHT(YEAR(CURRENT_TIMESTAMP), 2),
-	 			#{deptCd},
-	 			#{teamCd},
-	 			RIGHT(CURRENT_TIMESTAMP(4), 4)) AS id;
+		parameterType="com.goodee.cakecraft.vo.EmpBase" 
+		resultType="String">
+		SELECT
+			CONCAT
+ 			(RIGHT(YEAR(CURRENT_TIMESTAMP), 2),
+ 			#{deptCd},
+ 			#{teamCd},
+ 			RIGHT(CURRENT_TIMESTAMP(4), 4)) AS id;
 	</select>
 	
 	<!-- 사원추가 -->
 	<insert id="insertEmp"
-		parameterType="com.goodee.cakecraft.vo.EmpBase">
-		INSERT INTO emp_base(
-			id, 
-			emp_name, 
-			social_no, 
-			dept_cd, 
-			team_cd, 
-			position_cd, 
-			email,
-			hire_date,
-			address,
-			reg_dtime, 
-			mod_dtime, 
-			reg_id, 
-			mod_id
-		)VALUES(
-			#{id},
-			#{empName},
-			#{socialNo},
-			#{deptCd},
-			#{teamCd},
-			#{positionCd},
-			#{email},
-			#{hireDate},
-			#{address},
-			NOW(),
-			NOW(),
-`			#{id},
-			#{id})
+	    parameterType="com.goodee.cakecraft.vo.EmpBase">
+	    INSERT INTO emp_base(
+	        id, 
+	        emp_name, 
+	        social_no, 
+	        dept_cd, 
+	        team_cd, 
+	        position_cd, 
+	        email,
+	        hire_date,
+	        emp_phone,
+	        address,
+	        reg_dtime, 
+	        mod_dtime, 
+	        reg_id, 
+	        mod_id
+	    ) VALUES (
+	        #{id},
+	        #{empName},
+	        #{socialNo},
+	        #{deptCd},
+	        #{teamCd},
+	        #{positionCd},
+	        #{email},
+	        #{hireDate},
+	        #{empPhone},
+	        #{address},
+	        NOW(),
+	        NOW(),
+	        #{id},
+	        #{id}
+	    )
 	</insert>
 		
 	<!-- 사원리스트 출력 -->	
@@ -60,6 +63,7 @@
 			hire_date hireDate,
 			retire_date retireDate,
 			emp_status empStatus,
+			emp_phone empPhone,
 			dayoff_cnt dayoffCnt,
 			address,
 			reg_dtime regDtime, 
@@ -84,6 +88,7 @@
 			hire_date hireDate,
 			retire_date retireDate,
 			emp_status empStatus,
+			emp_phone empPhone,
 			dayoff_cnt dayoffCnt,
 			address,
 			reg_dtime regDtime, 
@@ -92,5 +97,85 @@
 			mod_id modId
 		FROM emp_base
 		WHERE id = #{id}
+	</select>
+	
+	<!-- 사원정보수정 -->
+	<update id = "updateEmp"
+		parameterType="com.goodee.cakecraft.vo.EmpBase">
+		UPDATE emp_base
+		SET emp_name = #{empName},
+			dept_cd = #{deptCd},
+			team_cd = #{teamCd},
+			position_cd = #{positionCd},
+			email = #{email},
+			emp_status = #{empStatus},
+			emp_phone = #{empPhone},
+			retire_date = #{retireDate},
+			address = #{address},
+			mod_dtime = NOW(),
+			mod_id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 해당월 입사자 -->
+	<select id="selectHireMonthCnt" parameterType="string" resultType="int">
+	    SELECT COUNT(*) AS hireMonthCnt
+	    FROM emp_base
+	    WHERE (MONTH(hire_date) = ${month})
+	</select>
+	
+	<!-- 해당월 퇴사자 -->
+	<select id="selectRetireMonthCnt" parameterType="string" resultType="int">
+	    SELECT COUNT(*) AS retireMonthCnt
+	    FROM emp_base
+	    WHERE (MONTH(retire_date) = ${month})
+	</select>
+	
+	<!-- 이번년도 입사자 -->
+	<select id="selectHireYearCnt" parameterType="string" resultType="int">
+	    SELECT COUNT(*) AS hireYearCnt
+	    FROM emp_base
+	    WHERE (YEAR(hire_date) =  ${year})
+	</select>
+	
+	<!-- 이번년도 퇴사자 -->
+	<select id="selectRetireYearCnt"  parameterType="string" resultType="int">
+	    SELECT COUNT(*) AS retireYearCnt
+	    FROM emp_base
+	    WHERE (YEAR(retire_date) =  ${year})
+	</select>
+	
+	<!-- 직급별 인원수 조회 -->
+	<select id="selectPositionCnt" resultType="Map">
+		SELECT p.position_cd AS positionCd, s.cd_nm AS positionName, COUNT(p.position_cd) AS positionCnt
+	    FROM st_std_cd s
+	    LEFT JOIN emp_base p ON p.position_cd = s.cd
+		WHERE s.grp_cd = 'P001'
+		GROUP BY s.cd, s.cd_nm;
+	</select>
+	
+	<!-- 부서별 인원수 조회 -->
+	<select id="selectDeptCnt" resultType="Map">
+		SELECT p.dept_cd AS deptCd, s.cd_nm AS deptName, COUNT(p.dept_cd) AS deptCnt
+	    FROM st_std_cd s
+	    LEFT JOIN emp_base p ON p.dept_cd = s.cd
+		WHERE s.grp_cd = 'D001'
+		GROUP BY s.cd, s.cd_nm;
+	</select>
+	
+	<!-- 팀별 인원수 조회 -->
+	<select id="selectTeamCnt" resultType="Map">
+	    SELECT s.cd AS teamCd, s.cd_nm AS teamName, COUNT(p.team_cd) AS teamCnt
+	    FROM st_std_cd s
+	    LEFT JOIN emp_base p ON p.team_cd = s.cd
+	    WHERE s.grp_cd = 'T001'
+	    GROUP BY s.cd, s.cd_nm;
+	</select>
+	
+	<!-- 성별 인원수 조회 -->
+	<select id="selectGenderCnt" resultType="Map">
+		SELECT SUM(CASE WHEN SUBSTRING(social_no, 7, 1) IN ('1', '3') THEN 1 ELSE 0 END) AS maleCount,
+		       SUM(CASE WHEN SUBSTRING(social_no, 7, 1) IN ('2', '4') THEN 1 ELSE 0 END) AS femaleCount
+		FROM emp_base;
 	</select>
 </mapper>

@@ -7,4 +7,7 @@ import com.goodee.cakecraft.vo.EmpBase;
 public interface IdListMapper {
 	// 아이디 비밀번호추가
 	int insertIdList(EmpBase empbase);
+	
+	// 아이디 비밀번호삭제
+	int deleteIdList(String id);
 }

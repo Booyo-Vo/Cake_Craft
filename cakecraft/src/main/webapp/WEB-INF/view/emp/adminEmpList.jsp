@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>adminEmpList</title>
 <!-------------jdgrid  --------->
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/redmond/jquery-ui.css" type="text/css" />
  <!-- jqGrid CSS -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/jqgrid/4.6.0/css/ui.jqgrid.css" type="text/css" />
 <!-- The actual JQuery code -->
-<script type="text/javasscript" src="https://code.jquery.com/jquery-1.10.2.min.js" /></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js" /></script>
 <!-- The JQuery UI code -->
 <script type="text/javascript" src="https://code.jquery.com/ui/1.10.3/jquery-ui.min.js" /></script>
 <!-- The jqGrid language file code-->
