@@ -43,23 +43,34 @@
 						<c:if test="${!(d < 1 || d > lastDate)}">
 							<td>
 								<a data-bs-toggle="modal" href="#addScheduleModal" onclick="date(${d},${targetYear},${targetMonth})">${d}</a>
-								<c:forEach var="c" items="${scheduleList}">
+								<!-- 전사일정 조회 -->
+								<c:forEach var="c" items="${scheduleListByCateAll}">
 									<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
 										<div>
 											<!-- 인사팀인 경우만 전사일정 수정,삭제 가능 -->
 											<c:if test="${c.teamCd == '11'}">
-												<c:if test="${c.categoryCd == '1'}">
-													<span style="color:blue">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
-												</c:if>
+												<span style="color:blue">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
 											</c:if>
 											<c:if test="${c.teamCd != '11'}">
-												<c:if test="${c.categoryCd == '1'}">
-													<span style="color:blue">●</span><span>${c.scheduleContent}</span>
-												</c:if>
+												<span style="color:blue">●</span><span>${c.scheduleContent}</span>
 											</c:if>
+										</div>
+									</c:if>
+								</c:forEach>
+								<!-- 팀일정 조회 -->
+								<c:forEach var="c" items="${scheduleListByCateTeam}">
+									<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
+										<div>
 											<c:if test="${c.categoryCd == '2'}">
 												<span style="color:red">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
 											</c:if>
+										</div>
+									</c:if>
+								</c:forEach>
+								<!-- 개인일정 조회 -->
+								<c:forEach var="c" items="${scheduleListByCateId}">
+									<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
+										<div>
 											<c:if test="${c.categoryCd == '3'}">
 												<span style="color:black">●</span><a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">${c.scheduleContent}</a>
 											</c:if>

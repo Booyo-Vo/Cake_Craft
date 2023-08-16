@@ -27,7 +27,7 @@ public class ScheduleService {
 	final String RESET = "\u001B[0m";	
 	final String GEH = "\u001B[45m";
 	
-	// 일정 목록 출력(월간, 일간)
+	// 일정 목록 조회(월간, 일간)
 	public Map<String, Object> getSchedule(String id, Integer targetYear, Integer targetMonth){
 		
 		Calendar firstDate = Calendar.getInstance();
@@ -63,13 +63,13 @@ public class ScheduleService {
 		// 전체 개수 
 		int totalTd = beginBlank + lastDate + endBlank;
 		
-		log.debug(GEH + "ScheduleService targetYear --> "+ targetYear + RESET);
-		log.debug(GEH + "ScheduleService targetMonth --> "+ targetMonth + RESET);
-		log.debug(GEH + "ScheduleService lastDate --> "+ lastDate + RESET);
-		log.debug(GEH + "ScheduleService todayDate --> "+ todayDate + RESET);
-		log.debug(GEH + "ScheduleService beginBlank --> "+ beginBlank + RESET);
-		log.debug(GEH + "ScheduleService endBlank --> "+ endBlank + RESET);
-		log.debug(GEH + "ScheduleService totalTd --> "+ totalTd + RESET);
+		log.debug(GEH + "targetYear --> "+ targetYear + RESET);
+		log.debug(GEH + "targetMonth --> "+ targetMonth + RESET);
+		log.debug(GEH + "lastDate --> "+ lastDate + RESET);
+		log.debug(GEH + "todayDate --> "+ todayDate + RESET);
+		log.debug(GEH + "beginBlank --> "+ beginBlank + RESET);
+		log.debug(GEH + "endBlank --> "+ endBlank + RESET);
+		log.debug(GEH + "totalTd --> "+ totalTd + RESET);
 		
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -80,34 +80,45 @@ public class ScheduleService {
 		resultMap.put("endBlank",endBlank);
 		resultMap.put("totalTd",totalTd);
 		
-		// controller가 넘겨준 매개값을 Dao의 매개값형태에 맞게 가공
+		// 로그인한 사원정보 가져오기
+		EmpBase empBase = empMapper.selectEmpById(id);
+		log.debug(GEH + "empBase --> "+ empBase.toString() + RESET);
+		
+		// Dao의 매개값형태에 맞게 가공
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
 		paramMap.put("targetYear", targetYear);
 		paramMap.put("targetMonth", targetMonth+1);
 		paramMap.put("todayDate", todayDate);
+		paramMap.put("teamCd", empBase.getTeamCd());
 		
-		// 월간 일정 목록 가져오기
-		List<ScheduleBase> scheduleList = scheduleMapper.selectScheduleListByMonth(paramMap);
-		log.debug(GEH + "scheduleList.size --> "+ scheduleList.size() + RESET);
+		// 월간 전사일정 목록 가져오기
+		List<ScheduleBase> scheduleListByCateAll = scheduleMapper.selectScheduleListByCateAll(paramMap);
+		log.debug(GEH + "scheduleListByCateAll.size --> "+ scheduleListByCateAll.size() + RESET);
+		
+		// 월간 팀일정 목록 가져오기 
+		List<ScheduleBase> scheduleListByCateTeam = scheduleMapper.selectScheduleListByCateTeam(paramMap);
+		log.debug(GEH + "scheduleListByCateTeam.size --> "+ scheduleListByCateTeam.size() + RESET);
+		
+		// 월간 개인일정 목록 가져오기
+		List<ScheduleBase> scheduleListByCateId = scheduleMapper.selectScheduleListByCateId(paramMap);
+		log.debug(GEH + "scheduleListByCateId.size --> "+ scheduleListByCateId.size() + RESET);
 		
 		// 일간 일정 목록 가져오기
 		List<ScheduleBase> scheduleListByDate = scheduleMapper.selectScheduleListByDate(paramMap);
 		log.debug(GEH + "scheduleListByDate --> "+ scheduleListByDate.toString() + RESET);
 		
-		// 로그인한 사원정보 가져오기
-		EmpBase empBase = empMapper.selectEmpById(id);
-		log.debug(GEH + "empBase --> "+ empBase.toString() + RESET);
-		
 		// 반환값
-		resultMap.put("scheduleList",scheduleList);
-		resultMap.put("scheduleListByDate",scheduleListByDate);
 		resultMap.put("empBase",empBase);
+		resultMap.put("scheduleListByCateAll",scheduleListByCateAll);
+		resultMap.put("scheduleListByCateTeam",scheduleListByCateTeam);
+		resultMap.put("scheduleListByCateId",scheduleListByCateId);
+		resultMap.put("scheduleListByDate",scheduleListByDate);
 		
 		return resultMap;
 	}
 	
-	// 개별 일정 출력
+	// 개별 일정 조회
 	public ScheduleBase getScheduleByNo(ScheduleBase schedule) {
 		// 반환값
 		ScheduleBase resultSchedule = scheduleMapper.selectScheduleByNo(schedule);

@@ -8,10 +8,16 @@ import org.apache.ibatis.annotations.Mapper;
 import com.goodee.cakecraft.vo.ScheduleBase;
 @Mapper
 public interface ScheduleMapper {
-	// 월간 일정 목록 출력 (달력에 일정 출력)
-	List<ScheduleBase> selectScheduleListByMonth(Map<String, Object> paramMap);
+	// 월간 전사일정 목록 조회
+	List<ScheduleBase> selectScheduleListByCateAll(Map<String, Object> paramMap);
 	
-	// 일간 일정 목록 출력 (오늘의 일정 출력)
+	// 월간 팀일정 목록 조회 
+	List<ScheduleBase> selectScheduleListByCateTeam(Map<String, Object> paramMap);
+	
+	// 월간 개인일정 목록 조회
+	List<ScheduleBase> selectScheduleListByCateId(Map<String, Object> paramMap);
+	
+	// 일간 일정 목록 조회 (오늘의 일정 출력)
 	List<ScheduleBase> selectScheduleListByDate(Map<String, Object> paramMap);
 	
 	// 개별 일정 출력
