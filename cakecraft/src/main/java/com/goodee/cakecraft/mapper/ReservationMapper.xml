@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.ReservationMapper">
+	<!-- 날짜별 예약현황 -->
+	<select id="selectReservationListByDate"
+			parameterType="java.util.Map"
+			resultType="com.goodee.cakecraft.vo.FacilityReservation">
+		SELECT
+			r.reservation_no reservationNo,
+			r.facility_no facilityNo,
+			r.team_cd teamCd,
+			r.id id,
+			r.reservation_content reservationContent,
+			r.start_dtime startDtime,
+			r.end_dtime endDtime,
+			r.reg_dtime regDtime,
+			r.mod_dtime modDtime,
+			r.reg_id regId,
+			r.mod_id modId
+		FROM facility_reservation r
+		INNER JOIN facility_base b
+		ON r.facility_no = b.facility_no
+		<where>
+			YEAR(r.start_dtime) = #{targetYear}
+			AND MONTH(r.start_dtime) = #{targetMonth}
+			AND DAY(r.start_dtime) = #{targetDate}
+			AND b.category_cd LIKE #{categoryCd}
+		</where>
+	</select>
+	
+	<!-- 시설비품별 예약가능 시간 -->
+	<select id="selectReservationTime"
+			parameterType="java.util.Map"
+			resultType="java.util.Map">
+		SELECT
+			facility_no facilityNo,
+			HOUR(start_dtime) startHour,
+			HOUR(end_dtime) endHour
+		FROM facility_reservation
+		<where>
+			facility_no = ${facilityNo}
+			AND YEAR(start_dtime) = ${targetYear}
+			AND MONTH(start_dtime) = ${targetMonth}
+			AND DAY(start_dtime) = ${targetDate}	
+		</where>
+	</select>
+	
+	<!-- 예약추가 -->
+	<insert id="insertReservation"
+			parameterType="java.util.Map">
+		INSERT INTO facility_reservation (
+			facilitiy_no,
+			team_cd,
+			id,
+			reservation_content,
+			start_dtime,
+			end_dtime,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+		)
+		VALUES (
+			#{facilityNo},
+			#{teamCd},
+			#{id},
+			#{reservationContent},
+			#{startDtime},
+			#{endDtime},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+</mapper>
