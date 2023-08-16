@@ -1,8 +1,6 @@
 package com.goodee.cakecraft.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +37,7 @@ public class ApprovalController {
 		// 뷰로 값넘기기
 		model.addAttribute("loginId", loginId);
 		model.addAttribute("apprDocList", apprDocList);
-		log.debug("apprDocList : " + apprDocList);
+		log.debug(SHJ + "apprDocList : " + apprDocList + RESET);
 		return "/approval/approvalDocumentList";
 	}
 }

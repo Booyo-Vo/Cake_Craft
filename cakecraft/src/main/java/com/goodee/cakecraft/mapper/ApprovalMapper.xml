@@ -9,7 +9,7 @@
 			SELECT
 				document_no documentNo,
 				id,
-				document_content documentContent,
+				document_title documentTitle,
 				approval_document_cd approvalDocumentCd,
 				temp_save tempSave,
 				reg_dtime regDtime, 
@@ -39,6 +39,7 @@
 			SELECT
 				document_no documentNo,
 				id,
+				document_title documentTitle,
 				document_content documentContent,
 				approval_status_cd approvalStatusCd,
 				temp_save tempSave,
@@ -59,6 +60,7 @@
 			INSERT INTO approval_document(
 				document_no documentNo,
 				id,
+				document_title documentTitle,
 				document_content documentContent,
 				approval_status_cd approvalStatusCd,
 				temp_save tempSave,
@@ -83,7 +85,8 @@
 	<update id="updateApprDoc"
 			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
 			UPDATE approval_document
-			SET document_content = #{documentContent},
+			SET document_title documentTitle,
+				document_content = #{documentContent},
 				approval_status_cd = #{approvalStatusCd},
 				temp_save = #{tempSave},
 				reg_dtime = NOW(),

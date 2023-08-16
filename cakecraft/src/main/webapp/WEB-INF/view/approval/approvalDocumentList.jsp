@@ -13,8 +13,8 @@
 		<thead>
 			<tr>
 				<td>documentNo</td>
-				<td>documentContent</td>
 				<td>approvalDocumentCd</td>
+				<td>documentTitle</td>
 				<td>modDtime</td>
 				<!-- <td>결재이력</td> -->
 			</tr>
@@ -23,8 +23,8 @@
 			<c:forEach var="ad" items="${apprDocList}">
 				<tr>
 					<td>${ad.documentNo}</td>
-					<td>${ad.documentContent}</td>
 					<td>${ad.approvalDocumentCd}</td>
+					<td>${ad.documentTitle}</td>
 					<td>${ad.modDtime}</td>
 				</tr>
 			</c:forEach>

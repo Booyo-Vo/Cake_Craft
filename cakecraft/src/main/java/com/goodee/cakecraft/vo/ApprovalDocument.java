@@ -6,6 +6,7 @@ import lombok.Data;
 public class ApprovalDocument {
 	private int documentNo;
 	private String id;
+	private String documentTitle;
 	private String documentContent;
 	private String approvalDocumentCd;
 	private String tempSave;
