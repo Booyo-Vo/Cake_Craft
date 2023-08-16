@@ -20,4 +20,9 @@
 			#{id}
 		)
 	</insert>
+	
+	<!-- 아이디 비밀번호 삭제 -->
+	<delete id = "deleteIdList" parameterType="String">
+		DELETE FROM emp_id_list WHERE id = #{id}
+	</delete>
 </mapper>

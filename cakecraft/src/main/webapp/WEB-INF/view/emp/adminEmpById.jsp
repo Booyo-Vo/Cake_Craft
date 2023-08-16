@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사원상세내역</title>
+<title>adminEmpById</title>
 </head>
 <body>
 <table>
@@ -58,6 +58,10 @@
             <td>${empbase.address}</td>
         </tr>
         <tr>
+            <th>핸드폰번호</th>
+            <td>${empbase.empPhone}</td>
+        </tr>
+        <tr>
             <th>등록일시</th>
             <td>${empbase.regDtime}</td>
         </tr>
@@ -75,5 +79,6 @@
         </tr>
     </tbody>
 </table>
+<a href="/emp/modifyEmp?id=${empbase.id}">사원수정</a>
 </body>
 </html>

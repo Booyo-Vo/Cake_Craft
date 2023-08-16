@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.StStdCdMapper">
+<!-- grp_cd에 따른 리스트 받아오기  -->
+<select id = "selectStStdCdList"
+	parameterType = "String"
+	resultType="com.goodee.cakecraft.vo.StStdCd">
+	select
+		grp_cd grpCd,
+		cd,
+		cd_nm cdNm,
+		use_yn useYn,
+		reg_dtime regDtime, 
+		mod_dtime modDtime, 
+		reg_id regId, 
+		mod_id modId
+	FROM st_std_cd
+	WHERE grp_cd = #{code}
+</select>
+
+<!-- 부서에 따른 팀 받아오기 -->
+<select id = "selectTeamListByDept"
+	parameterType = "String"
+	resultType="com.goodee.cakecraft.vo.StStdCd">
+	select
+		grp_cd grpCd,
+		cd,
+		cd_nm cdNm,
+		use_yn useYn,
+		reg_dtime regDtime, 
+		mod_dtime modDtime, 
+		reg_id regId, 
+		mod_id modId
+	FROM st_std_cd
+	WHERE grp_cd = 'T001' AND CD LIKE CONCAT(#{deptCd}, '%')
+</select>
+</mapper>
