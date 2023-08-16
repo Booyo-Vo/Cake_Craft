@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @org.springframework.context.annotation.Configuration
 @Slf4j
 public class Configuration implements WebMvcConfigurer {
+	//ANSI코드
+		final String BLUE = "\u001B[44m";
+		final String RESET = "\u001B[0m";
 	//인터셉터를 설정하는 역할
 		/*
 		 * @Bean -> LoginInterceptor를 빈으로 등록하는 메서드 
@@ -32,6 +35,6 @@ public class Configuration implements WebMvcConfigurer {
 	                // /board로 시작하는 경로에 대해서 인터셉터 적용
 	                .excludePathPatterns("/login");
 	        		// /login, /home 경로는 인터셉터에서 제외
-	        log.debug("Configuration 활성화");
+	        log.debug(BLUE + "Configuration 활성화" + RESET);
 	    }
 }
