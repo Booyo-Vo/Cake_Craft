@@ -16,13 +16,13 @@
 			reg_id regId,
 			mod_id modId
 		FROM facility_base
-		WHERE 1 = 1
 		<where>
+			1 = 1
 			<if test='!useYn.equals("A")'>
 				AND use_yn = #{useYn}
 			</if>
 			<if test='!categoryCd.equals("A")'>
-				AND category_cd = #{categoryCd}
+				AND category_cd LIKE #{categoryCd}
 			</if>
 		</where>
 		ORDER BY category_cd ASC
