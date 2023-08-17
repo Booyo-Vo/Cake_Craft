@@ -5,13 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <title>noticeList.jsp</title>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/layout/header.jsp"></jsp:include>
 <h1>공지 게시판</h1>
 <!-- 작성자, 공지내용 검색 -->
-<form action="${pageContext.request.contextPath}/board/noticeList" method="get">
+<form action="/board/noticeList" method="get">
 	<div>
-		<input type="text" name="regId" placeholder="작성자 입력">
+		<input type="text" name="searchRegId" placeholder="작성자 입력">
 		<input type="text" name="searchWord" placeholder="공지내용 입력">
 		
 		<button type="submit">검색</button>

@@ -4,12 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <title>addNotice.jsp</title>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/layout/header.jsp"></jsp:include>
 <h1>공지사항 작성</h1>
-<form action="/board/addBoard" method="post">
+<form action="/board/addNotice" method="post">
 	<input type="hidden" name="id" value="${loginId} ">
-	
 	<table>
 		<tr>
 			<td>noticeTitle</td>

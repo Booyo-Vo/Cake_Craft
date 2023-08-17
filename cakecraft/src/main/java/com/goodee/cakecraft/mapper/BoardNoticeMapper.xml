@@ -17,8 +17,8 @@
 		FROM board_notice
 		<where>
             1=1 
-            <if test="regId != null and regId != ''">
-                AND reg_id = #{regId}
+            <if test="searchRegId != null and searchRegId != ''">
+                AND reg_id = #{searchRegId}
             </if>
             <if test="searchWord != null and searchWord != ''">
                 AND notice_content LIKE CONCAT('%', #{searchWord}, '%')

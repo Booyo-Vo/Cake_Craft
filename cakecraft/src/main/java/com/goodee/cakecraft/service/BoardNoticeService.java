@@ -23,14 +23,11 @@ public class BoardNoticeService {
 	final String RESET = "\u001B[0m";	
 	final String GEH = "\u001B[45m";
 	
-	public Map<String, Object> getNoticeList(String regId, String searchWord){
-		
-		log.debug(GEH + "regId --> "+ regId + RESET);
-		log.debug(GEH + "searchWord --> "+ searchWord + RESET);
+	public Map<String, Object> getNoticeList(String searchRegId, String searchWord){
 		
 		// Dao의 매개값형태에 맞게 가공
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("regId", regId);
+		paramMap.put("searchRegId", searchRegId);
 		paramMap.put("searchWord", searchWord);
 		
 		// 공지 목록 가져오기
@@ -47,7 +44,6 @@ public class BoardNoticeService {
 	
 	// 공지 추가
 	public int addNotice(BoardNotice notice) {
-		log.debug(GEH + "notice --> "+ notice.toString() + RESET);
 		// 반환값
 		int row = noticeMapper.insertNotice(notice);
 		
