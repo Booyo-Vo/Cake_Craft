@@ -46,7 +46,6 @@ public class ScheduleService {
 		// 마지막 날짜
 		int lastDate = firstDate.getActualMaximum(Calendar.DATE);
 		
-
 		// 오늘 날짜 
 		Calendar today = Calendar.getInstance();
 		int todayDate = today.get(Calendar.DATE);
@@ -120,7 +119,6 @@ public class ScheduleService {
 	
 	// 개별 일정 조회
 	public ScheduleBase getScheduleByNo(ScheduleBase schedule) {
-		// 반환값
 		ScheduleBase resultSchedule = scheduleMapper.selectScheduleByNo(schedule);
 		
 		return resultSchedule;
@@ -129,7 +127,6 @@ public class ScheduleService {
 	
 	// 일정 추가
 	public int addSchedule(ScheduleBase schedule) {
-		// 반환값
 		int row = scheduleMapper.insertSchedule(schedule);
 		
 		return row;
@@ -137,7 +134,6 @@ public class ScheduleService {
 	
 	// 일정 수정 
 	public int modifySchedule(ScheduleBase schedule) {
-		// 반환값
 		int row = scheduleMapper.updateSchedule(schedule);
 		
 		return row;
@@ -145,7 +141,6 @@ public class ScheduleService {
 	
 	// 일정 삭제
 	public int removeSchedule(ScheduleBase schedule) {
-		// 반환값
 		int row = scheduleMapper.deleteSchedule(schedule);
 		
 		return row;

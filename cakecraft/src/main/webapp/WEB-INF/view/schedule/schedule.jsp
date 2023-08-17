@@ -126,7 +126,7 @@
 					</div>
 					<div class="modal-body">
 						<form id="addScheduleForm">
-							<input type="hidden" name="loginId" value="${loginId}">
+							<input type="hidden" name="id" value="${loginId}">
 							<input type="hidden" name="teamCd" value="${empBase.teamCd}">
 							<div class="mb-3">
 								<label for="categoryCd" class="col-form-label">카테고리</label>
@@ -174,7 +174,7 @@
 					<div class="modal-body">
 						<form id="modifyScheduleForm">
 							<input type="hidden" name="scheduleNo" id="modScheduleNo">
-							<input type="hidden" name="loginId" value="${loginId}">
+							<input type="hidden" name="id" value="${loginId}">
 							<input type="hidden" name="teamCd" value="${empBase.teamCd}">
 							<div class="mb-3">
 								<label for="modCategoryCd" class="col-form-label">카테고리</label>
@@ -217,7 +217,7 @@
 // 날짜 클릭 시 일정추가 모달창에 날짜값 넘겨주기 및 모달 띄우기
 function date(d, targetYear, targetMonth){
 	$.ajax({
-		url : '${pageContext.request.contextPath}/rest/addSchedule',
+		url : '/rest/addSchedule',
 		type : 'post',
 		data : {
 			targetDate : d,
@@ -256,7 +256,7 @@ function addSchedule(){
 	}
 	// 입력폼 제출
 	const addScheduleForm = $('#addScheduleForm');
-	addScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/addSchedule');
+	addScheduleForm.attr('action', '/schedule/addSchedule');
 	addScheduleForm.attr('method', 'post');
 	addScheduleForm.submit();
 }
@@ -264,7 +264,7 @@ function addSchedule(){
 // 일정 클릭 시 상세보기 및 일정수정 모달 띄우기
 function scheduleNo(scheduleNo){
 	$.ajax({
-		url : '${pageContext.request.contextPath}/rest/modifySchedule',
+		url : '/rest/modifySchedule',
 		type : 'post',
 		data : {
 			scheduleNo : scheduleNo
@@ -307,7 +307,7 @@ function modifySchedule(){
 	
 	// 수정폼 제출
 	const modifyScheduleForm = $('#modifyScheduleForm');
-	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
+	modifyScheduleForm.attr('action', '/schedule/modifySchedule');
 	modifyScheduleForm.attr('method', 'post');
 	modifyScheduleForm.submit();
 }
@@ -315,10 +315,10 @@ function modifySchedule(){
 // 일정 삭제 버튼 클릭 시
 function removeSchedule() {
     const scheduleNo = $('#modScheduleNo').val(); 
-    const loginId = '${loginId}';
+    const id = '${loginId}';
 
     if (confirm('일정을 삭제하시겠습니까?')) {
-        window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&loginId=' + loginId;
+        window.location.href = '/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&id=' + id;
     }
 }
 

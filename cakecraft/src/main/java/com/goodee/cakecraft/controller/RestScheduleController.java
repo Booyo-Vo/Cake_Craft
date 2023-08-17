@@ -45,10 +45,7 @@ public class RestScheduleController {
 	
 	// 일정수정 모달창에 출력할 데이터
 	@PostMapping("/rest/modifySchedule")
-	public ScheduleBase modifySchedule(@RequestParam(name="scheduleNo") Integer scheduleNo) {
-		ScheduleBase schedule = new ScheduleBase();
-		schedule.setScheduleNo(scheduleNo);
-		
+	public ScheduleBase modifySchedule(ScheduleBase schedule) {
 		// 일정 상세 정보 가져오기
 		ScheduleBase resultSchedule = scheduleService.getScheduleByNo(schedule);
 		log.debug(GEH + "resultSchedule --> " + resultSchedule.toString() + RESET);
