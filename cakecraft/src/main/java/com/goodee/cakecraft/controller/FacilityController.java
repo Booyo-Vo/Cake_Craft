@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.controller;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.FacilityService;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.FacilityBase;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 public class FacilityController {
@@ -27,7 +27,8 @@ public class FacilityController {
 	
 	//시설비품리스트 view
 	@GetMapping("/facility/facilityList")
-	public String facilityList(Model model,
+	public String facilityList(HttpSession session,
+							   Model model,
 							   @RequestParam(name="categoryCd", defaultValue = "A") String cateogryCd,
 							   @RequestParam(name="useYn", defaultValue = "A") String useYn){
 		Map<String, Object> paramMap = new HashMap<>();
@@ -35,11 +36,11 @@ public class FacilityController {
 		paramMap.put("useYn", useYn);
 		List<FacilityBase> resultList = facilityService.getFacilityList(paramMap);
 		
-		String loginId = "admin1";
-		/*Object o = session.getAttribute("loginId");
-		if(o instanceof String) {
-			loginId = (String)o;
-		}*/
+		String loginId = "";
+		Object o = session.getAttribute("loginMember");
+		if(o instanceof EmpIdList) {
+			loginId = ((EmpIdList)o).getId();
+		}
 		
 		model.addAttribute("loginId", loginId);
 		model.addAttribute("resultList", resultList);
@@ -51,19 +52,9 @@ public class FacilityController {
 	@PostMapping("/facility/addFacility")
 	public String addFacility(HttpSession session,
 							  @RequestParam(name="loginId") String loginId,
-							  @RequestParam(name="categoryCd") String categoryCd,
-							  @RequestParam(name="facilityName") String facilityName,
-							  @RequestParam(name="facilityNote") String facilitiyNote,
-							  @RequestParam(name="useYn") String useYn) {
+							  FacilityBase facility) {
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("categoryCd", categoryCd);
-		paramMap.put("facilityName", facilityName);
-		paramMap.put("facilityNote", facilitiyNote);
-		paramMap.put("useYn", useYn);
-		paramMap.put("regId", loginId);
-		
-		facilityService.addFacility(paramMap);
+		facilityService.addFacility(facility, loginId);
 		
 		return "redirect:/facility/facilityList";
 	}
@@ -71,22 +62,10 @@ public class FacilityController {
 	//시설비품 수정 액션
 	@PostMapping("/facility/modifyFacility")
 	public String modifyFacility(HttpSession session,
-								@RequestParam(name="facilityNo") int facilityNo,
-							  	@RequestParam(name="loginId") String loginId,
-							  	@RequestParam(name="categoryCd") String categoryCd,
-							  	@RequestParam(name="facilityName") String facilityName,
-							  	@RequestParam(name="facilityNote") String facilitiyNote,
-							  	@RequestParam(name="useYn") String useYn) {
+								 @RequestParam(name="loginId") String loginId,
+								 FacilityBase facility) {
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("facilityNo", facilityNo);
-		paramMap.put("categoryCd", categoryCd);
-		paramMap.put("facilityName", facilityName);
-		paramMap.put("facilityNote", facilitiyNote);
-		paramMap.put("useYn", useYn);
-		paramMap.put("regId", loginId);
-		
-		facilityService.modifyFacility(paramMap);
+		facilityService.modifyFacility(facility, loginId);
 		
 		return "redirect:/facility/facilityList";
 	}

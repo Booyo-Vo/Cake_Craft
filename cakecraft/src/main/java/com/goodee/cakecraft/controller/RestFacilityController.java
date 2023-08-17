@@ -14,12 +14,8 @@ public class RestFacilityController {
 
 	//수정 모달창에 출력할 정보
 	@PostMapping("/rest/modifyFacility")
-	public FacilityBase modifyFacility(@RequestParam(name="facilityNo") Integer facilityNo) {
-		FacilityBase facility = new FacilityBase();
-		facility.setFacilityNo(facilityNo);
-		
-		FacilityBase resultFacility = new FacilityBase();
-		resultFacility = facilityService.getFacilityByNo(facility);
+	public FacilityBase modifyFacility(FacilityBase facility) {
+		FacilityBase resultFacility = facilityService.getFacilityByNo(facility);
 		
 		return resultFacility;
 	}
@@ -27,7 +23,7 @@ public class RestFacilityController {
 	//추가,수정 시 이름 중복검사
 	@PostMapping("/rest/nameCheck")
 	public int nameCheck(@RequestParam(name="facilityName") String facilityName,
-						@RequestParam(name="facilityNo", defaultValue = "-1") Integer facilityNo) {
+						 @RequestParam(name="facilityNo", defaultValue = "-1") Integer facilityNo) {
 		FacilityBase facility = new FacilityBase();
 		facility.setFacilityName(facilityName);
 		facility.setFacilityNo(facilityNo);

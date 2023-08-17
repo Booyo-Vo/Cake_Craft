@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,20 @@ public class FacilityService {
 		return resultList;
 	}
 	
-	public int addFacility(Map<String, Object> paramMap){
+	public int addFacility(FacilityBase facility, String loginId){
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("regId", loginId);
+		paramMap.put("facility", facility);
+		
 		int addFacilityRow = facilityMapper.insertFacility(paramMap);
 		return addFacilityRow;
 	}
 	
-	public int modifyFacility(Map<String, Object> paramMap){
+	public int modifyFacility(FacilityBase facility, String loginId){
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("id", loginId);
+		paramMap.put("facility", facility);
+		
 		int modFacilityRow = facilityMapper.updateFacility(paramMap);
 		return modFacilityRow;
 	}

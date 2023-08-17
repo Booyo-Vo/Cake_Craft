@@ -71,9 +71,9 @@
 			reg_id,
 			mod_id)
 		VALUES (
-			#{categoryCd},
-			#{facilityName},
-			#{facilityNote},
+			#{facility.categoryCd},
+			#{facility.facilityName},
+			#{facility.facilityNote},
 			NOW(),
 			NOW(),
 			#{regId},
@@ -84,12 +84,12 @@
 			parameterType="java.util.Map">
 		UPDATE facility_base
 		SET 
-			category_cd = #{categoryCd},
-			facility_name = #{facilityName},
-			facility_note = #{facilityNote},
-			use_yn = #{useYn},
+			category_cd = #{facility.categoryCd},
+			facility_name = #{facility.facilityName},
+			facility_note = #{facility.facilityNote},
+			use_yn = #{facility.useYn},
 			mod_dtime = NOW(),
-			mod_id = #{regId}
-		WHERE facility_no = #{facilityNo}
+			mod_id = #{id}
+		WHERE facility_no = #{facility.facilityNo}
 	</update>
 </mapper>
