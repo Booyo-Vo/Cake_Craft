@@ -55,6 +55,8 @@ public class ReservationController {
 		model.addAttribute("targetDate", resultMap.get("targetDate"));
 		model.addAttribute("date", resultMap.get("date"));
 		model.addAttribute("categoryCd", resultMap.get("categoryCd"));
+		model.addAttribute("currDay", resultMap.get("currDay"));
+		model.addAttribute("weekDay", resultMap.get("weekDay"));
 		model.addAttribute("reservationList", resultMap.get("reservationList"));
 		model.addAttribute("facilityList", facilityList);
 		model.addAttribute("loginId", loginId);
@@ -68,29 +70,62 @@ public class ReservationController {
 								 @RequestParam(name="teamNm") String teamNm,
 								 @RequestParam(name="reservationContent") String reservationContent,
 								 @RequestParam(name="date") String date,
-								 @RequestParam(name="times") String[] times) {
+								 @RequestParam(name="times") List<Integer> times) {
 		
 		//테스트용 id고정
 		String loginId = "user1";
-				
-		List<String> timesArr = new ArrayList<>();
-		for(String s : times) {
-			timesArr.add(s);
+		
+		log.debug(KMJ + times.toString() + " <--times" + RESET);
+		
+		//연속 시간 묶기
+		List<List<Integer>> packet = new ArrayList<>(); //연속된 시간묶음 리스트를 저장할 리스트
+		List<Integer> temp = new ArrayList<>(); //연속된 시간 묶음
+		int n1 = times.get(0);
+		temp.add(n1);
+		times.remove(0);
+		log.debug(KMJ + n1 + " <--ReservationController.addReservation() n1" + RESET);
+		while(!times.isEmpty()) {
+			int n2 = times.get(0);
+			times.remove(0);
+			log.debug(KMJ + n2 + " <--ReservationController.addReservation() n2" + RESET);
+			
+			if(n1 + 1 == n2) { 
+				temp.add(n2);
+				n1 = n2;
+			} else {
+				packet.add(temp);
+				temp = new ArrayList<>();
+				temp.add(n2);
+				n1 = n2;
+			}
 		}
-		log.debug(KMJ + timesArr.toString()+" <--timesArr" + RESET);
+		packet.add(temp);
+		log.debug(KMJ + packet.toString() + "<-- ReservationController.addReservation() packet" + RESET);
 		
 		String teamCd = empService.getAdminEmpById(loginId).getTeamCd();
-		List<String> startArr = new ArrayList<>();
-		List<String> endArr = new ArrayList<>();
 		
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("facilityNo", facilityNo);
-		paramMap.put("teamCd", teamCd);
-		paramMap.put("id", loginId);
-		paramMap.put("reservationContent", reservationContent);
-		
+		for(List<Integer> li : packet) {
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("facilityNo", facilityNo);
+			paramMap.put("teamCd", teamCd);
+			paramMap.put("id", loginId);
+			paramMap.put("reservationContent", reservationContent);
+			paramMap.put("startDtime", date + " " + li.get(0)+":00:00");
+			paramMap.put("endDtime", date + " " + (li.get(li.size()-1)+1)+":00:00");
+			log.debug(KMJ + paramMap.get("startDtime").toString()+RESET);
+			log.debug(KMJ + paramMap.get("endDtime").toString()+RESET);
+			reservationService.addReservation(paramMap);
+		}
 		log.debug(times.toString());
 		
-		return "redirect:/reservation/reservation";
+		//리다이렉션을 위한 변수
+		int targetYear = Integer.parseInt(date.substring(0,4));
+		int targetMonth = Integer.parseInt(date.substring(5,7)) - 1;
+		int targetDate = Integer.parseInt(date.substring(8));
+		FacilityBase facility = new FacilityBase();
+		facility.setFacilityNo(facilityNo);
+		String cd = facilityService.getFacilityByNo(facility).getCategoryCd().substring(0,1);
+		
+		return "redirect:/reservation/reservation?categoryCd="+cd+"&targetYear="+targetYear+"&targetMonth="+targetMonth+"&targetDate="+targetDate;
 	}
 }

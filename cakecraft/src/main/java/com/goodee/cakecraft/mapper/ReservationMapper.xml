@@ -49,7 +49,7 @@
 	<insert id="insertReservation"
 			parameterType="java.util.Map">
 		INSERT INTO facility_reservation (
-			facilitiy_no,
+			facility_no,
 			team_cd,
 			id,
 			reservation_content,

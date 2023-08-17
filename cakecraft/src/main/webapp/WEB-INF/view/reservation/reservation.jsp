@@ -13,16 +13,17 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script>document.getElementsByTagName("html")[0].className += " js";</script>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/reservation_assets/css/style.css">
+	<link rel="stylesheet" href="/reservation_assets/css/style.css">
 	<title>reservation</title>
 </head>
 <body>
 	<header class="cd-main-header text-center flex flex-column flex-center">
-		<h1 class="text-xl mt-5">시설비품 예약현황</h1>
+		<input type="date" id="selectDate" value="${date}" min="${currDay}" max="${weekDay}">
+		<span class="text-xl mt-5">시설비품 예약현황</span>
 	</header>
 
-	<a href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=1&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">회의실</a>
-	<a href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=2&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">비품</a>
+	<a href="/reservation/reservation?categoryCd=1&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">회의실</a>
+	<a href="/reservation/reservation?categoryCd=2&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">비품</a>
   	<button type="button" class="btn btn-primary" data-bs-toggle=modal data-bs-target="#addRsrv">예약하기</button>
   	<!-- 메인 시작 -->
   	<div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
@@ -147,8 +148,8 @@
 		<div class="cd-schedule__cover-layer"></div>
 	</div>
 	<!-- 메인 끝 -->
-	<script src="${pageContext.request.contextPath}/reservation_assets/js/util.js"></script>
-	<script src="${pageContext.request.contextPath}/reservation_assets/js/main.js"></script>
+	<script src="/reservation_assets/js/util.js"></script>
+	<script src="/reservation_assets/js/main.js"></script>
 </body>
 
 <script>
@@ -165,13 +166,23 @@
 			success : function(unbookedList){
 				console.log('ajax성공');
 				unbookedList.forEach(function(item, index){
-					$('#times').append('<option value=&quot;' + item + '&quot;>' + item + '</option>');
+					$('#times').append('<option value=' + (index+9) + '>' + item + '</option>');
 				})
 			},
 			error : function(){
 				console.log('ajax실패');
 			}
 		})
+	})
+	
+	$('#selectDate').change(function(){
+		let targetDay = $('#selectDate').val();
+		console.log(targetDay);
+		let targetYear = targetDay.substring(0,4);
+		let targetMonth = parseInt(targetDay.substring(5,7)) - 1;
+		let targetDate = targetDay.substring(8);
+		
+		window.location.href = '/reservation/reservation?targetYear='+targetYear+'&targetMonth='+(targetMonth)+'&targetDate='+targetDate;
 	})
 	
 	function addReservation(){

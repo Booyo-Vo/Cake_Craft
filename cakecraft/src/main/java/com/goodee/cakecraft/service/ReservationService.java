@@ -29,7 +29,19 @@ public class ReservationService {
 		int currYear = today.get(Calendar.YEAR);
 		int currMonth = today.get(Calendar.MONTH);
 		int currDate = today.get(Calendar.DATE);
+		String currDay = "";
+		String currMonthStr = "" + currMonth;
+		String currDateStr = "" + currDate;
+		//view 출력을 위하여 반환값 가공
+		if(currMonth < 9) {
+			currMonthStr = "0" + (currMonth + 1);
+		}
+		if(currDate < 10) {
+			currDateStr = "0" + currDate;
+		}
+		currDay = currYear + "-" + currMonthStr + "-" + currDateStr;
 
+		//view 출력을 위하여 반환값 가공
 		if(targetYear == null) {
 			targetYear = currYear;
 		}
@@ -43,7 +55,6 @@ public class ReservationService {
 		String date = "";
 		String targetMonthStr = "" + targetMonth;
 		String targetDateStr = "" + targetDate;
-		//view 출력을 위하여 반환값 가공
 		if(targetMonth < 9) {
 			targetMonthStr = "0" + (targetMonth + 1);
 		}
@@ -58,15 +69,37 @@ public class ReservationService {
 		paramMap.put("targetDate", targetDate);
 		paramMap.put("categoryCd", categoryCd+"%");
 		
-		Map<String, Object> resultMap = new HashMap<>();
 		List<FacilityReservation> reservationList = reservationMapper.selectReservationListByDate(paramMap);
 		log.debug(KMJ + reservationList.size() + " <--ReservationService.getReservationByDate reservationList.size()" + RESET);
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		today.add(today.DATE, +7); //일주일 후 날짜 계산
+		int weekYear = today.get(Calendar.YEAR);
+		int weekMonth = today.get(Calendar.MONTH);
+		int weekDate = today.get(Calendar.DATE);
+		String weekDay = "";
+		String weekMonthStr = "" + weekMonth;
+		String weekDateStr = "" + weekDate;
+		if(weekMonth < 9) {
+			weekMonthStr = "0" + (weekMonth + 1);
+		}
+		if(targetDate < 10) {
+			weekDateStr = "0" + weekDate;
+		}
+		weekDay = weekYear + "-" + weekMonthStr + "-" + weekDateStr;
+		
 		resultMap.put("reservationList", reservationList);
 		resultMap.put("targetYear", targetYear);
 		resultMap.put("targetMonth", targetMonth);
 		resultMap.put("targetDate", targetDate);
 		resultMap.put("date", date);
+		resultMap.put("currDay", currDay);
+		resultMap.put("weekDay", weekDay);
 		resultMap.put("categoryCd", categoryCd);
+		resultMap.put("weekYear", weekYear);
+		resultMap.put("weekMonth", weekMonth);
+		resultMap.put("weekDate", weekDate);
 		
 		return resultMap;
 	}
@@ -92,5 +125,10 @@ public class ReservationService {
 		}
 		log.debug(KMJ + unbookedList.toString() + "<--reservationService.getReservationTime() unbookedList" + RESET);
 		return unbookedList;
+	}
+	
+	public int addReservation(Map<String, Object> paramMap) {
+		int addReservRow = reservationMapper.insertReservation(paramMap);
+		return addReservRow;
 	}
 }
