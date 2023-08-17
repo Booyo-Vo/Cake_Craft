@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goodee.cakecraft.mapper.ApprovalMapper">
 <!-- 결재 문서 : ApprovalDocument -->	
-	<!-- 결재 문서 목록 출력 -->
-	<select id="selectApprDocListByPage"
+	<!-- 결재한 문서 목록 출력 -->
+	<select id="selectApprDocListById"
 			parameterType="String"
 			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
 			SELECT
@@ -19,6 +19,52 @@
 			FROM approval_document
 			<where>
 				id = #{loginId} 
+			</where>
+	</select>
+	
+	<!-- 결재자로 지정된 문서 목록 출력 -->
+	<select id="selectApprDocListByApprId"
+			parameterType="String"
+			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
+			SELECT
+				ad.document_no documentNo,
+				ad.id id,
+				ad.document_title documentTitle,
+				ad.approval_document_cd approvalDocumentCd,
+				ad.temp_save tempSave,
+				ad.reg_dtime regDtime, 
+				ad.mod_dtime modDtime, 
+				ad.reg_id regId, 
+				ad.mod_id modId
+			FROM approval_document ad
+			<where>
+				ad.document_no IN (
+				SELECT ah.document_no
+				FROM approval_history ah
+				WHERE ah.approval_id = #{loginId})
+			</where>
+	</select>
+	
+	<!-- 참조자로 지정된 문서 목록 출력 -->
+	<select id="selectApprDocListByRefId"
+			parameterType="String"
+			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
+			SELECT
+				ad.document_no documentNo,
+				ad.id id,
+				ad.document_title documentTitle,
+				ad.approval_document_cd approvalDocumentCd,
+				ad.temp_save tempSave,
+				ad.reg_dtime regDtime, 
+				ad.mod_dtime modDtime, 
+				ad.reg_id regId, 
+				ad.mod_id modId
+			FROM approval_document ad
+			<where>
+				ad.document_no IN (
+				SELECT ar.document_no
+				FROM approval_ref ar
+				WHERE ar.ref_id = #{loginId})
 			</where>
 	</select>
 	

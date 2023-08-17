@@ -14,15 +14,21 @@ import com.goodee.cakecraft.vo.ApprovalHistory;
 public interface ApprovalMapper {
 	
 	/* 결재 문서 : ApprovalDocument */
-	// 결재 문서 목록 출력
+	// 결재한 문서 목록 출력
 	// List<ApprovalDocument> selectApprDocListByPage(Map<String, Object> apprDocListByPageMap);
-	List<ApprovalDocument> selectApprDocListByPage(String loginId);
+	List<ApprovalDocument> selectApprDocListById(String loginId);
+	
+	// 결재자로 지정된 문서 목록 출력
+	List<ApprovalDocument> selectApprDocListByApprId(String loginId);
+	
+	// 참조자로 지정된 문서 목록 출력
+	List<ApprovalDocument> selectApprDocListByRefId(String loginId);
 	
 	// 결재 문서 개수 출력
 	int selectApprDocCnt();
 	
 	// 개별 결재 문서 상세정보 출력
-	ApprovalDocument selectApprDocByNo(ApprovalDocument apprDoc);
+	ApprovalDocument selectApprDocByNo(String loginId);
 	
 	// 결재 문서 추가
 	int insertApprDoc(ApprovalDocument apprDoc);
