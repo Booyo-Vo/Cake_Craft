@@ -30,6 +30,9 @@ public interface ApprovalMapper {
 	// 개별 결재 문서 상세정보 출력
 	ApprovalDocument selectApprDocByNo(String loginId);
 	
+	// 문서 번호 생성
+	String selectDocumentNo(ApprovalDocument apprDoc);
+	
 	// 결재 문서 추가
 	int insertApprDoc(ApprovalDocument apprDoc);
 	

@@ -13,7 +13,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script>document.getElementsByTagName("html")[0].className += " js";</script>
-	<link rel="stylesheet" href="/reservation_assets/css/style.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/reservation_assets/css/style.css">
 	<title>reservation</title>
 </head>
 <body>
@@ -22,8 +22,8 @@
 		<span class="text-xl mt-5">시설비품 예약현황</span>
 	</header>
 
-	<a href="/reservation/reservation?categoryCd=1&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">회의실</a>
-	<a href="/reservation/reservation?categoryCd=2&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">비품</a>
+	<a href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=1&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">회의실</a>
+	<a href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=2&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">비품</a>
   	<button type="button" class="btn btn-primary" data-bs-toggle=modal data-bs-target="#addRsrv">예약하기</button>
   	<!-- 메인 시작 -->
   	<div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
@@ -78,12 +78,12 @@
 		</div>
 		<!-- 예약현황 끝 -->
 		
-		<!-- 시설비품 추가 모달창 시작 -->
+		<!-- 시설비품 예약 모달창 시작 -->
 		<div class="modal fade" id="addRsrv" tabindex="-1" aria-labelledby="addRsrvLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="addRsrvLabel">이용예약</h5>
+						<h5 class="modal-title" id="addRsrvLabel">예약수정</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -124,9 +124,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- 시설비품 추가 모달창 끝 -->
+		<!-- 시설비품 예약 모달창 끝 -->
 		
-		<!-- 예약 모달 시작 -->
+		<!-- 예약상세 모달 시작 -->
 		<div class="cd-schedule-modal">
 			<header class="cd-schedule-modal__header">
 				<div class="cd-schedule-modal__content">
@@ -144,12 +144,12 @@
 		
 			<a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
 		</div>
-		<!-- 예약 모달 끝 -->
+		<!-- 예약상세 모달 끝 -->
 		<div class="cd-schedule__cover-layer"></div>
 	</div>
 	<!-- 메인 끝 -->
-	<script src="/reservation_assets/js/util.js"></script>
-	<script src="/reservation_assets/js/main.js"></script>
+	<script src="/cakecraft/reservation_assets/js/util.js"></script>
+	<script src="/cakecraft/reservation_assets/js/main.js"></script>
 </body>
 
 <script>
@@ -162,11 +162,17 @@
 				facilityNo : $('#facilityNo').val(),
 				targetYear : ${targetYear},
 				targetMonth : ${targetMonth},
-				targetDate : ${targetDate}},
+				targetDate : ${targetDate}
+				},
 			success : function(unbookedList){
 				console.log('ajax성공');
+				//현재 시간 구하기
 				unbookedList.forEach(function(item, index){
-					$('#times').append('<option value=' + (index+9) + '>' + item + '</option>');
+					const now = new Date().getTime();
+					let rsrvTime = new Date('${date} '+ item.substring(0, item.indexOf(":")) + ':00:00').getTime();
+					if(rsrvTime - now > (1000*60*60)){
+						$('#times').append('<option value=' + item.substring(0, item.indexOf(":")) + '>' + item + '</option>');
+					}
 				})
 			},
 			error : function(){
@@ -182,7 +188,7 @@
 		let targetMonth = parseInt(targetDay.substring(5,7)) - 1;
 		let targetDate = targetDay.substring(8);
 		
-		window.location.href = '/reservation/reservation?targetYear='+targetYear+'&targetMonth='+(targetMonth)+'&targetDate='+targetDate;
+		window.location.href = '${pageContext.request.contextPath}/reservation/reservation?targetYear='+targetYear+'&targetMonth='+(targetMonth)+'&targetDate='+targetDate;
 	})
 	
 	function addReservation(){

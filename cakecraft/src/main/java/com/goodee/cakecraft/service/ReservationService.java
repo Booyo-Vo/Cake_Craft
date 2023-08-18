@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.ReservationMapper;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.FacilityReservation;
 
 import lombok.extern.slf4j.Slf4j;
@@ -127,8 +128,23 @@ public class ReservationService {
 		return unbookedList;
 	}
 	
+	public List<Map<String, Object>> getReservationListById(EmpIdList emp){
+		List<Map<String, Object>> resultList = reservationMapper.selectReservationListById(emp);
+		return resultList;
+	}
+	
 	public int addReservation(Map<String, Object> paramMap) {
 		int addReservRow = reservationMapper.insertReservation(paramMap);
 		return addReservRow;
+	}
+	
+	public int removeReservation(FacilityReservation reservation) {
+		int rmvReservRow = reservationMapper.deleteReservation(reservation);
+		return rmvReservRow;
+	}
+	
+	public String getAnHourLater() {
+		String anHourLater = reservationMapper.selectAnHourLater();
+		return anHourLater;
 	}
 }

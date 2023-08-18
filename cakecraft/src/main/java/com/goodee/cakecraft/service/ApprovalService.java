@@ -6,16 +6,30 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.ApprovalMapper;
+import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.ApprovalRef;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
+@Transactional
 public class ApprovalService {
-	@Autowired ApprovalMapper apprDocMapper;
+	@Autowired 
+	private ApprovalMapper apprDocMapper;
+	
+	@Autowired
+	private CommonMapper commonMapper;
+	
+	// ANSI 코드
+	final String SHJ = "\u001B[46m";
+	final String RESET = "\u001B[0m";
 	
 	/* 결재 문서 : ApprovalDocument */
 	// 결재한 문서 목록 출력
@@ -43,7 +57,6 @@ public class ApprovalService {
 	}
 	
 	
-	
 	// 결재 문서 개수 출력
 	public int getApprDocCnt(ApprovalDocument apprDoc){
 		// 반환값
@@ -61,13 +74,51 @@ public class ApprovalService {
 		return resultApprDoc;
 	}
 	
-	// 결재 문서 추가
+	
+	// 문서번호 생성 + 결재문서 추가 (+파일추가, 참조자추가, 결재자추가)
 	public int addApprDoc(ApprovalDocument apprDoc){
-		// 반환값
-		int addApprDocRow = apprDocMapper.insertApprDoc(apprDoc);
-				
-		return addApprDocRow;
+		
+		// 1) 문서 코드 받아오기
+		Map<String, Object> apprDocCdMap = commonMapper.getCode(apprDoc.getApprovalDocumentCd());
+		// 문서 분류(업무 or 인사)이름이 넘어오면 -> DB에 입력할 코드 받아오기
+		String apprDocCd = apprDocCdMap.get("cd").toString();
+		// 디버깅
+		log.debug(SHJ + apprDocCd + " <-- addApprDoc apprDocCd"+ RESET);
+		// 생성된 문서 코드 입력
+		apprDoc.setApprovalDocumentCd(apprDocCd);
+		
+		// 2) 문서 번호 생성
+		String documentNo = apprDocMapper.selectDocumentNo(apprDoc);
+		// 디버깅
+		log.debug(SHJ + documentNo + " <-- addApprDoc documentNo"+ RESET);
+		// 생성된 문서 번호 입력
+		apprDoc.setDocumentNo(documentNo);
+		
+		// 3) 결재 문서 추가
+		if(documentNo != null) {
+			// 반환값
+			int addApprDocRow = apprDocMapper.insertApprDoc(apprDoc);
+			// 디버깅
+			log.debug(SHJ + addApprDocRow + " <-- addApprDoc addApprDocRow"+ RESET);
+			
+			/*
+			 if(addApprDocRow > 0) {
+			 	결재자 level 2 추가
+			 	결재자 level 3 추가
+			 
+				if(파일이 있다면) {
+					파일 추가
+				 
+				if(참조자가 있다면) {
+					참조자 추가
+			*/
+			
+		
+		}
+		// 문서 번호 생성 실패 시 반환값
+	    return 0;
 	}
+	
 	
 	// 결재 문서 수정
 	public int modifyApprDoc(ApprovalDocument apprDoc){

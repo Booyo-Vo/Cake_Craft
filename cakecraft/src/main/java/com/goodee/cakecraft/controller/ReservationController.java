@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.service.FacilityService;
 import com.goodee.cakecraft.service.ReservationService;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.FacilityBase;
+import com.goodee.cakecraft.vo.FacilityReservation;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,14 +36,19 @@ public class ReservationController {
 	
 	//오늘 예약현황 view
 	@GetMapping("/reservation/reservation")
-	public String getReservationList(Model model,
+	public String getReservationList(HttpSession session,
+									 Model model,
 									 @RequestParam(name="targetYear", required = false) Integer targetYear,
 									 @RequestParam(name="targetMonth", required = false) Integer targetMonth,
 									 @RequestParam(name="targetDate", required = false) Integer targetDate,
 									 @RequestParam(name="categoryCd", defaultValue = "1") String categoryCd) {
-		//테스트용 id고정
-		String loginId = "user1";
+		/*
+		 * String loginId = ""; Object o = session.getAttribute("loginMember"); if(o
+		 * instanceof EmpIdList) { loginId = ((EmpIdList)o).getId(); }
+		 */
 		
+		//테스트용 코드
+		String loginId = "user1";
 		String teamNm = empService.getAdminEmpById(loginId).getTeamNm();
 		
 		
@@ -66,13 +75,18 @@ public class ReservationController {
 	}
 	
 	@PostMapping("/reservation/addReservation")
-	public String addReservation(@RequestParam(name="facilityNo") Integer facilityNo,
+	public String addReservation(HttpSession session,
+								 @RequestParam(name="facilityNo") Integer facilityNo,
 								 @RequestParam(name="teamNm") String teamNm,
 								 @RequestParam(name="reservationContent") String reservationContent,
 								 @RequestParam(name="date") String date,
 								 @RequestParam(name="times") List<Integer> times) {
 		
-		//테스트용 id고정
+		/*
+		 * String loginId = ""; Object o = session.getAttribute("loginMember"); if(o
+		 * instanceof EmpIdList) { loginId = ((EmpIdList)o).getId(); }
+		 */
+		//테스트용 코드
 		String loginId = "user1";
 		
 		log.debug(KMJ + times.toString() + " <--times" + RESET);
@@ -127,5 +141,33 @@ public class ReservationController {
 		String cd = facilityService.getFacilityByNo(facility).getCategoryCd().substring(0,1);
 		
 		return "redirect:/reservation/reservation?categoryCd="+cd+"&targetYear="+targetYear+"&targetMonth="+targetMonth+"&targetDate="+targetDate;
+	}
+	
+	@GetMapping("/reservation/reservationListById")
+	public String reservationListById(HttpSession session,
+									  Model model) {
+		/*
+		 * String loginId = ""; Object o = session.getAttribute("loginMember"); if(o
+		 * instanceof EmpIdList) { loginId = ((EmpIdList)o).getId(); }
+		 */
+		//테스트용 코드
+		String loginId = "user1";
+		EmpIdList emp = new EmpIdList();
+		emp.setId(loginId);
+		String teamNm = empService.getAdminEmpById(loginId).getTeamNm();
+		String anHour = reservationService.getAnHourLater();
+		List<Map<String, Object>> list = reservationService.getReservationListById(emp);	
+		model.addAttribute("list", list);
+		model.addAttribute("teamNm", teamNm);
+		model.addAttribute("anHour", anHour);
+		return "/reservation/reservationListById";
+	}
+	
+	
+	@GetMapping("/reservation/removeReservation")
+	public String reservationListById(FacilityReservation reservation) {
+		reservationService.removeReservation(reservation);
+		
+		return "redirect:/reservation/reservationListById";
 	}
 }
