@@ -45,6 +45,35 @@
 		</where>
 	</select>
 	
+	<!-- id별 예약 이력 -->
+	<select id="selectReservationListById"
+			parameterType="com.goodee.cakecraft.vo.EmpIdList"
+			resultType="java.util.Map">
+		SELECT
+			r.reservation_no reservationNo,
+			r.facility_no facilityNo,
+			b.facility_name facilityName,
+			r.team_cd teamCd,
+			r.id,
+			r.reservation_content reservationContent,
+			r.start_dtime startDtime,
+			r.end_dtime endDtime,
+			r.reg_dtime regDtime,
+			r.mod_dtime modDtime,
+			r.reg_id regId,
+			r.mod_id modId
+		FROM facility_reservation r
+		INNER JOIN facility_base b
+		ON r.facility_no = b.facility_no
+		WHERE id = #{id}
+		ORDER BY start_dtime DESC;
+	</select>
+	
+	<!-- 현재시간으로부터 1시간 뒤 출력 -->
+	<select id="selectAnHourLater">
+		SELECT 
+			DATE_ADD(NOW(), INTERVAL +1 HOUR)
+	</select>
 	<!-- 예약추가 -->
 	<insert id="insertReservation"
 			parameterType="java.util.Map">
@@ -73,4 +102,11 @@
 			#{id}
 		)
 	</insert>
+	
+	<!-- 예약 취소 -->
+	<delete id="deleteReservation"
+			parameterType="com.goodee.cakecraft.vo.FacilityReservation">
+		DELETE FROM facility_reservation
+		WHERE reservation_no = #{reservationNo};
+	</delete>
 </mapper>
