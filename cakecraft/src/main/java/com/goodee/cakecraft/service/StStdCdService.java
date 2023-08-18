@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.StStdCdMapper;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.StStdCd;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +56,7 @@ public class StStdCdService {
 	   
 	  
     }
-	 //관리자가 보는 부서, 팀관리 리스트
+	//관리자가 보는 부서, 팀관리 리스트
 	public Map<String, Object> getStdStdCdList(){
 		//부서,팀 코드 설정
 		String deptCode = "D001";
@@ -60,7 +64,7 @@ public class StStdCdService {
 	    List<StStdCd> deptList = stStdCdMapper.selectStStdCdList(deptCode);
 	    
 	    //리스트를 담아 보낼 맵선언
-	    Map<String, Object> StdStdCdListMap = new HashMap<>();
+	    Map<String, Object> StStdCdListMap = new HashMap<>();
 	    
 	    //부서 리스트 안에서
 	    for (StStdCd dept : deptList) {
@@ -70,12 +74,68 @@ public class StStdCdService {
 	    	//코드를 받아와 해당 팀리스트 받아오기
 	    	List<StStdCd> teamList = stStdCdMapper.selectTeamListByDept(deptCd);
 	    	//부서코드마다 고유한 키를 생성하여 담기
-	    	StdStdCdListMap.put(deptCd, teamList);
+	    	StStdCdListMap.put(deptCd, teamList);
 	    }
 	    //맵에 부서 리스트 담기
-	    StdStdCdListMap.put("deptList", deptList);
-	    return StdStdCdListMap; 
+	    StStdCdListMap.put("deptList", deptList);
+	    return StStdCdListMap; 
 	}
+	
+	//부서추가
+	public int addDept(StStdCd stStdCd) {
+		//부서 코드설정 
+		String deptCd = "D001";
+		stStdCd.setGrpCd(deptCd);
+		//1) 입력된 부서이름 중복확인
+		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
+		log.debug(GREEN+"addDept deptNmCnt :"+ deptNmCnt +RESET);
+	    if (deptNmCnt > 0) {
+	        return -1; // 중복된 값이 있음을 나타내는 음수
+	    }
+		// cd값 추가를 위해 count+1을 하여 cd값에 넣어준다 
+		int deptCnt =  stStdCdMapper.selectDeptCnt(stStdCd);
+		log.debug(GREEN+"addDept deptCnt :"+ deptCnt +RESET);
+		stStdCd.setCd(String.valueOf(deptCnt + 1));
+		log.debug(GREEN+"addDept stStdCd :"+ stStdCd +RESET);
+		//2) 부서이름 추가하기
+		int insertDeptrow = stStdCdMapper.insertStStdCd(stStdCd);
+		
+	return insertDeptrow;
+	}
+	
+	//팀 추가
+	public int addTeam(StStdCd stStdCd, String teamDeptNm, String teamNm) {
+	//팀 코드설정 
+	String deptCd = "T001";
+	stStdCd.setGrpCd(deptCd);
+
+	//1) 입력된 팀이름 중복확인
+	int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
+	log.debug(GREEN+"addTeam DeptNmCnt :"+ deptNmCnt +RESET);
+	if (deptNmCnt>0) {
+		 return -1; // 중복된 값이 있음을 나타내는 음수
+	}
+	//받아온 부서이름을 부서코드로 바꾼다
+	Map<String, Object> deptCdMap = commonMapper.getCode(teamDeptNm);
+	log.debug(GREEN+"addTeam deptCdMap :"+ deptCdMap +RESET);
+	//맵에서 풀면서 toString 해준다 Object
+	String code = deptCdMap.get("cd").toString();
+	log.debug(GREEN+"addTeam code :"+ code +RESET);
+	
+	// 추가된 팀의 cd값 추가를 위해 (connt+1)+(code*10)을 계산하여 cd값에 넣어준다
+	int teamCnt =  stStdCdMapper.selectTeamCnt(code);
+	log.debug(GREEN+"addTeam teamCnt :"+ teamCnt +RESET);
+	
+	int cd = (teamCnt + 1) + (Integer.parseInt(code) * 10);
+	log.debug(GREEN+"addTeam cd :"+ cd +RESET);
+	stStdCd.setCd(String.valueOf(cd));
+	stStdCd.setCdNm(teamNm);
+	//2) 부서이름 추가하기
+	int insertStStdCdrow = stStdCdMapper.insertStStdCd(stStdCd);
+	
+	return insertStStdCdrow;
+	}
+	
 }
 	
 	

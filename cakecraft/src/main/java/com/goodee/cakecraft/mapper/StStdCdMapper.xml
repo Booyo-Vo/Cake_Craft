@@ -34,4 +34,54 @@
 	FROM st_std_cd
 	WHERE grp_cd = 'T001' AND CD LIKE CONCAT(#{deptCd}, '%') AND use_yn = 'y'
 </select>
+
+<!-- 부서,팀 추가 시 이름 중복확인 -->
+<select id = "selectCdNmCnt"
+   parameterType="Map"
+   resultType="int">
+   SELECT COUNT(*) AS count
+   FROM st_std_cd
+   WHERE grp_cd = #{grpCd} AND cd_nm = #{cdNm}
+</select>
+
+<!-- 부서, 팀 추가 -->
+<insert id="insertStStdCd"
+	parameterType="com.goodee.cakecraft.vo.StStdCd">
+      INSERT INTO st_std_cd(
+      grp_cd,
+      cd,
+      cd_nm,
+      reg_dtime, 
+      mod_dtime, 
+      reg_id, 
+      mod_id
+       ) VALUES (
+           #{grpCd},
+           #{cd},
+           #{cdNm},
+           NOW(),
+           NOW(),
+           #{regId},
+           #{modId}
+       )
+</insert>
+
+<!-- 부서에대한 카운트  -->
+<select id = "selectDeptCnt"
+   parameterType="com.goodee.cakecraft.vo.StStdCd"
+   resultType="int">
+   SELECT COUNT(*) AS count
+   FROM st_std_cd
+   WHERE grp_cd = #{grpCd} 
+</select>
+
+<!-- 팀에대한 카운트-->
+<select id = "selectTeamCnt"
+   parameterType="String"
+   resultType="int">
+	SELECT COUNT(*) AS count
+	FROM st_std_cd
+	WHERE cd LIKE CONCAT(#{code},'%')  AND grp_Cd = 'T001';
+</select>
+
 </mapper>

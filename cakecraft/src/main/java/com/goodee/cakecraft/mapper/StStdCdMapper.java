@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.StStdCd;
 @Mapper
 public interface StStdCdMapper {
@@ -12,4 +13,17 @@ public interface StStdCdMapper {
 	
 	//각 부서에 따른 팀리스트 받아오기
 	List<StStdCd> selectTeamListByDept(String deptCd);
+	
+	//코드이름 중복확인
+	int selectCdNmCnt(StStdCd stStdCd);
+	
+	//공통코드 추가 ( 부서 , 팀)
+	int insertStStdCd(StStdCd stStdCd);
+	
+	//부서 카운트
+	int selectDeptCnt(StStdCd stStdCd);
+	
+	//부서별 팀 카운트
+	int selectTeamCnt(String code);
+	
 }
