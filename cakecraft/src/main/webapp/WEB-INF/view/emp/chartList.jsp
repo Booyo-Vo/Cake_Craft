@@ -5,8 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>chartList</title>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/layout/header.jsp"></jsp:include>
     ${month} 월 입사자 퇴사자
     <br>
     재직자 수: ${hireMonthCnt}

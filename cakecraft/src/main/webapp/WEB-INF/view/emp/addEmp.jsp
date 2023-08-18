@@ -5,30 +5,34 @@
 <head>
 <meta charset="UTF-8">
 <title>addEmp</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>
-//부서가 선택되면 해당부서에 맞는 팀만 나열되도록
 $(document).ready(function() {
-	// 부서선택이 변경 되었을때 실행
+    // 부서선택이 변경 되었을때 실행
     $('select[name="deptNm"]').change(function() {
-    	//선택된 부서의 값을 가져옴
+    	//부서선택시 선택된 부서값을 받아옴
         var selectedDept = $(this).val();
-        //팀 선택상자를 선택
+    	//팀 선택간을 선택함
         var teamSelect = $('select[name="teamNm"]');
-        
-        // AJAX 요청을 통해 부서에 따른 팀 목록을 가져온다
-       $.get('/getTeamListByDept?deptNm=' + selectedDept, function(teams) {
-            // 팀 선택란 초기화 후 옵션 추가
-            teamSelect.empty();
-         	//팀 배열에 대해 반복
-            $.each(teams, function(index, team) {
-                teamSelect.append($('<option>', {
-                    value: team.cdNm,
-                    text: team.cdNm,
-                    selected: team.cdNm === teamSelect.val()
-                }));
+        if (selectedDept !== '') {
+            // 부서가 선택되었을 때 팀 선택 드롭다운 활성화
+            teamSelect.prop('disabled', false);
+            
+            // AJAX 요청을 통해 부서에 따른 팀 목록을 가져온다
+            $.get('/stStdCd/getTeamListByDept?deptNm=' + selectedDept, function(teams) {
+                teamSelect.empty();
+                $.each(teams, function(index, team) {
+                    teamSelect.append($('<option>', {
+                        value: team.cdNm,
+                        text: team.cdNm
+                    }));
+                });
             });
-        });
+        } else {
+            // 부서가 선택되지 않았을 때 팀 선택 드롭다운 비활성화 및 초기화
+            teamSelect.prop('disabled', true);
+            teamSelect.empty();
+        }
     });
 });
 </script>
@@ -53,7 +57,8 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-    <form action="/emp/addEmp" method="post">
+<jsp:include page="/layout/header.jsp"></jsp:include>
+    <form action="/cakecraft/emp/addEmp" method="post">
         <table>
             <tr>
                 <td>이름</td>
@@ -76,7 +81,7 @@ $(document).ready(function() {
 		<tr>
 		    <td>팀</td>
 		    <td>
-		        <select name="teamNm">
+		        <select name="teamNm" disabled>
 		            <c:forEach items="${teamList}" var="t">
 		            	<!-- 기본값이 선택되어있고 (부서선택에 따른)변경된 값이 보내지도록 설정 -->
 		                <option value="${t.cdNm}" ${t.cdNm == empbase.teamNm ? 'selected' : ''}>${t.cdNm}</option>

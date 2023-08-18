@@ -150,7 +150,7 @@ public class AdminEmpService {
 		return empbase;
 	}
 	
-	// 관라지가 하는 사원정보수정
+	// 관리자가 하는 사원정보수정
 	public int modifyEmp(EmpBase empBase) {
 		//퇴사자로 정보변경이 된다면
 		if (empBase.getEmpStatus().equals("퇴사자")) {

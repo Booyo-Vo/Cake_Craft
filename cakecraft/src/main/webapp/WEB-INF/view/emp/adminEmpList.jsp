@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>adminEmpList</title>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 <!-------------jdgrid  --------->
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/redmond/jquery-ui.css" type="text/css" />
  <!-- jqGrid CSS -->
@@ -83,7 +84,7 @@ $(document).ready(function() {
         var rowId = $(this).closest("tr.jqgrow").attr("id");
         var rowData = $("#list").jqGrid("getRowData", rowId);
         var id = rowData.id;
-        window.location.href = "/emp/adminEmpById?id=" + id;
+        window.location.href = "/cakecraft/emp/adminEmpById?id=" + id;
     });
     
     // 선택 가능한 열에 밑줄 스타일 추가
@@ -101,7 +102,8 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<a href="/emp/addEmp">사원추가</a>
+<jsp:include page="/layout/header.jsp"></jsp:include>
+<a href="/cakecraft/emp/addEmp">사원추가</a>
 <table id="list"></table>
 <div id="pager"></div>
 <div style="margin-top: 20px; margin-left: 15px; font-size: 12px;">

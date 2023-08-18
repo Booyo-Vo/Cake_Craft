@@ -5,8 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>adminEmpById</title>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/layout/header.jsp"></jsp:include>
 <table>
     <tbody>
         <tr>
@@ -79,6 +81,6 @@
         </tr>
     </tbody>
 </table>
-<a href="/emp/modifyEmp?id=${empbase.id}">사원수정</a>
+<a href="/cakecraft/emp/modifyEmp?id=${empbase.id}">사원수정</a>
 </body>
 </html>

@@ -44,8 +44,8 @@
 	        #{address},
 	        NOW(),
 	        NOW(),
-	        #{id},
-	        #{id}
+	        #{regId},
+	        #{modId}
 	    )
 	</insert>
 		
@@ -113,7 +113,7 @@
 			retire_date = #{retireDate},
 			address = #{address},
 			mod_dtime = NOW(),
-			mod_id = #{id}
+			mod_id = #{modId}
 		WHERE id = #{id}
 	</update>
 	

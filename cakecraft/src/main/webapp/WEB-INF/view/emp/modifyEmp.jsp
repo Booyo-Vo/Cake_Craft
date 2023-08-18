@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>modifyEmp</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>
 //부서가 선택되면 해당부서에 맞는 팀만 나열되도록
 $(document).ready(function() {
@@ -17,7 +17,7 @@ $(document).ready(function() {
         var teamSelect = $('select[name="teamNm"]');
         
         // AJAX 요청을 통해 부서에 따른 팀 목록을 가져온다
-       $.get('/getTeamListByDept?deptNm=' + selectedDept, function(teams) {
+       $.get('/cakecraft/stStdCd/getTeamListByDept?deptNm=' + selectedDept, function(teams) {
             // 팀 선택란 초기화 후 옵션 추가
             teamSelect.empty();
          	//팀 배열에 대해 반복
@@ -28,8 +28,16 @@ $(document).ready(function() {
                     selected: team.cdNm === teamSelect.val()
                 }));
             });
+
+            // 선택된 팀 값을 설정
+            var selectedTeam = teamSelect.attr('data-selected-team'); // 미리 설정된 값
+            if (selectedTeam) {
+                teamSelect.val(selectedTeam);
+            }
         });
     });
+    // 페이지 로딩이 완료되었을 때 실행
+    $('select[name="deptNm"]').trigger('change');
 });
 </script>
 <script>
@@ -70,12 +78,11 @@ $(document).ready(function() {
     $('form').submit(function(event) {
         // 입력 필드 값 가져오기
         var empName = $('input[name="empName"]').val();
-        var retireDate = $('input[name="retireDate"]').val();
         var address = $('input[name="address"]').val();
         var empPhone = $('input[name="empPhone"]').val();
 
         // 공백 체크
-        if (empName.trim() === '' || retireDate.trim() === '' || address.trim() === '' || empPhone.trim() === '') {
+        if (empName.trim() === '' || address.trim() === '' || empPhone.trim() === '') {
             alert('필수 입력 항목을 모두 입력해주세요.');
             event.preventDefault(); // 폼 제출 중지
         }
@@ -84,7 +91,8 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
- <form action="/emp/modifyEmp" method="post">
+<jsp:include page="/layout/header.jsp"></jsp:include>
+ <form action="/cakecraft/emp/modifyEmp" method="post">
 <table>
     <tbody>
         <tr>
@@ -112,7 +120,7 @@ $(document).ready(function() {
 		<tr>
 		    <th>팀</th>
 		    <td>
-		        <select name="teamNm" required>
+		        <select name="teamNm" required data-selected-team="${empbase.teamNm}">
 		            <c:forEach items="${teamList}" var="t">
 		            	<!-- 기본값이 선택되어있고 (부서선택에 따른)변경된 값이 보내지도록 설정 -->
 		                <option value="${t.cdNm}" ${t.cdNm == empbase.teamNm ? 'selected' : ''}>${t.cdNm}</option>

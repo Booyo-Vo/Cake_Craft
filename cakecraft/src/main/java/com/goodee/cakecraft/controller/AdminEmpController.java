@@ -2,6 +2,8 @@ package com.goodee.cakecraft.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.EmpBase;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.StStdCd;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +50,15 @@ public class AdminEmpController {
 	}
 	// 사원추가 액션
 	@PostMapping("/emp/addEmp")
-		public String addEmp(EmpBase empbase) {
+		public String addEmp(HttpSession session, EmpBase empbase) {
+		//세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(GREEN + "addEmp loginId :"+loginId + RESET);
+		//empbase에 로그인된 아이디 담기
+		empbase.setModId(loginId);
+		empbase.setRegId(loginId);
+		
 		int addEmprow = adminempService.addEmp(empbase);
 		log.debug(GREEN +"addEmprow :" + addEmprow +RESET);
 		return "redirect:/emp/adminEmpList";
@@ -97,7 +108,15 @@ public class AdminEmpController {
 	
 	// 관리자가 하는 사원수정액션
 	@PostMapping("/emp/modifyEmp")
-		public String modifyEmp(EmpBase empbase) {
+		public String modifyEmp(HttpSession session, EmpBase empbase) {
+		//세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(GREEN + "addEmp loginId :"+loginId + RESET);
+		//empbase에 수정자 아이디 담기
+		empbase.setModId(loginId);
+		
+		
 		int modifyEmpRow = adminempService.modifyEmp(empbase);
 		log.debug(GREEN + "modifyEmpRow :"+modifyEmpRow + RESET);
 		return "redirect:/emp/adminEmpById?id=" + empbase.getId();
