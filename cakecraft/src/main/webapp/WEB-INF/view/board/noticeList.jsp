@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>noticeList.jsp</title>
+<title>Cake Craft</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <h1>공지 게시판</h1>
 <!-- 작성자, 공지내용 검색 -->
-<form action="/board/noticeList" method="get">
+<form action="${pageContext.request.contextPath}/board/noticeList" method="get">
 	<div>
 		<input type="text" name="searchRegId" placeholder="작성자 입력">
 		<input type="text" name="searchWord" placeholder="공지내용 입력">
@@ -20,7 +20,7 @@
 	</div>
 </form>
 <div>
-	<a href="/board/addNotice"><button type="button">공지사항 작성</button></a>
+	<a href="${pageContext.request.contextPath}/board/addNotice"><button type="button">공지사항 작성</button></a>
 </div>
 <!-- 공지 목록 -->
 <table>
@@ -36,7 +36,9 @@
 		<c:forEach var="n" items="${noticeList}">
 			<tr>
 				<td>${n.noticeNo}</td>
-				<td>${n.noticeTitle}</td>
+				<td>
+					<a href="${pageContext.request.contextPath}/board/noticeByNo?noticeNo=${n.noticeNo}">${n.noticeTitle}</a>
+				</td>
 				<td>${n.regDtime}</td>
 				<td>${n.regId}</td>
 			</tr>

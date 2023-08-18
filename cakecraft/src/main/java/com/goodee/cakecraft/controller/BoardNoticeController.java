@@ -19,12 +19,12 @@ import com.goodee.cakecraft.vo.EmpIdList;
 public class BoardNoticeController {
 	@Autowired BoardNoticeService noticeService;
 	
+	// 공지 목록 조회 
 	@GetMapping("/board/noticeList")
 	public String noticeList(Model model,
 							@RequestParam(name = "searchRegId", defaultValue = "") String searchRegId,
 							@RequestParam(name = "searchWord", defaultValue = "") String searchWord) {
 		
-		// 공지 목록 조회 
 		Map<String, Object> resultMap = noticeService.getNoticeList(searchRegId, searchWord);
 		
 		model.addAttribute("noticeList",resultMap.get("noticeList"));
@@ -45,18 +45,51 @@ public class BoardNoticeController {
 	}
 	
 	@PostMapping("/board/addNotice")
-	public String addNotice(@RequestParam(name="id") String id,
-							@RequestParam(name="noticeTitle") String noticeTitle,
-							@RequestParam(name="noticeContent") String noticeContent) {
-		
-		BoardNotice notice = new BoardNotice();
-		notice.setId(id);
-		notice.setNoticeTitle(noticeTitle);
-		notice.setNoticeContent(noticeContent);
+	public String addNotice(BoardNotice notice) {
 		
 		noticeService.addNotice(notice);
 		
 		return "redirect:/board/noticeList";
 	}
 	
+	// 공지 수정
+	@GetMapping("/board/modifyNotice")
+	public String modifyNotice(Model model, HttpSession session, BoardNotice notice) {
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		model.addAttribute("loginId",loginId);
+		
+		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
+		model.addAttribute("noticeByNo", noticeByNo);
+		
+		return "/board/modifyNotice";
+	}
+	
+	@PostMapping("/board/modifyNotice")
+	public String modifyNotice(BoardNotice notice) {
+		
+		noticeService.modifyNotice(notice);
+		
+		return "redirect:/board/noticeList";
+	}
+	
+	// 공지 삭제
+	@GetMapping("/board/removeNotice")
+	public String removeNotice(BoardNotice notice) {
+		
+		noticeService.removeNotice(notice);
+		
+		return "redirect:/board/noticeList";
+	}
+	
+	// 공지 상세 정보 조회
+	@GetMapping("/board/noticeByNo")
+	public String noticeByNo(Model model, BoardNotice notice) {
+		
+		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
+		model.addAttribute("noticeByNo",noticeByNo);
+		
+		return "/board/noticeByNo";
+	}
 }

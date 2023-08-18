@@ -1,4 +1,4 @@
-package com.goodee.cakecraft.service;
+ package com.goodee.cakecraft.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +23,7 @@ public class BoardNoticeService {
 	final String RESET = "\u001B[0m";	
 	final String GEH = "\u001B[45m";
 	
+	// 공지 목록 조회
 	public Map<String, Object> getNoticeList(String searchRegId, String searchWord){
 		
 		// Dao의 매개값형태에 맞게 가공
@@ -37,16 +38,37 @@ public class BoardNoticeService {
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("noticeList",noticeList);
-				
+		
 		return resultMap;
 				
 	}
 	
+	// 공지 상세 정보 조회
+	public BoardNotice getNoticeByNo(BoardNotice notice) {
+		BoardNotice resultNotice = noticeMapper.selectNoticeByNo(notice);
+		
+		return resultNotice;
+	}
+	
 	// 공지 추가
 	public int addNotice(BoardNotice notice) {
-		// 반환값
 		int row = noticeMapper.insertNotice(notice);
 		
 		return row;
 	}
+	
+	// 공지 수정
+	public int modifyNotice(BoardNotice notice) {
+		int row = noticeMapper.updateNotice(notice);
+		
+		return row;
+	}
+	
+	// 공지 삭제
+	public int removeNotice(BoardNotice notice) {
+		int row = noticeMapper.deleteNotice(notice);
+		
+		return row;
+	}
+	
 }
