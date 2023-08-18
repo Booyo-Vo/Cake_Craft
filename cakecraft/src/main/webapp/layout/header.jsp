@@ -6,7 +6,7 @@ function logout() {
         localStorage.removeItem('rememberedId');
 
         // 로컬스토리지 + 세션 정보 삭제
-        fetch('/logout', {
+        fetch('/cakecraft/logout', {
             method: 'GET',
             credentials: 'same-origin'
         }).then(response => {
@@ -24,7 +24,7 @@ function logout() {
 </script>
 <nav class="navbar navbar-expand-md custom-navbar">
   <!-- Brand -->
-  <a class="navbar-brand" href="/schedule/schedule">cake craft</a>
+  <a class="navbar-brand" href="/cakecraft/schedule/schedule">cake craft</a>
 
   <!-- Toggler/collapsibe Button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">

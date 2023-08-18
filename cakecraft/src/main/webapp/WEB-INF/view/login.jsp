@@ -37,7 +37,7 @@
             const pw = pwInput.value;
             
             // AJAX 요청 보내기
-            fetch("/api/login", {
+            fetch("/cakecraft/api/login", {
                 method: "POST",
                 body: JSON.stringify({ id: id, pw: pw }),
                 headers: {
@@ -49,7 +49,7 @@
                 if (data.success) {
                 	alert("ajax 로그인 성공");
                     localStorage.setItem("rememberedId", id);
-                    window.location.href = "/schedule/schedule"; // 로그인 성공 시 schedule로 이동
+                    window.location.href = "/cakecraft/schedule/schedule"; // 로그인 성공 시 schedule로 이동
                 } else {
                     alert("ajax 로그인 실패");
                 }
@@ -63,7 +63,7 @@
 
 	<div class=" container login-wrapper">
         <h2>Login</h2>
-        <form method="post" action="/login">
+        <form method="post" action="/cakecraft/login">
             <input type="text" name="id" placeholder="id" value="${loginId}">
             <input type="password" name="pw" placeholder="pw">
             <label for="remember-check">

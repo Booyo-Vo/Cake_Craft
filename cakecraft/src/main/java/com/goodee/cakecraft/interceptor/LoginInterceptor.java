@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     	HttpSession session = request.getSession();
         if (session.getAttribute("loginMember") == null) {
         	// 로그인이 되어 있지 않으면 home.jsp로 리다이렉트
-        	response.sendRedirect("/login");
+        	response.sendRedirect("/cakecraft/login");
         	log.debug(BLUE + "loginMember / LoginInterceptor" + session.getAttribute("loginMember")+ RESET);
             log.debug(BLUE + "preHandle 작동 interceptor login"+ RESET);
             return false;
