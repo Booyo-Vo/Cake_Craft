@@ -33,7 +33,7 @@ public class Configuration implements WebMvcConfigurer {
 	        registry.addInterceptor(myLoginInterceptor())
 	                .addPathPatterns("/emp/**","/facility/**","/schedule/**","/approval/**","/board/**","/reservation/**")
 	                // /board로 시작하는 경로에 대해서 인터셉터 적용
-	                .excludePathPatterns("/login");
+	                .excludePathPatterns("/login","/src/**","/vendors/**");
 	        		// /login 경로는 인터셉터에서 제외
 	        log.debug(BLUE + "Configuration 활성화" + RESET);
 	    }

@@ -11,9 +11,9 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <h1>${targetYear}년 ${targetMonth+1}월 </h1>
-<a href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
-<a href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
-<div class="container">
+<a href="/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
+<a href="/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
+<div class="main-container">
 	<div class="row">
 		<!-- 달력 시작 -->
 		<div class="col-8">
@@ -213,11 +213,14 @@
 		<!-- 일정 수정 모달창 끝 -->
 	</div>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
+jQuery.noConflict(); 
 // 날짜 클릭 시 일정추가 모달창에 날짜값 넘겨주기 및 모달 띄우기
 function date(d, targetYear, targetMonth){
+	
 	$.ajax({
-		url : '${pageContext.request.contextPath}/rest/addSchedule',
+		url : '/rest/addSchedule',
 		type : 'post',
 		data : {
 			targetDate : d,
@@ -256,7 +259,7 @@ function addSchedule(){
 	}
 	// 입력폼 제출
 	const addScheduleForm = $('#addScheduleForm');
-	addScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/addSchedule');
+	addScheduleForm.attr('action', '/schedule/addSchedule');
 	addScheduleForm.attr('method', 'post');
 	addScheduleForm.submit();
 }
@@ -264,7 +267,7 @@ function addSchedule(){
 // 일정 클릭 시 상세보기 및 일정수정 모달 띄우기
 function scheduleNo(scheduleNo){
 	$.ajax({
-		url : '${pageContext.request.contextPath}/rest/modifySchedule',
+		url : '/rest/modifySchedule',
 		type : 'post',
 		data : {
 			scheduleNo : scheduleNo
@@ -307,7 +310,7 @@ function modifySchedule(){
 	
 	// 수정폼 제출
 	const modifyScheduleForm = $('#modifyScheduleForm');
-	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
+	modifyScheduleForm.attr('action', '/schedule/modifySchedule');
 	modifyScheduleForm.attr('method', 'post');
 	modifyScheduleForm.submit();
 }
@@ -318,7 +321,7 @@ function removeSchedule() {
     const id = '${loginId}';
 
     if (confirm('일정을 삭제하시겠습니까?')) {
-        window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&id=' + id;
+        window.location.href = '/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&id=' + id;
     }
 }
 
