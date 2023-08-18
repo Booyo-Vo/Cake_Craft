@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ApprovalDocument {
-	private int documentNo;
+	private String documentNo;
 	private String id;
 	private String documentTitle;
 	private String documentContent;

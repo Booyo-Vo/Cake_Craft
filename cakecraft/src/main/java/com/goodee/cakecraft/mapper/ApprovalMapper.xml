@@ -100,6 +100,18 @@
 			</where>
 	</select>
 	
+	<!-- 문서번호 생성 -->
+	<select id="selectDocumentNo"
+		parameterType="com.goodee.cakecraft.vo.ApprovalDocument"
+		resultType="String">
+		SELECT
+			CONCAT(
+			RIGHT(YEAR(CURRENT_TIMESTAMP), 2), 
+			LPAD(MONTH(CURRENT_TIMESTAMP), 2, '0'),
+			#{apprDocCd},
+			RIGHT(CURRENT_TIMESTAMP(4), 4)) AS documentNo;
+	</select>
+	
 	<!-- 결재 문서 추가 -->
 	<insert id="insertApprDoc"
 			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
