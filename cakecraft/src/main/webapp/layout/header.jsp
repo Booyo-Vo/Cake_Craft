@@ -155,8 +155,8 @@
 	<div class="left-side-bar">
 		<div class="brand-logo">
 			<a href="index.html">
-				<img src="vendors/images/deskapp-logo.svg" alt="" class="dark-logo">
-				<img src="vendors/images/deskapp-logo-white.svg" alt="" class="light-logo">
+				<img src="../vendors/images/deskapp-logo.svg" alt="" class="dark-logo">
+				<img src="../vendors/images/deskapp-logo-white.svg" alt="" class="light-logo">
 			</a>
 			<div class="close-sidebar" data-toggle="left-sidebar-close">
 				<i class="ion-close-round"></i>
@@ -165,6 +165,10 @@
 		<div class="menu-block customscroll">
 			<div class="sidebar-menu">
 				<ul id="accordion-menu">
+					<div>
+						<button id="startWorkBtn" disabled>출근</button>
+						<button id="endWorkBtn" disabled>퇴근</button>
+					</div>
 					<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
 							<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
@@ -215,25 +219,104 @@
 	<script src="../vendors/scripts/process.js"></script>
 	<script src="../vendors/scripts/layout-settings.js"></script>
 
+	<script>
+	  // 사용자의 위치 정보 가져오기
+	 navigator.geolocation.getCurrentPosition(
+		jQuery.noConflict();
+	    position => {
+	    	const latitude = position.coords.latitude;
+	        const longitude = position.coords.longitude;
+	        console.log(latitude);
+	        console.log(longitude);
+	        // 위도(latitude)와 경도(longitude)를 이용해 위치 정보 활용 가능
+	        // 이후 출퇴근 버튼 활성화 여부 결정에 사용
+	      },
+	      error => {
+	        console.error("위치 정보를 가져오는데 실패했습니다.", error);
+	      }
+	    );
+	 	 const userLocation = {
+		  latitude: 37.4730836,
+		  longitude: 126.8788276 // 사용자의 실제 위치 정보로 갱신해야 합니다.
+		};
 
+		// 출근 버튼을 활성화할 위치 범위
+		const startWorkLocation = {
+		  latitude: 37.4730836,
+		  longitude: 126.8788276
+		};
+		// thresholdDistance 정의
+		const thresholdDistance = 1; // 단위: km
 
+		// 퇴근 버튼을 활성화할 위치 범위
+		const endWorkLocation = {
+		  latitude: 37.4730836,
+		  longitude: 126.8788276
+		};
 
-
-<nav class="navbar navbar-expand-md custom-navbar">
-  Brand
-  <a class="navbar-brand" href="/cakecraft/schedule/schedule">cake craft</a>
-
-  Toggler/collapsibe Button
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  Navbar links
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
+		// 출근 버튼 활성화 여부 결정
+		const startWorkBtn = document.getElementById("startWorkBtn");
+		if (calculateDistance(userLocation, startWorkLocation) <= thresholdDistance) {
+		  startWorkBtn.disabled = false;
+		} else {
+		  startWorkBtn.disabled = true;
+		}
 		
-      </li>
-    </ul>
-  </div>
-</nav>
+		// 퇴근 버튼 활성화 여부 결정
+		const endWorkBtn = document.getElementById("endWorkBtn");
+		if (!startWorkBtn.disabled && calculateDistance(userLocation, endWorkLocation) <= thresholdDistance) {
+		  endWorkBtn.disabled = false;
+		} else {
+		  endWorkBtn.disabled = true;
+		}
+
+		// 두 위치 간의 거리 계산 함수
+		function calculateDistance(location1, location2) {
+		  const earthRadius = 6371; // 지구 반지름 (단위: km)
+		  const dLat = degToRad(location2.latitude - location1.latitude);
+		  const dLon = degToRad(location2.longitude - location1.longitude);
+
+		  const a =
+		    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		    Math.cos(degToRad(location1.latitude)) * Math.cos(degToRad(location2.latitude)) *
+		    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+		  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		  const distance = earthRadius * c; // 두 위치 사이의 거리 (단위: km)
+		  return distance;
+		}
+
+		// 각도를 라디안으로 변환하는 함수
+		function degToRad(degrees) {
+		  return degrees * (Math.PI / 180);
+		}
+	document.addEventListener("DOMContentLoaded", function () {
+		const startWorkBtn = document.getElementById("startWorkBtn");
+	    const endWorkBtn = document.getElementById("endWorkBtn");
+		// 출근 버튼 클릭 이벤트 처리
+	    startWorkBtn.addEventListener("click", () => {
+	        const currentTime = new Date().toISOString();
+	        const startWorkHistory = {
+	            type: "출근",
+	            time: currentTime
+	        };
+	        saveWorkHistory(startWorkHistory);
+	        startWorkBtn.disabled = true; // 출근 버튼이 눌리면 비활성화
+	        endWorkBtn.disabled = false; // 퇴근 버튼이 눌리면 활성화
+	    });
+
+	 	// 퇴근 버튼 클릭 이벤트 처리
+	 	endWorkBtn.addEventListener("click", () => {
+	 	  const currentTime = new Date().toISOString();
+	 	  const endWorkHistory = {
+	 	    type: "퇴근",
+	 	    time: currentTime
+	 	  };
+	 	  saveWorkHistory(endWorkHistory);
+	 	 endWorkBtn.disabled = true; //퇴근 버튼이 눌리면 비활성화
+	 	 startWorkBtn.disabled = false; //출근 버튼이 눌리면 활성화
+	 	});
+	 });
+ 	
+    </script>
