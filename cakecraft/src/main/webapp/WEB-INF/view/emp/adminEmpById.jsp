@@ -9,6 +9,7 @@
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container">
 <table>
     <tbody>
         <tr>
@@ -82,5 +83,6 @@
     </tbody>
 </table>
 <a href="/cakecraft/emp/modifyEmp?id=${empbase.id}">사원수정</a>
+</div>
 </body>
 </html>

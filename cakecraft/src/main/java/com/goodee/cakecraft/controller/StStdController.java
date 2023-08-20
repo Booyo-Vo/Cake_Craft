@@ -36,7 +36,7 @@ public class StStdController {
 	        List<StStdCd> teamList = stStdCdService.getTeamListByDept(deptNm);
 	        return teamList;
     }
-    //부서, 팀 관리 페이지 (Modal로 부서추가 팀추가)
+    //부서, 팀 관리 페이지 (Modal로 추가, 수정)
     @GetMapping("/stStdCd/stStdCdList")
     	public String stStdCdList(Model model) {
     	// 부서와 팀 리스트
@@ -97,4 +97,48 @@ public class StStdController {
         }
     }
 
+    //부서수정액션
+    @GetMapping("/stStdCd/modifyDeptCdNm")
+    @ResponseBody
+    	public String modifyDeptCdNm(HttpSession session, @RequestParam String originDeptCdNm,  @RequestParam String updatedDeptCdNm) {
+		//세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(GREEN + "modifyDeptCdNm loginId :"+loginId + RESET);
+		log.debug(GREEN + "modifyDeptCdNm originDeptCdNm :"+originDeptCdNm + RESET);
+		log.debug(GREEN + "modifyDeptCdNm updatedDeptCdNm :"+updatedDeptCdNm + RESET);
+		
+    	
+    	int modifyDeptRow = stStdCdService.modifyDeptCdNm(loginId, originDeptCdNm,updatedDeptCdNm);
+        if (modifyDeptRow == 0) {
+            return "FAIL";
+        } else if (modifyDeptRow == -1) {
+            return "DUPLICATE";
+        } else {
+            return "SUCCESS";
+        }
+    }   
+    
+    //팀수정액션
+    @GetMapping("/stStdCd/modifyTeamCdNm")
+    @ResponseBody
+    	public String modifyTeamCdNm(HttpSession session, @RequestParam String originTeamCdNm,  @RequestParam String updatedTeamCdNm) {
+		//세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(GREEN + "modifyTeamCdNm loginId :"+loginId + RESET);
+		log.debug(GREEN + "modifyTeamCdNm originTeamCdNm :"+originTeamCdNm + RESET);
+		log.debug(GREEN + "modifyTeamCdNm updatedTeamCdNm :"+updatedTeamCdNm + RESET);
+		
+    	
+    	int modifyTeamRow = stStdCdService.modifyTeamCdNm(loginId, originTeamCdNm,updatedTeamCdNm);
+        if (modifyTeamRow == 0) {
+            return "FAIL";
+        } else if (modifyTeamRow == -1) {
+            return "DUPLICATE";
+        } else {
+            return "SUCCESS";
+        }
+    }
+    
 }

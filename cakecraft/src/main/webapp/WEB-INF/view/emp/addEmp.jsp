@@ -19,7 +19,7 @@ $(document).ready(function() {
             teamSelect.prop('disabled', false);
             
             // AJAX 요청을 통해 부서에 따른 팀 목록을 가져온다
-            $.get('/stStdCd/getTeamListByDept?deptNm=' + selectedDept, function(teams) {
+            $.get('/cakecraft/stStdCd/getTeamListByDept?deptNm=' + selectedDept, function(teams) {
                 teamSelect.empty();
                 $.each(teams, function(index, team) {
                     teamSelect.append($('<option>', {
@@ -58,6 +58,7 @@ $(document).ready(function() {
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container">
     <form action="/cakecraft/emp/addEmp" method="post">
         <table>
             <tr>
@@ -73,7 +74,7 @@ $(document).ready(function() {
 		    <td>
 		        <select name="deptNm">
 		            <c:forEach items="${deptList}" var="d">
-		                <option value="${d.cdNm}" ${d.cdNm == empbase.deptNm ? 'selected' : ''}>${d.cdNm}</option>
+		                <option>${d.cdNm}</option>
 		            </c:forEach>
 		        </select>
 		    </td>
@@ -84,7 +85,7 @@ $(document).ready(function() {
 		        <select name="teamNm" disabled>
 		            <c:forEach items="${teamList}" var="t">
 		            	<!-- 기본값이 선택되어있고 (부서선택에 따른)변경된 값이 보내지도록 설정 -->
-		                <option value="${t.cdNm}" ${t.cdNm == empbase.teamNm ? 'selected' : ''}>${t.cdNm}</option>
+		                <option>${t.cdNm}</option>
 		            </c:forEach>
 		        </select>
 		    </td>
@@ -94,7 +95,7 @@ $(document).ready(function() {
 		    <td>
 		        <select name="positionNm">
 		            <c:forEach items="${positionList}" var="p">
-		                <option value="${p.cdNm}" ${p.cdNm == empbase.positionNm ? 'selected' : ''}>${p.cdNm}</option>
+		                <option>${p.cdNm}</option>
 		            </c:forEach>
 		        </select>
 		    </td>
@@ -118,5 +119,6 @@ $(document).ready(function() {
         </table>
         <button type="submit">사원추가</button>
     </form>
+ </div>
 </body>
 </html>

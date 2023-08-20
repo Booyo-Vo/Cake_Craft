@@ -20,6 +20,8 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/jqgrid/4.6.0/jquery.jqGrid.src.js" /></script>
 <script>
 $(document).ready(function() {
+		jQuery.noConflict(); 
+		
 	var mydata = [ //데이터
         <c:forEach var="e" items="${adminEmpList}">
         	{name: "${e.empName}", id: "${e.id}", deptNm: "${e.deptNm}", teamNm: "${e.teamNm}", positionNm: "${e.positionNm}", email: "${e.email}", empStatus: "${e.empStatus}", dayoffCnt: "${e.dayoffCnt}"},
@@ -103,6 +105,8 @@ $(document).ready(function() {
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container">
+
 <a href="/cakecraft/emp/addEmp">사원추가</a>
 <table id="list"></table>
 <div id="pager"></div>
@@ -117,6 +121,7 @@ $(document).ready(function() {
     <button class="btn btn-info btn-fill" id="searchButton" value="검색" style="width: 10%; float: left; margin-left: 10px;">
         검색
     </button>
+</div>
 </div>
 </body>
 </html>

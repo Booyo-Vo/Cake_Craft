@@ -1,10 +1,10 @@
 package com.goodee.cakecraft.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.StStdCd;
 @Mapper
 public interface StStdCdMapper {
@@ -17,7 +17,7 @@ public interface StStdCdMapper {
 	//코드이름 중복확인
 	int selectCdNmCnt(StStdCd stStdCd);
 	
-	//공통코드 추가 ( 부서 , 팀)
+	//공통코드 추가 (부서 , 팀)
 	int insertStStdCd(StStdCd stStdCd);
 	
 	//부서 카운트
@@ -26,4 +26,6 @@ public interface StStdCdMapper {
 	//부서별 팀 카운트
 	int selectTeamCnt(String code);
 	
+	//부서, 팀 이름 수정
+	int updateCdNm(Map<String, Object> paramMap);
 }

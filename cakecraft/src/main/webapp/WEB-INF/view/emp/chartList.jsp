@@ -9,6 +9,7 @@
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container">
     ${month} 월 입사자 퇴사자
     <br>
     재직자 수: ${hireMonthCnt}
@@ -62,5 +63,6 @@
     남자${genderCnt.maleCount}
     여자${genderCnt.femaleCount}
 	</c:forEach>
+</div>
 </body>
 </html>

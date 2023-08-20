@@ -37,7 +37,7 @@
 
 <!-- 부서,팀 추가 시 이름 중복확인 -->
 <select id = "selectCdNmCnt"
-   parameterType="Map"
+   parameterType="com.goodee.cakecraft.vo.StStdCd"
    resultType="int">
    SELECT COUNT(*) AS count
    FROM st_std_cd
@@ -83,5 +83,15 @@
 	FROM st_std_cd
 	WHERE cd LIKE CONCAT(#{code},'%')  AND grp_Cd = 'T001';
 </select>
+
+<!-- 부서,팀 이름 수정 -->
+<update id = "updateCdNm"
+	parameterType ="Map">
+	UPDATE st_std_cd
+	SET cd_nm = #{updateCdNm},
+		mod_id = #{loginId},
+		mod_dtime = NOW()
+	WHERE grp_cd = #{grpCd} AND cd_nm = #{originCdNm}
+</update>
 
 </mapper>

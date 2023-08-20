@@ -1,11 +1,9 @@
 package com.goodee.cakecraft.service;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.StStdCdMapper;
-import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.StStdCd;
 
 import lombok.extern.slf4j.Slf4j;
@@ -105,37 +102,88 @@ public class StStdCdService {
 	
 	//팀 추가
 	public int addTeam(StStdCd stStdCd, String teamDeptNm, String teamNm) {
-	//팀 코드설정 
-	String deptCd = "T001";
-	stStdCd.setGrpCd(deptCd);
-
-	//1) 입력된 팀이름 중복확인
-	int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
-	log.debug(GREEN+"addTeam DeptNmCnt :"+ deptNmCnt +RESET);
-	if (deptNmCnt>0) {
-		 return -1; // 중복된 값이 있음을 나타내는 음수
+		//팀 코드설정 
+		String deptCd = "T001";
+		stStdCd.setGrpCd(deptCd);
+	
+		//1) 입력된 팀이름 중복확인
+		stStdCd.setCdNm(teamNm);
+		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
+		log.debug(GREEN+"addTeam DeptNmCnt :"+ deptNmCnt +RESET);
+		if (deptNmCnt>0) {
+			 return -1; // 중복된 값이 있음을 나타내는 음수
+		}
+		//받아온 부서이름을 부서코드로 바꾼다
+		Map<String, Object> deptCdMap = commonMapper.getCode(teamDeptNm);
+		log.debug(GREEN+"addTeam deptCdMap :"+ deptCdMap +RESET);
+		//맵에서 풀면서 toString 해준다 Object
+		String code = deptCdMap.get("cd").toString();
+		log.debug(GREEN+"addTeam code :"+ code +RESET);
+		
+		// 추가된 팀의 cd값 추가를 위해 (connt+1)+(code*10)을 계산하여 cd값에 넣어준다
+		int teamCnt =  stStdCdMapper.selectTeamCnt(code);
+		log.debug(GREEN+"addTeam teamCnt :"+ teamCnt +RESET);
+		
+		int cd = (teamCnt + 1) + (Integer.parseInt(code) * 10);
+		log.debug(GREEN+"addTeam cd :"+ cd +RESET);
+		stStdCd.setCd(String.valueOf(cd));
+		//2) 부서이름 추가하기
+		int insertStStdCdrow = stStdCdMapper.insertStStdCd(stStdCd);
+		
+		return insertStStdCdrow;
 	}
-	//받아온 부서이름을 부서코드로 바꾼다
-	Map<String, Object> deptCdMap = commonMapper.getCode(teamDeptNm);
-	log.debug(GREEN+"addTeam deptCdMap :"+ deptCdMap +RESET);
-	//맵에서 풀면서 toString 해준다 Object
-	String code = deptCdMap.get("cd").toString();
-	log.debug(GREEN+"addTeam code :"+ code +RESET);
 	
-	// 추가된 팀의 cd값 추가를 위해 (connt+1)+(code*10)을 계산하여 cd값에 넣어준다
-	int teamCnt =  stStdCdMapper.selectTeamCnt(code);
-	log.debug(GREEN+"addTeam teamCnt :"+ teamCnt +RESET);
-	
-	int cd = (teamCnt + 1) + (Integer.parseInt(code) * 10);
-	log.debug(GREEN+"addTeam cd :"+ cd +RESET);
-	stStdCd.setCd(String.valueOf(cd));
-	stStdCd.setCdNm(teamNm);
-	//2) 부서이름 추가하기
-	int insertStStdCdrow = stStdCdMapper.insertStStdCd(stStdCd);
-	
-	return insertStStdCdrow;
+	//부서 이름 수정
+	public int modifyDeptCdNm(String loginId, String originDeptCdNm, String updateDeptCdNm) {
+		//부서 코드설정 
+		String grpCd = "D001";
+		
+		//1) 입력된 이름 중복확인
+		StStdCd stStdCd = new StStdCd();
+		stStdCd.setCdNm(updateDeptCdNm);
+		stStdCd.setGrpCd(grpCd);
+		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
+		log.debug(GREEN+"modifyCdNm deptNmCnt :"+ deptNmCnt +RESET);
+		if (deptNmCnt>0) {
+			 return -1; // 중복된 값이 있음을 나타내는 음수
+		}
+		//맵으로 묶어 mapper로 전달
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("originCdNm", originDeptCdNm);
+		paramMap.put("grpCd", grpCd);
+		paramMap.put("updateCdNm", updateDeptCdNm);
+		paramMap.put("loginId", loginId);
+		// 2) 이름 수정
+		int updateCdNmRow = stStdCdMapper.updateCdNm(paramMap);
+		
+		return updateCdNmRow;
 	}
 	
+	//팀 이름 수정
+	public int modifyTeamCdNm(String loginId, String originTeamCdNm, String updateTeamCdNm) {
+		//부서 코드설정 
+		String grpCd = "T001";
+		
+		//1) 입력된 이름 중복확인
+		StStdCd stStdCd = new StStdCd();
+		stStdCd.setCdNm(updateTeamCdNm);
+		stStdCd.setGrpCd(grpCd);
+		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
+		log.debug(GREEN+"modifyCdNm deptNmCnt :"+ deptNmCnt +RESET);
+		if (deptNmCnt>0) {
+			 return -1; // 중복된 값이 있음을 나타내는 음수
+		}
+		//맵으로 묶어 mapper로 전달
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("originCdNm", originTeamCdNm);
+		paramMap.put("grpCd", grpCd);
+		paramMap.put("updateCdNm", updateTeamCdNm);
+		paramMap.put("loginId", loginId);
+		// 2) 이름 수정
+		int updateCdNmRow = stStdCdMapper.updateCdNm(paramMap);
+		
+		return updateCdNmRow;
+	}
 }
 	
 	

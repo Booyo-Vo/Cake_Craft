@@ -92,6 +92,7 @@ $(document).ready(function() {
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container">
  <form action="/cakecraft/emp/modifyEmp" method="post">
 <table>
     <tbody>
@@ -193,5 +194,6 @@ $(document).ready(function() {
 <input type ="hidden" name="id" value="${empbase.id}">
 <button type="submit">수정</button>
 </form>
+</div>
 </body>
 </html>
