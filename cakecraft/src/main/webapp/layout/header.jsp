@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script>
 	//로그아웃 버튼 클릭시
 	function logout() {
@@ -58,18 +59,17 @@
 					</a>
 				</div>
 			</div>
-			
 			<div class="user-info-dropdown">
-				<div class="dropdown">
-					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-						<span class="user-icon">
-							<img src="../vendors/images/photo1.jpg" alt="">
-						</span>
-						<span class="user-name">Ross C. Lopez 
-							<button type="button" onclick="logout()">로그아웃</button>
-						</span>
-					</a>
-				</div>
+			    <div class="dropdown">
+			        <a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
+			            <span class="user-icon">
+			                <img src="../vendors/images/photo1.jpg" alt="">
+			            </span>
+			            <span class="user-name">${empBase.id}
+			                <button type="button" onclick="logout()">로그아웃</button>
+			            </span>
+			        </a>
+			    </div>
 			</div>
 			<div class="github-link">
 				<a href="https://github.com/dropways/deskapp" target="_blank"><img src="../vendors/images/github.svg" alt=""></a>
@@ -222,7 +222,7 @@
 	<script>
 	  // 사용자의 위치 정보 가져오기
 	 navigator.geolocation.getCurrentPosition(
-		jQuery.noConflict();
+		//jQuery.noConflict();
 	    position => {
 	    	const latitude = position.coords.latitude;
 	        const longitude = position.coords.longitude;
