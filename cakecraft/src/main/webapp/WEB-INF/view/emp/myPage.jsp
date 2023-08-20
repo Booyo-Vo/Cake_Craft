@@ -10,6 +10,8 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
+<a href="/cakecraft/emp/empList" class="btn">사원조회</a>
+<button type="button">출근이력</button>
  <h3>마이페이지</h3>
 	<div>
 	    <!-- EmpBase 객체의 id 필드 값 출력 -->
@@ -49,6 +51,7 @@
 	<div>
 	    dayoffCnt ${empBase.dayoffCnt}
 	</div>
-</div>
+	<button type="button">정보수정</button>
+	</div>
 </body>
 </html>

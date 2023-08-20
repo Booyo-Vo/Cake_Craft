@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -52,6 +53,29 @@ public class EmpController {
 	    model.addAllAttributes(allAttributes);
 	    return "/emp/myPage";
 	}
+	
+	//사원리스트 출력
+	@GetMapping("/emp/empList")
+ 	public String empList(Model model) {
+		List<EmpBase> empList = empService.getEmpList();
+		
+		
+		model.addAttribute("empList", empList);
+		return "/emp/empList";
+		
+	}
+	
+	//사원상세내역 출력
+	
+	@GetMapping("/emp/empById")
+ 	public String adminEmpList(Model model,
+ 								@RequestParam String id) {
+	EmpBase empbase = empService.getEmpById(id); 
+	
+	//뷰로 값넘기기
+	model.addAttribute("empbase", empbase);
+	return "/emp/empById";
+}
 }
 	
 
