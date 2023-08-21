@@ -155,7 +155,7 @@
 	</select>
 	
 	<!-- 부서별 인원수 조회 -->
-	<select id="selectDeptdCnt" resultType="Map">
+	<select id="selectDeptCnt" resultType="Map">
 		SELECT p.dept_cd AS deptCd, s.cd_nm AS deptName, COUNT(p.dept_cd) AS deptCnt
 	    FROM st_std_cd s
 	    LEFT JOIN emp_base p ON p.dept_cd = s.cd
@@ -174,8 +174,8 @@
 	
 	<!-- 성별 인원수 조회 -->
 	<select id="selectGenderCnt" resultType="Map">
-		SELECT SUM(CASE WHEN SUBSTRING(social_no, 7, 1) IN ('1', '3') THEN 1 ELSE 0 END) AS maleCount,
-		       SUM(CASE WHEN SUBSTRING(social_no, 7, 1) IN ('2', '4') THEN 1 ELSE 0 END) AS femaleCount
+		SELECT SUM(CASE WHEN SUBSTRING(social_no, 8, 1) IN ('1', '3') THEN 1 ELSE 0 END) AS maleCount,
+		       SUM(CASE WHEN SUBSTRING(social_no, 8, 1) IN ('2', '4') THEN 1 ELSE 0 END) AS femaleCount
 		FROM emp_base;
 	</select>
 	

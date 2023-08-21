@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.DayoffMapper">
+    <!-- 연차리스트출력 -->	
+    <select id="selectDayoffById"
+            parameterType="string"
+            resultType="com.goodee.cakecraft.vo.EmpDayoff">
+        SELECT 
+            id, 
+            dayoff_status dayoffStatus, 
+            start_day startDay, 
+            end_day endDay, 
+            reg_dtime regDtime, 
+            mod_dtime modDtime, 
+            reg_id regId, 
+            mod_id modId
+        FROM emp_dayoff
+        WHERE id = #{id}
+    </select>
+    
+    	<!-- 사원추가 -->
+	<insert id="insertDayoff"
+	    parameterType="com.goodee.cakecraft.vo.EmpDayoff">
+	    INSERT INTO emp_dayoff(
+	        id, 
+	        dayoff_status, 
+	        start_day, 
+	        end_day, 
+	        reg_dtime, 
+	        mod_dtime, 
+	        reg_id, 
+	        mod_id
+	    ) VALUES (
+	        #{id},
+	        #{dayoffStatus},
+	        #{startDay},
+	        #{endDay},
+	        NOW(),
+	        NOW(),
+	        #{regId},
+	        #{modId}
+	    )
+	</insert>
+</mapper>

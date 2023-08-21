@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.AdminEmpService;
+import com.goodee.cakecraft.service.CommonService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
@@ -27,9 +29,11 @@ public class AdminEmpController {
 	final String RESET = "\u001B[0m"; 
 	
 	@Autowired
-	private AdminEmpService adminempService;
+	private AdminEmpService adminEmpService;
 	@Autowired 
 	private StStdCdService stStdCdService;
+	@Autowired 
+	private CommonService commonService;
 	
 	// 사원추가 폼
 	@GetMapping("/emp/addEmp")
@@ -59,7 +63,7 @@ public class AdminEmpController {
 		empbase.setModId(loginId);
 		empbase.setRegId(loginId);
 		
-		int addEmprow = adminempService.addEmp(empbase);
+		int addEmprow = adminEmpService.addEmp(empbase);
 		log.debug(GREEN +"addEmprow :" + addEmprow +RESET);
 		return "redirect:/emp/adminEmpList";
 	}
@@ -67,7 +71,7 @@ public class AdminEmpController {
 	// 관리자가 보는 사원리스트 출력
 	@GetMapping("/emp/adminEmpList")
 	 	public String adminEmpList(Model model) {
-		List<EmpBase> adminEmpList = adminempService.getEmpList();
+		List<EmpBase> adminEmpList = adminEmpService.getEmpList();
 		
 		//뷰로 값넘기기
 		model.addAttribute("adminEmpList", adminEmpList);
@@ -78,7 +82,7 @@ public class AdminEmpController {
 	@GetMapping("/emp/adminEmpById")
 	 	public String adminEmpList(Model model,
 	 								@RequestParam String id) {
-		EmpBase empbase = adminempService.getAdminEmpById(id); 
+		EmpBase empbase = adminEmpService.getAdminEmpById(id); 
 		
 		//뷰로 값넘기기
 		model.addAttribute("empbase", empbase);
@@ -89,7 +93,7 @@ public class AdminEmpController {
 	@GetMapping("/emp/modifyEmp")
 		public String modifyEmp(Model model,
 					@RequestParam String id) {
-		EmpBase empbase = adminempService.getAdminEmpById(id); 
+		EmpBase empbase = adminEmpService.getAdminEmpById(id); 
 		//부서 팀 직급 수정을 위한 선택 리스트를 나열하기 위해서
 		String deptCode = "D001";
 	    String teamCode = "T001";
@@ -117,11 +121,48 @@ public class AdminEmpController {
 		empbase.setModId(loginId);
 		
 		
-		int modifyEmpRow = adminempService.modifyEmp(empbase);
+		int modifyEmpRow = adminEmpService.modifyEmp(empbase);
 		log.debug(GREEN + "modifyEmpRow :"+modifyEmpRow + RESET);
 		return "redirect:/emp/adminEmpById?id=" + empbase.getId();
 	}
 	
+	//증명서 출력
+	@GetMapping("/emp/certificate")
+	public String certificate(Model model,
+							@RequestParam String id) {
+		//사원상세내역
+		EmpBase empbase = adminEmpService.getAdminEmpById(id); 
+		
+		//부서 이름 받아오기
+		String deptGrpcd = "D001";
+		String deptCd = empbase.getDeptCd();
+		String deptNm = commonService.getName(deptGrpcd, deptCd);
+		log.debug(GREEN + "certificate deptNm :"+ deptNm + RESET);
+		
+		//팀 이름 받아오기
+		String teamGrpcd = "T001";
+		String teamCd = empbase.getTeamCd();
+		String teamNm = commonService.getName(teamGrpcd, teamCd);
+		log.debug(GREEN + "certificate teamNm :"+ teamNm + RESET);
+		
+		//직급 이름 받아오기
+		String positionGrpcd = "P001";
+		String positionCd = empbase.getPositionCd();
+		String positionNm = commonService.getName(positionGrpcd, positionCd);
+		log.debug(GREEN + "certificate positionNm :"+ positionNm + RESET);
+		
+		empbase.setDeptNm(deptNm);
+		empbase.setTeamNm(teamNm);
+		empbase.setPositionNm(positionNm);
+		
+	    // 현재 날짜 가져오기
+        LocalDate currentDate = LocalDate.now();
+		
+		//뷰로 값넘기기
+        model.addAttribute("empbase", empbase);
+		model.addAttribute("currentDate", currentDate);
+	    return "/emp/certificate";
+	}
 		
 }
 

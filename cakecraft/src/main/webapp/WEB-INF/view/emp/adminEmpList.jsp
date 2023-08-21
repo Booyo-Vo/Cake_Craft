@@ -31,7 +31,7 @@ $(document).ready(function() {
 	$("#list").jqGrid({
 		datatype: "local",
 		data: mydata,
-		colNames:['이름','사원번호','부서','팀','직급','이메일','재직상태','연차잔여개수'],
+		colNames:['이름','사원번호','부서','팀','직급','이메일','재직상태','연차잔여개수','증명서'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
 			{name:'name', index:'name', width:80, align: "center"},
 			{name:'id', index:'id', width:80 , align: "center" },
@@ -40,7 +40,20 @@ $(document).ready(function() {
 			{name:'positionNm', index:'positionNm', width:80, align: "center"},
 			{name:'email', index:'email', width:80, align: "center"},
 			{name:'empStatus', index:'empStatus', width:80, align: "center"},
-			{name:'dayoffCnt', index:'dayoffCnt', width:80, align: "center"}
+			{name:'dayoffCnt', index:'dayoffCnt', width:80, align: "center"},
+			{name:'certificate', index:'certificate', width:80, sortable: false, align: "center",
+			    formatter: function(cellValue, options, rowObject) {
+			        var empStatus = rowObject.empStatus;
+			        var certificateText = "";
+
+			        if (empStatus === "재직자") {
+			            certificateText = '<a href="/cakecraft/emp/certificate?id=' + rowObject.id + '">재직증명서</a>';
+			        } else if (empStatus === "퇴직자") {
+			            certificateText = '<a href="/cakecraft/emp/certificate?id=' + rowObject.id + '">경력증명서</a>';
+			        } 
+			        return certificateText;
+			    }
+			}	
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
 		rownumbers : true, // 각 행앞에 번호를 표시
@@ -81,23 +94,33 @@ $(document).ready(function() {
         }).trigger("reloadGrid"); // jqGrid 재로딩
     });
     
-    // 데이터셀을 클릭 가능한 링크로 만드는 코드
-    $("#list").on("click", ".jqgrow td[aria-describedby='list_id']", function () {
+ 	// 데이터셀을 클릭 가능한 링크로 만드는 코드 (이름 또는 아이디를 눌러 상세정보로)
+    $("#list").on("click", ".jqgrow td[aria-describedby='list_name'], .jqgrow td[aria-describedby='list_id']", function () {
         var rowId = $(this).closest("tr.jqgrow").attr("id");
         var rowData = $("#list").jqGrid("getRowData", rowId);
         var id = rowData.id;
         window.location.href = "/cakecraft/emp/adminEmpById?id=" + id;
     });
     
-    // 선택 가능한 열에 밑줄 스타일 추가
-    $("#list").on("mouseover", ".jqgrow td[aria-describedby='list_id']", function () {
-        $(this).css("text-decoration", "underline");
-        $(this).css("cursor", "pointer");
-        $(this).css("color", "#007bff");
-    }).on("mouseout", ".jqgrow td[aria-describedby='list_id']", function () {
-        $(this).css("text-decoration", "none");
-        $(this).css("cursor", "default");
-        $(this).css("color", ""); // 원래 색상으로 복원
+    // 데이터셀을 클릭 가능한 링크로 만드는 코드 (연차갯수를 눌러 연차 정보로 이동)
+    $("#list").on("click", ".jqgrow td[aria-describedby='list_dayoffCnt']", function () {
+        var rowId = $(this).closest("tr.jqgrow").attr("id");
+        var rowData = $("#list").jqGrid("getRowData", rowId);
+        var id = rowData.id;
+        window.location.href = "/cakecraft/emp/dayoffById?id=" + id;
+    });
+    
+ 	// 선택 가능한 열에 밑줄 스타일 추가
+    $("#list").on("mouseover mouseout", ".jqgrow td[aria-describedby='list_id'], .jqgrow td[aria-describedby='list_dayoffCnt'], .jqgrow td[aria-describedby='list_name'], .jqgrow td[aria-describedby='list_certificate']", function (event) {
+        if (event.type === "mouseover") {
+            $(this).css("text-decoration", "underline");
+            $(this).css("cursor", "pointer");
+            $(this).css("color", "#007bff");
+        } else if (event.type === "mouseout") {
+            $(this).css("text-decoration", "none");
+            $(this).css("cursor", "default");
+            $(this).css("color", ""); // 원래 색상으로 복원
+        }
     });
     
 });
