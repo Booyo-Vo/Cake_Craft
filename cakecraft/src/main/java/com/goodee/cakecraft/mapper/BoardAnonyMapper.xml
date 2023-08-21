@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.BoardAnonyMapper">
+	<!-- 익명게시판 목록 조회 : 제목검색 -->
+	<select id="selectAnonyList"
+			parameterType="String"
+			resultType="com.goodee.cakecraft.vo.BoardAnony">
+		SELECT 
+			anony_no anonyNo,
+			id,
+			like_cnt likeCnt,
+			anony_title anonyTitle,
+			anony_content anonyContent,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId 
+		FROM board_anony
+		<where>
+            1=1 
+            <if test="searchWord != null and searchWord != ''">
+                AND anony_title LIKE CONCAT('%', #{searchWord}, '%')
+            </if>
+        </where>
+		ORDER BY reg_dtime DESC
+	</select>
+	<!-- 개별 게시글 상세 조회 -->
+	<select id="selectAnonyByNo"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony"
+			resultType="com.goodee.cakecraft.vo.BoardAnony">
+		SELECT 
+			anony_no anonyNo,
+			id,
+			like_cnt likeCnt,
+			anony_title anonyTitle,
+			anony_content anonyContent,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId 
+		FROM board_anony	
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</select>
+	<!-- 게시글 추가 -->
+	<insert id="insertAnony"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		INSERT INTO board_anony(
+			id,
+			anony_title,
+			anony_content,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id)
+		VALUES(
+			#{id},
+			#{anonyTitle},
+			#{anonyContent},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+	<!-- 게시글 수정 -->
+	<update id="updateAnony"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		UPDATE board_anony
+		SET anony_title = #{anonyTitle},
+			anony_content = #{anonyContent},
+			mod_dtime = NOW(),
+			mod_id = #{id} 
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</update>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteAnony"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		DELETE FROM board_anony 
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</delete>
+</mapper>
