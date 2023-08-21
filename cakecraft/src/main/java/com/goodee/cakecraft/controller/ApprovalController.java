@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.goodee.cakecraft.service.ApprovalService;
 import com.goodee.cakecraft.vo.ApprovalDocument;
@@ -75,16 +76,25 @@ public class ApprovalController {
 	
 	// 결재문서 추가 폼
 	@GetMapping("/approval/addApprDoc")
+	public String addApprDoc(HttpSession session, Model model) {
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
 		
+		// 뷰로 값넘기기
+		model.addAttribute("loginId",loginId);
+		
+		return "/approval/addApprDoc";
+	
+	}
 	
 	// 결재문서 추가 액션
 	@PostMapping("/approval/addApprDoc")
-	
-	
-	
-	
-	
-	
-	
+	public String addApprDoc(ApprovalDocument apprDoc) {
+		
+		approvalService.addApprDoc(apprDoc);
+		
+		return "redirect:/approval/addApprDoc";
+	}
 	
 }
