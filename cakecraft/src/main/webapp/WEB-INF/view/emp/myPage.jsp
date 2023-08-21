@@ -15,32 +15,47 @@
  <h3>마이페이지</h3>
 	<div>
 	    <!-- EmpBase 객체의 id 필드 값 출력 -->
-	   로그인 아이디 ${loginId}
+	   사번 ${loginId}
 	</div>
 	<div>
-	   signFilename ${empSignimg.signFilename}
+	   서명 ${empBase.signFilename}
 	   <button type="button">서명 추가</button>
 	</div>
 	<div>
-	    hireDate ${empBase.hireDate}
+	   사진
+		<p>Profile Filename: ${empBase.profileFilename}</p>
+		<c:choose>
+		<!--empty empBase.profileFilename가 존재할 경우 띄우고  -->
+        <c:when test="${not empty empBase.profileFilename}">
+            <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
+        </c:when>
+        <!--empty empBase.profileFilename가 없을 경우 아래 기본이미지를 띄운다  -->
+        <c:otherwise>
+            <img src="${pageContext.request.contextPath}/profileImg/profile.jpg" alt="default profile image" style="width: 200px; height: 200px;">
+        </c:otherwise>
+    </c:choose>
+	
 	</div>
 	<div>
-	    deptCd ${empBase.deptCd}
+	    입사일 ${empBase.hireDate}
 	</div>
 	<div>
-	    teamCd ${empBase.teamCd}
+	    부서 ${empBase.deptNm}
 	</div>
 	<div>
-	    positionCd ${empBase.positionCd}
+	    팀 ${empBase.teamNm}
 	</div>
 	<div>
-	    socialNo ${empBase.socialNo}
+	    직급 ${empBase.positionNm}
 	</div>
 	<div>
-	    empName ${empBase.empName}
+	    주민등록번호 ${empBase.socialNo}
 	</div>
 	<div>
-	    empPhone ${empBase.empPhone}
+	    이름 ${empBase.empName}
+	</div>
+	<div>
+	    핸드폰번호 ${empBase.empPhone}
 	</div>
 	<div>
 	    email ${empBase.email}
@@ -51,7 +66,7 @@
 	<div>
 	    dayoffCnt ${empBase.dayoffCnt}
 	</div>
-	<button type="button">정보수정</button>
+	<a href="/cakecraft/emp/modifyMyEmp" class="btn">정보수정</a>
 	</div>
 </body>
 </html>

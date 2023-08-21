@@ -2,7 +2,10 @@ package com.goodee.cakecraft.mapper;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.goodee.cakecraft.vo.EmpBase;
+import com.goodee.cakecraft.vo.EmpSignImg;
 import com.goodee.cakecraft.vo.StStdCd;
 @Mapper
 public interface EmpMapper {
@@ -51,6 +54,13 @@ public interface EmpMapper {
  	
     // 사원 마이페이지 출력
  	int selectEmpCntByCd(StStdCd stStdCd);
- 
+ 	
+//////////////////////////// 사원 마이페이지 //////////////////////// 	
+ 	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
+ 	EmpBase selectMyEmpById(String id);
+ 	
+ 	// 프로필 사진 출력
+ 	void updateProfileImagePath(@Param("id") String id, @Param("profilePath") String profilePath);
+ 	
 
 }

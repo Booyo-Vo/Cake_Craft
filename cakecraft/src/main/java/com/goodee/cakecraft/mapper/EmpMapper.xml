@@ -180,29 +180,44 @@
 	</select>
 	
 	
-	<!-- 마이페이지 사원정보 조회 -->
-	<select id="selectMyEmpById" parameterType="java.util.Map" resultType="com.goodee.cakecraft.vo.EmpBase">
-		SELECT 
-			E.id id,
-			E.hire_date hireDate,
-			E.dept_cd deptCd, 
-			E.team_cd teamCd,
-			E.position_cd positionCd,
-			E.social_no socialNo,
-			E.emp_name empName,
-			E.emp_phone empPhone,
-			E.email,
-			E.address,
-			E.dayoff_cnt dayoffCnt,
-			I.sign_filename signFilename
-		FROM emp_base E
-		LEFT OUTER JOIN emp_signimg I
-		ON E.id=I.id
+	<!-- *마이페이지 사원정보 조회 -->
+	<select id="selectMyEmpById" parameterType="java.lang.String" resultType="com.goodee.cakecraft.vo.EmpBase">
+    SELECT 
+	    E.id id,
+	    E.emp_name empName,
+	    E.social_no socialNo,
+	    E.dept_cd deptCd,
+	    E.team_cd teamCd,
+	    E.position_cd positionCd,
+	    E.email email,
+	    E.hire_date hireDate,
+	    E.retire_date retireDate,
+	    E.emp_status empStatus,
+	    E.dayoff_cnt dayoffCnt,
+	    E.address address,
+	    E.emp_phone empPhone,
+	    E.reg_dtime regDtime,
+	    E.mod_dtime modDtime,
+	    E.reg_id regId,
+	    E.mod_id modId,
+	    S.sign_filename signFilename,
+	    P.profile_filename profileFilename
+	FROM emp_base E
+	LEFT JOIN emp_signImg S ON E.id = S.id
+	LEFT JOIN emp_profileImg P ON E.id = P.id
 		<where>
-			E.id=#{id}
+		E.id = #{id}
 		</where>
-		ORDER BY E.id;
 	</select>
+	
+	<!-- *마이페이지 프로필사진 출력 -->
+
+    <update id="updateProfileImagePath">
+        UPDATE emp_profileImg
+        SET profile_path = #{profilePath}
+        WHERE id = #{id}
+    </update>
+	
 	
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
 	<select id="selectEmpCntByCd" 

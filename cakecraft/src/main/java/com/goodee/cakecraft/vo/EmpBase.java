@@ -25,4 +25,7 @@ public class EmpBase {
     private String deptNm; // 부서명을 저장할 필드
     private String teamNm; // 팀명을 저장할 필드
     private String positionNm; // 직급명을 저장할 필드
+    
+    private String signFilename;
+    private String profileFilename;
 }
