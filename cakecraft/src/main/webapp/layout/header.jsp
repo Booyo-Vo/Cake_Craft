@@ -1,5 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<style>
+/* 동그란 이미지 스타일 */
+.circular-image {
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%; /* 이미지를 동그랗게 만듭니다 */
+    width: 100px; /* 이미지의 가로 크기를 조절해주세요 */
+    height: 100px; /* 이미지의 세로 크기를 조절해주세요 */
+    background-color: #ccc; /* 이미지 로딩 중 및 오류 시 보여질 배경 색상 설정 */
+}
+
+.circular-image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+/* 메뉴 아이템 가운데 정렬 스타일 */
+.menu-item {
+    display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    margin-bottom: 10px; /* 아이템 간격 설정 */
+}
+</style>
+
 <script>
 	//로그아웃 버튼 클릭시
 	function logout() {
@@ -35,7 +60,7 @@
 	</script>
 <div class="header">
 		<div class="header-left">
-			<div class="menu-icon dw dw-menu"></div>
+			<!-- <div class="menu-icon dw dw-menu"></div>
 			<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
 			<div class="header-search">
 				<form>
@@ -49,7 +74,7 @@
 						</div>
 					</div>
 				</form>
-			</div>
+			</div> -->
 		</div>
 		<div class="header-right">
 			<div class="dashboard-setting user-notification">
@@ -59,14 +84,15 @@
 					</a>
 				</div>
 			</div>
+		<!-- 오른쪽 상단바 프로필 -->
 			<div class="user-info-dropdown">
 			    <div class="dropdown">
 			        <a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
 			            <span class="user-icon">
 			                <img src="../vendors/images/photo1.jpg" alt="">
 			            </span>
-			            <span class="user-name">${empBase.id}
-			                <button type="button" onclick="logout()">로그아웃</button>
+			            <span class="user-name">${empBase.id} 님 환영합니다!
+			                <button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
 			            </span>
 			        </a>
 			    </div>
@@ -154,9 +180,10 @@
 
 	<div class="left-side-bar">
 		<div class="brand-logo">
-			<a href="index.html">
+		<!-- 왼쪽 사이드 로고이미지 -->
+			<a href="/cakecraft/schedule/schedule">
 				<img src="../vendors/images/deskapp-logo.svg" alt="" class="dark-logo">
-				<img src="../vendors/images/deskapp-logo-white.svg" alt="" class="light-logo">
+				<img src="../vendors/images/deskapp-logo-white.jpg" alt="" class="light-logo">
 			</a>
 			<div class="close-sidebar" data-toggle="left-sidebar-close">
 				<i class="ion-close-round"></i>
@@ -164,11 +191,24 @@
 		</div>
 		<div class="menu-block customscroll">
 			<div class="sidebar-menu">
+			<!-- 사이드바 프로필이미지 -->
 				<ul id="accordion-menu">
-					<div>
-						<button id="startWorkBtn" disabled>출근</button>
-						<button id="endWorkBtn" disabled>퇴근</button>
+					<div class="menu-item">
+						<a href="/cakecraft/emp/myPage">
+							<span class="user-icon">
+								<div class="circular-image">
+									<img src="../vendors/images/photo1.jpg" alt="">
+								</div>
+							</span>
+						</a>
 					</div>
+			<!-- 출/퇴근 버튼 -->
+					<div class="menu-item">
+						<button id="startWorkBtn" class="btn btn-primary" disabled>출근</button>
+						&nbsp;
+						<button id="endWorkBtn" class="btn btn-danger" disabled>퇴근</button>
+					</div>
+			<!-- 메인메뉴 드롭다운 -->		
 					<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
 							<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
@@ -291,7 +331,15 @@
 		function degToRad(degrees) {
 		  return degrees * (Math.PI / 180);
 		}
-	document.addEventListener("DOMContentLoaded", function () {
+		// saveWorkHistory 
+		function saveWorkHistory(history) {
+		    // 작업 내역을 저장하는 로직을 구현합니다
+		    // 예를 들어, 작업 내역을 배열에 저장하거나 서버 요청을 할 수 있습니다
+		    // 여기서는 간단히 작업 내역을 로깅하도록 했습니다
+		    console.log("작업 내역 저장됨:", history);
+		}
+
+		document.addEventListener("DOMContentLoaded", function () {
 		const startWorkBtn = document.getElementById("startWorkBtn");
 	    const endWorkBtn = document.getElementById("endWorkBtn");
 		// 출근 버튼 클릭 이벤트 처리
