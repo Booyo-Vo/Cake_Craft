@@ -172,6 +172,80 @@ function modifyTeamCdNm() {
     });
 }
 </script>
+<script>
+$(document).ready(function() {
+    $('.dept-delete-button').click(function() { // 삭제 버튼을 누르면
+        var row = $(this).closest('tr'); // 삭제 버튼이 속한 행(tr)을 가져옴
+        var deptGrpCd = row.find('th:first').text(); // 부서 코드를 가져옴
+        var deptCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
+        var deptName = row.find('td:eq(1)').text(); // 부서명을 가져옴
+        
+        var confirmDelete = confirm(deptName + "을 정말 삭제하시겠습니까?\n");
+        
+        if (confirmDelete) { // 확인을 눌렀을 때
+            $.ajax({
+                type: "GET", 
+                url: "/cakecraft/stStdCd/removeStStdCd", 
+                data: {
+                    grpCd: deptGrpCd, // 그룹 코드
+                    cd: deptCd // 부서 번호
+                },
+                success: function(response) {
+                    if (response === "FAIL") {
+                        alert("해당 부서에 근무하는 사원이 있습니다.");
+                    } else if (response === "SUCCESS") {
+                        alert("부서 삭제에 성공했습니다.");
+                        // 페이지 새로고침
+                        window.location.reload();
+                    } else {
+                        alert("부서 삭제에 실패하였습니다.");
+                    }
+                },
+                error: function() {
+                    alert("오류가 발생했습니다.");
+                }
+            });
+        }
+    });
+});
+</script>
+<script>
+$(document).ready(function() {
+    $('.team-delete-button').click(function() { // 삭제 버튼을 누르면
+        var row = $(this).closest('tr'); // 삭제 버튼이 속한 행(tr)을 가져옴
+        var teamGrpCd = row.find('th:first').text(); // 부서 코드를 가져옴
+        var teamCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
+        var teamName = row.find('td:eq(1)').text(); // 부서명을 가져옴
+        
+        var confirmDelete = confirm(teamName + "을 정말 삭제하시겠습니까?\n");
+        
+        if (confirmDelete) { // 확인을 눌렀을 때
+            $.ajax({
+                type: "GET", 
+                url: "/cakecraft/stStdCd/removeStStdCd", 
+                data: {
+                    grpCd: teamGrpCd, // 그룹 코드
+                    cd: teamCd // 부서 번호
+                },
+                success: function(response) {
+                    if (response === "FAIL") {
+                        alert("해당 팀에 근무하는 사원이 있습니다.");
+                    } else if (response === "SUCCESS") {
+                        alert("팀 삭제에 성공했습니다.");
+                        // 페이지 새로고침
+                        window.location.reload();
+                    } else {
+                        alert("팀 삭제에 실패하였습니다.");
+                    }
+                },
+                error: function() {
+                    alert("오류가 발생했습니다.");
+                }
+            });
+        }
+    });
+});
+</script>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 
@@ -224,7 +298,7 @@ function modifyTeamCdNm() {
 										<td>${d.cd}</td>
 										<td>${d.cdNm}</td>
 										<td><button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modifyDeptCdNmModal" onclick="openModifyDeptCdModal('${d.cdNm}')">수정</button></td>
-										<td><button type="button" class="btn btn-secondary btn-sm">삭제</button></td>
+										<td><button type="button" class="btn btn-secondary btn-sm dept-delete-button">삭제</button></td>
 									</tr>
 								</tbody>
 								</table>
@@ -245,7 +319,7 @@ function modifyTeamCdNm() {
 											<td>${t.cd}</td>
 											<td>${t.cdNm}</td>
 											<td><button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modifyTeamCdNmModal"  onclick="openModifyTeamCdModal('${t.cdNm}')">수정</button></td>
-											<td><button type="button"  class="btn btn-light btn-sm">삭제</button></td>
+											<td><button type="button"  class="btn btn-light btn-sm team-delete-button">삭제</button></td>
 										</tr>
 									</c:forEach>
 									</tbody>

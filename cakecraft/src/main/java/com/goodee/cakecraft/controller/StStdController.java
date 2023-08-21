@@ -141,4 +141,24 @@ public class StStdController {
         }
     }
     
+    //부서,팀 삭제 액션
+    @GetMapping("/stStdCd/removeStStdCd")
+    @ResponseBody
+    	public String modifyStStdCd(HttpSession session, StStdCd stStdCd) {
+		//세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId(); 
+		stStdCd.setModId(loginId);
+		
+    	
+    	int modifyTeamRow = stStdCdService.removeStStdCd(stStdCd);
+        if (modifyTeamRow == 0) {
+            return "ERROR";
+        } else if (modifyTeamRow == -1) {
+            return "FAIL";
+        } else {
+            return "SUCCESS";
+        }
+    }
+    
 }

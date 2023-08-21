@@ -28,4 +28,7 @@ public interface StStdCdMapper {
 	
 	//부서, 팀 이름 수정
 	int updateCdNm(Map<String, Object> paramMap);
+	
+	//부서, 팀 삭제
+	int deleteStStdCd(StStdCd stStdCd);
 }

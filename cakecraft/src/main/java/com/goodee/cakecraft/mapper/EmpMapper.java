@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import com.goodee.cakecraft.vo.EmpBase;
+import com.goodee.cakecraft.vo.StStdCd;
 @Mapper
 public interface EmpMapper {
 	// 사원번호생성 
@@ -47,6 +48,9 @@ public interface EmpMapper {
     
     // 사원 마이페이지 출력
  	EmpBase selectMyEmpById(Map<String, Object> paramMap);
+ 	
+    // 사원 마이페이지 출력
+ 	int selectEmpCntByCd(StStdCd stStdCd);
  
 
 }

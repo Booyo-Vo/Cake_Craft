@@ -155,7 +155,7 @@
 	</select>
 	
 	<!-- 부서별 인원수 조회 -->
-	<select id="selectDeptCnt" resultType="Map">
+	<select id="selectDeptdCnt" resultType="Map">
 		SELECT p.dept_cd AS deptCd, s.cd_nm AS deptName, COUNT(p.dept_cd) AS deptCnt
 	    FROM st_std_cd s
 	    LEFT JOIN emp_base p ON p.dept_cd = s.cd
@@ -203,4 +203,15 @@
 		</where>
 		ORDER BY E.id;
 	</select>
+	
+	<!-- 부서/팀 번호에 따른 사원존재여부 -->
+	<select id="selectEmpCntByCd" 
+		parameterType="com.goodee.cakecraft.vo.StStdCd"
+		resultType="int">
+		SELECT COUNT(*) AS empCnt
+		FROM  emp_base
+		WHERE dept_cd = #{cd} or team_cd = #{cd};
+		
+	</select>
+	
 </mapper>

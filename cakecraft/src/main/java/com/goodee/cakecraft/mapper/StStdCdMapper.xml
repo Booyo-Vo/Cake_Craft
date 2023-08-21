@@ -94,4 +94,13 @@
 	WHERE grp_cd = #{grpCd} AND cd_nm = #{originCdNm}
 </update>
 
+<!-- 부서,팀 삭제 (비활성화)-->
+<update id = "deleteStStdCd"
+	parameterType="com.goodee.cakecraft.vo.StStdCd">
+	UPDATE st_std_cd
+	SET use_yn = "N",
+		mod_id = #{modId},
+		mod_dtime = NOW()
+	WHERE grp_cd= #{grpCd} and cd = #{cd};
+</update>
 </mapper>

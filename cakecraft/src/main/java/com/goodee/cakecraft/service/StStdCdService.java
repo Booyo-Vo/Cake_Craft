@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
+import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.mapper.StStdCdMapper;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -28,6 +29,9 @@ public class StStdCdService {
 	
 	@Autowired
 	private CommonMapper commonMapper;
+	
+	@Autowired
+	private EmpMapper empMapper;
 	
 	//각 grp_cd에 따른 리스트 받아오기
 	public List<StStdCd> getCdList(String code){
@@ -183,6 +187,20 @@ public class StStdCdService {
 		int updateCdNmRow = stStdCdMapper.updateCdNm(paramMap);
 		
 		return updateCdNmRow;
+	}
+	
+	//부서,팀 삭제 액션
+	public int removeStStdCd(StStdCd stStdCd) {
+		//1)삭제할 (부서 or 팀)에 사원존재하는지 확인하기
+		int empCountByCd = empMapper.selectEmpCntByCd(stStdCd);
+		log.debug(GREEN+"removeStStdCd empCountByCd :"+ empCountByCd +RESET);
+		if (empCountByCd>0) {
+			 return -1; // 존재하는 사원이 있음을 나타내는 음수
+		}
+		// 2)부서, 팀 삭제 (비활성화)
+		int removeStStdCdRow = stStdCdMapper.deleteStStdCd(stStdCd);
+		log.debug(GREEN+"removeStStdCd removeStStdCdRow :"+ removeStStdCdRow +RESET);
+		return removeStStdCdRow;
 	}
 }
 	
