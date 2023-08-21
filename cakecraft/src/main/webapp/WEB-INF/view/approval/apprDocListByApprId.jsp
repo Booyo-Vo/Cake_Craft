@@ -30,5 +30,9 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<div>
+		<a href="/cakecraft/approval/addApprDoc">기안문작성</a>
+	</div>
+	
 </body>
 </html>

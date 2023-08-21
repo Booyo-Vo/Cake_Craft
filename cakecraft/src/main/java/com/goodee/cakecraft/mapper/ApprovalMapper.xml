@@ -108,7 +108,7 @@
 			CONCAT(
 			RIGHT(YEAR(CURRENT_TIMESTAMP), 2), 
 			LPAD(MONTH(CURRENT_TIMESTAMP), 2, '0'),
-			#{apprDocCd},
+			#{approvalDocumentCd},
 			RIGHT(CURRENT_TIMESTAMP(4), 4)) AS documentNo;
 	</select>
 	
@@ -116,26 +116,27 @@
 	<insert id="insertApprDoc"
 			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
 			INSERT INTO approval_document(
-				document_no documentNo,
+				document_no,
 				id,
-				document_title documentTitle,
-				document_content documentContent,
-				approval_status_cd approvalStatusCd,
-				temp_save tempSave,
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
+				document_title,
+				document_content,
+				approval_document_cd,
+				temp_save,
+				reg_dtime, 
+				mod_dtime, 
+				reg_id, 
+				mod_id 
 			)VALUES(
 				#{documentNo},
-				#{loginId},
+				#{id},
+				#{documentTitle},
 				#{documentContent},
-				#{approvalStatusCd},
+				#{approvalDocumentCd},
 				#{tempSave},
 				NOW(),
 				NOW(),
-				#{loginId},
-				#{loginId}
+				#{regId},
+				#{modId}
 			)
 	</insert>
 	
@@ -265,25 +266,23 @@
 	<insert id="insertApprHistory"
 			parameterType="com.goodee.cakecraft.vo.ApprovalHistory">
 			INSERT INTO approval_history(
-				approval_no approvalNo,
-				approval_id approvalId,
-				document_no documentNo,
-				approval_level approvalLevel,
-				approval_status_cd approvalStatusCd,
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
+				approval_id,
+				document_no,
+				approval_level,
+				approval_status_cd,
+				reg_dtime, 
+				mod_dtime, 
+				reg_id, 
+				mod_id
 			)VALUES(
-				#{approvalNo},
 				#{approvalId},
 				#{documentNo},
 				#{approvalLevel},
 				#{approvalStatusCd},
 				NOW(),
-				NOW(),
-				#{loginId}, 	<!-- 만든사람 = 문서작성자 이름 -->
-				#{loginId}	
+				NOW(),	
+				#{regId},	<!-- 만든사람 = 문서작성자 이름 -->
+				#{modId}	
 			)
 	</insert>
 	

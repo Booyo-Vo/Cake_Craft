@@ -24,49 +24,49 @@ public interface ApprovalMapper {
 	// 참조자로 지정된 문서 목록 출력
 	List<ApprovalDocument> selectApprDocListByRefId(String loginId);
 	
-	// 결재 문서 개수 출력
+	// 결재문서 개수 출력
 	int selectApprDocCnt();
 	
-	// 개별 결재 문서 상세정보 출력
+	// 개별 결재문서 상세정보 출력
 	ApprovalDocument selectApprDocByNo(String loginId);
 	
-	// 문서 번호 생성
+	// 문서번호 생성
 	String selectDocumentNo(ApprovalDocument apprDoc);
 	
-	// 결재 문서 추가
+	// 결재문서 추가
 	int insertApprDoc(ApprovalDocument apprDoc);
 	
-	// 결재 문서 수정
+	// 결재문서 수정
 	int updateApprDoc(ApprovalDocument apprDoc);
 	
-	// 결재 문서 삭제
+	// 결재문서 삭제
 	int deleteApprDoc(ApprovalDocument apprDoc);
 	
 	
-	/* 결재 파일 : ApprovalFile */
-	// 결재 파일 추가
+	/* 결재파일 : ApprovalFile */
+	// 결재파일 추가
 	int insertApprFile(ApprovalFile apprFile);
 	
-	// 결재 파일 삭제
+	// 결재파일 삭제
 	int deleteApprFile(ApprovalFile apprFile);
 	
 	
-	/* 결재 참조자 : ApprovalRef */
-	// 결재 참조자 추가
+	/* 결재참조자 : ApprovalRef */
+	// 결재참조자 추가
 	int insertApprRef(ApprovalRef apprRef);
 	
-	// 결재 참조자 삭제
+	// 결재참조자 삭제
 	int deleteApprRef(ApprovalRef apprRef);
 	
 	
-	/* 결재 이력 : ApprovalHistory */
-	// 결재 이력 목록 출력
+	/* 결재이력 : ApprovalHistory */
+	// 결재이력 목록 출력
 	List<ApprovalHistory> selectApprHistListByPage(Map<String, Object> apprHistListByPageMap);
 	
-	// 결재 이력 추가
+	// 결재이력 추가
 	int insertApprHistory(ApprovalHistory apprHistory);
 	
-	// 결재 이력 수정
+	// 결재이력 수정
 	int updateApprHistory(ApprovalHistory apprHistory);
 	
 }

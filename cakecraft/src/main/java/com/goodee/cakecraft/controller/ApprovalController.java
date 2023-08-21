@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.ApprovalService;
 import com.goodee.cakecraft.vo.ApprovalDocument;
@@ -90,11 +91,19 @@ public class ApprovalController {
 	
 	// 결재문서 추가 액션
 	@PostMapping("/approval/addApprDoc")
-	public String addApprDoc(ApprovalDocument apprDoc) {
+	public String addApprDoc(
+			HttpSession session,
+			ApprovalDocument apprDoc,
+			String approvalIdLv2,
+			String approvalIdLv3,
+			@RequestParam(value = "temp_save", required = false) String tempSave) {
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
 		
-		approvalService.addApprDoc(apprDoc);
+		approvalService.addApprDoc(apprDoc, loginId, approvalIdLv2, approvalIdLv3, tempSave);
 		
-		return "redirect:/approval/addApprDoc";
+		return "redirect:/approval/apprDocListByApprId";
 	}
 	
 }

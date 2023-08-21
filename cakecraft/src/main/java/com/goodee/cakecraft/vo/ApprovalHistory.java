@@ -6,7 +6,7 @@ import lombok.Data;
 public class ApprovalHistory {
 	private int approvalNo;
 	private String approvalId;
-	private int documentNo;
+	private String documentNo;
 	private int approvalLevel;
 	private String approvalStatusCd;
 	private String regDtime;

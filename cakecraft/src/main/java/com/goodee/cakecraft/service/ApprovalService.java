@@ -75,44 +75,90 @@ public class ApprovalService {
 	}
 	
 	
-	// 문서번호 생성 + 결재문서 추가 (+파일추가, 참조자추가, 결재자추가)
-	public int addApprDoc(ApprovalDocument apprDoc){
+	// 1) 문서분류 이름을 받아서 문서코드로 입력 
+	// 2) 문서번호 생성 
+	// 3) 결재문서 추가 
+	// 4) 결재이력 추가 (Lv 1 2 3)
+	// (+파일추가, 참조자추가)
+	public int addApprDoc(ApprovalDocument apprDoc, String loginId, String approvalIdLv2, String approvalIdLv3, String tempSave){
 		
-		// 1) 문서 코드 받아오기
+		// 1) 문서코드 받아오기
 		Map<String, Object> apprDocCdMap = commonMapper.getCode(apprDoc.getApprovalDocumentCd());
-		// 문서 분류(업무 or 인사)이름이 넘어오면 -> DB에 입력할 코드 받아오기
-		String apprDocCd = apprDocCdMap.get("cd").toString();
+		// 문서분류 이름이 넘어오면 -> DB에 입력할 코드 받아오기
+		String approvalDocumentCd = apprDocCdMap.get("cd").toString();
 		// 디버깅
-		log.debug(SHJ + apprDocCd + " <-- addApprDoc apprDocCd"+ RESET);
-		// 생성된 문서 코드 입력
-		apprDoc.setApprovalDocumentCd(apprDocCd);
+		log.debug(SHJ + approvalDocumentCd + " <-- addApprDoc approvalDocumentCd"+ RESET);
+		// 생성된 문서코드 입력
+		apprDoc.setApprovalDocumentCd(approvalDocumentCd);
 		
-		// 2) 문서 번호 생성
+		// 2) 문서번호 생성
 		String documentNo = apprDocMapper.selectDocumentNo(apprDoc);
 		// 디버깅
 		log.debug(SHJ + documentNo + " <-- addApprDoc documentNo"+ RESET);
-		// 생성된 문서 번호 입력
-		apprDoc.setDocumentNo(documentNo);
 		
-		// 3) 결재 문서 추가
-		if(documentNo != null) {
+		if(documentNo != null) { // 문서번호 생성 성공 시
+			// 생성된 문서번호 입력
+			apprDoc.setDocumentNo(documentNo);
+			apprDoc.setId(loginId);
+			apprDoc.setRegId(loginId);
+			apprDoc.setModId(loginId);
+			
+			// 3) 결재문서 추가
 			// 반환값
 			int addApprDocRow = apprDocMapper.insertApprDoc(apprDoc);
 			// 디버깅
 			log.debug(SHJ + addApprDocRow + " <-- addApprDoc addApprDocRow"+ RESET);
 			
-			/*
-			 if(addApprDocRow > 0) {
-			 	결재자 level 2 추가
-			 	결재자 level 3 추가
-			 
+			if(addApprDocRow > 0 && "N".equals(tempSave)) { // 결재문서 추가 성공 시
+				
+				// 4) 결재이력 추가
+				// 담당자(=level 1) 추가
+				ApprovalHistory apprHistoryLv1 = new ApprovalHistory();
+				apprHistoryLv1.setApprovalId(loginId);
+				apprHistoryLv1.setDocumentNo(documentNo);
+				apprHistoryLv1.setApprovalLevel(1);
+				apprHistoryLv1.setApprovalStatusCd("1");
+				apprHistoryLv1.setRegId(loginId);
+				apprHistoryLv1.setModId(loginId);
+				int addApprHistLv1Row = apprDocMapper.insertApprHistory(apprHistoryLv1);
+				log.debug(SHJ + addApprHistLv1Row + " <-- addApprDoc addApprHistLv1Row"+ RESET);
+				
+				if(addApprHistLv1Row > 0) {
+					// 결재자 level 2 추가
+					ApprovalHistory apprHistoryLv2 = new ApprovalHistory();
+					apprHistoryLv2.setApprovalId(approvalIdLv2);
+					apprHistoryLv2.setDocumentNo(documentNo);
+					apprHistoryLv2.setApprovalLevel(2);
+					apprHistoryLv2.setApprovalStatusCd("1"); 
+					apprHistoryLv2.setRegId(loginId);
+			        apprHistoryLv2.setModId(loginId);
+					int addApprHistLv2Row = apprDocMapper.insertApprHistory(apprHistoryLv2);
+					log.debug(SHJ + addApprHistLv2Row + " <-- addApprDoc addApprHistLv2Row"+ RESET);
+				
+					if(addApprHistLv2Row > 0) {
+						// 결재자 level 3 추가
+						ApprovalHistory apprHistoryLv3 = new ApprovalHistory();
+						apprHistoryLv3.setApprovalId(approvalIdLv3);
+						apprHistoryLv3.setDocumentNo(documentNo);
+						apprHistoryLv3.setApprovalLevel(3);
+						apprHistoryLv3.setApprovalStatusCd("1");
+						apprHistoryLv3.setRegId(loginId);
+			            apprHistoryLv3.setModId(loginId);
+						int addApprHistLv3Row = apprDocMapper.insertApprHistory(apprHistoryLv3);
+						log.debug(SHJ + addApprHistLv3Row + " <-- addApprDoc addApprHistLv3Row"+ RESET);
+					}
+				}
+			 /* 
 				if(파일이 있다면) {
 					파일 추가
 				 
 				if(참조자가 있다면) {
 					참조자 추가
 			*/
+			}
 			
+			// 문서 추가 성공 시 반환값
+            return addApprDocRow;
 		
 		}
 		// 문서 번호 생성 실패 시 반환값

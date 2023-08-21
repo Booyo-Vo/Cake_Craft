@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ApprovalFile {
 	private int fileNo;			
-	private int documentNo;		
+	private String documentNo;		
 	private String approvalFilename;
 	private String approvalPath;
 	private String approvalType;
