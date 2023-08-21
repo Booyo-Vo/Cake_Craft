@@ -26,11 +26,6 @@
         </where>
 		ORDER BY reg_dtime DESC
 	</select>
-	<!-- 총 공지 개수 조회 -->
-	<select id="selectNoticeCnt">
-		SELECT COUNT(*) 
-		FROM board_notice
-	</select>
 	<!-- 개별 공지 상세 조회 -->
 	<select id="selectNoticeByNo"
 			parameterType="com.goodee.cakecraft.vo.BoardNotice"

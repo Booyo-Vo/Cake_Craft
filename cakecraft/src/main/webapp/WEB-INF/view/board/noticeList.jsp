@@ -23,7 +23,7 @@ $(document).ready(function() {
 			{name:'noticeNo', index:'noticeNo', width:10, align: "center", sortable:false},
 			{name:'noticeTitle', index:'noticeTitle', width:30, align: "center", sortable:false},
 			{name:'regDtime', index:'regDtime', width:30, align: "center"},
-			{name:'regId', index:'tearegIdmNm', width:30, align: "center"},
+			{name:'regId', index:'regId', width:30, align: "center"},
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
 		rownumbers : false, // 각 행앞에 번호를 표시

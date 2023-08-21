@@ -12,10 +12,7 @@ import com.goodee.cakecraft.vo.BoardNotice;
 public interface BoardNoticeMapper {
 	// 공지 목록 조회
 	List<BoardNotice> selectNoticeList(Map<String, Object> paramMap);
-	
-	// 총 공지 개수 조회
-	int selectNoticeCnt();
-	
+
 	// 개별 공지 상세 조회
 	BoardNotice selectNoticeByNo(BoardNotice notice);
 	
