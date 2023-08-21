@@ -6,6 +6,11 @@
 <meta charset="UTF-8">
 <title>Cake Craft</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
@@ -18,23 +23,51 @@
 	   사번 ${loginId}
 	</div>
 	<div>
+		<button id="addSignature">서명 추가</button>
 	   서명 ${empBase.signFilename}
-	   <button type="button">서명 추가</button>
+	   <%-- <canvas id="goal" style="border: 1px solid black"></canvas>
+	<div>
+		<button id="clear">Clear</button>
+		<button id="save">Save</button>
+		<button id="send">Send</button>
+	</div>
+	<div>
+		<img id="target" src = "" width=60 height=200>
+	</div> --%>
+	<!-- 서명 모달 -->
+		<div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-dialog-centered" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="signatureModalLabel">서명 추가</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <canvas id="modalGoal" style="border: 1px solid black"></canvas>
+		                <div>
+		                    <button id="modalClear">Clear</button>
+		                    <button id="modalSave">Save</button>
+		                    <button id="modalSend">Send</button>
+		                </div>
+		                <div>
+		                    <img id="modalTarget" src="" width="60" height="200">
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
 	</div>
 	<div>
 	   사진
 		<p>Profile Filename: ${empBase.profileFilename}</p>
-		<c:choose>
-		<!--empty empBase.profileFilename가 존재할 경우 띄우고  -->
-        <c:when test="${not empty empBase.profileFilename}">
-            <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
-        </c:when>
-        <!--empty empBase.profileFilename가 없을 경우 아래 기본이미지를 띄운다  -->
-        <c:otherwise>
-            <img src="${pageContext.request.contextPath}/profileImg/profile.jpg" alt="default profile image" style="width: 200px; height: 200px;">
-        </c:otherwise>
-    </c:choose>
-	
+		<c:if test="${not empty empBase.profileFilename}">
+		    <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
+		</c:if>
+		<c:if test="${empty empBase.profileFilename}">
+		    <img src="${pageContext.request.contextPath}/profileImg/profile.jpg" alt="default profile image" style="width: 200px; height: 200px;">
+		</c:if>
 	</div>
 	<div>
 	    입사일 ${empBase.hireDate}
@@ -69,4 +102,85 @@
 	<a href="/cakecraft/emp/modifyMyEmp" class="btn">정보수정</a>
 	</div>
 </body>
+<script>
+
+
+//서명 추가 버튼 클릭 시 모달 열기
+$('#addSignature').click(function() {
+
+    $('#signatureModal').modal('show'); // 모달 열기
+});
+
+// 모달 내부의 서명 기능과 관련된 스크립트
+$(document).ready(function() {
+
+    // 서명 추가 버튼 클릭 시 모달 열기
+    $('#addSignature').click(function() {
+        $('#signatureModal').modal('show'); // 모달 열기
+    });
+
+    // 모달 내부의 서명 기능과 관련된 스크립트
+    let signModal = new SignaturePad(document.getElementById('modalGoal'), {
+        minWidth: 2,
+        maxWidth: 2,
+        penColor: 'rgb(0, 0, 0)'
+    });
+
+    $('#modalClear').click(function() {
+        signModal.clear();
+    });
+
+    $('#modalSave').click(function() {
+        if (signModal.isEmpty()) {
+            alert('내용이 없습니다.');
+        } else {
+            let data = signModal.toDataURL('image/png');
+            $('#modalTarget').attr('src', data);
+            $('#signatureModal').modal('hide'); // 모달 닫기
+        }
+    });
+
+    $('#modalSend').click(function() {
+        $.ajax({
+            url: '/emp/addSign', // Update with the correct URL
+            data: { sign: signModal.toDataURL('image/png', 1.0) },
+            type: 'post',
+            success: function(jsonData) {
+                alert('이미지 전송 성공! - ' + jsonData);
+            }
+        });
+    });
+
+    //모달 밖에서 사용되는 서명패드 기능
+    let sign = new SignaturePad(document.getElementById('goal'), {
+        minWidth: 2,
+        maxWidth: 2,
+        penColor: 'rgb(0, 0, 0)'
+    });
+
+    $('#clear').click(function() {
+        sign.clear();
+    });
+
+    $('#save').click(function() {
+        if (sign.isEmpty()) {
+            alert('내용이 없습니다.');
+        } else {
+            let data = sign.toDataURL('image/png');
+            $('#target').attr('src', data);
+        }
+    });
+
+    $('#send').click(function() {
+        $.ajax({
+            url: '/emp/addSign',
+            data: { sign: sign.toDataURL('image/png', 1.0) },
+            type: 'post',
+            success: function(jsonData) {
+                alert('이미지 전송 성공! - ' + jsonData);
+            }
+        });
+    });
+});
+</script>
 </html>

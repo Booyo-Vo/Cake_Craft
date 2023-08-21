@@ -210,7 +210,7 @@
 		</where>
 	</select>
 	
-	<!-- *마이페이지 프로필사진 출력 -->
+	<!-- *마이페이지 프로필사진 변경 -->
 
     <update id="updateProfileImagePath">
         UPDATE emp_profileImg
@@ -218,6 +218,11 @@
         WHERE id = #{id}
     </update>
 	
+	<!-- *마이페이지 사인 추가 -->
+	<insert id="addSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
+		INSERT INTO EmpSignImg(id, sign_filename, signType, sign_filesize, reg_dtime, mod_dtime, reg_id, mod_id)
+		VALUES(#{id}, #{sign_filename}, #{signType}, #{sign_filesize}, NOW(), #{mod_dtime}, #{id}, #{id})
+	</insert>
 	
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
 	<select id="selectEmpCntByCd" 

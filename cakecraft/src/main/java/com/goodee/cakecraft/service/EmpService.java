@@ -1,12 +1,15 @@
 package com.goodee.cakecraft.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,7 +88,52 @@ public class EmpService {
     	empMapper.updateProfileImagePath(id, profilePath);
     }
 
+    // 사인 추가
+    public void addSign(String sign, String path) {
+		//이미지 데이터 추출
+		/*
+		 * sign변수: Base64로 인코딩된 이미지 데이터를 담고 있는 문자열
+		 * split 메서드: 문자열을 특정 구분자 기준으로 나누는 기능
+		 * 나눈 결과를 문자열 배열로 반환한다
+		 * type 변수: image 타입이 저장
+		 * data 변수: 이미지데이터가 Base64 형식으로 저장
+		 */
+		String type = sign.split(",")[0].split(";")[0].split(":")[1];
+		String data = sign.split(",")[1];
+		//Base64를 디코드 해 이미지 바이트 배열로 변환
+		byte[] image = Base64.decodeBase64(data);
+		int size = image.length;
 
+		// 저장할 파일 이름 생성(UUID 사용)
+		String signFilename = UUID.randomUUID().toString().replace("-", "") + ".png";
+		log.debug("SignService.addSign() signFilename : " + signFilename);
+		
+		// DB에 정보 저장을 위한 Sign 객체 생성
+		EmpSignImg s = new EmpSignImg();
+		s.setId("user");
+		s.setSignFilename(signFilename);
+		s.setSignFilesize(size);
+		s.setSignType(type);
+		//Sign 정보 DB에 저장
+		empMapper.addSign(s);
+		
+		// 빈 파일 생성
+		File f = new File(path+signFilename);
+
+		try {
+			// 빈 파일에 이미지 파일 쓰기
+			FileOutputStream fileOutputStream = new FileOutputStream(f);
+			fileOutputStream.write(image);
+			fileOutputStream.close();
+			log.debug("empService.addSign() f.length() : " + f.length());
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+			// 트랜잭션 작동을 위해 예외(try/catch를 강요하지 않는 예외: RuntimeException) 발생이 필요
+			throw new RuntimeException();
+		}
+	}
+    
+    
 	// 사원이 보는 사원리스트
 		public List<EmpBase> getEmpList(){
 			//사원리스트 받아오기

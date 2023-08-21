@@ -9,6 +9,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
 
+<!-- 사인용 캔버스 -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+
 <!-- Site favicon -->
 	<link rel="apple-touch-icon" sizes="180x180" href="../vendors/images/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="../vendors/images/favicon-32x32.png">

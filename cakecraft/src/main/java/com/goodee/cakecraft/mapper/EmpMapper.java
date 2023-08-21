@@ -62,5 +62,6 @@ public interface EmpMapper {
  	// 프로필 사진 출력
  	void updateProfileImagePath(@Param("id") String id, @Param("profilePath") String profilePath);
  	
-
+ 	// 사인 등록
+ 	public int addSign(EmpSignImg sign);
 }

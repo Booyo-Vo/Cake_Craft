@@ -6,7 +6,7 @@ import lombok.Data;
 public class EmpSignImg {
 	private String id;
 	private String signFilename;
-	private String signPath;
+	private int signFilesize;
 	private String signType;
 	private String regDtime;
 	private String modDtime;
