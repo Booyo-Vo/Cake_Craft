@@ -44,4 +44,9 @@ public interface EmpMapper {
     
     //성별 인원수
     List<Map<String, Object>> selectGenderCnt();
+    
+    // 사원 마이페이지 출력
+ 	EmpBase selectMyEmpById(Map<String, Object> paramMap);
+ 
+
 }

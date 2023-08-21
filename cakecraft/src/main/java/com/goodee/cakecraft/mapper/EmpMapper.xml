@@ -178,4 +178,29 @@
 		       SUM(CASE WHEN SUBSTRING(social_no, 7, 1) IN ('2', '4') THEN 1 ELSE 0 END) AS femaleCount
 		FROM emp_base;
 	</select>
+	
+	
+	<!-- 마이페이지 사원정보 조회 -->
+	<select id="selectMyEmpById" parameterType="java.util.Map" resultType="com.goodee.cakecraft.vo.EmpBase">
+		SELECT 
+			E.id id,
+			E.hire_date hireDate,
+			E.dept_cd deptCd, 
+			E.team_cd teamCd,
+			E.position_cd positionCd,
+			E.social_no socialNo,
+			E.emp_name empName,
+			E.emp_phone empPhone,
+			E.email,
+			E.address,
+			E.dayoff_cnt dayoffCnt,
+			I.sign_filename signFilename
+		FROM emp_base E
+		LEFT OUTER JOIN emp_signimg I
+		ON E.id=I.id
+		<where>
+			E.id=#{id}
+		</where>
+		ORDER BY E.id;
+	</select>
 </mapper>
