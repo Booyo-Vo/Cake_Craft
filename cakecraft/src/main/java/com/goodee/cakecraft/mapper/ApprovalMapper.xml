@@ -79,15 +79,16 @@
 			</where>
 	</select>
 	
-	<!-- 개별 결재 문서 상세정보 출력 -->
+	<!-- 결재문서 상세정보 출력 -->
 	<select id="selectApprDocByNo"
-			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
+			parameterType="String" 
+			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
 			SELECT
 				document_no documentNo,
 				id,
 				document_title documentTitle,
 				document_content documentContent,
-				approval_status_cd approvalStatusCd,
+				approval_document_cd approvalDocumentCd,
 				temp_save tempSave,
 				reg_dtime regDtime, 
 				mod_dtime modDtime, 
@@ -95,8 +96,7 @@
 				mod_id modId
 			FROM approval_document
 			<where>
-				id = #{loginId} 
-				documentNo = #{documentNo}
+				document_no = #{documentNo}
 			</where>
 	</select>
 	
