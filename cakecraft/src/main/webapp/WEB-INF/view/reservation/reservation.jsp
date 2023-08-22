@@ -15,8 +15,11 @@
 	<script>document.getElementsByTagName("html")[0].className += " js";</script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/reservation_assets/css/style.css">
 	<title>reservation</title>
+	<c:import url="/layout/cdn.jsp"></c:import>
 </head>
 <body>
+<c:import url="/layout/header.jsp"></c:import>
+<div class="main-container">
 	<header class="cd-main-header text-center flex flex-column flex-center">
 		<input type="date" id="selectDate" value="${date}" min="${currDay}" max="${weekDay}">
 		<span class="text-xl mt-5">시설비품 예약현황</span>
@@ -150,6 +153,7 @@
 	<!-- 메인 끝 -->
 	<script src="/cakecraft/reservation_assets/js/util.js"></script>
 	<script src="/cakecraft/reservation_assets/js/main.js"></script>
+</div>
 </body>
 
 <script>

@@ -42,13 +42,12 @@ public class ReservationController {
 									 @RequestParam(name="targetMonth", required = false) Integer targetMonth,
 									 @RequestParam(name="targetDate", required = false) Integer targetDate,
 									 @RequestParam(name="categoryCd", defaultValue = "1") String categoryCd) {
-		/*
-		 * String loginId = ""; Object o = session.getAttribute("loginMember"); if(o
-		 * instanceof EmpIdList) { loginId = ((EmpIdList)o).getId(); }
-		 */
 		
-		//테스트용 코드
-		String loginId = "user1";
+		String loginId = ""; 
+		Object o = session.getAttribute("loginMember");
+		if(o instanceof EmpIdList) { 
+			loginId = ((EmpIdList)o).getId(); 
+		}
 		String teamNm = empService.getAdminEmpById(loginId).getTeamNm();
 		
 		
@@ -82,13 +81,11 @@ public class ReservationController {
 								 @RequestParam(name="date") String date,
 								 @RequestParam(name="times") List<Integer> times) {
 		
-		/*
-		 * String loginId = ""; Object o = session.getAttribute("loginMember"); if(o
-		 * instanceof EmpIdList) { loginId = ((EmpIdList)o).getId(); }
-		 */
-		//테스트용 코드
-		String loginId = "user1";
-		
+		String loginId = ""; 
+		Object o = session.getAttribute("loginMember");
+		if(o instanceof EmpIdList) { 
+			loginId = ((EmpIdList)o).getId(); 
+		}
 		log.debug(KMJ + times.toString() + " <--times" + RESET);
 		
 		//연속 시간 묶기

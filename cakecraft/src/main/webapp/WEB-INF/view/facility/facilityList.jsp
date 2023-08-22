@@ -12,9 +12,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<c:import url="/layout/cdn.jsp"></c:import>
 </head>
 <body>
-
+<c:import url="/layout/header.jsp"></c:import>
+<div class="main-container">
 <form action="${pageContext.request.contextPath}/facility/facilityList" method="get">
 	<div>
 		<select name="categoryCd">
@@ -160,7 +162,7 @@
 	</div>
 </div>
 <!-- 시설비품 수정 모달창 끝 -->
-
+</div>
 <script>
 /* var addFcltModal = document.getElementById('#addFcltModal')
 addFcltModal.addEventListener('show.bs.modal', function (event) {
