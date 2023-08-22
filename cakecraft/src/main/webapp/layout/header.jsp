@@ -214,9 +214,9 @@
 							<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="/cakecraft/approval/approvalDocumentListByApprId">approvalDocumentListByApprId</a></li>
-							<li><a href="/cakecraft/approval/approvalDocumentListById">approvalDocumentListById</a></li>
-							<li><a href="/cakecraft/approval/approvalDocumentListByRefId">approvalDocumentListByRefId</a></li>
+							<li><a href="/cakecraft/approval/apprDocListById">approvalDocumentListById</a></li>
+							<li><a href="/cakecraft/approval/apprDocListByApprId">approvalDocumentListByApprId</a></li>
+							<li><a href="/cakecraft/approval/apprDocListByRefId">approvalDocumentListByRefId</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
