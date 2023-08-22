@@ -233,8 +233,9 @@
 							<span class="micon dw dw-library"></span><span class="mtext">게시판</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="/cakecraft/board/addNotice">addNotice</a></li>
-							<li><a href="/cakecraft/board/noticeList">noticeList</a></li>
+							<li><a href="/cakecraft/board/noticeList">공지사항</a></li>
+							<li><a href="/cakecraft/board/anonyList">익명게시판</a></li>
+							<li><a href="/cakecraft/board/questionList">Q&A</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
