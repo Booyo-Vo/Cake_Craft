@@ -94,7 +94,7 @@ public class AdminEmpController {
 	
 	// 관리자가 보는 사원상세내역 출력
 	@GetMapping("/emp/adminEmpById")
-	 	public String adminEmpList(HttpSession session, Model model,
+	 	public String adminEmpById(HttpSession session, Model model,
 	 							@RequestParam String id) {
 		//세선에 저장된 로그인 아이디를 받아옴
     	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");

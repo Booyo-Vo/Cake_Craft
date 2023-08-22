@@ -128,8 +128,8 @@ $(document).ready(function() {
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-
-<a href="/cakecraft/emp/addEmp">사원추가</a>
+<a href="/cakecraft/emp/getExcel" class="btn btn-primary">사원전체정보 엑셀로 다운로드</a>
+<a href="/cakecraft/emp/addEmp" class="btn btn-primary">사원추가</a>
 <table id="list"></table>
 <div id="pager"></div>
 <div style="margin-top: 20px; margin-left: 15px; font-size: 12px;">

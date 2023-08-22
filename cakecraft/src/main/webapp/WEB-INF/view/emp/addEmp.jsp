@@ -51,7 +51,7 @@ $(document).ready(function() {
 <!-- 공백이 입력되않도록 -->
 <script>
 $(document).ready(function() {
-    $('form').submit(function(event) {
+	$('form[name="empForm"]').submit(function(event) {
         var empName = $('input[name="empName"]').val();
         var socialNo = $('input[name="socialNo"]').val();
         var email = $('input[name="email"]').val();
@@ -71,7 +71,7 @@ $(document).ready(function() {
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-    <form action="/cakecraft/emp/addEmp" method="post">
+    <form action="/cakecraft/emp/addEmp" method="post"  name="empForm">
         <table>
             <tr>
                 <td>이름</td>
@@ -130,6 +130,14 @@ $(document).ready(function() {
         </table>
         <button type="submit">사원추가</button>
     </form>
+ <br>
+ <br>   
+<h2>사원대량 업로드</h2>
+<p>반드시 정해진 엑셀 양식으로 작성후 업로드해야합니다</p>
+<form action="/cakecraft/emp/addExcel" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx" required>
+    <button type="submit">Upload</button>
+</form>
  </div>
 </body>
 </html>

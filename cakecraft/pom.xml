@@ -18,6 +18,18 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- 엑셀 poi.jar-->
+	  <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>4.1.1</version>
+	  </dependency>
+	
+	  <dependency>
+	      <groupId>org.apache.poi</groupId>
+	      <artifactId>poi-ooxml</artifactId>
+	      <version>4.1.1</version>
+	  </dependency>
 		<!-- 내장톰캣 jsp -->
 		<dependency>
           <groupId>org.apache.tomcat.embed</groupId>
