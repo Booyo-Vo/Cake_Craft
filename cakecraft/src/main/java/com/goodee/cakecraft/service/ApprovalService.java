@@ -57,7 +57,7 @@ public class ApprovalService {
 	}
 	
 	
-	// 결재 문서 개수 출력
+	// 결재문서 개수 출력
 	public int getApprDocCnt(ApprovalDocument apprDoc){
 		// 반환값
 		int apprDocCnt = apprDocMapper.selectApprDocCnt();
@@ -66,10 +66,10 @@ public class ApprovalService {
 		
 	}
 	
-	// 개별 결재 문서 상세정보 출력
-	public ApprovalDocument getApprDocByNo(String loginMember){
+	// 결재문서 상세정보 출력
+	public ApprovalDocument getApprDocByNo(String documentNo){
 		// 반환값
-		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(loginMember);
+		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(documentNo);
 		
 		return resultApprDoc;
 	}
@@ -110,7 +110,6 @@ public class ApprovalService {
 			log.debug(SHJ + addApprDocRow + " <-- addApprDoc addApprDocRow"+ RESET);
 			
 			if(addApprDocRow > 0 && "N".equals(tempSave)) { // 결재문서 추가 성공 시
-				
 				// 4) 결재이력 추가
 				// 담당자(=level 1) 추가
 				ApprovalHistory apprHistoryLv1 = new ApprovalHistory();

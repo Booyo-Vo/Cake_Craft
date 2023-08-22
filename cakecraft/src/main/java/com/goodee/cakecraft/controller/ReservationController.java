@@ -29,6 +29,7 @@ public class ReservationController {
 	@Autowired FacilityService facilityService;
 	@Autowired ReservationService reservationService;
 	@Autowired AdminEmpService empService;
+	@Autowired CommonController commonController;
 	
 	//ANSI코드
 	final String KMJ = "\u001B[43m";
@@ -48,8 +49,9 @@ public class ReservationController {
 		if(o instanceof EmpIdList) { 
 			loginId = ((EmpIdList)o).getId(); 
 		}
-		String teamNm = empService.getAdminEmpById(loginId).getTeamNm();
-		
+		String teamCd = empService.getAdminEmpById(loginId).getTeamCd();
+		String teamNm = (String)commonController.getCode("T001", teamCd);
+		log.debug(KMJ + teamNm + " <-- ReservationController.getReservationList" + RESET);
 		
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("useYn", "Y");
@@ -91,9 +93,9 @@ public class ReservationController {
 		//연속 시간 묶기
 		List<List<Integer>> packet = new ArrayList<>(); //연속된 시간묶음 리스트를 저장할 리스트
 		List<Integer> temp = new ArrayList<>(); //연속된 시간 묶음
-		int n1 = times.get(0);
-		temp.add(n1);
-		times.remove(0);
+		int n1 = times.get(0); //선택한 시간의 첫번째 시간을 n1변수에 저장
+		temp.add(n1); //temp변수에 n1추가
+		times.remove(0); //n1은 times 리스트에서 삭제
 		log.debug(KMJ + n1 + " <--ReservationController.addReservation() n1" + RESET);
 		while(!times.isEmpty()) {
 			int n2 = times.get(0);
@@ -104,7 +106,7 @@ public class ReservationController {
 				temp.add(n2);
 				n1 = n2;
 			} else {
-				packet.add(temp);
+				packet.add(temp); //<<9,10,11>,<13,14>,<16,17>>
 				temp = new ArrayList<>();
 				temp.add(n2);
 				n1 = n2;
@@ -143,12 +145,12 @@ public class ReservationController {
 	@GetMapping("/reservation/reservationListById")
 	public String reservationListById(HttpSession session,
 									  Model model) {
-		/*
-		 * String loginId = ""; Object o = session.getAttribute("loginMember"); if(o
-		 * instanceof EmpIdList) { loginId = ((EmpIdList)o).getId(); }
-		 */
-		//테스트용 코드
-		String loginId = "user1";
+		String loginId = ""; 
+		Object o = session.getAttribute("loginMember");
+		if(o instanceof EmpIdList) { 
+			loginId = ((EmpIdList)o).getId(); 
+		}
+		
 		EmpIdList emp = new EmpIdList();
 		emp.setId(loginId);
 		String teamNm = empService.getAdminEmpById(loginId).getTeamNm();

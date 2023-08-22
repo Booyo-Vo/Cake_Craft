@@ -33,7 +33,7 @@ public class BoardNoticeService {
 		
 		// 공지 목록 가져오기
 		List<BoardNotice> noticeList = noticeMapper.selectNoticeList(paramMap);
-		log.debug(GEH + "noticeList --> "+ noticeList.size() + RESET);
+		log.debug(GEH + noticeList.size() + " <-- 공지 목록.size" + RESET);
 		
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();

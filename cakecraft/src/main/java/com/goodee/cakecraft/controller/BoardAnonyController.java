@@ -21,29 +21,43 @@ public class BoardAnonyController {
 	
 	// 익명게시판 목록 조회 
 	@GetMapping("/board/anonyList")
-	public String anonyList(Model model,
+	public String anonyList(Model model, HttpSession session,
 							@RequestParam(name = "searchWord", defaultValue = "") String searchWord) {
 		
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		// 익명게시판 목록 가져오기	
 		Map<String, Object> resultMap = anonyService.getAnonyList(searchWord);
 		
+		model.addAttribute("loginId",loginId);
 		model.addAttribute("anonyList",resultMap.get("anonyList"));
 		
 		return "/board/anonyList";
 	}
 	
-	// 공지 상세 정보 조회
+	// 게시글 상세 정보 조회
 	@GetMapping("/board/anonyByNo")
-	public String anonyByNo(Model model, BoardAnony anony) {
+	public String anonyByNo(Model model, HttpSession session, BoardAnony anony) {
 		
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		// 게시글 상세정보 가져오기	
 		BoardAnony anonyByNo = anonyService.getAnonyByNo(anony);
+
+		model.addAttribute("loginId",loginId);
 		model.addAttribute("anonyByNo", anonyByNo);
 		
 		return "/board/anonyByNo";
 	}
 	
-	// 공지 추가
+	// 게시글 추가
 	@GetMapping("/board/addAnony")
 	public String addAnony(Model model, HttpSession session) {
+		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
@@ -61,15 +75,18 @@ public class BoardAnonyController {
 		return "redirect:/board/anonyList";
 	}
 	
-	// 공지 수정
+	// 게시글 수정
 	@GetMapping("/board/modifyAnony")
 	public String modifyAnony(Model model, HttpSession session, BoardAnony anony) {
+		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-		model.addAttribute("loginId",loginId);
 		
+		// 게시글 상세정보 가져오기
 		BoardAnony anonyByNo = anonyService.getAnonyByNo(anony);
+		
+		model.addAttribute("loginId",loginId);
 		model.addAttribute("anonyByNo", anonyByNo);
 		
 		return "/board/modifyAnony";
@@ -83,7 +100,7 @@ public class BoardAnonyController {
 		return "redirect:/board/anonyList";
 	}
 	
-	// 공지 삭제
+	// 게시글 삭제
 	@GetMapping("/board/removeAnony")
 	public String removeAnony(BoardAnony anony) {
 		

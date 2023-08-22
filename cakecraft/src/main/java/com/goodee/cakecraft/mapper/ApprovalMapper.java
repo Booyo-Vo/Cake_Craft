@@ -27,8 +27,8 @@ public interface ApprovalMapper {
 	// 결재문서 개수 출력
 	int selectApprDocCnt();
 	
-	// 개별 결재문서 상세정보 출력
-	ApprovalDocument selectApprDocByNo(String loginId);
+	// 결재문서 상세정보 출력
+	ApprovalDocument selectApprDocByNo(String documentNo);
 	
 	// 문서번호 생성
 	String selectDocumentNo(ApprovalDocument apprDoc);

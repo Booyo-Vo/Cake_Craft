@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>approvalDocumentList</title>
 </head>
 <body>
 	<h1>approvalDocumentList</h1>
@@ -22,7 +21,7 @@
 		<tbody>
 			<c:forEach var="ad" items="${apprDocListById}">
 				<tr>
-					<td>${ad.documentNo}</td>
+					<td><a href="apprDocByNo?documentNo=${ad.documentNo}">${ad.documentNo}</a></td>
 					<td>${ad.approvalDocumentCd}</td>
 					<td>${ad.documentTitle}</td>
 					<td>${ad.modDtime}</td>

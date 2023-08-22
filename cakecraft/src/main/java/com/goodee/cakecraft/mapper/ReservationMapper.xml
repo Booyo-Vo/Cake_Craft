@@ -72,8 +72,9 @@
 	<!-- 현재시간으로부터 1시간 뒤 출력 -->
 	<select id="selectAnHourLater">
 		SELECT 
-			DATE_ADD(NOW(), INTERVAL +1 HOUR)
+			DATE_ADD(NOW(), INTERVAL +30 MINUTE)
 	</select>
+	
 	<!-- 예약추가 -->
 	<insert id="insertReservation"
 			parameterType="java.util.Map">

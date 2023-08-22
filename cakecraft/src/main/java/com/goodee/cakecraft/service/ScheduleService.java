@@ -63,13 +63,13 @@ public class ScheduleService {
 		// 전체 개수 
 		int totalTd = beginBlank + lastDate + endBlank;
 		
-		log.debug(GEH + "targetYear --> "+ targetYear + RESET);
-		log.debug(GEH + "targetMonth --> "+ targetMonth + RESET);
-		log.debug(GEH + "lastDate --> "+ lastDate + RESET);
-		log.debug(GEH + "todayDate --> "+ todayDate + RESET);
-		log.debug(GEH + "beginBlank --> "+ beginBlank + RESET);
-		log.debug(GEH + "endBlank --> "+ endBlank + RESET);
-		log.debug(GEH + "totalTd --> "+ totalTd + RESET);
+		log.debug(GEH + targetYear + " <-- targetYear" + RESET);
+		log.debug(GEH + targetMonth + " <-- targetMonth" + RESET);
+		log.debug(GEH + lastDate + " <-- lastDate"+ RESET);
+		log.debug(GEH + todayDate + " <-- todayDate"+ RESET);
+		log.debug(GEH + beginBlank + " <-- beginBlank"+ RESET);
+		log.debug(GEH + endBlank + " <-- endBlank" + RESET);
+		log.debug(GEH + totalTd + " <-- totalTd" + RESET);
 		
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -82,7 +82,7 @@ public class ScheduleService {
 		
 		// 로그인한 사원정보 가져오기
 		EmpBase empBase = empMapper.selectEmpById(id);
-		log.debug(GEH + "empBase --> "+ empBase.toString() + RESET);
+		log.debug(GEH + empBase.toString() + " <-- empBase(로그인한 사원정보)" + RESET);
 		
 		// Dao의 매개값형태에 맞게 가공
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -94,19 +94,19 @@ public class ScheduleService {
 		
 		// 월간 전사일정 목록 가져오기
 		List<ScheduleBase> scheduleListByCateAll = scheduleMapper.selectScheduleListByCateAll(paramMap);
-		log.debug(GEH + "scheduleListByCateAll.size --> "+ scheduleListByCateAll.size() + RESET);
+		log.debug(GEH + scheduleListByCateAll.size() + " <-- 월간 전사 일정목록.size" + RESET);
 		
 		// 월간 팀일정 목록 가져오기 
 		List<ScheduleBase> scheduleListByCateTeam = scheduleMapper.selectScheduleListByCateTeam(paramMap);
-		log.debug(GEH + "scheduleListByCateTeam.size --> "+ scheduleListByCateTeam.size() + RESET);
+		log.debug(GEH + scheduleListByCateTeam.size() + " <-- 월간 팀 일정목록.size" + RESET);
 		
 		// 월간 개인일정 목록 가져오기
 		List<ScheduleBase> scheduleListByCateId = scheduleMapper.selectScheduleListByCateId(paramMap);
-		log.debug(GEH + "scheduleListByCateId.size --> "+ scheduleListByCateId.size() + RESET);
+		log.debug(GEH + scheduleListByCateId.size() + " <-- 월간 개인 일정목록.size" + RESET);
 		
 		// 일간 일정 목록 가져오기
 		List<ScheduleBase> scheduleListByDate = scheduleMapper.selectScheduleListByDate(paramMap);
-		log.debug(GEH + "scheduleListByDate --> "+ scheduleListByDate.toString() + RESET);
+		log.debug(GEH + scheduleListByDate.size() + " <-- 일간 일정목록.size" + RESET);
 		
 		// 반환값
 		resultMap.put("empBase",empBase);
@@ -118,7 +118,7 @@ public class ScheduleService {
 		return resultMap;
 	}
 	
-	// 개별 일정 조회
+	// 일정 상세정보 조회
 	public ScheduleBase getScheduleByNo(ScheduleBase schedule) {
 		ScheduleBase resultSchedule = scheduleMapper.selectScheduleByNo(schedule);
 		

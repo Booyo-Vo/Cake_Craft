@@ -21,12 +21,18 @@ public class BoardNoticeController {
 	
 	// 공지 목록 조회 
 	@GetMapping("/board/noticeList")
-	public String noticeList(Model model,
+	public String noticeList(Model model, HttpSession session,
 							@RequestParam(name = "searchRegId", defaultValue = "") String searchRegId,
 							@RequestParam(name = "searchWord", defaultValue = "") String searchWord) {
 		
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		// 공지목록 가져오기
 		Map<String, Object> resultMap = noticeService.getNoticeList(searchRegId, searchWord);
 		
+		model.addAttribute("loginId",loginId);
 		model.addAttribute("noticeList",resultMap.get("noticeList"));
 		
 		return "/board/noticeList";
@@ -58,9 +64,11 @@ public class BoardNoticeController {
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-		model.addAttribute("loginId",loginId);
 		
+		// 공지 상세정보 가져오기
 		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
+
+		model.addAttribute("loginId",loginId);
 		model.addAttribute("noticeByNo", noticeByNo);
 		
 		return "/board/modifyNotice";
@@ -85,9 +93,16 @@ public class BoardNoticeController {
 	
 	// 공지 상세 정보 조회
 	@GetMapping("/board/noticeByNo")
-	public String noticeByNo(Model model, BoardNotice notice) {
+	public String noticeByNo(Model model, HttpSession session, BoardNotice notice) {
 		
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		// 공지 상세정보 가져오기
 		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
+
+		model.addAttribute("loginId",loginId);
 		model.addAttribute("noticeByNo",noticeByNo);
 		
 		return "/board/noticeByNo";

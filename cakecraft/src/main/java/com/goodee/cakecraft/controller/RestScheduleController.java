@@ -39,7 +39,7 @@ public class RestScheduleController {
 		
 		// date type 형태로 변환 ex)2023-01-01
 		String startDtime = targetYear +"-"+ strM +"-"+ strD;
-		log.debug(GEH + "startDtime --> " + startDtime + RESET);
+		log.debug(GEH + startDtime + " <-- startDtime" + RESET);
 		
 		return startDtime;
 	}
@@ -49,7 +49,7 @@ public class RestScheduleController {
 	public ScheduleBase modifySchedule(ScheduleBase schedule) {
 		// 일정 상세 정보 가져오기
 		ScheduleBase resultSchedule = scheduleService.getScheduleByNo(schedule);
-		log.debug(GEH + "resultSchedule --> " + resultSchedule.toString() + RESET);
+		log.debug(GEH + resultSchedule.toString() + " <-- resultSchedule" + RESET);
 		
 		return resultSchedule;
 	}
