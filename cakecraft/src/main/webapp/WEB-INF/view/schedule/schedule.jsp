@@ -220,7 +220,7 @@ jQuery.noConflict();
 function date(d, targetYear, targetMonth){
 	
 	$.ajax({
-		url : '/rest/addSchedule',
+		url : '${pageContext.request.contextPath}/rest/addSchedule',
 		type : 'post',
 		data : {
 			targetDate : d,
@@ -259,7 +259,7 @@ function addSchedule(){
 	}
 	// 입력폼 제출
 	const addScheduleForm = $('#addScheduleForm');
-	addScheduleForm.attr('action', '/schedule/addSchedule');
+	addScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/addSchedule');
 	addScheduleForm.attr('method', 'post');
 	addScheduleForm.submit();
 }
@@ -267,7 +267,7 @@ function addSchedule(){
 // 일정 클릭 시 상세보기 및 일정수정 모달 띄우기
 function scheduleNo(scheduleNo){
 	$.ajax({
-		url : '/rest/modifySchedule',
+		url : '${pageContext.request.contextPath}/rest/modifySchedule',
 		type : 'post',
 		data : {
 			scheduleNo : scheduleNo
@@ -310,7 +310,7 @@ function modifySchedule(){
 	
 	// 수정폼 제출
 	const modifyScheduleForm = $('#modifyScheduleForm');
-	modifyScheduleForm.attr('action', '/schedule/modifySchedule');
+	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
 	modifyScheduleForm.attr('method', 'post');
 	modifyScheduleForm.submit();
 }
@@ -321,7 +321,7 @@ function removeSchedule() {
     const id = '${loginId}';
 
     if (confirm('일정을 삭제하시겠습니까?')) {
-        window.location.href = '/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&id=' + id;
+        window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&id=' + id;
     }
 }
 
