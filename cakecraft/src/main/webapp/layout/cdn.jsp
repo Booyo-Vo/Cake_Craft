@@ -41,3 +41,5 @@
 <!-- The atual jqGrid code -->
 	<script type="text/javascript" src="//cdn.jsdelivr.net/jqgrid/4.6.0/jquery.jqGrid.src.js" /></script>
 
+<!-- title -->
+<title>Cake Craft</title>
