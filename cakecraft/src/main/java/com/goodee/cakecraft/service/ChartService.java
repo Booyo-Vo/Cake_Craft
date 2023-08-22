@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class ChartService {
 	//ANSI코드
-	final String GREEN = "\u001B[42m";
+	final String LJY = "\u001B[42m";
 	final String RESET = "\u001B[0m"; 
 	
 	@Autowired
@@ -27,10 +27,10 @@ public class ChartService {
 	public Map<String, Object> getYearCnt(String year) {
 		//해당년도 입사자
 		int hireYearCnt = empMapper.selectHireYearCnt(year);
-		log.debug(GREEN+"getYearCnt hireYearCnt :"+ hireYearCnt +RESET);
+		log.debug(LJY+"getYearCnt hireYearCnt :"+ hireYearCnt +RESET);
 		//해당년도 퇴사자
 		int retireYearCnt = empMapper.selectRetireYearCnt(year);
-		log.debug(GREEN+"getYearCnt retireYearCnt :"+ retireYearCnt +RESET);
+		log.debug(LJY+"getYearCnt retireYearCnt :"+ retireYearCnt +RESET);
 		
 		//Map으로 묶어서 넘기기
 		Map<String, Object> YearCntMap = new HashMap<String, Object>();
@@ -43,10 +43,10 @@ public class ChartService {
 	public Map<String, Object> getMonthCnt(String month) {
 		//해당월 입사자
 		int hireMonthCnt = empMapper.selectHireMonthCnt(month);
-		log.debug(GREEN+"getMonthCnt hireMonthCnt :"+ hireMonthCnt +RESET);
+		log.debug(LJY+"getMonthCnt hireMonthCnt :"+ hireMonthCnt +RESET);
 		//해당월 퇴사자
 		int retireMonthCnt = empMapper.selectRetireMonthCnt(month);
-		log.debug(GREEN+"getMonthCnt retireMonthCnt :"+ retireMonthCnt +RESET);
+		log.debug(LJY+"getMonthCnt retireMonthCnt :"+ retireMonthCnt +RESET);
 		
 		//Map으로 묶어서 넘기기
 		Map<String, Object> MonthCntMap = new HashMap<String, Object>();
@@ -59,27 +59,27 @@ public class ChartService {
 	// 직급별 인원수
     public List<Map<String, Object>> getPositionCnt() {
     	List<Map<String, Object>> positionCnt = empMapper.selectPositionCnt();
-    	log.debug(GREEN+"getPositionCnt positionCnt :"+ positionCnt +RESET);   	
+    	log.debug(LJY+"getPositionCnt positionCnt :"+ positionCnt +RESET);   	
     	return positionCnt;
     }
     
 	// 부서별 인원수
     public List<Map<String, Object>> getDeptCnt() {
     	List<Map<String, Object>> deptCnt = empMapper.selectDeptCnt();
-    	log.debug(GREEN+"getDeptCnt deptCnt :"+ deptCnt +RESET);  
+    	log.debug(LJY+"getDeptCnt deptCnt :"+ deptCnt +RESET);  
     	return deptCnt;
     }
     
 	// 팀별 인원수
     public List<Map<String, Object>> getTeamCnt() {
     	List<Map<String, Object>> teamCnt = empMapper.selectTeamCnt();
-    	log.debug(GREEN+"getTeamCnt teamCnt :"+ teamCnt +RESET);  
+    	log.debug(LJY+"getTeamCnt teamCnt :"+ teamCnt +RESET);  
     	return teamCnt;
     }
     //성별 인원수
     public List<Map<String, Object>> getGenderCnt() {
     	List<Map<String, Object>> genderCnt = empMapper.selectGenderCnt();
-    	log.debug(GREEN+"getGenderCnt genderCnt :"+ genderCnt +RESET);  
+    	log.debug(LJY+"getGenderCnt genderCnt :"+ genderCnt +RESET);  
     	return genderCnt;
     }
 }

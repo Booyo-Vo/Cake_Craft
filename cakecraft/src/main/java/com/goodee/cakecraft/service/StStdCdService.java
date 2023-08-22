@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class StStdCdService {
 	//ANSI코드
-	final String GREEN = "\u001B[42m";
+	final String LJY = "\u001B[42m";
 	final String RESET = "\u001B[0m"; 
 	
 	@Autowired
@@ -36,22 +36,22 @@ public class StStdCdService {
 	//각 grp_cd에 따른 리스트 받아오기
 	public List<StStdCd> getCdList(String code){
 		List<StStdCd> cdList = stStdCdMapper.selectStStdCdList(code);
-		log.debug(GREEN+"getCdList cdList :"+ cdList +RESET);	
+		log.debug(LJY+"getCdList cdList :"+ cdList +RESET);	
 		return cdList;
 	}
 	
 	//부서이름이 선택되었을대 그 부서에 맞는 팀 가져오기
 	public List<StStdCd> getTeamListByDept(String deptNm) {
-	   log.debug(GREEN+"getTeamListByDept deptNm :"+ deptNm +RESET);	
+	   log.debug(LJY+"getTeamListByDept deptNm :"+ deptNm +RESET);	
 	   // 부서이름이 넘어오면 부서 코드를 받아옴
 	   Map<String, Object> deptCdMap = commonMapper.getCode(deptNm);
 		//cd가 int이으로 toString() 해준다
 		String deptCd = deptCdMap.get("cd").toString();
-		log.debug(GREEN+"getTeamListByDept deptCd :"+ deptCd +RESET);
+		log.debug(LJY+"getTeamListByDept deptCd :"+ deptCd +RESET);
 		
 		//가져온 부서 코드로 부서에 맞는 팀을 가져온다
 		List<StStdCd> teamListbyEmpt = stStdCdMapper.selectTeamListByDept(deptCd);
-		log.debug(GREEN+"getTeamListByDept teamListbyEmpt :"+ teamListbyEmpt +RESET);	
+		log.debug(LJY+"getTeamListByDept teamListbyEmpt :"+ teamListbyEmpt +RESET);	
 
 	   return teamListbyEmpt;
 	   
@@ -71,7 +71,7 @@ public class StStdCdService {
 	    for (StStdCd dept : deptList) {
 	    	// 부서 코드를 가져옴 int 타입이라 String 으로 반환함
 	    	String deptCd = dept.getCd();
-	    	log.debug(GREEN + "getStdStdCdList deptCd :"+ deptCd + RESET);	
+	    	log.debug(LJY + "getStdStdCdList deptCd :"+ deptCd + RESET);	
 	    	//코드를 받아와 해당 팀리스트 받아오기
 	    	List<StStdCd> teamList = stStdCdMapper.selectTeamListByDept(deptCd);
 	    	//부서코드마다 고유한 키를 생성하여 담기
@@ -89,15 +89,15 @@ public class StStdCdService {
 		stStdCd.setGrpCd(deptCd);
 		//1) 입력된 부서이름 중복확인
 		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
-		log.debug(GREEN+"addDept deptNmCnt :"+ deptNmCnt +RESET);
+		log.debug(LJY+"addDept deptNmCnt :"+ deptNmCnt +RESET);
 	    if (deptNmCnt > 0) {
 	        return -1; // 중복된 값이 있음을 나타내는 음수
 	    }
 		// cd값 추가를 위해 count+1을 하여 cd값에 넣어준다 
 		int deptCnt =  stStdCdMapper.selectDeptCnt(stStdCd);
-		log.debug(GREEN+"addDept deptCnt :"+ deptCnt +RESET);
+		log.debug(LJY+"addDept deptCnt :"+ deptCnt +RESET);
 		stStdCd.setCd(String.valueOf(deptCnt + 1));
-		log.debug(GREEN+"addDept stStdCd :"+ stStdCd +RESET);
+		log.debug(LJY+"addDept stStdCd :"+ stStdCd +RESET);
 		//2) 부서이름 추가하기
 		int insertDeptrow = stStdCdMapper.insertStStdCd(stStdCd);
 		
@@ -113,23 +113,23 @@ public class StStdCdService {
 		//1) 입력된 팀이름 중복확인
 		stStdCd.setCdNm(teamNm);
 		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
-		log.debug(GREEN+"addTeam DeptNmCnt :"+ deptNmCnt +RESET);
+		log.debug(LJY+"addTeam DeptNmCnt :"+ deptNmCnt +RESET);
 		if (deptNmCnt>0) {
 			 return -1; // 중복된 값이 있음을 나타내는 음수
 		}
 		//받아온 부서이름을 부서코드로 바꾼다
 		Map<String, Object> deptCdMap = commonMapper.getCode(teamDeptNm);
-		log.debug(GREEN+"addTeam deptCdMap :"+ deptCdMap +RESET);
+		log.debug(LJY+"addTeam deptCdMap :"+ deptCdMap +RESET);
 		//맵에서 풀면서 toString 해준다 Object
 		String code = deptCdMap.get("cd").toString();
-		log.debug(GREEN+"addTeam code :"+ code +RESET);
+		log.debug(LJY+"addTeam code :"+ code +RESET);
 		
 		// 추가된 팀의 cd값 추가를 위해 (connt+1)+(code*10)을 계산하여 cd값에 넣어준다
 		int teamCnt =  stStdCdMapper.selectTeamCnt(code);
-		log.debug(GREEN+"addTeam teamCnt :"+ teamCnt +RESET);
+		log.debug(LJY+"addTeam teamCnt :"+ teamCnt +RESET);
 		
 		int cd = (teamCnt + 1) + (Integer.parseInt(code) * 10);
-		log.debug(GREEN+"addTeam cd :"+ cd +RESET);
+		log.debug(LJY+"addTeam cd :"+ cd +RESET);
 		stStdCd.setCd(String.valueOf(cd));
 		//2) 부서이름 추가하기
 		int insertStStdCdrow = stStdCdMapper.insertStStdCd(stStdCd);
@@ -147,7 +147,7 @@ public class StStdCdService {
 		stStdCd.setCdNm(updateDeptCdNm);
 		stStdCd.setGrpCd(grpCd);
 		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
-		log.debug(GREEN+"modifyCdNm deptNmCnt :"+ deptNmCnt +RESET);
+		log.debug(LJY+"modifyCdNm deptNmCnt :"+ deptNmCnt +RESET);
 		if (deptNmCnt>0) {
 			 return -1; // 중복된 값이 있음을 나타내는 음수
 		}
@@ -173,7 +173,7 @@ public class StStdCdService {
 		stStdCd.setCdNm(updateTeamCdNm);
 		stStdCd.setGrpCd(grpCd);
 		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
-		log.debug(GREEN+"modifyCdNm deptNmCnt :"+ deptNmCnt +RESET);
+		log.debug(LJY+"modifyCdNm deptNmCnt :"+ deptNmCnt +RESET);
 		if (deptNmCnt>0) {
 			 return -1; // 중복된 값이 있음을 나타내는 음수
 		}
@@ -193,13 +193,13 @@ public class StStdCdService {
 	public int removeStStdCd(StStdCd stStdCd) {
 		//1)삭제할 (부서 or 팀)에 사원존재하는지 확인하기
 		int empCountByCd = empMapper.selectEmpCntByCd(stStdCd);
-		log.debug(GREEN+"removeStStdCd empCountByCd :"+ empCountByCd +RESET);
+		log.debug(LJY+"removeStStdCd empCountByCd :"+ empCountByCd +RESET);
 		if (empCountByCd>0) {
 			 return -1; // 존재하는 사원이 있음을 나타내는 음수
 		}
 		// 2)부서, 팀 삭제 (비활성화)
 		int removeStStdCdRow = stStdCdMapper.deleteStStdCd(stStdCd);
-		log.debug(GREEN+"removeStStdCd removeStStdCdRow :"+ removeStStdCdRow +RESET);
+		log.debug(LJY+"removeStStdCd removeStStdCdRow :"+ removeStStdCdRow +RESET);
 		return removeStStdCdRow;
 	}
 }

@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>addEmp</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>
 $(document).ready(function() {

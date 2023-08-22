@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>adminEmpList</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 <!-------------jdgrid  --------->
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/redmond/jquery-ui.css" type="text/css" />

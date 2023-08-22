@@ -150,7 +150,7 @@
 		SELECT p.position_cd AS positionCd, s.cd_nm AS positionName, COUNT(p.position_cd) AS positionCnt
 	    FROM st_std_cd s
 	    LEFT JOIN emp_base p ON p.position_cd = s.cd
-		WHERE s.grp_cd = 'P001'
+		WHERE s.grp_cd = 'P001' AND s.use_yn = 'y'
 		GROUP BY s.cd, s.cd_nm;
 	</select>
 	
@@ -159,7 +159,7 @@
 		SELECT p.dept_cd AS deptCd, s.cd_nm AS deptName, COUNT(p.dept_cd) AS deptCnt
 	    FROM st_std_cd s
 	    LEFT JOIN emp_base p ON p.dept_cd = s.cd
-		WHERE s.grp_cd = 'D001'
+		WHERE s.grp_cd = 'D001' AND s.use_yn = 'y'
 		GROUP BY s.cd, s.cd_nm;
 	</select>
 	
@@ -168,7 +168,7 @@
 	    SELECT s.cd AS teamCd, s.cd_nm AS teamName, COUNT(p.team_cd) AS teamCnt
 	    FROM st_std_cd s
 	    LEFT JOIN emp_base p ON p.team_cd = s.cd
-	    WHERE s.grp_cd = 'T001'
+	    WHERE s.grp_cd = 'T001' AND s.use_yn = 'y'
 	    GROUP BY s.cd, s.cd_nm;
 	</select>
 	

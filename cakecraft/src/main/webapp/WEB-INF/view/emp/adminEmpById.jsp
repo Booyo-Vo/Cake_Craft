@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>adminEmpById</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>

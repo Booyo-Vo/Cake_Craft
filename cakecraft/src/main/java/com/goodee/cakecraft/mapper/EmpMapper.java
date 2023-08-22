@@ -49,13 +49,13 @@ public interface EmpMapper {
     //성별 인원수
     List<Map<String, Object>> selectGenderCnt();
     
+    // 부서/팀 번호에 따른 사원존재여부
+ 	int selectEmpCntByCd(StStdCd stStdCd);
+ 	
+ 	//////////////////////////// 사원 마이페이지 //////////////////////// 	
     // 사원 마이페이지 출력
  	EmpBase selectMyEmpById(Map<String, Object> paramMap);
  	
-    // 사원 마이페이지 출력
- 	int selectEmpCntByCd(StStdCd stStdCd);
- 	
-//////////////////////////// 사원 마이페이지 //////////////////////// 	
  	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
  	EmpBase selectMyEmpById(String id);
  	

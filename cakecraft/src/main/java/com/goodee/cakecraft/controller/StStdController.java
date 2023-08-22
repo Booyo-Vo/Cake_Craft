@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class StStdController {
 	//ANSI코드
-	final String GREEN = "\u001B[42m";
+	final String LJY = "\u001B[42m";
 	final String RESET = "\u001B[0m"; 
 	
 	@Autowired 
@@ -31,20 +31,28 @@ public class StStdController {
 	
 	// 선택된 부서에 따른 팀 리스트 받아오기
     @GetMapping("/stStdCd/getTeamListByDept")
-    @ResponseBody
+    @ResponseBody //restController 대신 사용
 	    public List<StStdCd> teamListByDept(@RequestParam String deptNm) {
 	        List<StStdCd> teamList = stStdCdService.getTeamListByDept(deptNm);
 	        return teamList;
     }
+    
     //부서, 팀 관리 페이지 (Modal로 추가, 수정)
     @GetMapping("/stStdCd/stStdCdList")
-    	public String stStdCdList(Model model) {
+    	public String stStdCdList(HttpSession session, Model model) {
+	    //세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
+	    
+    	
     	// 부서와 팀 리스트
     	Map<String, Object> StStdCdListMap = stStdCdService.getStdStdCdList();
 
     	//뷰로 값넘기기
     	model.addAttribute("deptList", StStdCdListMap.get("deptList"));
-    	model.addAttribute("teamListMap",StStdCdListMap); // 전체맵을 넘겨줌
+    	model.addAttribute("teamListMap",StStdCdListMap);// 전체맵을 넘겨줌
+    	model.addAttribute("loginId",loginId);
 		return "/stStdCd/stStdCdList";
     }
     
@@ -56,8 +64,8 @@ public class StStdController {
 		//세선에 저장된 로그인 아이디를 받아옴
     	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-		log.debug(GREEN + "addDept loginId :"+loginId + RESET);
-		log.debug(GREEN + "addDept deptNm :"+deptNm + RESET);
+		log.debug(LJY + "addDept loginId :"+loginId + RESET);
+		log.debug(LJY + "addDept deptNm :"+deptNm + RESET);
 		StStdCd stStdCd = new StStdCd();
 		stStdCd.setModId(loginId);
 		stStdCd.setRegId(loginId);
@@ -80,9 +88,9 @@ public class StStdController {
 		//세선에 저장된 로그인 아이디를 받아옴
     	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-		log.debug(GREEN + "addTeam loginId :"+loginId + RESET);
-		log.debug(GREEN + "addTeam teamNm :"+teamNm + RESET);
-		log.debug(GREEN + "addTeam teamDeptNm :"+teamDeptNm + RESET);
+		log.debug(LJY + "addTeam loginId :"+loginId + RESET);
+		log.debug(LJY + "addTeam teamNm :"+teamNm + RESET);
+		log.debug(LJY + "addTeam teamDeptNm :"+teamDeptNm + RESET);
 		StStdCd stStdCd = new StStdCd();
 		stStdCd.setModId(loginId);
 		stStdCd.setRegId(loginId);
@@ -104,9 +112,9 @@ public class StStdController {
 		//세선에 저장된 로그인 아이디를 받아옴
     	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-		log.debug(GREEN + "modifyDeptCdNm loginId :"+loginId + RESET);
-		log.debug(GREEN + "modifyDeptCdNm originDeptCdNm :"+originDeptCdNm + RESET);
-		log.debug(GREEN + "modifyDeptCdNm updatedDeptCdNm :"+updatedDeptCdNm + RESET);
+		log.debug(LJY + "modifyDeptCdNm loginId :"+loginId + RESET);
+		log.debug(LJY + "modifyDeptCdNm originDeptCdNm :"+originDeptCdNm + RESET);
+		log.debug(LJY + "modifyDeptCdNm updatedDeptCdNm :"+updatedDeptCdNm + RESET);
 		
     	
     	int modifyDeptRow = stStdCdService.modifyDeptCdNm(loginId, originDeptCdNm,updatedDeptCdNm);
@@ -126,9 +134,9 @@ public class StStdController {
 		//세선에 저장된 로그인 아이디를 받아옴
     	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-		log.debug(GREEN + "modifyTeamCdNm loginId :"+loginId + RESET);
-		log.debug(GREEN + "modifyTeamCdNm originTeamCdNm :"+originTeamCdNm + RESET);
-		log.debug(GREEN + "modifyTeamCdNm updatedTeamCdNm :"+updatedTeamCdNm + RESET);
+		log.debug(LJY + "modifyTeamCdNm loginId :"+loginId + RESET);
+		log.debug(LJY + "modifyTeamCdNm originTeamCdNm :"+originTeamCdNm + RESET);
+		log.debug(LJY + "modifyTeamCdNm updatedTeamCdNm :"+updatedTeamCdNm + RESET);
 		
     	
     	int modifyTeamRow = stStdCdService.modifyTeamCdNm(loginId, originTeamCdNm,updatedTeamCdNm);
@@ -150,6 +158,8 @@ public class StStdController {
 		String loginId = loginMember.getId(); 
 		stStdCd.setModId(loginId);
 		
+		log.debug(LJY + "removeStStdCd loginId :"+loginId + RESET);
+		log.debug(LJY + "modifyTeamCdNm stStdCd :"+stStdCd + RESET);
     	
     	int modifyTeamRow = stStdCdService.removeStStdCd(stStdCd);
         if (modifyTeamRow == 0) {

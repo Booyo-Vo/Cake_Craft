@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>modifyEmp</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>
 //부서가 선택되면 해당부서에 맞는 팀만 나열되도록

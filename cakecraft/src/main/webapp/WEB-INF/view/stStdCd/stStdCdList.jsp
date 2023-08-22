@@ -4,7 +4,6 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>stStdCdList</title>
 </head>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>//부서추가

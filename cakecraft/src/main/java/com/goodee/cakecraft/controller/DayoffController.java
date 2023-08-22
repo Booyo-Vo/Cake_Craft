@@ -1,5 +1,7 @@
 package com.goodee.cakecraft.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.service.DayoffService;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpDayoff;
+import com.goodee.cakecraft.vo.EmpIdList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,8 +31,13 @@ public class DayoffController {
 	
 	// 연차상세내역조회
 	@GetMapping("/emp/dayoffById")
-	 	public String dayoffList(Model model,
+	 	public String dayoffList(HttpSession session, Model model,
 	 							@RequestParam String id) {
+		//세선에 저장된 로그인 아이디를 받아옴
+    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
+		
 		log.debug(LJY + "dayoffById id :"+id + RESET);	
 		//연차상세내역 받아오기
 		EmpDayoff empDayoff = dayoffService.getdayoffById(id);
@@ -45,6 +53,7 @@ public class DayoffController {
 		//뷰로 값넘기기
 	    model.addAttribute("empDayoff", empDayoff);
 	    model.addAttribute("empBase", empBase);
-		return "/emp/dayoffById";
+	    model.addAttribute("loginId", loginId);
+	    return "/emp/dayoffById";
 	}	
 }

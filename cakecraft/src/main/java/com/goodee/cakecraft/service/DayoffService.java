@@ -19,9 +19,9 @@ public class DayoffService {
 	@Autowired
 	private DayoffMapper dayoffMapper;
 	
-	// 관리자가 보는 사원리스트
+	// 연차리스트 받아오기
 	public EmpDayoff getdayoffById(String id){
-		//사원리스트 받아오기
+		//연차리스트
 		EmpDayoff empDayoff = dayoffMapper.selectDayoffById(id);
 			
 		return empDayoff;

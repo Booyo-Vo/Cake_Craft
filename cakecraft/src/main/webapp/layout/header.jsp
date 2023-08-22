@@ -242,11 +242,10 @@
 							<span class="micon dw dw-analytics-21"></span><span class="mtext">관리자메뉴</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="/cakecraft/emp/addEmp">addEmp</a></li>
-							<li><a href="/cakecraft/emp/adminEmpById">adminEmpById</a></li>
-							<li><a href="/cakecraft/emp/adminEmpList">adminEmpList</a></li>
-							<li><a href="/cakecraft/emp/chartList">chartList</a></li>
-							<li><a href="/cakecraft/emp/modifyEmp">modifyEmp</a></li>
+							<li><a href="/cakecraft/emp/addEmp">사원추가</a></li>
+							<li><a href="/cakecraft/emp/adminEmpList">사원관리</a></li>
+							<li><a href="/cakecraft/stStdCd/stStdCdList">부서/팀관리</a></li>
+							<li><a href="/cakecraft/emp/chartList">차트</a></li>
 						</ul>
 					</li>
 				</ul>
