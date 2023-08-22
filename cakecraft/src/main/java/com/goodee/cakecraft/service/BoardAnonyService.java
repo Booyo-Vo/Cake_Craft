@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.BoardAnonyMapper;
 import com.goodee.cakecraft.vo.BoardAnony;
+import com.goodee.cakecraft.vo.BoardLike;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,4 +67,39 @@ public class BoardAnonyService {
 		return row;
 	}
 	
+	// 좋아요 눌렀는지 여부 확인
+	public int getLike(BoardAnony anony) {
+		int row = anonyMapper.selectLike(anony);
+		log.debug(GEH + row + " <-- 좋아요 여부확인" + RESET);
+		
+		return row;
+	}
+	
+	// 좋아요 +1
+	public int likeUp(BoardLike like) {
+		int row = anonyMapper.insertLikeUp(like);
+		
+		return row;
+	}
+	
+	// 좋아요 -1
+	public int likeDown(BoardLike like) {
+		int row = anonyMapper.deleteLikeDown(like);
+		
+		return row;
+	}
+	
+	// 전체 좋아요 개수 변경
+	public int modifyLikeCnt(BoardLike like) {
+		// 게시글별 좋아요 개수 조회
+		int sumLikeNum = anonyMapper.selectLikeNum(like);
+		
+		BoardAnony anony = new BoardAnony();
+		anony.setAnonyNo(like.getAnonyNo());
+		anony.setLikeCnt(sumLikeNum);
+		
+		int row = anonyMapper.updateLikeCnt(anony);
+		
+		return row;
+	}
 }

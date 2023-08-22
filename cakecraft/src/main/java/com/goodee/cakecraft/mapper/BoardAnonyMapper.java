@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.goodee.cakecraft.vo.BoardAnony;
+import com.goodee.cakecraft.vo.BoardLike;
 
 @Mapper
 public interface BoardAnonyMapper {
@@ -22,5 +23,20 @@ public interface BoardAnonyMapper {
 	
 	// 게시글 삭제
 	int deleteAnony(BoardAnony anony);
-
+	
+	// 좋아요를 눌렀는지 안눌렀는지 확인
+	int selectLike(BoardAnony anony);
+	
+	// 좋아요 +1
+	int insertLikeUp(BoardLike like);
+	
+	// 좋아요 -1
+	int deleteLikeDown(BoardLike like);
+	
+	// 게시글별 좋아요 개수 조회
+	int selectLikeNum(BoardLike like);
+	
+	// 전체 좋아요 개수 변경
+	int updateLikeCnt(BoardAnony anony);
+	
 }

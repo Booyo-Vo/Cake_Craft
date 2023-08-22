@@ -47,9 +47,16 @@ public class BoardAnonyController {
 		
 		// 게시글 상세정보 가져오기	
 		BoardAnony anonyByNo = anonyService.getAnonyByNo(anony);
-
+		
+		// 좋아요 눌렀는지 여부 확인
+		BoardAnony paramAnony = new BoardAnony();
+		paramAnony.setAnonyNo(anony.getAnonyNo());
+		paramAnony.setId(loginId);
+		int likeCk = anonyService.getLike(paramAnony);
+		
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("anonyByNo", anonyByNo);
+		model.addAttribute("likeCk", likeCk);
 		
 		return "/board/anonyByNo";
 	}
@@ -108,5 +115,5 @@ public class BoardAnonyController {
 		
 		return "redirect:/board/anonyList";
 	}
-		
+
 }

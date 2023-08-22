@@ -84,4 +84,44 @@
 			anony_no = #{anonyNo}
 		</where>
 	</delete>
+	<!-- 좋아요를 눌렀는지 안눌렀는지 확인 -->
+	<select id="selectLike"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		SELECT COUNT(*) 
+		FROM board_like
+		<where>
+			anony_no = #{anonyNo} AND id = #{id}
+		</where> 
+	</select>
+	<!-- 좋아요 +1 -->
+	<insert id="insertLikeUp"
+			parameterType="com.goodee.cakecraft.vo.BoardLike">
+		INSERT INTO board_like(anony_no, id, like_num)
+		VALUES(#{anonyNo},#{id},1)
+	</insert>
+	<!-- 좋아요 -1 -->
+	<delete id="deleteLikeDown"
+			parameterType="com.goodee.cakecraft.vo.BoardLike">
+		DELETE FROM board_like
+		<where>
+			anony_no = #{anonyNo} AND id = #{id}
+		</where>
+	</delete>
+	<!-- 좋아요 개수 조회 -->
+	<select id="selectLikeNum"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		SELECT COUNT(*) FROM board_like
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</select>
+	<!-- 전체 좋아요 개수 변경 -->
+	<update id="updateLikeCnt"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		UPDATE board_anony
+		SET like_cnt = #{likeCnt} 
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</update>
 </mapper>
