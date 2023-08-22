@@ -26,10 +26,9 @@ public class BoardAnonyService {
 	// 익명게시판 목록 조회
 	public Map<String, Object> getAnonyList(String searchWord){
 		
-		
 		// 게시글 목록 가져오기
 		List<BoardAnony> anonyList = anonyMapper.selectAnonyList(searchWord);
-		log.debug(GEH + "anonyList --> "+ anonyList.size() + RESET);
+		log.debug(GEH + anonyList.size() + " <-- 익명 게시판 목록.size" + RESET);
 		
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -39,7 +38,7 @@ public class BoardAnonyService {
 				
 	}
 	
-	// 개별 게시글 상세 조회
+	// 게시글 상세정보 조회
 	public BoardAnony getAnonyByNo(BoardAnony anony) {
 		BoardAnony resultAnony = anonyMapper.selectAnonyByNo(anony);
 		
