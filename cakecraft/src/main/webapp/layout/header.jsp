@@ -91,7 +91,7 @@
 			            <span class="user-icon">
 			                <img src="../vendors/images/photo1.jpg" alt="">
 			            </span>
-			            <span class="user-name">${empBase.id} 님 환영합니다!
+			            <span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다!
 			                <button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
 			            </span>
 			        </a>
@@ -331,18 +331,17 @@
 		function degToRad(degrees) {
 		  return degrees * (Math.PI / 180);
 		}
-		// saveWorkHistory 
-		function saveWorkHistory(history) {
-		    // 작업 내역을 저장하는 로직을 구현합니다
-		    // 예를 들어, 작업 내역을 배열에 저장하거나 서버 요청을 할 수 있습니다
-		    // 여기서는 간단히 작업 내역을 로깅하도록 했습니다
-		    console.log("작업 내역 저장됨:", history);
-		}
-
 		document.addEventListener("DOMContentLoaded", function () {
 		const startWorkBtn = document.getElementById("startWorkBtn");
 	    const endWorkBtn = document.getElementById("endWorkBtn");
-		// 출근 버튼 클릭 이벤트 처리
+	    
+	    function saveWorkHistory(history) {
+    	const workHistory = JSON.parse(localStorage.getItem('workHistory')) || [];
+    	    workHistory.push(history);
+    	    localStorage.setItem('workHistory', JSON.stringify(workHistory));
+    	}	
+	    
+	 	// 출근 버튼 클릭 이벤트 처리
 	    startWorkBtn.addEventListener("click", () => {
 	        const currentTime = new Date().toISOString();
 	        const startWorkHistory = {
@@ -350,21 +349,21 @@
 	            time: currentTime
 	        };
 	        saveWorkHistory(startWorkHistory);
-	        startWorkBtn.disabled = true; // 출근 버튼이 눌리면 비활성화
-	        endWorkBtn.disabled = false; // 퇴근 버튼이 눌리면 활성화
+	        startWorkBtn.disabled = true;
+	        endWorkBtn.disabled = false;
 	    });
 
-	 	// 퇴근 버튼 클릭 이벤트 처리
-	 	endWorkBtn.addEventListener("click", () => {
-	 	  const currentTime = new Date().toISOString();
-	 	  const endWorkHistory = {
-	 	    type: "퇴근",
-	 	    time: currentTime
-	 	  };
-	 	  saveWorkHistory(endWorkHistory);
-	 	 endWorkBtn.disabled = true; //퇴근 버튼이 눌리면 비활성화
-	 	 startWorkBtn.disabled = false; //출근 버튼이 눌리면 활성화
-	 	});
+	    // 퇴근 버튼 클릭 이벤트 처리
+	    endWorkBtn.addEventListener("click", () => {
+	        const currentTime = new Date().toISOString();
+	        const endWorkHistory = {
+	            type: "퇴근",
+	            time: currentTime
+	        };
+	        saveWorkHistory(endWorkHistory);
+	        endWorkBtn.disabled = true;
+	        startWorkBtn.disabled = false;
+	    });
 	 });
  	
     </script>
