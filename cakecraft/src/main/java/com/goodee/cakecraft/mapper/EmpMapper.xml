@@ -220,8 +220,8 @@
 	
 	<!-- *마이페이지 사인 추가 -->
 	<insert id="addSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
-		INSERT INTO EmpSignImg(id, sign_filename, signType, sign_filesize, reg_dtime, mod_dtime, reg_id, mod_id)
-		VALUES(#{id}, #{sign_filename}, #{signType}, #{sign_filesize}, NOW(), #{mod_dtime}, #{id}, #{id})
+		INSERT INTO emp_signImg(id, sign_filename, sign_type, sign_filesize, reg_dtime, mod_dtime, reg_id, mod_id)
+		VALUES(#{id}, #{signFilename}, #{signType}, #{signFilesize}, NOW(), NOW(), #{id}, #{id})
 	</insert>
 	
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
