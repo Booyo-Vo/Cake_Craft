@@ -23,17 +23,14 @@
 	   사번 ${loginId}
 	</div>
 	<div>
-		<button id="addSignature">서명 추가</button>
-	   서명 ${empBase.signFilename}
-	   <%-- <canvas id="goal" style="border: 1px solid black"></canvas>
-	<div>
-		<button id="clear">Clear</button>
-		<button id="save">Save</button>
-		<button id="send">Send</button>
-	</div>
-	<div>
-		<img id="target" src = "" width=60 height=200>
-	</div> --%>
+	   <p>서명: ${empBase.signFilename}</p>
+	   <c:if test="${not empty empBase.signFilename}">
+	   		<img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="signImg" style="width: 200px; height: 200px;">
+	   </c:if>
+	   <c:if test="${empty empBase.signFilename}">
+	   		(비어있음)
+	   </c:if>
+	   <button id="addSignature">서명 추가</button>
 	<!-- 서명 모달 -->
 		<div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-dialog-centered" role="document">
@@ -60,13 +57,12 @@
 		</div>
 	</div>
 	<div>
-	   사진
-		<p>Profile Filename: ${empBase.profileFilename}</p>
+		<p>프로필 사진: ${empBase.profileFilename}</p>
 		<c:if test="${not empty empBase.profileFilename}">
 		    <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
 		</c:if>
 		<c:if test="${empty empBase.profileFilename}">
-		    <img src="${pageContext.request.contextPath}/profileImg/profile.jpg" alt="default profile image" style="width: 200px; height: 200px;">
+		    <img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image" style="width: 100px; height: 100px;">
 		</c:if>
 	</div>
 	<div>
@@ -104,10 +100,8 @@
 </body>
 <script>
 
-
 //서명 추가 버튼 클릭 시 모달 열기
 $('#addSignature').click(function() {
-
     $('#signatureModal').modal('show'); // 모달 열기
 });
 
@@ -142,7 +136,7 @@ $(document).ready(function() {
 
     $('#modalSend').click(function() {
         $.ajax({
-            url: '/emp/addSign', // Update with the correct URL
+            url: '/cakecraft/emp/addsign',
             data: { sign: signModal.toDataURL('image/png', 1.0) },
             type: 'post',
             success: function(jsonData) {
@@ -151,36 +145,6 @@ $(document).ready(function() {
         });
     });
 
-    //모달 밖에서 사용되는 서명패드 기능
-    let sign = new SignaturePad(document.getElementById('goal'), {
-        minWidth: 2,
-        maxWidth: 2,
-        penColor: 'rgb(0, 0, 0)'
-    });
-
-    $('#clear').click(function() {
-        sign.clear();
-    });
-
-    $('#save').click(function() {
-        if (sign.isEmpty()) {
-            alert('내용이 없습니다.');
-        } else {
-            let data = sign.toDataURL('image/png');
-            $('#target').attr('src', data);
-        }
-    });
-
-    $('#send').click(function() {
-        $.ajax({
-            url: '/emp/addSign',
-            data: { sign: sign.toDataURL('image/png', 1.0) },
-            type: 'post',
-            success: function(jsonData) {
-                alert('이미지 전송 성공! - ' + jsonData);
-            }
-        });
-    });
 });
 </script>
 </html>
