@@ -3,7 +3,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Cake Craftjsp</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>

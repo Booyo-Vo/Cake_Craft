@@ -5,14 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Cake Craft</title>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <h1>${targetYear}년 ${targetMonth+1}월 </h1>
-<a href="/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
-<a href="/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
+<a href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">이전</a>
+<a href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">다음</a>
 <div class="main-container">
 	<div class="row">
 		<!-- 달력 시작 -->
@@ -231,11 +230,11 @@ function date(d, targetYear, targetMonth){
 			console.log('addSchedule ajax성공');
 			console.log(model);
 			$('#startDtime').val(model);
-			$('#addScheduleModal').modal('show');
 		},
 		error : function(){
 			console.log('addSchedule ajax실패');
 		},
+		$('#addScheduleModal').modal('show');
 	});
 }
 
@@ -281,11 +280,11 @@ function scheduleNo(scheduleNo){
 			$('#modScheduleContent').val(model.scheduleContent);
 			$('#modStartDtime').val(model.startDtime.substring(0,10));
 			$('#modEndDtime').val(model.endDtime.substring(0,10));
-			$('#modifyScheduleModal').modal('show');
 		},
 		error : function(){
 			console.log('modifySchedule ajax실패');
 		},
+		$('#modifyScheduleModal').modal('show');
 	});
 }
 
