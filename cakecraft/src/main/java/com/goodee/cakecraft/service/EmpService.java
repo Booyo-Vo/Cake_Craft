@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.vo.EmpBase;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.EmpSignImg;
 
 import lombok.extern.slf4j.Slf4j;
@@ -76,20 +77,22 @@ public class EmpService {
 		    String uploadDir = "/webapp/profileImg";
 		    String fileName = id + "_" + file.getOriginalFilename();
 		    String filePath = Paths.get(uploadDir, fileName).toString();
-		    
+		    //사번 받아와서 사진 파일 저장
 		    File dest = new File(filePath);
 		    file.transferTo(dest);
 		    
 		    return fileName; // 저장된 파일명 반환
 	}
-	// 프로필 사진 경로 업데이트 
+	// 프로필 사진 추가
     public void updateProfileImagePath(String id, String profilePath) {
         //컨트롤러에서 프로필 이미지 업로드 -> 업로드된 경로를 데이터베이스에 업데이트
+    	//update -> insert
+    	//update 따로
     	empMapper.updateProfileImagePath(id, profilePath);
     }
 
     // 사인 추가
-    public void addSign(String sign, String path) {
+    public void addSign(String sign, String path, String loginId) {
 		//이미지 데이터 추출
 		/*
 		 * sign변수: Base64로 인코딩된 이미지 데이터를 담고 있는 문자열
@@ -98,24 +101,36 @@ public class EmpService {
 		 * type 변수: image 타입이 저장
 		 * data 변수: 이미지데이터가 Base64 형식으로 저장
 		 */
+    	//loginId 받기
+    	
+
 		String type = sign.split(",")[0].split(";")[0].split(":")[1];
 		String data = sign.split(",")[1];
 		//Base64를 디코드 해 이미지 바이트 배열로 변환
 		byte[] image = Base64.decodeBase64(data);
 		int size = image.length;
 
-		// 저장할 파일 이름 생성(UUID 사용)
-		String signFilename = UUID.randomUUID().toString().replace("-", "") + ".png";
-		log.debug("SignService.addSign() signFilename : " + signFilename);
+		/*
+		 * // 저장할 파일 이름 생성(UUID 사용)//사번 써도 되지 않을까? String signFilename =
+		 * UUID.randomUUID().toString().replace("-", "") + ".png"; log.debug(KMS +
+		 * signFilename + "<-- EmpService.addSign() signFilename " + RESET);
+		 */
+		
+		// 저장할 파일 이름 생성 (id 사용)
+	    String signFilename = loginId + ".png"; // 여기서 id를 사용하여 파일 이름 생성
+	    //log.debug(KMS + signFilename + "<-- EmpService.addSign() signFilename " + RESET);
 		
 		// DB에 정보 저장을 위한 Sign 객체 생성
 		EmpSignImg s = new EmpSignImg();
-		s.setId("user");
+		s.setId(loginId);
 		s.setSignFilename(signFilename);
 		s.setSignFilesize(size);
 		s.setSignType(type);
+		s.setModId(loginId);
+		s.setRegId(loginId);
+		
 		//Sign 정보 DB에 저장
-		empMapper.addSign(s);
+		empMapper.insertSign(s);
 		
 		// 빈 파일 생성
 		File f = new File(path+signFilename);

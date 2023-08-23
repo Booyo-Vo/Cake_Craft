@@ -219,9 +219,9 @@
     </update>
 	
 	<!-- *마이페이지 사인 추가 -->
-	<insert id="addSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
+	<insert id="insertSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
 		INSERT INTO emp_signImg(id, sign_filename, sign_type, sign_filesize, reg_dtime, mod_dtime, reg_id, mod_id)
-		VALUES(#{id}, #{signFilename}, #{signType}, #{signFilesize}, NOW(), NOW(), #{id}, #{id})
+		VALUES(#{id}, #{signFilename}, #{signType}, #{signFilesize}, NOW(), NOW(), #{regId}, #{modId})
 	</insert>
 	
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
