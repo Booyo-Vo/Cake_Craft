@@ -147,8 +147,45 @@ public class EmpService {
 			throw new RuntimeException();
 		}
 	}
-    
-    
+
+    	
+    	// 사인 수정
+    	public void updateSign(String sign, String path, String loginId) {
+    	    // 이미지 데이터 추출 및 처리
+    	    String type = sign.split(",")[0].split(";")[0].split(":")[1];
+    	    String data = sign.split(",")[1];
+    	    byte[] image = Base64.decodeBase64(data);
+    	    int size = image.length;
+
+    	    // 기존 사인 이미지 삭제
+    	    EmpSignImg removeSignImg = new EmpSignImg();
+    	    removeSignImg.setId(loginId);
+    	    empMapper.removeSign(removeSignImg);
+
+    	    // 새로운 사인 이미지 추가
+    	    String signFilename = loginId + ".png";
+    	    EmpSignImg s = new EmpSignImg();
+    	    s.setId(loginId);
+    	    s.setSignFilename(signFilename);
+    	    s.setSignFilesize(size);
+    	    s.setSignType(type);
+    	    s.setModId(loginId);
+    	    s.setRegId(loginId);
+    	    empMapper.insertSign(s);
+
+    	    // 새로운 사인 이미지 파일 생성
+    	    File f = new File(path + signFilename);
+    	    try {
+    	        FileOutputStream fileOutputStream = new FileOutputStream(f);
+    	        fileOutputStream.write(image);
+    	        fileOutputStream.close();
+    	        log.debug("empService.updateSign() f.length() : " + f.length());
+    	    } catch (IllegalStateException | IOException e) {
+    	        e.printStackTrace();
+    	        throw new RuntimeException();
+    	    }
+    	}	
+
 	// 사원이 보는 사원리스트
 		public List<EmpBase> getEmpList(){
 			//사원리스트 받아오기

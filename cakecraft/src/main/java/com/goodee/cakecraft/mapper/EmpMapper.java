@@ -64,4 +64,7 @@ public interface EmpMapper {
  	
  	// 사인 등록
  	public int insertSign(EmpSignImg sign);
+ 	
+ 	// 사인 삭제
+  	public int removeSign(EmpSignImg sign);
 }

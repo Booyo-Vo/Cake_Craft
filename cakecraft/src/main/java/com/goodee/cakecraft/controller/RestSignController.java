@@ -23,9 +23,11 @@ public class RestSignController {
 
 	@Autowired
 	EmpService empService;
-
+	
+	//최초 사인 추가
 	@PostMapping("/emp/addsign")
-	public String addSign(HttpSession session, HttpServletRequest request, @RequestParam(name = "sign") String sign) {
+	public String addSign(HttpSession session, HttpServletRequest request, 
+							@RequestParam(name = "sign") String sign) {
 		String path = request.getServletContext().getRealPath("/signImg/");
 
 		// 현재 로그인된 사용자의 아이디 가져오기
@@ -41,6 +43,30 @@ public class RestSignController {
 		 empService.addSign(sign, path, loginId); 
 		 log.debug(KMS +"After calling empService.addSign" + RESET);
 
+		return "YES";
+	}
+	
+	//사인 수정
+	@PostMapping("/emp/updateSign")
+	public String updateSign(HttpSession session, HttpServletRequest request,
+								@RequestParam(name= "sign") String sign) {
+		String path = request.getServletContext().getRealPath("/signImg/");
+		
+		// 현재 로그인된 사용자의 아이디 가져오기
+		Object o = session.getAttribute("loginMember");
+		String loginId = "";
+
+		if (o instanceof EmpIdList) {
+			loginId = ((EmpIdList) o).getId();
+			log.debug(KMS + "loginId EmpController" + loginId + RESET);
+		}
+		
+		log.debug(KMS + "Before calling empService.updateSign" + RESET);
+		empService.updateSign(sign, path, loginId);
+		log.debug(KMS +"After calling empService.updateSign" + RESET);
+
+		
+		
 		return "YES";
 	}
 }

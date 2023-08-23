@@ -23,22 +23,25 @@
 	   사번 ${loginId}
 	</div>
 	<div>
-	   <p>서명: ${empBase.signFilename}</p>
-	   <c:if test="${not empty empBase.signFilename}">
-	   		<img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="signImg" style="width: 200px; height: 200px;">
-	   </c:if>
-	   <c:if test="${empty empBase.signFilename}">
-	   		(비어있음)
-	   </c:if>
-	   <c:choose>
+		<!-- 서명이 없을 경우 (비어있음) 출력 / 있을 경우 서명 이미지 출력 -->
+	    <p>서명: ${empBase.signFilename}</p>
+	    <c:if test="${not empty empBase.signFilename}">
+	   		 <img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="signImg" style="width: 200px; height: 200px;">
+	    </c:if>
+	    <c:if test="${empty empBase.signFilename}">
+	   	 	 (비어있음)
+	    </c:if>
+	    <!-- 서명이 없는 경우 서명 추가 버튼 출력 / 서명이 있는 경우 서명 수정 버튼 출력 -->
+	    <c:choose>
         <c:when test="${empty empBase.signFilename}">
             <button id="addSignature">서명 추가</button>
         </c:when>
         <c:otherwise>
-            <button id="addSignature">서명 수정</button>
+            <button id="updateSignature">서명 수정</button>
         </c:otherwise>
     </c:choose>
-	<!-- 서명 모달 -->
+    
+	<!-- 서명 추가모달 -->
 		<div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-dialog-centered" role="document">
 		        <div class="modal-content">
@@ -53,6 +56,27 @@
 		                <div>
 		                    <button id="modalClear" class="btn btn-default">Clear</button>
 		                    <button id="modalSend" class="btn btn-default">Send</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+	<!-- 서명 수정모달 -->
+		<div class="modal fade" id="updateSignatureModal" tabindex="-1" role="dialog" aria-labelledby="updateSignatureModal" aria-hidden="true">
+		    <div class="modal-dialog modal-dialog-centered" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="updateSignatureLabel">서명 수정</h5>
+		                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <canvas id="updateModalGoal" style="border: 1px solid black"></canvas>
+		                <div>
+		                    <button id="updateModalClear" class="btn btn-default">Clear</button>
+		                    <button id="updateModalSend" class="btn btn-default">Send</button>
 		                </div>
 		            </div>
 		        </div>
@@ -103,43 +127,75 @@
 	</div>
 </body>
 <script>
-
-// 모달 내부의 서명 기능과 관련된 스크립트
 $(document).ready(function() {
-
-    // 서명 추가 버튼 클릭 시 모달 열기
+    // 서명 추가 모달 열기
     $('#addSignature').click(function() {
-        $('#signatureModal').modal('show'); // 모달 열기
+        $('#signatureModal').modal('show');
     });
-	
-    // 모달 내부의 서명 기능과 관련된 스크립트
-    let goal = $('#goal')[0];
-    let signModal = new SignaturePad(document.getElementById('modalGoal'), {
+
+    // 서명 수정 모달 열기
+    $('#updateSignature').click(function() {
+        $('#updateSignatureModal').modal('show');
+    });
+
+    // 서명 추가 모달 내부의 서명 기능과 관련된 스크립트
+    let addModalSign = new SignaturePad(document.getElementById('modalGoal'), {
         minWidth: 2,
         maxWidth: 2,
         penColor: 'rgb(0, 0, 0)'
     });
-  	//서명 지우기
-    $('#modalClear').click(function() {
-        signModal.clear();
+
+    // 서명 수정 모달 내부의 서명 기능과 관련된 스크립트
+    let updateModalSign = new SignaturePad(document.getElementById('updateModalGoal'), {
+        minWidth: 2,
+        maxWidth: 2,
+        penColor: 'rgb(0, 0, 0)'
     });
-	//서명 저장
+
+    // 서명 추가 모달 서명 지우기
+    $('#modalClear').click(function() {
+        addModalSign.clear();
+    });
+ 	// 서명 수정 모달 서명 지우기
+    $('#updateModalClear').click(function() {
+        updateModalSign.clear();
+    });
+
+    // 서명 추가 모달 저장
     $('#modalSend').click(function() {
-        if (signModal.isEmpty()) {
+        if (addModalSign.isEmpty()) {
             alert('내용이 없습니다.');
         } else {
             $.ajax({
-                url: '/cakecraft/emp/addsign',
-                data: { sign: signModal.toDataURL('image/png', 1.0) },
+                url: '/cakecraft/emp/addsign', //restapi 경로
+                data: { sign: addModalSign.toDataURL('image/png', 1.0) },
                 type: 'post',
                 success: function(jsonData) {
                     alert('이미지 전송 성공! - ' + jsonData);
                     $('#signatureModal').modal('hide'); // 이미지 전송 성공 후 모달 닫기
+                    location.reload(); //자동 새로고침
                 }
             });
         }
     });
-
+    
+ 	// 서명 수정 모달 저장
+    $('#updateModalSend').click(function() {
+        if (updateModalSign.isEmpty()) {
+            alert('내용이 없습니다.');
+        } else {
+            $.ajax({
+                url: '/cakecraft/emp/updateSign', //restapi 경로
+                data: { sign: updateModalSign.toDataURL('image/png', 1.0) },
+                type: 'post',
+                success: function(jsonData) {
+                    alert('이미지 전송 성공! - ' + jsonData);
+                    $('#updateSignatureModal').modal('hide'); // 이미지 전송 성공 후 모달 닫기
+                    location.reload(); //자동 새로고침
+                }
+            });
+        }
+    });
 });
 </script>
 </html>
