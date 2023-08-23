@@ -101,9 +101,9 @@ public class BoardAnonyController {
 	}
 	
 	@PostMapping("/board/modifyAnony")
-	public String modifyAnony(BoardAnony anony) {
-		
-		anonyService.modifyAnony(anony);
+	public String modifyAnony(HttpServletRequest request, BoardAnony anony) {
+		String path = request.getServletContext().getRealPath("/anonyupload/");
+		anonyService.modifyAnony(anony, path);
 		
 		return "redirect:/board/anonyList";
 	}
