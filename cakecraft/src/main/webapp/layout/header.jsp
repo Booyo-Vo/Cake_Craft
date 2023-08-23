@@ -88,10 +88,17 @@
 			<div class="user-info-dropdown">
 			    <div class="dropdown">
 			        <a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
-			            <span class="user-icon">
-			                <img src="../vendors/images/photo1.jpg" alt="">
-			            </span>
-			            <span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다!
+			           <span class="user-icon">
+			                <!-- <img src="../vendors/images/photo1.jpg" alt=""> -->
+			            
+				            <c:if test="${not empty empBase.profileFilename}">
+							    <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
+							</c:if>
+							<c:if test="${empty empBase.profileFilename}">
+							    <img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image">
+							</c:if>
+						</span>
+			            <span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다! &nbsp;
 			                <button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
 			            </span>
 			        </a>
@@ -193,7 +200,7 @@
 			<div class="sidebar-menu">
 			<!-- 사이드바 프로필이미지 -->
 				<ul id="accordion-menu">
-					<div class="menu-item">
+					<!-- <div class="menu-item">
 						<a href="/cakecraft/emp/myPage">
 							<span class="user-icon">
 								<div class="circular-image">
@@ -201,7 +208,7 @@
 								</div>
 							</span>
 						</a>
-					</div>
+					</div> -->
 			<!-- 출/퇴근 버튼 -->
 					<div class="menu-item">
 						<button id="startWorkBtn" class="btn btn-primary" disabled>출근</button>
