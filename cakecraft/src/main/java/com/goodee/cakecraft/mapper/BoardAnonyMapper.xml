@@ -46,6 +46,9 @@
 	<!-- 게시글 추가 -->
 	<insert id="insertAnony"
 			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		<selectKey order="AFTER" keyProperty="anonyNo" resultType="int">
+			SELECT last_insert_id()
+		</selectKey>
 		INSERT INTO board_anony(
 			id,
 			anony_title,

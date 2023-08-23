@@ -7,7 +7,7 @@ public class BoardAnonyFile {
 	private int anonyFileNo;
 	private int anonyNo;
 	private String anonyFilename;
-	private String anonyPath;
+	private long anonyFilesize;
 	private String anonyType;
 	private String regDtime;
 	private String modDtime;

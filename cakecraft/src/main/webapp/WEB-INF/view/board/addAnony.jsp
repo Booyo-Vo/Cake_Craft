@@ -9,7 +9,7 @@
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
 	<h1>게시글 작성</h1>
-	<form action="${pageContext.request.contextPath}/board/addAnony" method="post">
+	<form action="${pageContext.request.contextPath}/board/addAnony" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="id" value="${loginId}">
 		<table>
 			<tr>
@@ -23,6 +23,10 @@
 				<td>
 					<textarea rows="3" cols="40" name="anonyContent"></textarea>
 				</td>
+			</tr>
+			<tr>
+				<td>파일업로드</td>
+				<td><input type="file" name="multipartFile" multiple="multiple"></td>
 			</tr>
 		</table>
 		<a href="${pageContext.request.contextPath}/board/anonyList"><button type="button">취소</button></a>

@@ -2,6 +2,7 @@ package com.goodee.cakecraft.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +76,9 @@ public class BoardAnonyController {
 	}
 	
 	@PostMapping("/board/addAnony")
-	public String addAnony(BoardAnony anony) {
-		
-		anonyService.addAnony(anony);
+	public String addAnony(HttpServletRequest request, BoardAnony anony) {
+		String path = request.getServletContext().getRealPath("/anonyupload/");
+		anonyService.addAnony(anony, path);
 		
 		return "redirect:/board/anonyList";
 	}
@@ -109,9 +110,9 @@ public class BoardAnonyController {
 	
 	// 게시글 삭제
 	@GetMapping("/board/removeAnony")
-	public String removeAnony(BoardAnony anony) {
-		
-		anonyService.removeAnony(anony);
+	public String removeAnony(HttpServletRequest request, BoardAnony anony) {
+		String path = request.getServletContext().getRealPath("/anonyupload/");
+		anonyService.removeAnony(anony, path);
 		
 		return "redirect:/board/anonyList";
 	}

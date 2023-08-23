@@ -1,5 +1,9 @@
 package com.goodee.cakecraft.vo;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -13,4 +17,6 @@ public class BoardAnony {
 	private String modDtime;
 	private String regId;
 	private String modId;
+	
+	private List<MultipartFile> multipartFile;
 }

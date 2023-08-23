@@ -1,15 +1,21 @@
 package com.goodee.cakecraft.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.goodee.cakecraft.mapper.BoardAnonyFileMapper;
 import com.goodee.cakecraft.mapper.BoardAnonyMapper;
 import com.goodee.cakecraft.vo.BoardAnony;
+import com.goodee.cakecraft.vo.BoardAnonyFile;
 import com.goodee.cakecraft.vo.BoardLike;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class BoardAnonyService {
 	@Autowired BoardAnonyMapper anonyMapper;
+	@Autowired BoardAnonyFileMapper anonyFileMapper;
 	
 	// Ansi코드
 	final String RESET = "\u001B[0m";	
@@ -46,9 +53,50 @@ public class BoardAnonyService {
 		return resultAnony;
 	}
 	
-	// 게시글 추가
-	public int addAnony(BoardAnony anony) {
+	// 게시글 추가 & 첨부파일 추가
+	public int addAnony(BoardAnony anony, String path) {
+		// 게시글 추가
 		int row = anonyMapper.insertAnony(anony);
+		
+		// 첨부파일 추가
+		List<MultipartFile> fileList = anony.getMultipartFile();
+		// 게시글 입력이 성공하고 첨부된 파일이 1개이상 있다면
+		if(row == 1 && fileList != null && fileList.size() > 0) {
+			int anonyNo = anony.getAnonyNo();
+			String id = anony.getId();
+			int maxFileSize = 1024 * 1024 * 100; //100Mbyte
+			
+			// 첨부된 파일의 개수만큼 반복
+			for(MultipartFile mf : fileList) {
+				// 파일 크기가 0보다 크고 제한 크기 이하인 경우에만 처리
+				if(mf.getSize() > 0 && mf.getSize() <= maxFileSize) {
+					BoardAnonyFile af = new BoardAnonyFile();
+					af.setAnonyNo(anonyNo);
+					af.setModId(id);
+					af.setRegId(id);
+					af.setAnonyFilesize(mf.getSize()); 
+					af.setAnonyType(mf.getContentType());
+					// 확장자
+					String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
+					// 저장될 파일 이름 = 새로운 이름 + 확장자
+					af.setAnonyFilename(UUID.randomUUID().toString().replace("-", "").substring(0,10) + ext);
+					
+					// DB에 저장
+					anonyFileMapper.insertAnonyFile(af);
+					
+					// 파일 저장(저장위치 필요 -> path변수)
+					// path위치에 저장파일 이름으로 빈 파일을 생성
+					File f = new File(path+af.getAnonyFilename());
+					// 빈파일에 첨부된 파일의 스트림을 주입한다.
+					try {
+						mf.transferTo(f); // 스트림 주입 메서드
+					} catch (IllegalStateException | IOException e) {
+						e.printStackTrace();
+						throw new RuntimeException();
+					}
+				}
+			}
+		}
 		
 		return row;
 	}
@@ -60,10 +108,25 @@ public class BoardAnonyService {
 		return row;
 	}
 	
-	// 게시글 삭제
-	public int removeAnony(BoardAnony anony) {
-		int row = anonyMapper.deleteAnony(anony);
+	// 게시글 삭제 & 첨부파일 삭제
+	public int removeAnony(BoardAnony anony, String path) {
+		// 첨부파일 삭제
+		List<BoardAnonyFile> anonyFileList = anonyFileMapper.selectAnonyFile(anony);
+		if(anonyFileList != null && anonyFileList.size() > 0) {
+			for(BoardAnonyFile af : anonyFileList) {
+				File f = new File(path + af.getAnonyFilename());
+				if(f.exists()) {
+					// 폴더에서 파일 삭제
+					f.delete();
+				}
+			}
+			// board_anony_file 테이블에서 삭제
+			anonyFileMapper.deleteAnonyFile(anony);
+		}
 		
+		// 게시글 삭제
+		int row = anonyMapper.deleteAnony(anony);
+				
 		return row;
 	}
 	
