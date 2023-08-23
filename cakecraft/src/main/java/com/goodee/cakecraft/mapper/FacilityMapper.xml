@@ -60,6 +60,7 @@
 		</where>
 	</select>
 	
+	<!-- 시설 비품 추가 -->
 	<insert id="insertFacility"
 			parameterType="java.util.Map">
 		INSERT INTO facility_base(
@@ -80,6 +81,7 @@
 			#{regId})
 	</insert>
 	
+	<!-- 시설비품 수정 -->
 	<update id="updateFacility"
 			parameterType="java.util.Map">
 		UPDATE facility_base
@@ -92,4 +94,78 @@
 			mod_id = #{id}
 		WHERE facility_no = #{facility.facilityNo}
 	</update>
-</mapper>
+	
+	<!-- 카테고리 리스트 출력 -->
+	<select id="selectFacilityCdList"
+			parameterType="java.util.Map"
+			resultType="com.goodee.cakecraft.vo.StStdCd">
+		SELECT 
+			grp_cd grpCd,
+			cd,
+			cd_nm cdNm,
+			use_yn useYn,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM st_std_cd
+		<where>
+			grp_cd = 'F001'
+		<if test='!cd.equals("A")'>
+			AND cd LIKE #{cd}
+		</if>
+		</where>
+	</select>
+	
+	<!-- 시설비품별 코드 수 -->
+	<select id="selectCategoryCnt"
+			parameterType="java.util.Map"
+			resultType="java.lang.Integer">
+		SELECT COUNT(*) cnt
+		FROM st_std_cd
+		<where>
+			grp_cd = 'F001'
+			AND cd LIKE #{cd}
+		</where>
+	</select>
+	
+	<!-- 특정 시설비품의 수 -->
+	<select id="selectFacilityCnt"
+			parameterType="com.goodee.cakecraft.vo.StStdCd"
+			resultType="java.lang.Integer">
+		SELECT COUNT(*) cnt
+		FROM facility_base
+		WHERE category_cd = #{cd}
+	</select>
+	
+	<!-- 카테고리 코드 추가 -->
+	<insert id="insertCategoryCd"
+			parameterType="com.goodee.cakecraft.vo.StStdCd">
+		INSERT INTO st_std_cd (
+			grp_cd,
+			cd,
+			cd_nm,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id)
+		VALUES (
+			'F001',
+			#{cd},
+			#{cdNm},
+			NOW(),
+			NOW(),
+			#{regId},
+			#{regId}
+		)
+	</insert>
+	
+	<!-- 카테고리 코드 사용여부 수정 -->
+	<update id="updateCategoryUse"
+			parameterType="com.goodee.cakecraft.vo.StStdCd">
+		UPDATE st_std_cd 
+		SET use_yn = #{useYn}
+		WHERE grp_cd = 'F001'
+		AND cd = #{cd};
+	</update>
+	</mapper>

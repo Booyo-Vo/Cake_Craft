@@ -1,5 +1,8 @@
 package com.goodee.cakecraft.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goodee.cakecraft.service.FacilityService;
 import com.goodee.cakecraft.vo.FacilityBase;
+import com.goodee.cakecraft.vo.StStdCd;
 
 @RestController
 public class RestFacilityController {
@@ -31,5 +35,22 @@ public class RestFacilityController {
 		int cnt = facilityService.getNameCheck(facility);
 		
 		return cnt;
+	}
+	
+	//시설비품 카테고리 코드 생성
+	@PostMapping("/rest/getCode")
+	public String getCode(@RequestParam(name="cd") String cd) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("cd", cd+"%");
+		int cnt = facilityService.getCategoryCnt(paramMap);
+		String code = cd + (cnt+1);
+		return code;
+	}
+	
+
+	@PostMapping("/rest/modifyFacilityUse")
+	public int modifyFacilityUse(StStdCd stStdCd) {
+		int modRow = facilityService.modifyFacilityUse(stStdCd);
+		return modRow;
 	}
 }

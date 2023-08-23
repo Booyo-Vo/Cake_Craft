@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.FacilityService;
+import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.FacilityBase;
+import com.goodee.cakecraft.vo.StStdCd;
 
 @Controller
 public class FacilityController {
 	@Autowired FacilityService facilityService;
+	
 	//ANSI코드
 	final String KMJ = "\u001B[43m";
 	final String RESET = "\u001B[0m";
@@ -41,10 +44,11 @@ public class FacilityController {
 		if(o instanceof EmpIdList) {
 			loginId = ((EmpIdList)o).getId();
 		}
+		List<StStdCd> categoryCdList = facilityService.getFacilityCdList("A");
 		
 		model.addAttribute("loginId", loginId);
 		model.addAttribute("resultList", resultList);
-		
+		model.addAttribute("categoryCdList", categoryCdList);
 		return "/facility/facilityList";
 	}
 	
@@ -69,4 +73,32 @@ public class FacilityController {
 		
 		return "redirect:/facility/facilityList";
 	}
+	
+	//시설비품 카테고리 관리view
+	@GetMapping("/facility/categoryList")
+	public String categoryList(HttpSession session,
+							   Model model,
+							   @RequestParam(name="cd", defaultValue = "1") String cd) {
+		/*
+		 * if(!cd.equals("1")) { cd = cd + "%"; }
+		 */
+		
+		String loginId = "";
+		Object o = session.getAttribute("loginMember");
+		if(o instanceof EmpIdList) {
+			loginId = ((EmpIdList)o).getId();
+		}
+		
+		List<StStdCd> cdList = facilityService.getFacilityCdList("A"); 
+		model.addAttribute("cdList", cdList);
+		model.addAttribute("loginId", loginId);
+		return "/facility/categoryList";
+	}
+	
+	@PostMapping("/facility/addFacilityCd")
+	public String addFacilityCd(StStdCd stStdCd) {
+		facilityService.addFacilityCd(stStdCd);
+		return "redirect:/facility/categoryList";
+	}
+	
 }

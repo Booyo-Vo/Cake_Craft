@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.FacilityMapper;
 import com.goodee.cakecraft.vo.FacilityBase;
+import com.goodee.cakecraft.vo.StStdCd;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,10 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FacilityService {
 	@Autowired FacilityMapper facilityMapper;
+	
 	//ANSI코드
 	final String KMJ = "\u001B[43m";
 	final String RESET = "\u001B[0m";
 	
+	//시설비품리스트 출력
 	public List<FacilityBase> getFacilityList(Map<String, Object> paramMap){
 		List<FacilityBase> resultList = facilityMapper.selectFacilityList(paramMap);
 		log.debug(KMJ + resultList.toString() + RESET);
@@ -29,6 +32,7 @@ public class FacilityService {
 		return resultList;
 	}
 	
+	//시설비품추가
 	public int addFacility(FacilityBase facility, String loginId){
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("regId", loginId);
@@ -38,6 +42,7 @@ public class FacilityService {
 		return addFacilityRow;
 	}
 	
+	//시설비품 수정
 	public int modifyFacility(FacilityBase facility, String loginId){
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("id", loginId);
@@ -47,17 +52,53 @@ public class FacilityService {
 		return modFacilityRow;
 	}
 	
+	//시설비품번호로 상세정보 반환
 	public FacilityBase getFacilityByNo(FacilityBase facility){
 		FacilityBase resultFacility = facilityMapper.selectFacilityByNo(facility);
 		log.debug(KMJ + resultFacility.toString() + RESET);
 		return resultFacility;
 	}
 	
+	//시설비품 이름 중복확인
 	public int getNameCheck(FacilityBase facility){
 		int cnt = -1;
 		cnt = facilityMapper.selectFacilityName(facility);
 		log.debug(KMJ + cnt + RESET);
 		
+		return cnt;
+	}
+	
+	//시설비품 공통코드 리스트 출력
+	public List<StStdCd> getFacilityCdList(String cd){
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("cd", cd);
+		List<StStdCd> cdList = facilityMapper.selectFacilityCdList(paramMap);
+		return cdList;
+	}
+	
+	//시설비품 카테고리 추가
+	public int addFacilityCd(StStdCd stStdCd) {
+		int addFcltRow = facilityMapper.insertCategoryCd(stStdCd);
+		return addFcltRow;
+	}
+	
+	//시설비품 사용여부 변경
+	public int modifyFacilityUse(StStdCd stStdCd) {
+		int cnt = facilityMapper.selectFacilityCnt(stStdCd);
+		
+		int modRow = 0;
+		if(cnt == 0 && stStdCd.getUseYn().equals("N")) { //해당 카테고리를 가진 시설비품이 0이고, Y에서 N으로 바꾸는 경우
+			modRow = facilityMapper.updateCategoryUse(stStdCd);
+		} else if (stStdCd.getUseYn().equals("Y")) { //N에서 Y로 바꾸는 경우
+			modRow = facilityMapper.updateCategoryUse(stStdCd);
+		}
+		
+		return modRow;
+	}
+	
+	//시설,비품 별 카테고리 수
+	public int getCategoryCnt(Map<String, Object> paramMap) {
+		int cnt = facilityMapper.selectCategoryCnt(paramMap);
 		return cnt;
 	}
 }
