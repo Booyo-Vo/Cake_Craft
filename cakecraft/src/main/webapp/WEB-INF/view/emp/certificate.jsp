@@ -6,6 +6,11 @@
 <meta charset="UTF-8">
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
+    <script>
+        function printPage() {
+            print(document.getElementById('printSection').innerHTML);
+        }
+    </script>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div id="printSection">
@@ -58,5 +63,12 @@
 </div>
 <br>
 <br>
+	<div class="main-container">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+			<button onclick="printPage();">프린트 출력</button>
+			</div>
+			</div>
+			</div>
 </body>
 </html>

@@ -10,6 +10,7 @@
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
 <h3>${empBase.empName}의 연차사용내역</h3>
+<c:if test="${not empty empDayoff}">
 <table>
 	<tr>
 		<td></td>   
@@ -28,6 +29,11 @@
 		<td>${empDayoff.endDay}</td>     
 	</tr>
 </table>
+</c:if>
+<c:if test="${empty empDayoff}">
+    <p>연차사용내역이 없습니다</p>
+</c:if>
+<p>잔여 연차 : ${empBase.dayoffCnt}</p>
 </div>
 </body>
 </html>

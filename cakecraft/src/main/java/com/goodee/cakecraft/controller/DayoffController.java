@@ -45,11 +45,11 @@ public class DayoffController {
 		
 		//사원상세내역 받아와서 사원정보받아오기
 		EmpBase empBase = adminEmpService.getAdminEmpById(id); 
-		
+		if (empDayoff != null) {
 		//StartDay, EndDay 뒷자리 세개 잘라내서 초단위 없애기
 		empDayoff.setStartDay(empDayoff.getStartDay().substring(0, empDayoff.getStartDay().length() - 3));
 		empDayoff.setEndDay(empDayoff.getEndDay().substring(0, empDayoff.getEndDay().length() - 3));
-		
+		}
 		//뷰로 값넘기기
 	    model.addAttribute("empDayoff", empDayoff);
 	    model.addAttribute("empBase", empBase);
