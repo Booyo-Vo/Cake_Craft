@@ -1,9 +1,14 @@
 package com.goodee.cakecraft.controller;
 
+import java.io.FileInputStream;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -43,8 +48,9 @@ public class ExcelController {
 			
 			// 새로운 워크북 생성
 		    Workbook workbook = new XSSFWorkbook();
+		    //시트이름을 Employee Data로 지정
 		    Sheet sheet = workbook.createSheet("Employee Data");
-	
+		    //시트이름을 엑셀 파일이름을 Employee Data로 지정
 		    final String fileName = "Employee Data";
 		    
 		    // 헤더 행 생성
@@ -83,7 +89,7 @@ public class ExcelController {
 		    }
 		    // HTTP 응답 헤더에 Content-Type을 excel로 설정
 	        response.setContentType("application/vnd.ms-excel");
-	        response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(fileName, "UTF-8")+".xlsx");
+	        response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(fileName, "UTF-8")+".xlsx");//파일이름을 설정하여 다운로드 하도록
 	
 	        workbook.write(response.getOutputStream());
 	        workbook.close();
@@ -97,10 +103,11 @@ public class ExcelController {
     public String  addExcell(HttpSession session,
     						@RequestParam("file") MultipartFile file) {   
     	log.debug(LJY + "addExcel file:" + file + RESET);
-    	 try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+    	 try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) { //새로운 엑셀파일을 생성
              Sheet sheet = workbook.getSheetAt(0); // 엑셀 파일의 첫번째 시트 가져오기
              for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) { //세번째줄 부터 있는 인원수만큼 반복됨
                  Row row = sheet.getRow(rowIndex);
+                 log.debug(LJY + row + "<- addExcell row"+ RESET);
                  if (row != null) { //값 받아오기
                      EmpBase empbase = new EmpBase();
                      empbase.setEmpName(row.getCell(0).getStringCellValue());
@@ -113,14 +120,17 @@ public class ExcelController {
                      empbase.setEmail(row.getCell(7).getStringCellValue());
                      String hireDate = row.getCell(8).getStringCellValue();
                      empbase.setHireDate(hireDate);
+                     
                  	//세선에 저장된 로그인 아이디를 받아옴
                  	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
              		String loginId = loginMember.getId();
              		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
+             		
              		//empbase에 로그인된 아이디 담기
              		empbase.setModId(loginId);
              		empbase.setRegId(loginId);
              		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
+             		
              		//사원추가 (service 안에서 이름이 코드로 변경, 사원번호생성, 사원추가, idlist추가가 이루어짐)
                      int addEmpRow = adminEmpService.addEmp(empbase);
                      if (addEmpRow > 0) {
@@ -137,5 +147,32 @@ public class ExcelController {
      }
     
     
-}
+    //엑셀파일 양식 다운로드
+    @GetMapping("/excel/getExcelFrom")
+    public void getExcelFrom(HttpServletResponse response, HttpServletRequest request) {
+    	
+    	 String fileName = "addEmpForm.xlsx"; // 엑셀 파일 이름
+    	 String filePath = request.getServletContext().getRealPath("/excel/"+fileName); // 파일의 실제 경로
+    	 
+    	 try (InputStream inputStream = new FileInputStream(filePath)) { //엑셀파일을 읽어옴
+    		 Workbook workbook = new XSSFWorkbook(inputStream);
+    		 
+    		// HTTP 응답 헤더에 Content-Type을 excel로 설정
+             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+             // 엑셀 파일 내보내기
+             OutputStream outputStream = response.getOutputStream();
+             workbook.write(outputStream);
+             outputStream.flush();
+             //버퍼에 남아있는 데이터를 강제로 보내고 버퍼를 비웁니다.
+             
+             workbook.close();
+         } catch (IOException e) {
+             e.printStackTrace();
+             // 예외 처리
+         }
+     }
+ }
+
 

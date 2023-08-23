@@ -134,6 +134,9 @@ $(document).ready(function() {
  <br>   
 <h2>사원대량 업로드</h2>
 <p>반드시 정해진 엑셀 양식으로 작성후 업로드해야합니다</p>
+<a href="/cakecraft/excel/getExcelFrom" style="color:red">사원추가 엑셀양식</a>
+<br>
+<br>
 <form action="/cakecraft/emp/addExcel" method="post" enctype="multipart/form-data">
     <input type="file" name="file" accept=".xlsx" required>
     <button type="submit">Upload</button>

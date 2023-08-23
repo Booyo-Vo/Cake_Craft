@@ -42,17 +42,17 @@ public class AdminEmpService {
 		Map<String, Object> deptCdMap = commonMapper.getCode(empBase.getDeptNm());
 		//맵에서 풀면서 toString 해준다 Object
 		String deptCd = deptCdMap.get("cd").toString();
-		log.debug(LJY+"addEmp deptCd :"+ deptCd +RESET);
+		log.debug(LJY + deptCd +"<- addEmp deptCd"+RESET);
 		
 		// 팀 코드 받아오기
 		Map<String, Object> teamCdMap = commonMapper.getCode(empBase.getTeamNm());
 		String teamCd = teamCdMap.get("cd").toString();
-		log.debug(LJY+"addEmp teamCd :"+ teamCd +RESET);
+		log.debug(LJY + teamCd +"<- addEmp teamCd"+RESET);
 		
 		// 직급 코드 받아오기
 		Map<String, Object> positionCdMap = commonMapper.getCode(empBase.getPositionNm());
 		String positionCd = positionCdMap.get("cd").toString();
-		log.debug(LJY+"addEmp positionCd :"+ positionCd +RESET);
+		log.debug(LJY + teamCd +"<- addEmp teamCd"+RESET);
 		
 		// empbase에 생성된 부서코드와 팀코드 추가
 		empBase.setDeptCd(deptCd);
@@ -61,19 +61,19 @@ public class AdminEmpService {
 		
 		//1) 사원번호 생성
 		String id = empMapper.selectEmpId(empBase);
-		log.debug(LJY+"addEmp id :"+ id +RESET);
+		log.debug(LJY + id +"<- addEmp id"+RESET);
 		// empbase에 생성된 사원번호 추가
 		empBase.setId(id); 
 		
 		if (id!=null) {
 			//2) 사원추가
 			int insertEmpRow = empMapper.insertEmp(empBase);
-			log.debug(LJY + "addEmp insertEmpRow :"+insertEmpRow + RESET);
+			log.debug(LJY + insertEmpRow +"<- addEmp insertEmpRow"+RESET);
 			int insertIdListRow = 0;
 			if (insertEmpRow > 0) {// 사원추가가 됐다면
 				//3) id 비밀번호 추가
 				insertIdListRow = idlistMapper.insertIdList(empBase);
-				log.debug(LJY + "addEmp insertIdListRow :"+insertIdListRow + RESET);
+				log.debug(LJY + insertIdListRow +"<- addEmp insertIdListRow"+RESET);
 			}
 		        // 사원 정보 추가 및 비밀번호 추가 결과 반환
 		        return insertIdListRow;
@@ -94,21 +94,22 @@ public class AdminEmpService {
 			deptparamMap.put("grpCd", "D001");
 			deptparamMap.put("cd", empbase.getDeptCd());
 			String deptNm = commonMapper.getName(deptparamMap);
-			log.debug(LJY + "adminEmpList deptNm :"+ deptNm + RESET);
+			log.debug(LJY + adminEmpList +"<- adminEmpList adminEmpList"+RESET);
 			
 			//팀 이름 받아오기
 			Map<String, Object> teamparamMap = new HashMap<String, Object>();
 			teamparamMap.put("grpCd", "T001");
 			teamparamMap.put("cd", empbase.getTeamCd());
 			String teamNm = commonMapper.getName(teamparamMap);
-			log.debug(LJY + "adminEmpList teamNm :"+ teamNm + RESET);
+			log.debug(LJY + teamNm +"<- adminEmpList teamNm"+RESET);
 			
 			//직급 이름 받아오기
 			Map<String, Object> positionparamMap = new HashMap<String, Object>();
 			positionparamMap.put("grpCd", "P001");
 			positionparamMap.put("cd", empbase.getPositionCd());
 			String positionNm = commonMapper.getName(positionparamMap);
-			log.debug(LJY + "adminEmpList positionNm :"+ positionNm + RESET);
+			log.debug(LJY + positionNm +"<- adminEmpList positionNm"+RESET);
+			
 			//받아온 이름값 저장하기
 			empbase.setDeptNm(deptNm);
 	        empbase.setTeamNm(teamNm);
@@ -119,7 +120,7 @@ public class AdminEmpService {
 	
 	// 관리자가 보는 사원상세내역
 	public EmpBase getAdminEmpById(String id) {
-		log.debug(LJY + "EmpById id :"+ id + RESET);
+		log.debug(LJY + id +"<- getAdminEmpById id"+RESET);
 		
 		//사원상세내역 받아오기
 		EmpBase empbase = empMapper.selectEmpById(id);
@@ -129,19 +130,19 @@ public class AdminEmpService {
 			deptparamMap.put("grpCd", "D001");
 			deptparamMap.put("cd", empbase.getDeptCd());
 			String deptNm = commonMapper.getName(deptparamMap);
-			log.debug(LJY + "EmpById deptNm :"+ deptNm + RESET);
+			log.debug(LJY + deptNm +"<- getAdminEmpById deptNm"+RESET);
 			//팀 이름 받아오기
 			Map<String, Object> teamparamMap = new HashMap<String, Object>();
 			teamparamMap.put("grpCd", "T001");
 			teamparamMap.put("cd", empbase.getTeamCd());
 			String teamNm = commonMapper.getName(teamparamMap);
-			log.debug(LJY + "EmpById teamNm :"+ teamNm + RESET);
+			log.debug(LJY + teamNm +"<- getAdminEmpById teamNm"+RESET);
 			//직급 이름 받아오기
 			Map<String, Object> positionparamMap = new HashMap<String, Object>();
 			positionparamMap.put("grpCd", "P001");
 			positionparamMap.put("cd", empbase.getPositionCd());
 			String positionNm = commonMapper.getName(positionparamMap);
-			log.debug(LJY + "EmpById positionNm :"+ positionNm + RESET);
+			log.debug(LJY + positionNm +"<- getAdminEmpById positionNm"+RESET);
 			//받아온 이름값 저장하기
 			empbase.setDeptNm(deptNm);
 	        empbase.setTeamNm(teamNm);
@@ -156,25 +157,25 @@ public class AdminEmpService {
 		if (empBase.getEmpStatus().equals("퇴사자")) {
 			//아이디리스트에서 삭제한다
 			int deleteIdListrow = idlistMapper.deleteIdList(empBase.getId());
-			log.debug(LJY+"modifyEmp deleteIdListrow :"+ deleteIdListrow);
+			log.debug(LJY + deleteIdListrow +"<- modifyEmp deleteIdListrow"+RESET);
 		}
 		// 부서이름과 팀이름 직급이름이 넘어오면, DB에 입력할 코드 받아오기
 		Map<String, Object> deptCdMap = commonMapper.getCode(empBase.getDeptNm());
 		//cd가 int이으로 toString() 해준다
 		String deptCd = deptCdMap.get("cd").toString();
-		log.debug(LJY + "modifyEmp deptCd :"+ deptCd + RESET);
+		log.debug(LJY + deptCd +"<- modifyEmp deptCd"+RESET);
 		
 		
 		// 팀 코드 받아오기
 		Map<String, Object> teamCdMap = commonMapper.getCode(empBase.getTeamNm());
 		String teamCd = teamCdMap.get("cd").toString();
-		log.debug(LJY + "modifyEmp teamCd :"+ teamCd + RESET);
+		log.debug(LJY + teamCd +"<- modifyEmp teamCd"+RESET);
 		
 		
 		// 직급 코드 받아오기
 		Map<String, Object> positionCdMap = commonMapper.getCode(empBase.getPositionNm());
 		String positionCd = positionCdMap.get("cd").toString();
-		log.debug(LJY + "modifyEmp positionCd :"+ positionCd + RESET);
+		log.debug(LJY + positionCd +"<- modifyEmp positionCd"+RESET);
 		
 		
 		// empbase에 생성된 부서코드와 팀코드 추가
@@ -183,7 +184,7 @@ public class AdminEmpService {
 		empBase.setPositionCd(positionCd);
 		
 		int updaterow = empMapper.updateEmp(empBase);
-		log.debug(LJY + "modifyEmp updaterow :"+ updaterow + RESET);
+		log.debug(LJY + updaterow +"<- modifyEmp updaterow"+RESET);
 		return updaterow;
 	}
 }

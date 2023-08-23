@@ -38,10 +38,10 @@ public class DayoffController {
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
-		log.debug(LJY + "dayoffById id :"+id + RESET);	
+		log.debug(LJY + id  + "<- dayoffById id"+ RESET);	
 		//연차상세내역 받아오기
 		EmpDayoff empDayoff = dayoffService.getdayoffById(id);
-		log.debug(LJY + "dayoffById empDayoff :"+empDayoff + RESET);	
+		log.debug(LJY + empDayoff  + "<- dayoffById empDayoff"+ RESET);	
 		
 		//사원상세내역 받아와서 사원정보받아오기
 		EmpBase empBase = adminEmpService.getAdminEmpById(id); 

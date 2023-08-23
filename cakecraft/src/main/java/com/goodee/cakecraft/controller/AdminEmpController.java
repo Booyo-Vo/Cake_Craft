@@ -59,6 +59,7 @@ public class AdminEmpController {
 		model.addAttribute("loginId",loginId);
 		return "/emp/addEmp";
 	}
+	
 	// 사원추가 액션
 	@PostMapping("/emp/addEmp")
 		public String addEmp(HttpSession session, EmpBase empbase) {
