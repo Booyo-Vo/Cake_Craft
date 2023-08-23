@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>
-$(document).ready(function() {
-	jQuery.noConflict();
+jQuery.noConflict();
+jQuery(document).ready(function($) {
 	var mydata = [ //데이터
         <c:forEach var="l" items="${anonyList}">
         	{anonyNo: "${l.anonyNo}", anonyTitle: "${l.anonyTitle}", likeCnt: "${l.likeCnt}", regDtime: "${l.regDtime}"},
