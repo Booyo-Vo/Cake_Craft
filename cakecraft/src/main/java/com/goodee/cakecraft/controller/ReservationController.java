@@ -137,7 +137,7 @@ public class ReservationController {
 		int targetDate = Integer.parseInt(date.substring(8));
 		FacilityBase facility = new FacilityBase();
 		facility.setFacilityNo(facilityNo);
-		String cd = facilityService.getFacilityByNo(facility).getCategoryCd().substring(0,1);
+		String cd = facilityService.getFacilityByNo(facility).get("categoryCd").toString().substring(0,1);
 		
 		return "redirect:/reservation/reservation?categoryCd="+cd+"&targetYear="+targetYear+"&targetMonth="+targetMonth+"&targetDate="+targetDate;
 	}

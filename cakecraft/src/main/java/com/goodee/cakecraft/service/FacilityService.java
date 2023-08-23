@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.FacilityMapper;
+import com.goodee.cakecraft.mapper.StStdCdMapper;
 import com.goodee.cakecraft.vo.FacilityBase;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FacilityService {
 	@Autowired FacilityMapper facilityMapper;
+	@Autowired CommonMapper commonMapper;
 	
 	//ANSI코드
 	final String KMJ = "\u001B[43m";
@@ -53,10 +56,29 @@ public class FacilityService {
 	}
 	
 	//시설비품번호로 상세정보 반환
-	public FacilityBase getFacilityByNo(FacilityBase facility){
+	public Map<String, Object> getFacilityByNo(FacilityBase facility){
 		FacilityBase resultFacility = facilityMapper.selectFacilityByNo(facility);
-		log.debug(KMJ + resultFacility.toString() + RESET);
-		return resultFacility;
+		
+		//코드 이름(분류) 가져오기
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("grpCd", "F001");
+		paramMap.put("cd", resultFacility.getCategoryCd());
+		
+		String cdNm = commonMapper.getName(paramMap);
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("facilityNo", resultFacility.getFacilityNo());
+		resultMap.put("categoryCd", resultFacility.getCategoryCd());
+		resultMap.put("cdNm", cdNm);
+		resultMap.put("facilityName", resultFacility.getFacilityName());
+		resultMap.put("facilityNote", resultFacility.getFacilityNote());
+		resultMap.put("useYn", resultFacility.getUseYn());
+		resultMap.put("regDtime", resultFacility.getRegDtime());
+		resultMap.put("modDtime", resultFacility.getModDtime());
+		resultMap.put("regId", resultFacility.getRegDtime());
+		resultMap.put("modId", resultFacility.getModDtime());
+		log.debug(KMJ + resultMap.toString() + RESET);
+		return resultMap;
 	}
 	
 	//시설비품 이름 중복확인

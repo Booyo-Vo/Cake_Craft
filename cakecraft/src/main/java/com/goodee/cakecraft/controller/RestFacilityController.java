@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class RestFacilityController {
 
 	//수정 모달창에 출력할 정보
 	@PostMapping("/rest/modifyFacility")
-	public FacilityBase modifyFacility(FacilityBase facility) {
-		FacilityBase resultFacility = facilityService.getFacilityByNo(facility);
+	public Map<String, Object> modifyFacility(FacilityBase facility) {
+		Map<String, Object> resultFacility = facilityService.getFacilityByNo(facility);
 		
 		return resultFacility;
 	}
@@ -47,10 +48,17 @@ public class RestFacilityController {
 		return code;
 	}
 	
-
+	//시설비품 사용여부 변경
 	@PostMapping("/rest/modifyFacilityUse")
 	public int modifyFacilityUse(StStdCd stStdCd) {
 		int modRow = facilityService.modifyFacilityUse(stStdCd);
 		return modRow;
+	}
+	
+	//시설비품 검색조건(시설/비품) 별 리스트 출력
+	@PostMapping("/rest/listBySearch")
+	public List<StStdCd> listBySearch(@RequestParam(name="cd") String cd){
+		List<StStdCd> searchList = facilityService.getFacilityCdList(cd);
+		return searchList;
 	}
 }

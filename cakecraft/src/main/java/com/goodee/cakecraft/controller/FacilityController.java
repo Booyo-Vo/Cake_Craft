@@ -32,10 +32,10 @@ public class FacilityController {
 	@GetMapping("/facility/facilityList")
 	public String facilityList(HttpSession session,
 							   Model model,
-							   @RequestParam(name="categoryCd", defaultValue = "A") String cateogryCd,
+							   @RequestParam(name="categoryCd", defaultValue = "A") String categoryCd,
 							   @RequestParam(name="useYn", defaultValue = "A") String useYn){
 		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("categoryCd", cateogryCd);
+		paramMap.put("categoryCd", categoryCd);
 		paramMap.put("useYn", useYn);
 		List<FacilityBase> resultList = facilityService.getFacilityList(paramMap);
 		
@@ -46,6 +46,8 @@ public class FacilityController {
 		}
 		List<StStdCd> categoryCdList = facilityService.getFacilityCdList("A");
 		
+		model.addAttribute("categoryCd", categoryCd);
+		model.addAttribute("useYn", useYn);
 		model.addAttribute("loginId", loginId);
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("categoryCdList", categoryCdList);
