@@ -48,10 +48,10 @@
 	    }
 	}
 </script>
-
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
 	<script>
+	jQuery.noConflict(); 
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
@@ -60,8 +60,8 @@
 	</script>
 <div class="header">
 		<div class="header-left">
-			<!-- <div class="menu-icon dw dw-menu"></div>
-			<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
+			<div class="menu-icon dw dw-menu"></div>
+			<!-- <div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
 			<div class="header-search">
 				<form>
 					<div class="form-group mb-0">
@@ -216,6 +216,11 @@
 						<button id="endWorkBtn" class="btn btn-danger" disabled>퇴근</button>
 					</div>
 			<!-- 메인메뉴 드롭다운 -->		
+					<li>
+						<a href="/cakecraft/schedule/schedule" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-calendar1"></span><span class="mtext">일정</span>
+						</a>
+					</li>
 					<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
 							<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
