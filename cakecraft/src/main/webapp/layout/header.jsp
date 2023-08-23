@@ -236,8 +236,9 @@
 							<span class="micon dw dw-edit2"></span><span class="mtext">시설예약</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="/cakecraft/facility/facilityList">facilityList</a></li>
-							<li><a href="/cakecraft/reservation/reservation">reservation</a></li>
+							<li><a href="/cakecraft/facility/facilityList">시설비품관리</a></li>
+							<li><a href="/cakecraft/reservation/reservation">시설비품예약</a></li>
+							<li><a href="/cakecraft/reservation/reservationListById">나의예약이력</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
