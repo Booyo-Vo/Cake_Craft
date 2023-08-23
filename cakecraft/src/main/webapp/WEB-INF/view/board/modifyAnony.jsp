@@ -9,9 +9,9 @@
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
 	<h1>게시글 수정</h1>
-	<form action="${pageContext.request.contextPath}/board/modifyAnony" method="post">
+	<form action="${pageContext.request.contextPath}/board/modifyAnony" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="id" value="${loginId}">
-		<input type="hidden" name="noticeNo" value="${anonyByNo.anonyNo}">
+		<input type="hidden" name="anonyNo" value="${anonyByNo.anonyNo}">
 		<table>
 			<tr>
 				<td>anonyTitle</td>
@@ -24,6 +24,10 @@
 				<td>
 					<textarea rows="3" cols="40" name="anonyContent">${anonyByNo.anonyContent}</textarea>
 				</td>
+			</tr>
+			<tr>
+				<td>파일업로드</td>
+				<td><input type="file" name="multipartFile" multiple="multiple"></td>
 			</tr>
 		</table>
 		<a href="${pageContext.request.contextPath}/board/anonyByNo?anonyNo=${anonyByNo.anonyNo}"><button type="button">취소</button></a>
