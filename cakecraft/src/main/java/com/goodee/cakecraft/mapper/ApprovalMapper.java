@@ -14,9 +14,9 @@ import com.goodee.cakecraft.vo.ApprovalHistory;
 public interface ApprovalMapper {
 	
 	/* 결재 문서 : ApprovalDocument */
-	// 결재한 문서 목록 출력
+	// 결재한 문서 목록 출력(기안문서 및 임시저장)
 	// List<ApprovalDocument> selectApprDocListByPage(Map<String, Object> apprDocListByPageMap);
-	List<ApprovalDocument> selectApprDocListById(String loginId);
+	List<ApprovalDocument> selectApprDocListById(String loginId, String tempSave);
 	
 	// 결재자로 지정된 문서 목록 출력
 	List<ApprovalDocument> selectApprDocListByApprId(String loginId);
@@ -31,10 +31,10 @@ public interface ApprovalMapper {
 	ApprovalDocument selectApprDocByNo(String documentNo);
 	
 	// 문서번호 생성
-	String selectDocumentNo(ApprovalDocument apprDoc);
+	String selectDocumentNo(Map param);
 	
 	// 결재문서 추가
-	int insertApprDoc(ApprovalDocument apprDoc);
+	int insertApprDoc(Map param);
 	
 	// 결재문서 수정
 	int updateApprDoc(ApprovalDocument apprDoc);

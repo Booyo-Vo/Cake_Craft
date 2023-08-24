@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 </head>
 <body>
-	<h1>approvalDocumentListByApprId</h1>
-	<!-- 결재자로 지정된 문서 목록 시작 -->
+	<h1>approvalDocumentListTempY</h1>
+	<!-- 임시저장한 문서 리스트 시작 -->
 	<table>
 		<thead>
 			<tr>
@@ -19,15 +19,18 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="ada" items="${apprDocListByApprId}">
+			<c:forEach var="adY" items="${apprDocListByIdTempY}">
 				<tr>
-					<td><a href="apprDocByNo?documentNo=${ada.documentNo}">${ada.documentNo}</a></td>
-					<td>${ada.approvalDocumentCd}</td>
-					<td>${ada.documentTitle}</td>
-					<td>${ada.modDtime}</td>
+					<td><a href="apprDocByNo?documentNo=${adY.documentNo}">${adY.documentNo}</a></td>
+					<td>${adY.approvalDocumentCd}</td>
+					<td>${adY.documentTitle}</td>
+					<td>${adY.modDtime}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>	
+	</table>
+	<div>
+		<a href="/cakecraft/approval/addApprDoc">기안문작성</a>
+	</div>
 </body>
 </html>

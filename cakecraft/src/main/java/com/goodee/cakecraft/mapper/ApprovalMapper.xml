@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goodee.cakecraft.mapper.ApprovalMapper">
 <!-- 결재 문서 : ApprovalDocument -->	
-	<!-- 결재한 문서 목록 출력 -->
+	<!-- 결재한 문서 목록 출력(기안문서 및 임시저장) -->
 	<select id="selectApprDocListById"
 			parameterType="String"
 			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
@@ -19,6 +19,7 @@
 			FROM approval_document
 			<where>
 				id = #{loginId} 
+				AND temp_save = #{tempSave} 
 			</where>
 	</select>
 	
@@ -102,7 +103,7 @@
 	
 	<!-- 문서번호 생성 -->
 	<select id="selectDocumentNo"
-		parameterType="com.goodee.cakecraft.vo.ApprovalDocument"
+		parameterType="Map"
 		resultType="String">
 		SELECT
 			CONCAT(
@@ -114,7 +115,7 @@
 	
 	<!-- 결재 문서 추가 -->
 	<insert id="insertApprDoc"
-			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
+			parameterType="hashMap">
 			INSERT INTO approval_document(
 				document_no,
 				id,

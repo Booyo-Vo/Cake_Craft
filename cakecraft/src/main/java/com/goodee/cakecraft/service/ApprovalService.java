@@ -32,10 +32,18 @@ public class ApprovalService {
 	final String RESET = "\u001B[0m";
 	
 	/* 결재 문서 : ApprovalDocument */
-	// 결재한 문서 목록 출력
-	public List<ApprovalDocument> getApprDocListById(String loginId){
+	// 기안문서 목록 출력
+	public List<ApprovalDocument> getApprDocListById(String loginId, String tempSave){
 		// 반환값
-		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListById(loginId);
+		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListById(loginId, tempSave);
+				
+		return apprDocList;
+	}
+	
+	// 임시저장 문서 목록 출력
+	public List<ApprovalDocument> getApprDocListByIdTempY(String loginId, String tempSave){
+		// 반환값
+		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListById(loginId, tempSave);
 				
 		return apprDocList;
 	}
@@ -80,43 +88,42 @@ public class ApprovalService {
 	// 3) 결재문서 추가 
 	// 4) 결재이력 추가 (Lv 1 2 3)
 	// (+파일추가, 참조자추가)
-	public int addApprDoc(ApprovalDocument apprDoc, String loginId, String approvalIdLv2, String approvalIdLv3, String tempSave){
-		
+	public int addApprDoc(Map<String, Object> param, String loginId){
 		// 1) 문서코드 받아오기
-		Map<String, Object> apprDocCdMap = commonMapper.getCode(apprDoc.getApprovalDocumentCd());
+		Map<String, Object> apprDocCdMap = commonMapper.getCode(param.get("approvalDocumentNm").toString());
 		// 문서분류 이름이 넘어오면 -> DB에 입력할 코드 받아오기
 		String approvalDocumentCd = apprDocCdMap.get("cd").toString();
 		// 디버깅
 		log.debug(SHJ + approvalDocumentCd + " <-- addApprDoc approvalDocumentCd"+ RESET);
 		// 생성된 문서코드 입력
-		apprDoc.setApprovalDocumentCd(approvalDocumentCd);
+		param.put("approvalDocumentCd", approvalDocumentCd);
 		
 		// 2) 문서번호 생성
-		String documentNo = apprDocMapper.selectDocumentNo(apprDoc);
+		String documentNo = apprDocMapper.selectDocumentNo(param);
+		param.put("documentNo", documentNo);
+		param.put("id", loginId);
+		param.put("regId", loginId);
+		param.put("modId", loginId);
 		// 디버깅
 		log.debug(SHJ + documentNo + " <-- addApprDoc documentNo"+ RESET);
 		
 		if(documentNo != null) { // 문서번호 생성 성공 시
 			// 생성된 문서번호 입력
-			apprDoc.setDocumentNo(documentNo);
-			apprDoc.setId(loginId);
-			apprDoc.setRegId(loginId);
-			apprDoc.setModId(loginId);
 			
 			// 3) 결재문서 추가
 			// 반환값
-			int addApprDocRow = apprDocMapper.insertApprDoc(apprDoc);
+			int addApprDocRow = apprDocMapper.insertApprDoc(param);
 			// 디버깅
 			log.debug(SHJ + addApprDocRow + " <-- addApprDoc addApprDocRow"+ RESET);
 			
-			if(addApprDocRow > 0 && "N".equals(tempSave)) { // 결재문서 추가 성공 시
+			if(addApprDocRow > 0 && "N".equals(param.get("tempSave").toString())) { // 결재문서 추가 성공 시
 				// 4) 결재이력 추가
 				// 담당자(=level 1) 추가
 				ApprovalHistory apprHistoryLv1 = new ApprovalHistory();
 				apprHistoryLv1.setApprovalId(loginId);
 				apprHistoryLv1.setDocumentNo(documentNo);
 				apprHistoryLv1.setApprovalLevel(1);
-				apprHistoryLv1.setApprovalStatusCd("1");
+				apprHistoryLv1.setApprovalStatusCd("2");
 				apprHistoryLv1.setRegId(loginId);
 				apprHistoryLv1.setModId(loginId);
 				int addApprHistLv1Row = apprDocMapper.insertApprHistory(apprHistoryLv1);
@@ -125,7 +132,7 @@ public class ApprovalService {
 				if(addApprHistLv1Row > 0) {
 					// 결재자 level 2 추가
 					ApprovalHistory apprHistoryLv2 = new ApprovalHistory();
-					apprHistoryLv2.setApprovalId(approvalIdLv2);
+					apprHistoryLv2.setApprovalId(param.get("approvalIdLv2").toString());
 					apprHistoryLv2.setDocumentNo(documentNo);
 					apprHistoryLv2.setApprovalLevel(2);
 					apprHistoryLv2.setApprovalStatusCd("1"); 
@@ -137,7 +144,7 @@ public class ApprovalService {
 					if(addApprHistLv2Row > 0) {
 						// 결재자 level 3 추가
 						ApprovalHistory apprHistoryLv3 = new ApprovalHistory();
-						apprHistoryLv3.setApprovalId(approvalIdLv3);
+						apprHistoryLv3.setApprovalId(param.get("approvalIdLv3").toString());
 						apprHistoryLv3.setDocumentNo(documentNo);
 						apprHistoryLv3.setApprovalLevel(3);
 						apprHistoryLv3.setApprovalStatusCd("1");

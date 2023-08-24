@@ -1,9 +1,15 @@
 package com.goodee.cakecraft.controller;
 
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.util.ParameterMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,20 +32,43 @@ public class ApprovalController {
 	final String SHJ = "\u001B[46m";
 	final String RESET = "\u001B[0m";
 	
-	// 본인이 기안한 결재문서 목록
+	// 기안문서 목록
 	@GetMapping("/approval/apprDocListById")
 	public String approvalDocumentListById(HttpSession session, Model model) {
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		List<ApprovalDocument> apprDocListById = approvalService.getApprDocListById(loginId);
+		// 제출하기 버튼을 눌러서 제출된 문서만 출력
+		String tempSave = "N";
+		
+		List<ApprovalDocument> apprDocListById = approvalService.getApprDocListById(loginId, tempSave);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDocListById", apprDocListById);
 		log.debug(SHJ + apprDocListById + " <-- apprDocListById" + RESET);
 		return "/approval/apprDocListById";
+	}
+	
+	
+	// 임시저장 문서 목록
+	@GetMapping("/approval/apprDocListByIdTempY")
+	public String approvalDocumentListByIdTempY(HttpSession session, Model model) {
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		// 임시저장된 문서만 출력
+		String tempSave = "Y";
+		
+		List<ApprovalDocument> apprDocListByIdTempY = approvalService.getApprDocListByIdTempY(loginId, tempSave);
+		
+		// 뷰로 값넘기기
+		model.addAttribute("loginId",loginId);
+		model.addAttribute("apprDocListByIdTempY", apprDocListByIdTempY);
+		log.debug(SHJ + apprDocListByIdTempY + " <-- apprDocListByIdTempY" + RESET);
+		return "/approval/apprDocListByIdTempY";
 	}
 	
 	
@@ -109,25 +138,23 @@ public class ApprovalController {
 		model.addAttribute("loginId",loginId);
 		
 		return "/approval/addApprDoc";
-	
 	}
+	
 	
 	// 결재문서 추가 액션
 	@PostMapping("/approval/addApprDoc")
-	public String addApprDoc(
-					ApprovalDocument apprDoc,
-					HttpSession session,
-					String approvalIdLv2,
-					String approvalIdLv3,
-					@RequestParam(value = "temp_save", required = false) String tempSave) {
+	public String addApprDoc(HttpServletRequest request,
+				            HttpSession session) {
 			
+		HashMap<String, Object> param = new HashMap<>();
+		param = CommonController.getParameterMap(request);
+		log.debug(SHJ + param.get("approvalDocumentNm").toString() + " <-- addApprDoc approvalDocumentNm"+ RESET);
+		log.debug(SHJ + param.get("documentContent").toString() + " <-- addApprDoc documentContent"+ RESET);
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		log.debug(SHJ + apprDoc.getDocumentContent() + " <-- addApprDoc apprDoc.getDocumentContent()"+ RESET);
-		
-		approvalService.addApprDoc(apprDoc, loginId, approvalIdLv2, approvalIdLv3, tempSave);
+		approvalService.addApprDoc(param, loginId);
 		
 		return "redirect:/approval/apprDocListByApprId";
 	}
