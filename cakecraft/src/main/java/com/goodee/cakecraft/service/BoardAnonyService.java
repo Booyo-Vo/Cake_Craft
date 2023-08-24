@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.goodee.cakecraft.mapper.BoardAnonyFileMapper;
 import com.goodee.cakecraft.mapper.BoardAnonyMapper;
+import com.goodee.cakecraft.mapper.BoardCommentsMapper;
 import com.goodee.cakecraft.vo.BoardAnony;
+import com.goodee.cakecraft.vo.BoardAnonyComments;
 import com.goodee.cakecraft.vo.BoardAnonyFile;
 import com.goodee.cakecraft.vo.BoardLike;
 
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardAnonyService {
 	@Autowired BoardAnonyMapper anonyMapper;
 	@Autowired BoardAnonyFileMapper anonyFileMapper;
+	@Autowired BoardCommentsMapper commentsMapper;
 	
 	// Ansi코드
 	final String RESET = "\u001B[0m";	
@@ -43,14 +46,30 @@ public class BoardAnonyService {
 		resultMap.put("anonyList",anonyList);
 		
 		return resultMap;
-				
+		
 	}
 	
-	// 게시글 상세정보 조회
-	public BoardAnony getAnonyByNo(BoardAnony anony) {
+	// 게시글 상세정보
+	public Map<String, Object>  getAnonyByNo(BoardAnony anony) {
+		// 게시글 상세정보 조회
 		BoardAnony resultAnony = anonyMapper.selectAnonyByNo(anony);
+		log.debug(GEH + resultAnony.toString() + " <-- 게시글상세정보" + RESET);
 		
-		return resultAnony;
+		// 첨부파일 목록 조회
+		List<BoardAnonyFile> anonyFileList = anonyFileMapper.selectAnonyFile(anony);
+		log.debug(GEH + anonyFileList.size() + " <-- 첨부파일 목록.size" + RESET);
+		
+		// 댓글 목록 조회
+		List<BoardAnonyComments> commentsList = commentsMapper.selectCommentsList(anony);
+		log.debug(GEH + commentsList.size() + " <-- 댓글 목록.size" + RESET);
+		
+		// 반환값
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("resultAnony", resultAnony);
+		resultMap.put("anonyFileList", anonyFileList);
+		resultMap.put("commentsList", commentsList);
+		
+		return resultMap;
 	}
 	
 	// 게시글 추가 & 첨부파일 추가
@@ -76,10 +95,12 @@ public class BoardAnonyService {
 					af.setRegId(id);
 					af.setAnonyFilesize(mf.getSize()); 
 					af.setAnonyType(mf.getContentType());
+					// 원래 파일 이름
+					String originFileName = mf.getOriginalFilename().substring(0,mf.getOriginalFilename().lastIndexOf("."));
 					// 확장자
 					String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
-					// 저장될 파일 이름 = 새로운 이름 + 확장자
-					af.setAnonyFilename(UUID.randomUUID().toString().replace("-", "").substring(0,10) + ext);
+					// 저장될 파일 이름 = 원래이름 + UUID + 확장자
+					af.setAnonyFilename(originFileName + "_" + UUID.randomUUID().toString().replace("-", "").substring(0,3) + ext);
 					
 					// DB에 저장
 					anonyFileMapper.insertAnonyFile(af);
@@ -137,10 +158,12 @@ public class BoardAnonyService {
 					af.setRegId(id);
 					af.setAnonyFilesize(mf.getSize()); 
 					af.setAnonyType(mf.getContentType());
+					// 원래 파일 이름
+					String originFileName = mf.getOriginalFilename().substring(0,mf.getOriginalFilename().lastIndexOf("."));
 					// 확장자
 					String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
-					// 저장될 파일 이름 = 새로운 이름 + 확장자
-					af.setAnonyFilename(UUID.randomUUID().toString().replace("-", "").substring(0,10) + ext);
+					// 저장될 파일 이름 = 원래이름 + UUID + 확장자
+					af.setAnonyFilename(originFileName + "_" + UUID.randomUUID().toString().replace("-", "").substring(0,3) + ext);
 					
 					// DB에 저장
 					anonyFileMapper.insertAnonyFile(af);

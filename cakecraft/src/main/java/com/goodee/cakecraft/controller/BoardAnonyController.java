@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.BoardAnonyService;
+import com.goodee.cakecraft.service.BoardCommentsService;
 import com.goodee.cakecraft.vo.BoardAnony;
 import com.goodee.cakecraft.vo.EmpIdList;
 
 @Controller
 public class BoardAnonyController {
 	@Autowired BoardAnonyService anonyService;
+	@Autowired BoardCommentsService commentsService;
 	
 	// 익명게시판 목록 조회 
 	@GetMapping("/board/anonyList")
@@ -46,8 +48,8 @@ public class BoardAnonyController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		// 게시글 상세정보 가져오기	
-		BoardAnony anonyByNo = anonyService.getAnonyByNo(anony);
+		// 게시글 상세정보, 첨부파일목록, 댓글목록 가져오기	
+		Map<String, Object> resultMap = anonyService.getAnonyByNo(anony);
 		
 		// 좋아요 눌렀는지 여부 확인
 		BoardAnony paramAnony = new BoardAnony();
@@ -56,7 +58,9 @@ public class BoardAnonyController {
 		int likeCk = anonyService.getLike(paramAnony);
 		
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("anonyByNo", anonyByNo);
+		model.addAttribute("anonyByNo", resultMap.get("resultAnony"));
+		model.addAttribute("anonyFileList", resultMap.get("anonyFileList"));
+		model.addAttribute("commentsList", resultMap.get("commentsList"));
 		model.addAttribute("likeCk", likeCk);
 		
 		return "/board/anonyByNo";
@@ -92,10 +96,10 @@ public class BoardAnonyController {
 		String loginId = loginMember.getId();
 		
 		// 게시글 상세정보 가져오기
-		BoardAnony anonyByNo = anonyService.getAnonyByNo(anony);
+		Map<String, Object> resultMap = anonyService.getAnonyByNo(anony);
 		
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("anonyByNo", anonyByNo);
+		model.addAttribute("anonyByNo", resultMap.get("resultAnony"));
 		
 		return "/board/modifyAnony";
 	}
@@ -105,7 +109,7 @@ public class BoardAnonyController {
 		String path = request.getServletContext().getRealPath("/anonyupload/");
 		anonyService.modifyAnony(anony, path);
 		
-		return "redirect:/board/anonyList";
+		return "redirect:/board/anonyByNo?anonyNo="+anony.getAnonyNo();
 	}
 	
 	// 게시글 삭제

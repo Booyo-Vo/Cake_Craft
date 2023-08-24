@@ -1,23 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<%-- <jsp:include page="/layout/cdn.jsp"></jsp:include> --%>
-<!-- css파일 -->
-	<!-- <link href="/style.css" type="text/css" rel="stylesheet"> -->
-<!-- Latest compiled and minified CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Latest compiled JavaScript -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
-<%-- <jsp:include page="/layout/header.jsp"></jsp:include> --%>
+<jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-	<h1>게시글 상세보기</h1>
+	<h1>게시글 상세정보</h1>
+	<!-- 게시글 상세 정보 시작 -->
 	<table>
 		<tr>
 			<td>anonyTitle</td>
@@ -47,11 +40,31 @@
 			<td>mod_dtime</td>
 			<td>${anonyByNo.modDtime}</td>
 		</tr>
+		<tr>
+			<td>첨부파일</td>
+			<td>
+				<c:forEach var="a" items="${anonyFileList}">
+					<!-- 이미지 파일 -->
+					<c:if test="${a.anonyType == 'image/png'}">
+						<img src="${pageContext.request.contextPath}/anonyupload/${a.anonyFilename}" alt="IMG-REVIEW" style="width:80px; height:80px;">
+						&nbsp;
+					</c:if>
+					<!-- 이미지 외 파일들 다운로드 가능 -->
+					<c:if test="${a.anonyType != 'image/png'}">
+						<br>
+						<a href="${pageContext.request.contextPath}/anonyupload/${a.anonyFilename}" target="_blank">
+							${a.anonyFilename.substring(0, a.anonyFilename.lastIndexOf("_"))}${a.anonyFilename.substring(a.anonyFilename.lastIndexOf("."))}
+						</a>
+					</c:if>
+				</c:forEach>
+			</td>
+		</tr>
 	</table>
 	<a href="${pageContext.request.contextPath}/board/anonyList">취소</a>
 	<a href="${pageContext.request.contextPath}/board/removeAnony?anonyNo=${anonyByNo.anonyNo}">삭제</a>
 	<a href="${pageContext.request.contextPath}/board/modifyAnony?anonyNo=${anonyByNo.anonyNo}">수정</a>
 	<button type="button" id="likeBtn"></button>
+	<!-- 게시글 상세 정보 끝 -->
 </div>
 <script>
 var likeCk = ${likeCk};
