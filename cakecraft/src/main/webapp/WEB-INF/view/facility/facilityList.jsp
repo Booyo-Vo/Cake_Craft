@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -37,6 +36,10 @@
 	</div>
 </form>
 <!-- 검색 끝 -->
+
+<div>
+	<a class="btn btn-sm btn-secondary" href="${pageContext.request.contextPath}/facility/categoryList">카테고리 관리</a>
+</div>
 
 <div>
 	<button type="button" data-bs-toggle="modal" data-bs-target="#addFcltModal">추가하기</button>
@@ -86,7 +89,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-				<button type="button" class="btn btn-primary" id="addFcltBtn" onclick="addFacility()">추가</button>
+				<button type="button" class="btn btn-primary" id="addFcltBtn" onclick="addFacility()" >추가</button>
 			</div>
 		</div>
 	</div>
@@ -94,28 +97,30 @@
 <!-- 시설비품 추가 모달창 끝 -->
 
 <!-- 시설비품리스트 시작 -->
-<table>
-	<thead>
-		<tr>
-			<td>facilityNo</td>
-			<td>categoryCd</td>
-			<td>facilityName</td>
-			<td>facilityNote</td>
-			<td>useYn</td>
-		</tr>
-	</thead>
-	<tbody>
-		<c:forEach var="f" items="${resultList}">
+<div>
+	<table>
+		<thead>
 			<tr>
-				<td>${f.facilityNo}</td>
-				<td>${f.categoryCd}</td>
-				<td><button type="button" onclick="facilityNo(${f.facilityNo})">${f.facilityName}</button></td>
-				<td>${f.facilityNote}</td>
-				<td>${f.useYn}</td>
+				<td>facilityNo</td>
+				<td>categoryCd</td>
+				<td>facilityName</td>
+				<td>facilityNote</td>
+				<td>useYn</td>
 			</tr>
-		</c:forEach>
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			<c:forEach var="f" items="${resultList}">
+				<tr>
+					<td>${f.facilityNo}</td>
+					<td>${f.categoryCd}</td>
+					<td><button type="button" onclick="facilityNo(${f.facilityNo})">${f.facilityName}</button></td>
+					<td>${f.facilityNote}</td>
+					<td>${f.useYn}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</div>
 <!-- 시설비품리스트 끝 -->
 
 <!-- 시설비품 수정 모달창 시작 -->
@@ -164,9 +169,8 @@
 </div>
 <!-- 시설비품 수정 모달창 끝 -->
 </div>
-<script>
-searchSelected();
 
+<script>
 //시설/비품 카테고리별 상세 리스트 출력
 $('#category').change(function(){
 	let category = $('#category').val();
@@ -256,28 +260,23 @@ $('#addCategory').change(function(){
 	})
 })
 $('#addFacilityName').blur(function() {
-	if ($('#addFacilityName').val() == ''){
-		$('#addNameMsg').text('이름을 작성해주세요');
-		$('#addFacilityName').focus();
-	} else {
-		console.log($('#addFacilityName').val()); 
-		$('#addFacilityName').val($('#addFacilityName').val().replace(/ /g,'')); //모든 공백제거
-		$.ajax({
-			url : '${pageContext.request.contextPath}/rest/nameCheck',
-			type : 'post',
-			data : {
-				facilityName : $('#addFacilityName').val()
-			},
-			success : function(param){
-				if(param > 0){
-					$('#addNameMsg').text('이미 사용 중인 이름입니다');
-					$('#addFacilityName').focus();
-				}
+	console.log($('#addFacilityName').val()); 
+	$('#addFacilityName').val($('#addFacilityName').val().replace(/ /g,'')); //모든 공백제거
+	$.ajax({
+		url : '${pageContext.request.contextPath}/rest/nameCheck',
+		type : 'post',
+		data : {
+			facilityName : $('#addFacilityName').val()
+		},
+		success : function(param){
+			if(param > 0){
+				$('#addNameMsg').text('이미 사용 중인 이름입니다');
+				$('#addFacilityName').focus();
 			}
-		})
-		$('#addNameMsg').text('');
-		$('#addFacilityNote').focus();
-	}
+		}
+	})
+	$('#addNameMsg').text('');
+	$('#addFacilityNote').focus();
 });
 
 //설명 유효성검사
@@ -296,6 +295,16 @@ $('#addFacilityNote').keyup(function(){
 //추가 버튼 클릭 시 폼 제출
 function addFacility(){
 	console.log('추가버튼 클릭');
+	
+	if($('#addCategory').val() === '' 
+			|| $('#addCategoryCd').val() === ''
+			|| $('#addFacility').val() === '' 
+			|| $('#addFacilityNote').val() === ''
+			|| $('#useYn').val() === ''){
+		alert('입력창을 채워주세요');
+		return;
+	}
+	
 	const addFcltForm = $('#addFcltForm');
 	addFcltForm.attr('action', '${pageContext.request.contextPath}/facility/addFacility');
 	addFcltForm.attr('method', 'post');
@@ -325,35 +334,30 @@ function facilityNo(facilityNo){
 			console.log('ajax실패');
 		}
 	})
-	$('#modFcltModal').modal('show');
+	$('#modFcltModal').modal('toggle');
 }
 
 //수정폼 유효성 검사(이름 공백금지/중복검사, 모든 입력폼 필수입력)
 //이름 유효성검사
 $('#modFacilityName').blur(function() {
-	if ($('#modFacilityName').val() == ''){
-		$('#modNameMsg').text('이름을 작성해주세요');
-		$('#modFacilityName').focus();
-	} else {
-		console.log($('#modFacilityName').val()); 
-		$('#modFacilityName').val($('#modFacilityName').val().replace(/ /g,'')); //모든 공백제거
-		$.ajax({
-			url : '${pageContext.request.contextPath}/rest/nameCheck',
-			type : 'post',
-			data : {
-				facilityName : $('#modFacilityName').val(),
-				facilityNo: $('#modFacilityNo').val()
-			},
-			success : function(param){
-				if(param > 0){
-					$('#modNameMsg').text('이미 사용 중인 이름입니다');
-					$('#modFacilityName').focus();
-				}
+	console.log($('#modFacilityName').val()); 
+	$('#modFacilityName').val($('#modFacilityName').val().replace(/ /g,'')); //모든 공백제거
+	$.ajax({
+		url : '${pageContext.request.contextPath}/rest/nameCheck',
+		type : 'post',
+		data : {
+			facilityName : $('#modFacilityName').val(),
+			facilityNo: $('#modFacilityNo').val()
+		},
+		success : function(param){
+			if(param > 0){
+				$('#modNameMsg').text('이미 사용 중인 이름입니다');
+				$('#modFacilityName').focus();
 			}
-		})
-		$('#modNameMsg').text('');
-		$('#modFacilityNote').focus();
- }
+		}
+	})
+	$('#modNameMsg').text('');
+	$('#modFacilityNote').focus();
 });
   
 //설명 유효성검사
@@ -372,6 +376,15 @@ $('#modFacilityNote').keyup(function(){
 //수정버튼 클릭 시 폼 제출
 function modFacility(){
 	console.log('수정버튼 클릭');
+	
+	if($('#modCategoryCd').val() === ''
+		|| $('#modFacility').val() === '' 
+		|| $('#modFacilityNote').val() === ''
+		|| $('#modUseYn').val() === ''){
+		alert('입력창을 채워주세요');
+		return;
+	}
+	
 	const modFcltForm = $('#modFcltForm');
 	modFcltForm.attr('action', '${pageContext.request.contextPath}/facility/modifyFacility');
 	modFcltForm.attr('method', 'post');
