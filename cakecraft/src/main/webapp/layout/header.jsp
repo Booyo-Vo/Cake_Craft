@@ -28,24 +28,27 @@
 <script>
 	//로그아웃 버튼 클릭시
 	function logout() {
-	    if (localStorage.getItem('rememberedId') !== null) {
-	        localStorage.removeItem('rememberedId');
-	
-	        // 로컬스토리지 + 세션 정보 삭제
-	        fetch('/cakecraft/logout', {
-	            method: 'GET',
-	            credentials: 'same-origin'
-	        }).then(response => {
-	            if (response.ok) {
-	                alert('로그아웃 완료');
-	                location.reload(); // 페이지 새로고침
-	            } else {
-	                alert('로그아웃 실패');
-	            }
-	        });
-	    } else {
-	        alert('로그인하세요!');
-	    }
+		if (localStorage.getItem('rememberedId') !== null) { //로컬스토리지에 rememberedId 값이 있다면
+			localStorage.removeItem('lastLoginTime'); //마지막 로그인 시간 삭제(자동로그인 방지)
+			
+			//로그아웃 요청 보내기
+			fetch('/cakecraft/logout', {
+				method: 'GET',
+				credentials: 'same-origin' //동일한 출처에서 요청 보내도록 설정
+			}).then(response => {
+				//로그아웃 성공시
+				if (response.ok) {
+					alert('로그아웃 완료');
+					location.reload(); // // 페이지 새로고침하여 로그아웃 적용
+				} else {
+					// 로그아웃 실패 시
+					alert('로그아웃 실패');
+				}
+			});
+		} else {
+			// 로그인 상태가 아닌 경우
+			alert('로그인하세요!');
+		}
 	}
 </script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
@@ -61,20 +64,6 @@
 <div class="header">
 		<div class="header-left">
 			<div class="menu-icon dw dw-menu"></div>
-			<!-- <div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
-			<div class="header-search">
-				<form>
-					<div class="form-group mb-0">
-						<i class="dw dw-search2 search-icon"></i>
-						<input type="text" class="form-control search-input" placeholder="Search Here">
-						<div class="dropdown">
-							<a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
-								<i class="ion-arrow-down-c"></i>
-							</a>
-						</div>
-					</div>
-				</form>
-			</div> -->
 		</div>
 		<div class="header-right">
 			<div class="dashboard-setting user-notification">
@@ -89,8 +78,6 @@
 			    <div class="dropdown">
 			        <a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
 			           <span class="user-icon">
-			                <!-- <img src="../vendors/images/photo1.jpg" alt=""> -->
-			            
 				            <c:if test="${not empty empBase.profileFilename}">
 							    <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
 							</c:if>
@@ -98,11 +85,11 @@
 							    <img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image">
 							</c:if>
 						</span>
-			            <span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다! &nbsp;
-			                <button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
-			            </span>
-			        </a>
-			    </div>
+					<span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다! &nbsp;
+						<button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
+					</span>
+				</a>
+			</div>
 			</div>
 			<div class="github-link">
 				<a href="https://github.com/dropways/deskapp" target="_blank"><img src="../vendors/images/github.svg" alt=""></a>
@@ -200,15 +187,6 @@
 			<div class="sidebar-menu">
 			<!-- 사이드바 프로필이미지 -->
 				<ul id="accordion-menu">
-					<!-- <div class="menu-item">
-						<a href="/cakecraft/emp/myPage">
-							<span class="user-icon">
-								<div class="circular-image">
-									<img src="../vendors/images/photo1.jpg" alt="">
-								</div>
-							</span>
-						</a>
-					</div> -->
 			<!-- 출/퇴근 버튼 -->
 					<div class="menu-item">
 						<button id="startWorkBtn" class="btn btn-primary" disabled>출근</button>
@@ -276,35 +254,38 @@
 	  // 사용자의 위치 정보 가져오기
 	 navigator.geolocation.getCurrentPosition(
 		//jQuery.noConflict();
-	    position => {
-	    	const latitude = position.coords.latitude;
-	        const longitude = position.coords.longitude;
-	        console.log(latitude);
-	        console.log(longitude);
-	        // 위도(latitude)와 경도(longitude)를 이용해 위치 정보 활용 가능
-	        // 이후 출퇴근 버튼 활성화 여부 결정에 사용
-	      },
-	      error => {
-	        console.error("위치 정보를 가져오는데 실패했습니다.", error);
-	      }
-	    );
-	 	 const userLocation = {
-		  latitude: 37.4730836,
-		  longitude: 126.8788276 // 사용자의 실제 위치 정보로 갱신해야 합니다.
+		position => {
+			// 위치 정보가 성공적으로 가져온 경우
+			const latitude = position.coords.latitude;//위도
+			const longitude = position.coords.longitude;//경도
+			console.log(latitude);
+			console.log(longitude);
+			// 위도(latitude)와 경도(longitude)를 이용해 위치 정보 활용 가능
+			// 이후 출퇴근 버튼 활성화 여부 결정에 사용
+		  },
+			error => {
+				// 위치 정보가 성공적으로 가져오는데 실패한 경우
+				console.error("위치 정보를 가져오는데 실패했습니다. 위치 제공을 허용해주세요!", error);
+			}
+		);
+			// 사용자의 실제 위치 정보
+			const userLocation = {
+			latitude: 37.4730836,
+			longitude: 126.8788276 // 사용자의 실제 위치 정보 기입
 		};
 
-		// 출근 버튼을 활성화할 위치 범위
-		const startWorkLocation = {
-		  latitude: 37.4730836,
-		  longitude: 126.8788276
+			// 출근 버튼을 활성화할 위치 범위
+			const startWorkLocation = {
+			latitude: 37.4730836,
+			longitude: 126.8788276
 		};
-		// thresholdDistance 정의
+		// 출퇴근 버튼 활성화 여부 결정에 사용할 거리 임계값(범위)
 		const thresholdDistance = 1; // 단위: km
 
 		// 퇴근 버튼을 활성화할 위치 범위
 		const endWorkLocation = {
-		  latitude: 37.4730836,
-		  longitude: 126.8788276
+			latitude: 37.4730836, // 퇴근 버튼 활성화 위도
+			longitude: 126.8788276 // 퇴근 버튼 활성화 경도
 		};
 
 		// 출근 버튼 활성화 여부 결정
@@ -318,64 +299,66 @@
 		// 퇴근 버튼 활성화 여부 결정
 		const endWorkBtn = document.getElementById("endWorkBtn");
 		if (!startWorkBtn.disabled && calculateDistance(userLocation, endWorkLocation) <= thresholdDistance) {
-		  endWorkBtn.disabled = false;
+			endWorkBtn.disabled = false;
 		} else {
-		  endWorkBtn.disabled = true;
+			endWorkBtn.disabled = true;
 		}
 
 		// 두 위치 간의 거리 계산 함수
 		function calculateDistance(location1, location2) {
-		  const earthRadius = 6371; // 지구 반지름 (단위: km)
-		  const dLat = degToRad(location2.latitude - location1.latitude);
-		  const dLon = degToRad(location2.longitude - location1.longitude);
+			const earthRadius = 6371; // 지구 반지름 (단위: km)
+			const dLat = degToRad(location2.latitude - location1.latitude);
+			const dLon = degToRad(location2.longitude - location1.longitude);
 
 		  const a =
-		    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		    Math.cos(degToRad(location1.latitude)) * Math.cos(degToRad(location2.latitude)) *
-		    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.cos(degToRad(location1.latitude)) * Math.cos(degToRad(location2.latitude)) *
+			Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
-		  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-		  const distance = earthRadius * c; // 두 위치 사이의 거리 (단위: km)
-		  return distance;
+			const distance = earthRadius * c; // 두 위치 사이의 거리 (단위: km)
+			return distance;
 		}
 
 		// 각도를 라디안으로 변환하는 함수
 		function degToRad(degrees) {
-		  return degrees * (Math.PI / 180);
+			return degrees * (Math.PI / 180);
 		}
 		document.addEventListener("DOMContentLoaded", function () {
-		const startWorkBtn = document.getElementById("startWorkBtn");
-	    const endWorkBtn = document.getElementById("endWorkBtn");
-	    
-	    function saveWorkHistory(history) {
-    	const workHistory = JSON.parse(localStorage.getItem('workHistory')) || [];
-    	    workHistory.push(history);
-    	    localStorage.setItem('workHistory', JSON.stringify(workHistory));
-    	}	
+			// 출근 버튼과 퇴근 버튼 가져오기
+			const startWorkBtn = document.getElementById("startWorkBtn");
+			const endWorkBtn = document.getElementById("endWorkBtn");
+			
+			// 근무 기록을 저장하는 함수
+			function saveWorkHistory(history) {
+				const workHistory = JSON.parse(localStorage.getItem('workHistory')) || [];
+					workHistory.push(history);
+					localStorage.setItem('workHistory', JSON.stringify(workHistory));
+	    	}	
 	    
 	 	// 출근 버튼 클릭 이벤트 처리
-	    startWorkBtn.addEventListener("click", () => {
-	        const currentTime = new Date().toISOString();
-	        const startWorkHistory = {
-	            type: "출근",
-	            time: currentTime
-	        };
-	        saveWorkHistory(startWorkHistory);
-	        startWorkBtn.disabled = true;
-	        endWorkBtn.disabled = false;
+		startWorkBtn.addEventListener("click", () => {
+			const currentTime = new Date().toISOString();
+			const startWorkHistory = {
+				type: "출근",
+				time: currentTime
+		    };
+			saveWorkHistory(startWorkHistory);
+			startWorkBtn.disabled = true;
+			endWorkBtn.disabled = false;
 	    });
 
 	    // 퇴근 버튼 클릭 이벤트 처리
-	    endWorkBtn.addEventListener("click", () => {
-	        const currentTime = new Date().toISOString();
-	        const endWorkHistory = {
-	            type: "퇴근",
-	            time: currentTime
+		endWorkBtn.addEventListener("click", () => {
+			const currentTime = new Date().toISOString();
+			const endWorkHistory = {
+				type: "퇴근",
+				time: currentTime
 	        };
-	        saveWorkHistory(endWorkHistory);
-	        endWorkBtn.disabled = true;
-	        startWorkBtn.disabled = false;
+			saveWorkHistory(endWorkHistory);
+			endWorkBtn.disabled = true;
+			startWorkBtn.disabled = false;
 	    });
 	 });
  	

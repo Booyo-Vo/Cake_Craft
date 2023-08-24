@@ -27,7 +27,13 @@
 	<link rel="stylesheet" type="text/css" href="../src/plugins/fullcalendar/fullcalendar.css">
 	<link rel="stylesheet" type="text/css" href="../vendors/styles/style.css">
 
+	<!-- *로그인 CSS -->
+	<link rel="stylesheet" type="text/css" href="vendors/styles/core.css">
+	<link rel="stylesheet" type="text/css" href="vendors/styles/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="vendors/styles/style.css">
 
+<!-- *로그인 Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
 <!-------------jqGrid  --------->
 <!-- The actual JQuery code -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js" /></script>

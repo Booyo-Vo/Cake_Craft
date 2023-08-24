@@ -224,6 +224,13 @@
 		VALUES(#{id}, #{signFilename}, #{signType}, #{signFilesize}, NOW(), NOW(), #{regId}, #{modId})
 	</insert>
 	
+	<!-- *마이페이지 사인 삭제 -->
+	<insert id="removeSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
+		DELETE FROM emp_signImg
+		where id = #{id}
+	</insert>
+	
+
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
 	<select id="selectEmpCntByCd" 
 		parameterType="com.goodee.cakecraft.vo.StStdCd"
