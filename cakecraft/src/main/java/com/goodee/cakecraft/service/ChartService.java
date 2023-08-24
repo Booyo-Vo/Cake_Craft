@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,26 +41,33 @@ public class ChartService {
 	}
 	
 	// 해당월 입사자, 퇴사자
-	public Map<String, Object> getMonthCnt(String month) {
-		//해당월 입사자
-		int hireMonthCnt = empMapper.selectHireMonthCnt(month);
-		log.debug(LJY + hireMonthCnt +"<- getMonthCnt hireMonthCnt"+ RESET);
-		//해당월 퇴사자
-		int retireMonthCnt = empMapper.selectRetireMonthCnt(month);
-		log.debug(LJY + retireMonthCnt +"<- getMonthCnt retireMonthCnt"+ RESET);
-		
-		//Map으로 묶어서 넘기기
-		Map<String, Object> MonthCntMap = new HashMap<String, Object>();
-		MonthCntMap.put("hireMonthCnt", hireMonthCnt);
-		MonthCntMap.put("retireMonthCnt", retireMonthCnt);
-		return MonthCntMap;
+	public Map<String, List<Integer>> getMonthCnt(String year) {
+	    Map<String, List<Integer>> MonthCntMap = new HashMap<>();
+
+	    //해당월 입사자
+	    for (int month = 1; month <= 12; month++) { //1월 ~ 12월
+	    	String monthStr = String.valueOf(month);
+	        int hireMonthCnt = empMapper.selectHireMonthCnt(monthStr, year);
+	        //해당월 퇴사자
+	        int retireMonthCnt = empMapper.selectRetireMonthCnt(monthStr, year);
+
+	        List<Integer> hireData = new ArrayList<>();
+	        hireData.add(hireMonthCnt);
+	        
+	        List<Integer> retireData = new ArrayList<>();
+	        retireData.add(retireMonthCnt);
+	        
+	        MonthCntMap.put(monthStr + "_hire", hireData);
+	        MonthCntMap.put(monthStr + "_retire", retireData);
+	    }
+
+	    return MonthCntMap;
 	}
 	
 	
 	// 직급별 인원수
     public List<Map<String, Object>> getPositionCnt() {
     	List<Map<String, Object>> positionCnt = empMapper.selectPositionCnt();
-    	log.debug(LJY+"getPositionCnt positionCnt :"+ positionCnt +RESET); 
     	log.debug(LJY + positionCnt +"<- getPositionCnt positionCnt"+ RESET);
     	return positionCnt;
     }

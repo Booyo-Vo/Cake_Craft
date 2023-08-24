@@ -31,10 +31,10 @@ public interface EmpMapper {
 	int selectRetireYearCnt(String year);
 	
 	// 해당월 입사자
-	int selectHireMonthCnt(String month);
+	int selectHireMonthCnt(String month, String year);
 	
 	// 해당월 퇴사자
-	int selectRetireMonthCnt(String month);
+	int selectRetireMonthCnt(String month, String year);
 	
 	// 직급별 인원수 조회
     List<Map<String, Object>> selectPositionCnt();
