@@ -19,7 +19,12 @@
 			<div class="min-height-200px">
 				<div class="invoice-wrap">
 					<div class="invoice-box">
-						<h3 class="text-center mb-30 weight-600"><br>재&nbsp;직&nbsp;증&nbsp;명&nbsp;서</h3>
+						<c:if test="${empbase.empStatus eq '재직자'}">
+							<h2 class="text-center mb-30 weight-600"><br>재&nbsp;직&nbsp;증&nbsp;명&nbsp;서</h2>
+						</c:if>
+						<c:if test="${empbase.empStatus eq '퇴사자'}">
+							<h2 class="text-center mb-30 weight-600"><br>경&nbsp;력&nbsp;증&nbsp;명&nbsp;서</h2>
+						</c:if>
 						<br>
 						<br>
 						<div class="invoice-desc pb-30">
@@ -36,23 +41,28 @@
 								</tr>
 								<tr>
 									<th>소속</th>
-									<td>${empbase.deptNm}${empbase.teamNm}</td>
+									<td>${empbase.deptNm}&nbsp;&nbsp;${empbase.teamNm}</td>
 									<th>직책</th>
 									<td>${empbase.positionNm}</td>
 								</tr>
 								<tr>
 									<th>재직기간</th>
-									<td colspan="3">${empbase.hireDate}&nbsp;~&nbsp;재직중</td>
+									<c:if test="${empbase.empStatus eq '재직자'}">
+										<td colspan="3">${empbase.hireDate}&nbsp;~&nbsp;재직중</td>
+									</c:if>
+									<c:if test="${empbase.empStatus eq '퇴사자'}">
+										<td colspan="3">${empbase.hireDate}&nbsp;~&nbsp;${empbase.retireDate}</td>
+									</c:if>
 								</tr>
 							</table>
 							<br>
 							<br>
 							<br>
 							<div class="invoice-desc-body">
-							<h5 class="text-center mb-30 weight-600"><br><br>상기와 같이 재직 하였음을 증명함</h5>
+								<h5 class="text-center mb-30 weight-600"><br><br>상기와 같이 재직 하였음을 증명함</h5>
 							</div>
 							<div class="invoice-desc-footer">
-							<h5 class="text-center mb-30 weight-600">${currentDate}</h5>
+								<h5 class="text-center mb-30 weight-600">${currentDate}</h5>
 							</div>
 						</div>
 					</div>

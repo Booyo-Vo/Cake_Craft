@@ -35,7 +35,7 @@ jQuery(document).ready(function($) {
 
 			        if (empStatus === "재직자") {
 			            certificateText = '<a href="/cakecraft/emp/certificate?id=' + rowObject.id + '">재직증명서</a>';
-			        } else if (empStatus === "퇴직자") {
+			        } else if (empStatus === "퇴사자") {
 			            certificateText = '<a href="/cakecraft/emp/certificate?id=' + rowObject.id + '">경력증명서</a>';
 			        } 
 			        return certificateText;

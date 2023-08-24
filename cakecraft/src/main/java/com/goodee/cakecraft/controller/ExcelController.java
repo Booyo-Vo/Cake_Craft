@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goodee.cakecraft.service.AdminEmpService;
@@ -100,10 +101,13 @@ public class ExcelController {
     
     //엑셀로 사원 대량등록
     @PostMapping("/emp/addExcel") 
-    public String  addExcell(HttpSession session,
+    @ResponseBody
+    public int addExcell(HttpSession session,
     						@RequestParam("file") MultipartFile file) {   
     	log.debug(LJY + "addExcel file:" + file + RESET);
-    	 try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) { //새로운 엑셀파일을 생성
+    	
+    	int addEmpRow = 0;//반환값 미리선언
+    	try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) { //새로운 엑셀파일을 생성
              Sheet sheet = workbook.getSheetAt(0); // 엑셀 파일의 첫번째 시트 가져오기
              for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) { //세번째줄 부터 있는 인원수만큼 반복됨
                  Row row = sheet.getRow(rowIndex);
@@ -132,7 +136,7 @@ public class ExcelController {
              		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
              		
              		//사원추가 (service 안에서 이름이 코드로 변경, 사원번호생성, 사원추가, idlist추가가 이루어짐)
-                     int addEmpRow = adminEmpService.addEmp(empbase);
+             		 addEmpRow = adminEmpService.addEmp(empbase);
                      if (addEmpRow > 0) {
                      log.debug(LJY + "addExcel addEmpRow:" + addEmpRow + RESET);
                      }
@@ -140,10 +144,9 @@ public class ExcelController {
              }
          } catch (IOException e) {
              e.printStackTrace();
-             // 에러 처리
          }
          
-         return "redirect:/emp/adminEmpList"; // 등록 후 리스트 페이지로 리다이렉트
+         return addEmpRow; // 등록 후 리스트 페이지로 리다이렉트
      }
     
     
