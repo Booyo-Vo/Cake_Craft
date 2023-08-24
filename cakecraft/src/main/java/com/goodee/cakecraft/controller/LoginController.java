@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class LoginController {
 	//ANSI코드
-		final String BLUE = "\u001B[44m";
+		final String KMS = "\u001B[44m";
 		final String RESET = "\u001B[0m"; 
 		
 	@Autowired 
@@ -33,7 +33,6 @@ public class LoginController {
 	//로그인 액션
 		@PostMapping("/login")
 		public String login(HttpServletRequest request,
-							HttpServletRequest response,
 							@RequestParam(name= "id") String id,
 							@RequestParam(name ="pw") String pw) {
 			EmpIdList empIdList = new EmpIdList();
@@ -42,15 +41,15 @@ public class LoginController {
 			EmpIdList loginMember = loginService.login(empIdList);
 			//로그인 실패
 			if(loginMember == null) {
-				log.debug(BLUE + "로그인 실패" + RESET);
+				log.debug(KMS + "로그인 실패" + RESET);
 				return "redirect:/login";
 			}
 			//로그인 성공 : session 에 로그인 정보 저장
-			log.debug(BLUE + "로그인 성공" + RESET);
-			log.debug(BLUE + "loginMember LoginController" + loginMember + RESET);
+			log.debug(KMS + "로그인 성공" + RESET);
+			log.debug(KMS + "loginMember LoginController" + loginMember + RESET);
 			HttpSession session = request.getSession();
 			session.setAttribute("loginMember", loginMember);
-			log.debug(BLUE + "session LoginController" + session + RESET);
+			log.debug(KMS + "session LoginController" + session + RESET);
 			return "redirect:/schedule/schedule";
 			
 			
@@ -60,7 +59,7 @@ public class LoginController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
         session.invalidate();
-        //로컬스토리지로부터 저장된 id 제거
+        //로컬스토리지로부터 저장된 id 제거(login.jsp에서 제거)
         return "redirect:/login";
 	}
 }

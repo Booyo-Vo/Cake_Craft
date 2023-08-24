@@ -60,13 +60,12 @@ public class RestSignController {
 			loginId = ((EmpIdList) o).getId();
 			log.debug(KMS + "loginId EmpController" + loginId + RESET);
 		}
-		
-		log.debug(KMS + "Before calling empService.updateSign" + RESET);
-		empService.updateSign(sign, path, loginId);
-		log.debug(KMS +"After calling empService.updateSign" + RESET);
+			
+			log.debug(KMS + "Before calling empService.updateSign" + RESET);
+			empService.updateSign(sign, path, loginId);
+			log.debug(KMS +"After calling empService.updateSign" + RESET);
 
-		
-		
+
 		return "YES";
 	}
 }
