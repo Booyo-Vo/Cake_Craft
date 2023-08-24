@@ -27,7 +27,7 @@
 			}
 		});
 	
-	    // 자동 로그인 기능 관련 수정
+	    /* // 자동 로그인 기능 관련 수정
 		const lastLoginTime = localStorage.getItem("lastLoginTime"); //마지막 로그인 시간 가져오기
 			if (lastLoginTime && Date.now() - lastLoginTime < 3 * 60 * 60 * 1000) {
 				// 로그인 후 3시간 이내에 접속한 경우
@@ -40,7 +40,7 @@
 					const loginBtn = document.getElementById("loginBtn");
 					loginBtn.click(); //로긘 버튼 클릭 이벤트 실행 -> 자동로그인 시도
 				}
-		}
+		} */
 	
 		const pwInput = document.querySelector("input[name='pw']"); //비밀번호 입력 필드 가져오기
 		const loginBtn = document.getElementById("loginBtn"); //로그인 버튼 가져오기
