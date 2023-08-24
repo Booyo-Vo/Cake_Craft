@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.BoardCommentsMapper">
+	<!-- 댓글 목록 조회 -->
+	<select id="selectCommentsList"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony"
+			resultType="com.goodee.cakecraft.vo.BoardAnonyComments">
+		SELECT 
+			comments_no commentsNo,
+			anony_no anonyNo,
+			id,
+			comments_content commentsContent,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId 
+		FROM board_anony_comments
+		<where>
+            anony_no = #{anonyNo}
+        </where>
+		ORDER BY reg_dtime DESC
+	</select>
+	<!-- 댓글 상세 정보 조회 -->
+	<select id="selectCommentsByNo"
+			parameterType="com.goodee.cakecraft.vo.BoardAnonyComments"
+			resultType="com.goodee.cakecraft.vo.BoardAnonyComments">
+		SELECT 
+			comments_no commentsNo,
+			anony_no anonyNo,
+			id,
+			comments_content commentsContent,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId 
+		FROM board_anony_comments
+		<where>
+            comments_no = #{commentsNo}
+        </where>
+	</select>
+	<!-- 댓글 추가 -->
+	<insert id="insertComments"
+			parameterType="com.goodee.cakecraft.vo.BoardAnonyComments">
+		INSERT INTO board_anony_comments(
+			anony_no,
+			id,
+			comments_content,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id)
+		VALUES(
+			#{anonyNo},
+			#{id},
+			#{commentsContent},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+	<!-- 댓글 수정 -->
+	<update id="updateComments"
+			parameterType="com.goodee.cakecraft.vo.BoardAnonyComments">
+		UPDATE board_anony_comments
+		SET comments_content = #{commentsContent},
+			mod_dtime = NOW(),
+			mod_id = #{id} 
+		<where>
+			comments_no = #{commentsNo}
+		</where>
+	</update>
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComments"
+			parameterType="com.goodee.cakecraft.vo.BoardAnonyComments">
+		DELETE FROM board_anony_comments 
+		<where>
+			comments_no = #{commentsNo}
+		</where>
+	</delete>
+</mapper>
