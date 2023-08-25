@@ -9,79 +9,90 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-<table>
-    <tbody>
-        <tr>
-            <th>사번</th>
-            <td>${empbase.id}</td>
-        </tr>
-        <tr>
-            <th>이름</th>
-            <td>${empbase.empName}</td>
-        </tr>
-        <tr>
-            <th>주민등록번호</th>
-            <td>${empbase.socialNo}</td>
-        </tr>
-        <tr>
-            <th>부서</th>
-            <td>${empbase.deptNm}</td>
-        </tr>
-        <tr>
-            <th>팀</th>
-            <td>${empbase.teamNm}</td>
-        </tr>
-        <tr>
-            <th>직급</th>
-            <td>${empbase.positionNm}</td>
-        </tr>
-        <tr>
-            <th>이메일</th>
-            <td>${empbase.email}</td>
-        </tr>
-        <tr>
-            <th>입사일</th>
-            <td>${empbase.hireDate}</td>
-        </tr>
-        <tr>
-            <th>퇴사일</th>
-            <td>${empbase.retireDate}</td>
-        </tr>
-        <tr>
-            <th>재직상태</th>
-            <td>${empbase.empStatus}</td>
-        </tr>
-        <tr>
-            <th>연차잔여개수</th>
-            <td>${empbase.dayoffCnt}</td>
-        </tr>
-        <tr>
-            <th>주소</th>
-            <td>${empbase.address}</td>
-        </tr>
-        <tr>
-            <th>핸드폰번호</th>
-            <td>${empbase.empPhone}</td>
-        </tr>
-        <tr>
-            <th>등록일시</th>
-            <td>${empbase.regDtime}</td>
-        </tr>
-        <tr>
-            <th>수정일시</th>
-            <td>${empbase.modDtime}</td>
-        </tr>
-        <tr>
-            <th>등록자</th>
-            <td>${empbase.regId}</td>
-        </tr>
-        <tr>
-            <th>수정자</th>
-            <td>${empbase.modId}</td>
-        </tr>
-    </tbody>
-</table>
-<a href="/cakecraft/emp/modifyEmp?id=${empbase.id}">사원수정</a>
+	<div class="pd-ltr-20 xs-pd-20-10">
+		<div class="min-height-200px">
+		<div class="pd-20 card-box mb-30">
+			<div class="clearfix">
+				<div class="pull-left">
+					<h4 class="text-blue h4">${empbase.empName} 사원정보</h4>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">사번</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.id}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">주민등록번호</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.socialNo}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">부서</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.deptNm}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">팀</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.teamNm}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">직급</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.positionNm}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">이메일</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.email}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">입사일</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.hireDate}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">퇴사일</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.retireDate}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">재직상태</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.empStatus}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">연차잔여개수</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.dayoffCnt}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">주소</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.address}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-12 col-md-2 col-form-label">핸드폰번호</label>
+				<div class="col-sm-12 col-md-4">
+					${empbase.empPhone}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<a href="/cakecraft/emp/adminmodifyEmp?id=${empbase.id}" class="btn btn-primary">사원수정</a>
 </div>
 </body>
 </html>

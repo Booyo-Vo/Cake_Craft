@@ -34,24 +34,24 @@ public class AdminEmpController {
 	private StStdCdService stStdCdService;
 	@Autowired 
 	private CommonService commonService;
-	
+
 	// 사원추가 폼
 	@GetMapping("/emp/addEmp")
 		public String addEmp(HttpSession session, Model model) {
 		//부서 팀 직급 추가를 위한 선택 리스트를 나열하기 위해서
 		String deptCode = "D001";
-	    String teamCode = "T001";
-	    String positionCode = "P001";
+		String teamCode = "T001";
+		String positionCode = "P001";
 		// 부서, 팀, 직급 리스트에서 설정할 수 있게 각각 가져옴
-	    List<StStdCd> deptList = stStdCdService.getCdList(deptCode);
-	    List<StStdCd> teamList = stStdCdService.getCdList(teamCode);
-	    List<StStdCd> positionList = stStdCdService.getCdList(positionCode);
-	    
-	    //세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		List<StStdCd> deptList = stStdCdService.getCdList(deptCode);
+		List<StStdCd> teamList = stStdCdService.getCdList(teamCode);
+		List<StStdCd> positionList = stStdCdService.getCdList(positionCode);
+
+		 //세선에 저장된 로그인 아이디를 받아옴
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
-	    
+
 		//뷰로 값넘기기
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("teamList", teamList);
@@ -59,7 +59,7 @@ public class AdminEmpController {
 		model.addAttribute("loginId",loginId);
 		return "/emp/addEmp";
 	}
-	
+
 	// 사원추가 액션
 	@PostMapping("/emp/addEmp")
 		public String addEmp(HttpSession session, EmpBase empbase) {
@@ -78,9 +78,9 @@ public class AdminEmpController {
 	
 	// 관리자가 보는 사원리스트 출력
 	@GetMapping("/emp/adminEmpList")
-	 	public String adminEmpList(HttpSession session, Model model) {
+		public String adminEmpList(HttpSession session, Model model) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
@@ -95,10 +95,10 @@ public class AdminEmpController {
 	
 	// 관리자가 보는 사원상세내역 출력
 	@GetMapping("/emp/adminEmpById")
-	 	public String adminEmpById(HttpSession session, Model model,
-	 							@RequestParam String id) {
+	public String adminEmpById(HttpSession session, Model model,
+								@RequestParam String id) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
@@ -112,11 +112,11 @@ public class AdminEmpController {
 	}
 	
 	// 관리자가 하는 사원수정폼
-	@GetMapping("/emp/modifyEmp")
+	@GetMapping("/emp/adminmodifyEmp")
 		public String modifyEmp(HttpSession session, Model model,
 							@RequestParam String id) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
@@ -124,26 +124,26 @@ public class AdminEmpController {
 		EmpBase empbase = adminEmpService.getAdminEmpById(id); 
 		//부서 팀 직급 수정을 위한 선택 리스트를 나열하기 위해서
 		String deptCode = "D001";
-	    String teamCode = "T001";
-	    String positionCode = "P001";
-	    // 부서, 팀, 직급 리스트에서 설정할 수 있게 각각 가져옴
-	    List<StStdCd> deptList = stStdCdService.getCdList(deptCode);
-	    List<StStdCd> teamList = stStdCdService.getCdList(teamCode);
-	    List<StStdCd> positionList = stStdCdService.getCdList(positionCode);
+		String teamCode = "T001";
+		String positionCode = "P001";
+		// 부서, 팀, 직급 리스트에서 설정할 수 있게 각각 가져옴
+		List<StStdCd> deptList = stStdCdService.getCdList(deptCode);
+		List<StStdCd> teamList = stStdCdService.getCdList(teamCode);
+		List<StStdCd> positionList = stStdCdService.getCdList(positionCode);
 		//뷰로 값넘기기
 		model.addAttribute("empbase", empbase);
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("teamList", teamList);
 		model.addAttribute("positionList",positionList);
 		model.addAttribute("loginId",loginId);
-		return "/emp/modifyEmp";
+		return "/emp/adminmodifyEmp";
 	}
-	
+
 	// 관리자가 하는 사원수정액션
-	@PostMapping("/emp/modifyEmp")
+	@PostMapping("/emp/adminmodifyEmp")
 		public String modifyEmp(HttpSession session, EmpBase empbase) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		//empbase에 수정자 아이디 담기
@@ -160,7 +160,7 @@ public class AdminEmpController {
 	public String certificate(HttpSession session, Model model,
 							@RequestParam String id) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
@@ -189,14 +189,14 @@ public class AdminEmpController {
 		empbase.setTeamNm(teamNm);
 		empbase.setPositionNm(positionNm);
 		
-	    // 현재 날짜 가져오기
-        LocalDate currentDate = LocalDate.now();
+		// 현재 날짜 가져오기
+		LocalDate currentDate = LocalDate.now();
 		
 		//뷰로 값넘기기
-        model.addAttribute("empbase", empbase);
+		model.addAttribute("empbase", empbase);
 		model.addAttribute("currentDate", currentDate);
 		model.addAttribute("loginId", loginId);
-	    return "/emp/certificate";
+		return "/emp/certificate";
 	}
 		
 }

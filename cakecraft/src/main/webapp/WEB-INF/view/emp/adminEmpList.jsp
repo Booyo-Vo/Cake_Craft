@@ -20,15 +20,15 @@ jQuery(document).ready(function($) {
 		data: mydata,
 		colNames:['이름','사원번호','부서','팀','직급','이메일','재직상태','연차잔여개수','증명서'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
-			{name:'name', index:'name', width:80, align: "center"},
+			{name:'name', index:'name', width:60, align: "center"},
 			{name:'id', index:'id', width:80 , align: "center" },
-			{name:'deptNm', index:'deptNm', width:80, align: "center"},
-			{name:'teamNm', index:'teamNm', width:80, align: "center"},
-			{name:'positionNm', index:'positionNm', width:80, align: "center"},
-			{name:'email', index:'email', width:80, align: "center"},
-			{name:'empStatus', index:'empStatus', width:80, align: "center"},
-			{name:'dayoffCnt', index:'dayoffCnt', width:80, align: "center"},
-			{name:'certificate', index:'certificate', width:80, sortable: false, align: "center",
+			{name:'deptNm', index:'deptNm', width:60, align: "center"},
+			{name:'teamNm', index:'teamNm', width:60, align: "center"},
+			{name:'positionNm', index:'positionNm', width:60, align: "center"},
+			{name:'email', index:'email', width:100, align: "center"},
+			{name:'empStatus', index:'empStatus', width:60, align: "center"},
+			{name:'dayoffCnt', index:'dayoffCnt', width:60, align: "center"},
+			{name:'certificate', index:'certificate', width:60, sortable: false, align: "center",
 			    formatter: function(cellValue, options, rowObject) {
 			        var empStatus = rowObject.empStatus;
 			        var certificateText = "";
@@ -116,22 +116,43 @@ jQuery(document).ready(function($) {
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-<a href="/cakecraft/emp/getExcel" class="btn btn-primary">사원전체정보 엑셀로 다운로드</a>
-<a href="/cakecraft/emp/addEmp" class="btn btn-primary">사원추가</a>
-<table id="list"></table>
-<div id="pager"></div>
-<div style="margin-top: 20px; margin-left: 15px; font-size: 12px;">
-    <select class="form-control" style="width: 10%; float: left;" id="searchTypeSelect">
-        <option value="All" selected>전체 검색</option>
-        <option value="name">이름</option>
-        <option value="deptNm">부서</option>
-        <option value="teamNm">팀</option>
-    </select>
-    <input type="text" id="searchDataInput" class="form-control" style="width: 30%; float: left; margin-bottom: 50px; margin-left: 10px;">
-    <button class="btn btn-info btn-fill" id="searchButton" value="검색" style="width: 10%; float: left; margin-left: 10px;">
-        검색
-    </button>
-</div>
+	<div class="pd-ltr-20 xs-pd-20-10">
+		<div class="min-height-200px">
+			<div class="pd-20 card-box mb-30">
+				<div class="clearfix">
+					<div class="pull-left">
+						<h4 class="text-blue h4"></h4>
+						<a href="/cakecraft/emp/getExcel" class="btn btn-primary">사원전체정보 엑셀로 다운로드</a>
+						<a href="/cakecraft/emp/addEmp" class="btn btn-primary">사원추가</a>
+					</div>
+				</div>
+				<br>
+				<div class="form-group row">
+					<div class="col-sm-4 col-md-2">
+						<select class="custom-select form-control" id="searchTypeSelect">
+							<option value="All" selected>전체 검색</option>
+							<option value="name">이름</option>
+							<option value="deptNm">부서</option>
+							<option value="teamNm">팀</option>
+						</select>
+					</div>
+					<div class="col-sm-4 col-md-8">
+						<input type="text" id="searchDataInput" class="form-control">
+					</div>
+					<div class="col-sm-4 col-md-2">
+						<button class="btn btn-info btn-fill" id="searchButton" value="검색">검색</button>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-12 col-md-12">
+						<!-- jqgird list -->
+						<table id="list"></table>
+						<div id="pager"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 </body>
 </html>

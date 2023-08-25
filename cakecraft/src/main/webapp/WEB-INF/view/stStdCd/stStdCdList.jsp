@@ -114,6 +114,7 @@ function modifyDeptCdNm() {
                 window.location.reload();
             } else {
                 alert("부서명 수정에 실패하였습니다.");
+                $('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
             }
         },
         error: function() {

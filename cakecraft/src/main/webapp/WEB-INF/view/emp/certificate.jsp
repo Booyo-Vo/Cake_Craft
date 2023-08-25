@@ -7,9 +7,10 @@
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
     <script>
-        function printPage() {
-            print(document.getElementById('printSection').innerHTML);
-        }
+  	var printPage = function() {
+  		document.body.innerHTML = printSection.innerHTML;
+  		window.print();
+  		};
     </script>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
