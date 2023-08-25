@@ -19,6 +19,7 @@ import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
+import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
 
 import lombok.extern.slf4j.Slf4j;
@@ -256,29 +257,24 @@ public class EmpService {
 		}
 		//사원정보수정
 		public int modifyMyEmp(EmpBase empBase) {
-			
-			// 부서이름과 팀이름 직급이름이 넘어오면, DB에 입력할 코드 받아오기
-			Map<String, Object> deptCdMap = commonMapper.getCode(empBase.getDeptNm());
-			//cd가 int이으로 toString() 해준다
-			String deptCd = deptCdMap.get("cd").toString();
-			log.debug(KMS + "modifyEmp deptCd :"+ deptCd + RESET);
-			// 팀 코드 받아오기
-			Map<String, Object> teamCdMap = commonMapper.getCode(empBase.getTeamNm());
-			String teamCd = teamCdMap.get("cd").toString();
-			log.debug(KMS + "modifyEmp teamCd :"+ teamCd + RESET);
-			// 직급 코드 받아오기
-			Map<String, Object> positionCdMap = commonMapper.getCode(empBase.getPositionNm());
-			String positionCd = positionCdMap.get("cd").toString();
-			log.debug(KMS + "modifyEmp positionCd :"+ positionCd + RESET);
-			
-			
+
+			log.debug(KMS+ empBase.getEmpName() + RESET);
 			// empbase에 생성된 부서코드와 팀코드 추가
-			empBase.setDeptCd(deptCd);
-			empBase.setTeamCd(teamCd);
-			empBase.setPositionCd(positionCd);
+			empBase.setDeptCd(empBase.getDeptCd());
+			empBase.setTeamCd(empBase.getTeamCd());
+			empBase.setPositionCd(empBase.getPositionCd());
 			
-			int updaterow = empMapper.updateEmp(empBase);
-			log.debug(KMS + "modifyEmp updaterow :"+ updaterow + RESET);
-			return updaterow;
-		}
+			// 사원 정보 업데이트
+	        int updateEmpInfoResult = empMapper.updateEmpInfo(empBase);
+	        
+	        // 프로파일 이미지 업데이트 (만약 프로파일 이미지가 수정되었을 때)
+	        if (empBase.getProfileFilename() != null) {
+	            EmpProfileImg empProfileImg = new EmpProfileImg();
+	            empProfileImg.setId(empBase.getId());
+	            empProfileImg.setProfileFilename(empBase.getProfileFilename());
+	            int updateProfilePicResult = empMapper.updateEmpProfilePic(empProfileImg);
+	        }
+
+	        return updateEmpInfoResult; // 또는 다른 업데이트 결과를 반환
+	    }
 }

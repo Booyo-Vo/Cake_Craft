@@ -231,6 +231,28 @@
 		where id = #{id}
 	</insert>
 	
+	
+	<!-- *마이페이지 수정 (emp_base 일부 컬럼) -->
+	<update id="updateEmpInfo" parameterType="com.goodee.cakecraft.vo.EmpBase">
+		UPDATE emp_base
+		SET
+			emp_name = #{empName},
+			email = #{email},
+			address = #{address},
+			emp_phone = #{empPhone}
+		WHERE
+			id = #{id}
+	</update>
+
+    <!-- *마이페이지 수정 (emp_profileImg) -->
+	<update id="updateEmpProfilePic" parameterType="com.goodee.cakecraft.vo.EmpProfileImg">
+		UPDATE emp_profileImg
+		SET
+			profile_filename = #{profileFilename}
+		WHERE
+			id = #{id}
+	</update>
+	
 
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
 	<select id="selectEmpCntByCd" 

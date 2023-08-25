@@ -64,7 +64,7 @@ public class EmpController {
 	}
 	
 	//마이페이지 프로필사진 업로드
-	@PostMapping("emp/myPage")
+	@PostMapping("/emp/myPage")
 	public String uploadProfileImage(@RequestParam("file") MultipartFile file, HttpSession session) {
 	    Object o = session.getAttribute("loginMember");
 	    String loginId = "";
@@ -84,7 +84,6 @@ public class EmpController {
 
 	    return "redirect:/cakecraft/emp/myPage";
 	}
-	//마이페이지 서명 출력
 	
 	
 	//사원리스트 출력
@@ -109,7 +108,7 @@ public class EmpController {
 	
 	//사원정보 수정폼
 	@GetMapping("/emp/modifyMyEmp")
-	public String modifyEmp(HttpSession session, Model model) {
+	public String modifyMyEmp(HttpSession session, Model model) {
 		Object o = session.getAttribute("loginMember");
 	    String loginId = "";
 
@@ -118,39 +117,36 @@ public class EmpController {
 	        log.debug(KMS + "loginId EmpController" + loginId + RESET);
 	    }
 
+	    //사원상세내역
 	    EmpBase empBase = empService.getMyEmpById(loginId);
 
-		//부서 팀 직급 수정을 위한 선택 리스트를 나열하기 위해서
-		String deptCode = "D001";
-		String teamCode = "T001";
-		String positionCode = "P001";
-		// 부서, 팀, 직급 리스트에서 설정할 수 있게 각각 가져옴
-		List<StStdCd> deptList = stStdCdService.getCdList(deptCode);
-		List<StStdCd> teamList = stStdCdService.getCdList(teamCode);
-		List<StStdCd> positionList = stStdCdService.getCdList(positionCode);
-		//뷰로 값넘기기
-		model.addAttribute("empbase", empBase);
-		model.addAttribute("deptList", deptList);
-		model.addAttribute("teamList", teamList);
-		model.addAttribute("positionList",positionList);
+	    Map<String, Object> allAttributes = new HashMap<>();
+	    allAttributes.put("empBase", empBase);
+	    allAttributes.put("loginId", loginId);
+	    log.debug(KMS + "loginId / EmpController"+ loginId + RESET);
+	    log.debug(KMS + "empBase / EmpController"+ empBase + RESET);
+	    model.addAllAttributes(allAttributes);
+	    
 	return "/emp/modifyMyEmp";
 	}
 	
 	//사원정보 수정 액션
 	@PostMapping("/emp/modifyMyEmp")
-	public String modifyEmp(HttpSession session, EmpBase empbase) {
-	//세선에 저장된 로그인 아이디를 받아옴
-	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
-	String loginId = loginMember.getId();
-	log.debug(KMS + "addEmp loginId :"+loginId + RESET);
-	//empbase에 수정자 아이디 담기
-	empbase.setModId(loginId);
-	
-	
-	int modifyEmpRow = empService.modifyMyEmp(empbase);
-	log.debug(KMS + "modifyEmpRow :"+modifyEmpRow + RESET);
-	return "redirect:/emp/adminEmpById?id=" + empbase.getId();
-}
+	public String modifyMyEmp(HttpSession session, EmpBase empbase) {
+		log.debug(KMS+ empbase.getEmpName() + RESET);
+		//세선에 저장된 로그인 아이디를 받아옴
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		log.debug(KMS + "addEmp loginId :"+loginId + RESET);
+		//empbase에 수정자 아이디 담기
+		empbase.setId(loginId);
+		// 사원 정보 수정
+	    int modifyEmpRow = empService.modifyMyEmp(empbase);
+	    log.debug(KMS + "modifyEmpRow: " + modifyEmpRow + RESET);
+	    
+	    return "redirect:/emp/myPage?id=" + empbase.getId();
+	    
+	}
 }
 	
 

@@ -21,6 +21,10 @@
 	<div>
 		사번 ${loginId}
 	</div>
+<!-- 이름 -->
+	<div>
+		이름 ${empBase.empName}
+	</div>
 <!-- 서명 -->
 	<div>
 		<!-- 서명이 없을 경우 (비어있음) 출력 / 있을 경우 서명 이미지 출력 -->
@@ -114,10 +118,7 @@
 	<div>
 		주민등록번호 ${empBase.socialNo}
 	</div>
-<!-- 이름 -->
-	<div>
-		이름 ${empBase.empName}
-	</div>
+
 <!-- 핸드폰번호 -->
 	<div>
 		핸드폰번호 ${empBase.empPhone}

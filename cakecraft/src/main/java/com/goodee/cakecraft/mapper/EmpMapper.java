@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.goodee.cakecraft.vo.EmpBase;
+import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
 import com.goodee.cakecraft.vo.StStdCd;
 @Mapper
@@ -58,6 +59,11 @@ public interface EmpMapper {
  	
  	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
  	EmpBase selectMyEmpById(String id);
+ 	
+ 	// 사원이 보는 마이페이지 수정(empBase + profileImg 수정 cf. signImg는 마이페이지 출력 창에서 )
+   	int updateEmpInfo(EmpBase empBase);
+   	
+   	int updateEmpProfilePic(EmpProfileImg empProfileImg);
  	
  	// 프로필 사진 출력
  	void updateProfileImagePath(@Param("id") String id, @Param("profilePath") String profilePath);
