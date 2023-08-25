@@ -21,6 +21,15 @@ public interface ApprovalMapper {
 	// 결재자로 지정된 문서 목록 출력
 	List<ApprovalDocument> selectApprDocListByApprId(String loginId);
 	
+	// 결재자 중 lv2가 승인해야 할 문서 목록 출력
+	List<ApprovalDocument> selectApprDocWaitListByIdLv2(String loginId);
+	
+	// 결재자 중 lv3이 승인해야 할 문서번호 조회
+	List<ApprovalDocument> selectApprDocWaitNoByIdLv3(String loginId);
+	
+	// 결재자 중 lv3이 승인해야 할 문서 목록 출력
+	List<ApprovalDocument> selectApprDocWaitListByNoLv3(Map param);
+	
 	// 참조자로 지정된 문서 목록 출력
 	List<ApprovalDocument> selectApprDocListByRefId(String loginId);
 	

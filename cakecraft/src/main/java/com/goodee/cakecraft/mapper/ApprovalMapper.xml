@@ -46,6 +46,67 @@
 			</where>
 	</select>
 	
+	<!-- 결재자 중 lv2가 승인해야 할 문서 목록 출력 -->
+	<select id="selectApprDocWaitListByIdLv2"
+		parameterType="String"
+		resultType="com.goodee.cakecraft.vo.ApprovalDocument">
+		SELECT
+			ad.document_no documentNo,
+			ad.id id,
+			ad.document_title documentTitle,
+			ad.approval_document_cd approvalDocumentCd,
+			ad.temp_save tempSave,
+			ad.reg_dtime regDtime, 
+			ad.mod_dtime modDtime, 
+			ad.reg_id regId, 
+			ad.mod_id modId
+		FROM approval_document ad
+		<where>
+			ad.document_no IN (
+			SELECT ah2.document_no
+			FROM approval_history ah2
+		 	WHERE ah2.approval_id = #{loginId}
+			AND (ah2.approval_level = 2 AND ah2.approval_status_cd = 1))
+		</where>
+	</select>
+	
+	
+	<!-- 결재자 중 lv3이 승인해야 할 문서번호 조회 -->
+	<select id="selectApprDocWaitNoByIdLv3"
+		parameterType="String"
+		resultType="com.goodee.cakecraft.vo.ApprovalDocument">
+		SELECT document_no
+		FROM approval_history 
+		<where> approval_id = #{loginId}
+			AND (approval_level = 3 AND approval_status_cd = 1)
+		</where>
+	</select>
+	
+           
+    <!-- 결재자 중 lv3이 승인해야 할 문서 목록 출력 (이전 레벨 결재자가 승인했을 경우) -->
+	<select id="selectApprDocWaitListByNoLv3"
+			parameterType="Map"
+			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
+			SELECT
+				ad.document_no documentNo,
+				ad.id id,
+				ad.document_title documentTitle,
+				ad.approval_document_cd approvalDocumentCd,
+				ad.temp_save tempSave,
+				ad.reg_dtime regDtime, 
+				ad.mod_dtime modDtime, 
+				ad.reg_id regId, 
+				ad.mod_id modId
+			FROM approval_document ad
+			<where>
+				ad.document_no IN (
+				SELECT ah3.document_no
+				FROM approval_history ah3
+				WHERE (ah3.approval_level = 2 AND ah3.approval_status_cd = 2))
+			</where>
+	</select>
+
+
 	<!-- 참조자로 지정된 문서 목록 출력 -->
 	<select id="selectApprDocListByRefId"
 			parameterType="String"
