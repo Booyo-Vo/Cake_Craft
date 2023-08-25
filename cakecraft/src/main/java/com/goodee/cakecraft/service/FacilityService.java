@@ -105,14 +105,18 @@ public class FacilityService {
 	}
 	
 	//시설비품 사용여부 변경
-	public int modifyFacilityUse(StStdCd stStdCd) {
+	public int modifyFacilityCategory(StStdCd stStdCd) {
 		int cnt = facilityMapper.selectFacilityCnt(stStdCd);
 		
 		int modRow = 0;
-		if(cnt == 0 && stStdCd.getUseYn().equals("N")) { //해당 카테고리를 가진 시설비품이 0이고, Y에서 N으로 바꾸는 경우
-			modRow = facilityMapper.updateCategoryUse(stStdCd);
-		} else if (stStdCd.getUseYn().equals("Y")) { //N에서 Y로 바꾸는 경우
-			modRow = facilityMapper.updateCategoryUse(stStdCd);
+		if(stStdCd.getUseYn() != null) { //사용여부만 수정하는 경우
+			if(cnt == 0 && stStdCd.getUseYn().equals("N")) { //해당 카테고리를 가진 시설비품이 0이고, Y에서 N으로 바꾸는 경우
+				modRow = facilityMapper.updateCategory(stStdCd);
+			} else if (stStdCd.getUseYn().equals("Y")) { //N에서 Y로 바꾸는 경우
+				modRow = facilityMapper.updateCategory(stStdCd);
+			}
+		} else { //카테고리 이름을 수정하는 경우
+			modRow = facilityMapper.updateCategory(stStdCd);
 		}
 		
 		return modRow;

@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goodee.cakecraft.service.FacilityService;
+import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.FacilityBase;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -49,9 +52,18 @@ public class RestFacilityController {
 	}
 	
 	//시설비품 사용여부 변경
-	@PostMapping("/rest/modifyFacilityUse")
-	public int modifyFacilityUse(StStdCd stStdCd) {
-		int modRow = facilityService.modifyFacilityUse(stStdCd);
+	@PostMapping("/rest/modifyFacilityCategory")
+	public int modifyFacilityUse(HttpSession session,
+								 StStdCd stStdCd) {
+		String loginId = "";
+		Object o = session.getAttribute("loginMember");
+		if(o instanceof EmpIdList) {
+			loginId = ((EmpIdList)o).getId();
+		}
+		
+		stStdCd.setRegId(loginId);
+		
+		int modRow = facilityService.modifyFacilityCategory(stStdCd);
 		return modRow;
 	}
 	

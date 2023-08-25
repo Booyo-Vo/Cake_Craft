@@ -33,28 +33,29 @@
 								<td>비품</td>
 							</c:if>
 							<td>${d.cd}</td>
-							<td>${d.cdNm}</td>
-							<td><button type="button" id="use-${d.cd}" onclick="changeUse(${d.cd})" class="btn btn-sm btn-secondary">${d.useYn}</button></td>
-							<td></td>
+							<td id="nameForm${d.cd}">${d.cdNm}</td>
+							<td><button type="button" id="use${d.cd}" onclick="changeUse(${d.cd})" class="btn btn-sm btn-secondary">${d.useYn}</button></td>
+							<td id="modBtn${d.cd}"><button class="btn btn-sm btn-secondary" type="button" onclick="modNameForm(${d.cd}, '${d.cdNm}')">이름수정</button></td>
 						</tr>
 					</c:forEach>
 						<tr>
 							<td>
-								<select id="facility">
-									<option value="" selected disalbed>==선택==</option>
+								<select id="facility" required>
+									<option value="" selected disabled>==선택==</option>
 									<option value="1">시설</option>
 									<option value="2">비품</option>
 								</select>
 							</td>
 							<td>
-								<input type="text" name="cd" id="cd" value="" readonly>
+								<input type="text" name="cd" id="cd" value="" readonly required>
 							</td>
 							<td>
-								<input type="text" name="cdNm">
+								<input type="text" name="cdNm" required>
 							</td>
 							<td>
 								<select name="useYn">
-									<option value="Y" selected>Y</option>
+									<option value="" selected disabled>==선택==</option>
+									<option value="Y">Y</option>
 									<option value="N">N</option>
 								</select>
 							</td>
@@ -85,14 +86,14 @@
 	
 	function changeUse(cd){
 		let useYn = '';
-		let use = $('#use-'+cd).text();
+		let use = $('#use'+cd).text();
 		if(use === 'Y'){
 			useYn = 'N';
 		} else {
 			useYn = 'Y';
 		}
 		$.ajax({
-			url : '${pageContext.request.contextPath}/rest/modifyFacilityUse',
+			url : '${pageContext.request.contextPath}/rest/modifyFacilityCategory',
 			type : 'post',
 			data : {
 				cd : cd,
@@ -101,9 +102,38 @@
 			success : function(row){
 				if(row == 1){
 					console.log('변경성공');
-					$('#use-'+cd).text(useYn);
+					$('#use'+cd).text(useYn);
 				} else {
 					alert('이미 사용중인 카테고리입니다.');
+				}
+			},
+			error : function(){
+				console.log('ajax실패');
+			}
+		})
+	}
+	
+	function modNameForm(cd, cdNm){
+		$('#nameForm'+cd).html('<input id="cdNm' +cd+ '" type="text" name="cdNm" value="' +cdNm+ '">');
+		$('#modBtn'+cd).html('<button type="button" class="btn btn-sm btn-secondary" id="modNameBtn'+cd+'" onclick="modName('+cd+')">수정</button>');
+	}
+	
+	function modName(cd){
+		let cdNm = $('#cdNm'+cd).val();
+		console.log(cdNm);
+		$.ajax({
+			url : '${pageContext.request.contextPath}/rest/modifyFacilityCategory',
+			type : 'post',
+			data : {
+				cd : cd,
+				cdNm : cdNm
+			},
+			success : function(row){
+				if(row == 1){
+					console.log('변경성공');
+					location.reload();
+				} else {
+					alert('수정에 실패하였습니다');
 				}
 			},
 			error : function(){

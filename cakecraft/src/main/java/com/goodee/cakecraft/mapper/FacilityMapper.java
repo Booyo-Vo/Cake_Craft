@@ -37,6 +37,6 @@ public interface FacilityMapper {
 	//시설/비품 코드 추가
 	int insertCategoryCd(StStdCd stStdCd);
 	
-	//시설/비품 코드 사용여부 변경
-	int updateCategoryUse(StStdCd stStdCd);
+	//시설/비품 카테고리 변경
+	int updateCategory(StStdCd stStdCd);
 }

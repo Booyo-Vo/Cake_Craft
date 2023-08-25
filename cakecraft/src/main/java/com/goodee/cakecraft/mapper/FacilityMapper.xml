@@ -161,10 +161,18 @@
 	</insert>
 	
 	<!-- 카테고리 코드 사용여부 수정 -->
-	<update id="updateCategoryUse"
+	<update id="updateCategory"
 			parameterType="com.goodee.cakecraft.vo.StStdCd">
 		UPDATE st_std_cd 
-		SET use_yn = #{useYn}
+		SET 
+			mod_dtime = NOW(),
+			mod_id = #{regId},
+		<if test="useYn != null">
+			use_yn = #{useYn}
+		</if>
+		<if test="cdNm != null">
+			cd_nm = #{cdNm}
+		</if>
 		WHERE grp_cd = 'F001'
 		AND cd = #{cd};
 	</update>
