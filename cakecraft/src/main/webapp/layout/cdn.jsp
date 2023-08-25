@@ -44,6 +44,10 @@
 <!-- The atual jqGrid code -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/jqgrid/4.6.0/jquery.jqGrid.src.js" /></script>
 
+<!------------- jqGrid 행높이 조절 ------------->
+<style>
+	.ui-jqgrid tr.jqgrow { outline-style: none; height: 43px; font-size: 13px; } 
+</style>
 
 <!------------- 사인용 캔버스 ------------->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
