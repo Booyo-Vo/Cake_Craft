@@ -11611,3 +11611,8 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
   margin-bottom: 0;
   width: 100%;
   float: none; }
+
+.btn-none{
+	background-color:#fff;
+	border: none;
+}
