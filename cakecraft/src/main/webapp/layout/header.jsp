@@ -79,11 +79,11 @@
 				<a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
 					<span class="user-icon">
 					<!-- 세션 값을 사용하여 프로필 이미지 표시 -->
+					<!-- 프로필 이미지가 없을 경우에는 기본 이미지가 표시 -->
 						<c:choose>
 							<c:when test="${not empty sessionScope.profileImagePath}">
 								<img src="${pageContext.request.contextPath}/profileImg/${sessionScope.profileImagePath}" alt="employee image">
 							</c:when>
-							<!-- 프로필 이미지가 없을 경우에는 기본 이미지가 표시 -->
 							<c:otherwise>
 								<img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image">
 							</c:otherwise>
