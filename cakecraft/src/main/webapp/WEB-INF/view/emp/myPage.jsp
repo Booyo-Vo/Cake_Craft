@@ -120,8 +120,8 @@
 									<div class="form-group row">
 										<label class="col-sm-12 col-md-2 col-form-label"><b>서명</b></label>
 										<div class="col-sm-12 col-md-10">
-											<c:if test="${not empty empBase.signFilename}">
-												<img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="signImg" style="width: 200px; height: 200px;">
+											<c:if test="${not empty empBase.signFilename}" >
+												<img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="signImg" style="width: 100px; height: 100px;">
 											</c:if>
 											<c:if test="${empty empBase.signFilename}">
 												(비어있음)
@@ -132,7 +132,9 @@
 														<button id="addSignature">서명 추가</button>
 													</c:when>
 													<c:otherwise>
-													<a class="btn btn-primary" id="updateSignature">서명 수정</a>
+														<div class="text-center mb-3">
+															<a class="btn btn-primary" id="updateSignature">서명 수정</a>
+														</div>
 														<!-- <button id="updateSignature">서명 수정</button> -->
 													</c:otherwise>
 												</c:choose>

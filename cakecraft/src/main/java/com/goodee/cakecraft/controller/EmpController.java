@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.goodee.cakecraft.service.EmpService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
+import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -36,9 +38,6 @@ public class EmpController {
 	
 	@Autowired
 	private EmpService empService;
-	
-	@Autowired
-	private StStdCdService stStdCdService;
 	
 	//마이페이지 출력
 	@GetMapping("/emp/myPage")
@@ -62,29 +61,6 @@ public class EmpController {
 	    model.addAllAttributes(allAttributes);
 	    return "/emp/myPage";
 	}
-	
-	//마이페이지 프로필사진 업로드
-	@PostMapping("/emp/myPage")
-	public String uploadProfileImage(@RequestParam("file") MultipartFile file, HttpSession session) {
-	    Object o = session.getAttribute("loginMember");
-	    String loginId = "";
-
-	    if (o instanceof EmpIdList) {
-	        loginId = ((EmpIdList) o).getId();
-	    }
-
-	    try {
-	        String fileName = empService.uploadProfileImage(file, loginId);
-	        String filePath = "/profileImg/profile.jpg" + File.separator + fileName;
-	        empService.updateProfileImagePath(loginId, filePath);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        // 처리 중 에러 발생 시 예외 처리
-	    }
-
-	    return "redirect:/cakecraft/emp/myPage";
-	}
-	
 	
 	//사원리스트 출력
 	@GetMapping("/emp/empList")
@@ -126,27 +102,40 @@ public class EmpController {
 	    log.debug(KMS + "loginId / EmpController"+ loginId + RESET);
 	    log.debug(KMS + "empBase / EmpController"+ empBase + RESET);
 	    model.addAllAttributes(allAttributes);
-	    
-	return "/emp/modifyMyEmp";
+			
+		return "/emp/modifyMyEmp";
 	}
-	
-	//사원정보 수정 액션
-	@PostMapping("/emp/modifyMyEmp")
-	public String modifyMyEmp(HttpSession session, EmpBase empbase) {
-		log.debug(KMS+ empbase.getEmpName() + RESET);
-		//세선에 저장된 로그인 아이디를 받아옴
-		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
-		String loginId = loginMember.getId();
-		log.debug(KMS + "addEmp loginId :"+loginId + RESET);
-		//empbase에 수정자 아이디 담기
-		empbase.setId(loginId);
-		// 사원 정보 수정
-	    int modifyEmpRow = empService.modifyMyEmp(empbase);
-	    log.debug(KMS + "modifyEmpRow: " + modifyEmpRow + RESET);
-	    
-	    return "redirect:/emp/myPage?id=" + empbase.getId();
-	    
-	}
-}
-	
 
+	
+	// 사원정보 수정 액션
+	@PostMapping("/emp/modifyMyEmp")
+	public String modifyMyEmp(HttpSession session, HttpServletRequest request, EmpBase empBase, @RequestParam("profileImage") MultipartFile profileImage) {
+	    // 세션에 저장된 로그인 아이디를 받아옴
+	    EmpIdList loginMember = (EmpIdList) session.getAttribute("loginMember");
+	    String loginId = loginMember.getId();
+	    log.debug(KMS + loginId + "<- addEmp loginId" + RESET);
+
+	    // empbase에 수정자 아이디 담기
+	    empBase.setId(loginId);
+
+	    String path = request.getServletContext().getRealPath("/profileImg/");
+	    log.debug(KMS + path + "<--path / EmpController" + RESET);
+
+	    // 파일 저장(저장위치 필요 -> path변수)
+	    // path위치에 저장할 파일 이름 생성
+	    String profileFilename = loginId + ".jpg"; // 로그인 아이디를 기반으로 파일 이름 생성
+	    File f = new File(path + profileFilename);
+	    // 빈파일에 첨부된 파일의 스트림을 주입한다.
+	    try {
+	        profileImage.transferTo(f); // 스트림 주입 메서드
+	    } catch (IllegalStateException | IOException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException();
+	    }
+	    // 사원 정보 수정
+	    empService.modifyMyEmp(empBase, path);
+
+	    return "redirect:/emp/myPage?id=" + empBase.getId();
+	}
+	
+}

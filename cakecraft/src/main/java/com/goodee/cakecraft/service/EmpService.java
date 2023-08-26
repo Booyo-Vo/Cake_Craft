@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
+import com.goodee.cakecraft.vo.BoardAnonyFile;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.EmpProfileImg;
@@ -72,25 +73,18 @@ public class EmpService {
 		 }
 	    return resultEmpBase;
 	}
-	//프로필 사진 업로드
-	 public String uploadProfileImage(MultipartFile file, String id) throws IOException {
-	        // 이미지 저장 경로 설정
-		    String uploadDir = "/webapp/profileImg";
-		    String fileName = id + "_" + file.getOriginalFilename();
-		    String filePath = Paths.get(uploadDir, fileName).toString();
-		    //사번 받아와서 사진 파일 저장
-		    File dest = new File(filePath);
-		    file.transferTo(dest);
-		    
-		    return fileName; // 저장된 파일명 반환
-	}
-	// 프로필 사진 추가
-    public void updateProfileImagePath(String id, String profilePath) {
-        //컨트롤러에서 프로필 이미지 업로드 -> 업로드된 경로를 데이터베이스에 업데이트
-    	//update -> insert
-    	//update 따로
-    	empMapper.updateProfileImagePath(id, profilePath);
-    }
+	/*
+	 * //프로필 사진 업로드 public String uploadProfileImage(MultipartFile file, String id)
+	 * throws IOException { // 이미지 저장 경로 설정 String uploadDir = "/webapp/profileImg";
+	 * String fileName = id + "_" + file.getOriginalFilename(); String filePath =
+	 * Paths.get(uploadDir, fileName).toString(); //사번 받아와서 사진 파일 저장 File dest = new
+	 * File(filePath); file.transferTo(dest);
+	 * 
+	 * return fileName; // 저장된 파일명 반환 } // 프로필 사진 추가 public void
+	 * updateProfileImagePath(String id, String profilePath) { //컨트롤러에서 프로필 이미지 업로드
+	 * -> 업로드된 경로를 데이터베이스에 업데이트 //update -> insert //update 따로
+	 * empMapper.updateProfileImagePath(id, profilePath); }
+	 */
 
     // 사인 추가
     public void addSign(String sign, String path, String loginId) {
@@ -256,25 +250,47 @@ public class EmpService {
 			return empbase;
 		}
 		//사원정보수정
-		public int modifyMyEmp(EmpBase empBase) {
+		//파일 추가도 함께
+		public int modifyMyEmp(EmpBase empBase, String path) {
+		    log.debug(KMS + empBase.getEmpName() + RESET);
 
-			log.debug(KMS+ empBase.getEmpName() + RESET);
-			// empbase에 생성된 부서코드와 팀코드 추가
-			empBase.setDeptCd(empBase.getDeptCd());
-			empBase.setTeamCd(empBase.getTeamCd());
-			empBase.setPositionCd(empBase.getPositionCd());
-			
-			// 사원 정보 업데이트
-	        int updateEmpInfoResult = empMapper.updateEmpInfo(empBase);
-	        
-	        // 프로파일 이미지 업데이트 (만약 프로파일 이미지가 수정되었을 때)
-	        if (empBase.getProfileFilename() != null) {
-	            EmpProfileImg empProfileImg = new EmpProfileImg();
-	            empProfileImg.setId(empBase.getId());
-	            empProfileImg.setProfileFilename(empBase.getProfileFilename());
-	            int updateProfilePicResult = empMapper.updateEmpProfilePic(empProfileImg);
-	        }
+		    empBase.setDeptCd(empBase.getDeptCd());
+		    empBase.setTeamCd(empBase.getTeamCd());
+		    empBase.setPositionCd(empBase.getPositionCd());
 
-	        return updateEmpInfoResult; // 또는 다른 업데이트 결과를 반환
-	    }
+		    int row = empMapper.updateEmpInfo(empBase);
+
+		    MultipartFile profileImageFile = (MultipartFile) empBase.getProfileImage(); // 프로필 이미지 파일
+
+		    if (row == 1 && profileImageFile != null) {
+		        int maxFileSize = 1024 * 1024 * 100; // 100Mbyte
+		        // 이전 첨부파일 삭제
+		        List<EmpProfileImg> empFileList = empMapper.selectEmpProfileImg(empBase);
+		        if (empFileList != null && empFileList.size() > 0) {
+		            for (EmpProfileImg af : empFileList) {
+		                File f = new File(path + af.getProfileFilename());
+		                if (f.exists()) {
+		                    f.delete();
+		                }
+		            }
+		            // emp_profileImg 테이블에서 삭제
+		            empMapper.deleteEmpProfilePic(empBase);
+		        }
+
+		        // 프로필 이미지 추가 및 업데이트
+		        String profileFilename = empBase.getId() + ".jpg"; // 로그인 아이디를 기반으로 파일 이름 생성
+		        String profilePath = path + profileFilename;
+		        String profileType = profileImageFile.getContentType();
+
+		        EmpProfileImg empProfileImg = new EmpProfileImg();
+		        empProfileImg.setId(empBase.getId());
+		        empProfileImg.setProfileFilename(profileFilename);
+		        empProfileImg.setProfilePath(profilePath);
+		        empProfileImg.setProfileType(profileType);
+
+		        empMapper.insertEmpProfileImg(empProfileImg);
+		    }
+
+		    return row;
+		}
 }

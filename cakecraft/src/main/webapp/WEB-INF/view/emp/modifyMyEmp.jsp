@@ -41,7 +41,7 @@ $(document).ready(function() {
                 <td>
                     <!-- 기존 사인 이미지 출력 -->
                     <c:if test="${not empty empBase.signFilename}">
-                        <img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="사인 이미지" style="width: 200px; height: 200px;">
+                        <img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="사인 이미지" style="width: 100px; height: 100px;">
                     </c:if>
                 </td>
             </tr>
@@ -100,5 +100,6 @@ $(document).ready(function() {
 <button type="submit">수정</button>
 </form>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>

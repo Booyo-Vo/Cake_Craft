@@ -211,13 +211,51 @@
 		</where>
 	</select>
 	
-	<!-- *마이페이지 프로필사진 변경 -->
+	<!-- *마이페이지 프로필사진 추가 -->
 
-    <update id="updateProfileImagePath">
-        UPDATE emp_profileImg
-        SET profile_path = #{profilePath}
-        WHERE id = #{id}
-    </update>
+    <insert id="insertEmpProfileImg" parameterType="com.goodee.cakecraft.vo.EmpProfileImg">
+        INSERT INTO emp_profileImg (
+			id,
+			profile_filename,
+			profile_path,
+			profile_type,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+        ) VALUES (
+        	#{id},
+        	#{profileFilename},
+        	#{profilePath},
+        	#{profileType},
+        	NOW(),
+        	NOW(),
+        	#{id},
+        	#{id}
+        )
+    </insert>
+    
+    <!-- *마이페이지 프로필사진 조회 -->
+    <select id="selectEmpProfileImg" resultType="com.goodee.cakecraft.vo.EmpProfileImg" parameterType="com.goodee.cakecraft.vo.EmpBase">
+    	SELECT
+    		id,
+    		profile_filename profileFilename,
+    		profile_path profilePath,
+    		profile_type profileType,
+    		reg_dtime regDtime,
+    		mod_dtime modDtime,
+    		reg_id regId,
+    		mod_id modId
+    	FROM emp_profileImg
+    	WHERE id=#{id}
+    </select>
+	
+	<!-- *프로필사진 경로 조회 (헤더용)-->
+	<select id="getProfileImagePath" parameterType="String" resultType="String">
+    SELECT profile_filename
+    FROM emp_profileImg
+    WHERE id = #{id}
+	</select>
 	
 	<!-- *마이페이지 사인 추가 -->
 	<insert id="insertSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
@@ -245,7 +283,7 @@
 	</update>
 
     <!-- *마이페이지 수정 (emp_profileImg) -->
-	<update id="updateEmpProfilePic" parameterType="com.goodee.cakecraft.vo.EmpProfileImg">
+	<update id="updateProfileImg" parameterType="com.goodee.cakecraft.vo.EmpProfileImg">
 		UPDATE emp_profileImg
 		SET
 			profile_filename = #{profileFilename}
@@ -253,7 +291,14 @@
 			id = #{id}
 	</update>
 	
-
+	<delete id="deleteEmpProfilePic" parameterType="com.goodee.cakecraft.vo.EmpBase">
+		DELETE FROM emp_profileImg
+		<where>
+			id=#{id}
+		</where>
+	</delete>
+	
+	
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
 	<select id="selectEmpCntByCd" 
 		parameterType="com.goodee.cakecraft.vo.StStdCd"

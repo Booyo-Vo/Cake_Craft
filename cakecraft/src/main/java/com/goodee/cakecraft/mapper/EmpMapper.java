@@ -60,17 +60,27 @@ public interface EmpMapper {
  	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
  	EmpBase selectMyEmpById(String id);
  	
+ 	// 사인 등록
+  	public int insertSign(EmpSignImg sign);
+  	
+  	// 사인 삭제
+   	public int removeSign(EmpSignImg sign);
+
  	// 사원이 보는 마이페이지 수정(empBase + profileImg 수정 cf. signImg는 마이페이지 출력 창에서 )
    	int updateEmpInfo(EmpBase empBase);
    	
    	int updateEmpProfilePic(EmpProfileImg empProfileImg);
  	
- 	// 프로필 사진 출력
- 	void updateProfileImagePath(@Param("id") String id, @Param("profilePath") String profilePath);
- 	
- 	// 사인 등록
- 	public int insertSign(EmpSignImg sign);
- 	
- 	// 사인 삭제
-  	public int removeSign(EmpSignImg sign);
+   	int deleteEmpProfilePic(EmpBase empBase);
+   	
+   	// 헤더에 프로필 사진 띄우는 용
+   	String getProfileImagePath(String id);
+   	
+   	//게시판에 프로필 파일 추가
+   	int insertEmpProfileImg(EmpProfileImg empProfileImg);
+   	
+   	List<EmpProfileImg> selectEmpProfileImg(EmpBase empBase);
+   	
+   	void updateProfileImagePath(EmpProfileImg empProfileImg);
+   	
 }
