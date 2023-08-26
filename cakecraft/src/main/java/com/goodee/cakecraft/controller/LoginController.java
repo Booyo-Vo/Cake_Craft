@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.service.LoginService;
 import com.goodee.cakecraft.vo.EmpIdList;
 
@@ -30,36 +31,48 @@ public class LoginController {
 		return "/login";
 	}
 	
+	@Autowired
+	private EmpMapper empMapper; 
+	
 	//로그인 액션
-		@PostMapping("/login")
-		public String login(HttpServletRequest request,
-							@RequestParam(name= "id") String id,
-							@RequestParam(name ="pw") String pw) {
-			EmpIdList empIdList = new EmpIdList();
-			empIdList.setId(id);
-			empIdList.setPw(pw);
-			EmpIdList loginMember = loginService.login(empIdList);
-			//로그인 실패
-			if(loginMember == null) {
-				log.debug(KMS + "로그인 실패" + RESET);
-				return "redirect:/login";
-			}
-			//로그인 성공 : session 에 로그인 정보 저장
-			log.debug(KMS + "로그인 성공" + RESET);
-			log.debug(KMS + "loginMember LoginController" + loginMember + RESET);
-			HttpSession session = request.getSession();
-			session.setAttribute("loginMember", loginMember);
-			log.debug(KMS + "session LoginController" + session + RESET);
-			return "redirect:/schedule/schedule";
-			
-			
-			}
+	@PostMapping("/login")
+			public String login(HttpServletRequest request,
+									@RequestParam(name= "id") String id,
+									@RequestParam(name ="pw") String pw) {
+	EmpIdList empIdList = new EmpIdList();
+	empIdList.setId(id);
+	empIdList.setPw(pw);
+	EmpIdList loginMember = loginService.login(empIdList);
+	
+	if(loginMember == null) {
+		log.debug(KMS + "로그인 실패" + RESET);
+		return "redirect:/login";
+	}
+	
+	// 로그인 성공: 세션에 로그인 정보 저장
+	log.debug(KMS + "로그인 성공" + RESET);
+	log.debug(KMS + "loginMember LoginController" + loginMember + RESET);
+	HttpSession session = request.getSession();
+	session.setAttribute("loginMember", loginMember);
+	
+	// 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
+	// autowired로 EmpMapper 주입
+	String profileImagePath = empMapper.getProfileImagePath(id);
+	if (profileImagePath != null) {
+		session.setAttribute("profileImagePath", profileImagePath);
+	} else {
+		session.setAttribute("profileImagePath", "default_profile.png");
+	}
+	
+	return "redirect:/schedule/schedule";
+	}
+	  
 	
 	//로그아웃 액션
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-        session.invalidate();
-        //로컬스토리지로부터 저장된 id 제거(login.jsp에서 제거)
+		session.invalidate();
+
         return "redirect:/login";
 	}
 }

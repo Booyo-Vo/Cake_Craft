@@ -75,15 +75,19 @@
 		</div>
 	<!-- 오른쪽 상단바 프로필 -->
 		<div class="user-info-dropdown">
-		    <div class="dropdown">
-		        <a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
-		           <span class="user-icon">
-			            <c:if test="${not empty empBase.profileFilename}">
-						    <img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
-						</c:if>
-						<c:if test="${empty empBase.profileFilename}">
-						    <img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image">
-						</c:if>
+			<div class="dropdown">
+				<a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
+					<span class="user-icon">
+					<!-- 세션 값을 사용하여 프로필 이미지 표시 -->
+						<c:choose>
+							<c:when test="${not empty sessionScope.profileImagePath}">
+								<img src="${pageContext.request.contextPath}/profileImg/${sessionScope.profileImagePath}" alt="employee image">
+							</c:when>
+							<!-- 프로필 이미지가 없을 경우에는 기본 이미지가 표시 -->
+							<c:otherwise>
+								<img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image">
+							</c:otherwise>
+						</c:choose>
 					</span>
 					<span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다! &nbsp;
 						<button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
