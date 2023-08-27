@@ -298,6 +298,20 @@
 		</where>
 	</delete>
 	
+	<!-- *비밀번호 변경 직원 정보 업데이트 -->
+    <update id="updateEmployee" parameterType="com.goodee.cakecraft.vo.EmpBase">
+        UPDATE emp_base
+        SET empName = #{empName}, address = #{address}, empPhone = #{empPhone}, email = #{email}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- *비밀번호 변경 -->
+    <update id="changePassword">
+        UPDATE emp_id_list
+        SET pw = password(#{newPassword})
+        WHERE id = #{id}
+    </update>
+	
 	
 	<!-- 부서/팀 번호에 따른 사원존재여부 -->
 	<select id="selectEmpCntByCd" 

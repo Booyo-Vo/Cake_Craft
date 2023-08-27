@@ -3,11 +3,10 @@ package com.goodee.cakecraft.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
-import com.goodee.cakecraft.vo.BoardAnonyFile;
 import com.goodee.cakecraft.vo.EmpBase;
-import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
 
@@ -73,18 +70,7 @@ public class EmpService {
 		 }
 	    return resultEmpBase;
 	}
-	/*
-	 * //프로필 사진 업로드 public String uploadProfileImage(MultipartFile file, String id)
-	 * throws IOException { // 이미지 저장 경로 설정 String uploadDir = "/webapp/profileImg";
-	 * String fileName = id + "_" + file.getOriginalFilename(); String filePath =
-	 * Paths.get(uploadDir, fileName).toString(); //사번 받아와서 사진 파일 저장 File dest = new
-	 * File(filePath); file.transferTo(dest);
-	 * 
-	 * return fileName; // 저장된 파일명 반환 } // 프로필 사진 추가 public void
-	 * updateProfileImagePath(String id, String profilePath) { //컨트롤러에서 프로필 이미지 업로드
-	 * -> 업로드된 경로를 데이터베이스에 업데이트 //update -> insert //update 따로
-	 * empMapper.updateProfileImagePath(id, profilePath); }
-	 */
+
 
     // 사인 추가
     public void addSign(String sign, String path, String loginId) {
@@ -293,4 +279,8 @@ public class EmpService {
 
 		    return row;
 		}
+		
+		
+		
+
 }

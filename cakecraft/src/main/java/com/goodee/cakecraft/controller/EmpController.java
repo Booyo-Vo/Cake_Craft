@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.service.EmpService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.EmpBase;
@@ -137,5 +138,32 @@ public class EmpController {
 
 	    return "redirect:/emp/myPage?id=" + empBase.getId();
 	}
+	
+	@Autowired EmpMapper empMapper;
+	// 비밀번호 변경 액션
+    @PostMapping("/emp/changePw")
+    public String changePassword(HttpSession session,
+                                 @RequestParam String newPassword,
+                                 @RequestParam String confirmPassword,
+                                 Model model) {
+        Object o = session.getAttribute("loginMember");
+        String loginId = "";
+
+        if (o instanceof EmpIdList) {
+            loginId = ((EmpIdList) o).getId();
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+            return "/emp/modifyMyEmp";
+        }
+
+        // 비밀번호 변경 메서드 호출
+        empMapper.changePassword(loginId, newPassword);
+
+        model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+        return "/emp/myPage";
+    }
+
 	
 }

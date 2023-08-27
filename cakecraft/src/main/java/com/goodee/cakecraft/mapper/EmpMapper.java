@@ -76,6 +76,10 @@ public interface EmpMapper {
    	// 헤더에 프로필 사진 띄우는 용
    	String getProfileImagePath(String id);
    	
+   	// 비밀번호 변경
+   	void updateEmployee(EmpBase empBase);
+    void changePassword(@Param("id") String id, @Param("newPassword") String newPassword);
+   	
    	//게시판에 프로필 파일 추가
    	int insertEmpProfileImg(EmpProfileImg empProfileImg);
    	
