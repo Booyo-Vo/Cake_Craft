@@ -129,7 +129,7 @@
 											<!-- 서명이 없는 경우 서명 추가 버튼 출력 / 서명이 있는 경우 서명 수정 버튼 출력 -->
 												<c:choose>
 													<c:when test="${empty empBase.signFilename}">
-														<button id="addSignature">서명 추가</button>
+														<a class="btn btn-primary" id="addSignature">서명 추가</a>
 													</c:when>
 													<c:otherwise>
 														<div class="text-center mb-3">
@@ -145,9 +145,7 @@
 													<div class="modal-content">
 														<div class="modal-header">
 															<h5 class="modal-title" id="signatureModalLabel">서명 추가</h5>
-																<button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">
-																	<span aria-hidden="true">&times;</span>
-																</button>
+																<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
 														</div>
 													<div class="modal-body">
 														<canvas id="modalGoal" style="border: 1px solid black"></canvas>
