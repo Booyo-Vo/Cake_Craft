@@ -58,83 +58,145 @@ $(document).ready(function() {
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
- <form action="/cakecraft/emp/modifyMyEmp" method="post" enctype="multipart/form-data">
-  <table>
-            <tr>
-                <th>사번</th>
-                <td>${empBase.id}</td>
-            </tr>
-            <tr>
-                <th>이름</th>
-                <td><input type="text" name="empName" value="${empBase.empName}" /></td>
-            </tr>
-            <tr>
-                <th>서명</th>
-                <td>
-                    <!-- 기존 사인 이미지 출력 -->
-                    <c:if test="${not empty empBase.signFilename}">
-                        <img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="사인 이미지" style="width: 100px; height: 100px;">
-                    </c:if>
-                </td>
-            </tr>
-            <tr>
-                <th>프로필 이미지</th>
-                <td>
-                    <c:if test="${not empty empBase.profileFilename}">
-						<img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
-					</c:if>
-					<c:if test="${empty empBase.profileFilename}">
-						<img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image" style="width: 100px; height: 100px;">
-					</c:if>
-                    <!-- 프로필 이미지 변경을 위한 업로드 필드 -->
-                    <input type="file" name="profileImage" />
-                </td>
-            </tr>
-            <tr>
-            	<th>
-            		입사일
-            	</th>
-	            <td>
-					${empBase.hireDate}
-				</td>
-			</tr>
-            <tr>
-                <th>부서</th>
-                <td><input type="hidden" name=deptCd value="${empBase.deptCd}" readonly="readonly" />${empBase.deptNm}</td>
-            </tr>
-            <tr>
-                <th>팀</th>
-                <td><input type="hidden" name=teamCd value="${empBase.teamCd}" readonly="readonly"/>${empBase.teamNm}</td>
-            </tr>
-            <tr>
-                <th>직급</th>
-                <td><input type="hidden" name=positionCd value="${empBase.positionCd}" readonly="readonly"/>${empBase.positionNm}</td>
-            </tr>
-            
-            <tr>
-                <th>이메일</th>
-                <td><input type="text" name="email" value="${empBase.email}" /></td>
-            </tr>
-            
-            <tr>
-                <th>주소</th>
-                <td><input type="text" name="address" value="${empBase.address}" /></td>
-            </tr>
-            <tr>
-                <th>핸드폰번호</th>
-                <td><input type="text" name="empPhone" value="${empBase.empPhone}" /></td>
-            </tr>
-            
-            
-        </table>
-<!-- redirect 할때 id 값이 필요해서 hidden으로 전달함-->
-	<input type ="hidden" name="id" value="${empbase.id}">
-	<button type="submit">수정</button>
-</form>
+	<div class="pd-ltr-20 xs-pd-20-10">
+		<div class="min-height-200px">
+			<div class="page-header">
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						<div class="title">
+							<h4>사원 정보 수정</h4>
+						</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">modify My Page</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+				<!-- Default Basic Forms Start -->
+				<div class="pd-20 card-box mb-30">
+					<div class="clearfix">
+						<div class="pull-left">
+								<p class="mb-30"><b>${loginId} 님의 정보를 조회합니다</b></p>
+							</div>
+						</div>
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+						<form action="/cakecraft/emp/modifyMyEmp" method="post" enctype="multipart/form-data">
+							<!-- 사번 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>사번</b></label>
+								<div class="col-sm-12 col-md-10">
+									${empBase.id}
+								</div>
+							</div>
+							<!-- 이름 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>이름</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="text" name="empName" value="${empBase.empName}" />
+								</div>
+							</div>
+							<!-- 입사일 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>입사일</b></label>
+								<div class="col-sm-12 col-md-10">
+									${empBase.hireDate}
+								</div>
+							</div>
+							<!-- 부서 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>부서</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="hidden" name=deptCd value="${empBase.deptCd}" readonly="readonly" />${empBase.deptNm}
+								</div>
+							</div>
+							<!-- 팀 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>팀</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="hidden" name=teamCd value="${empBase.teamCd}" readonly="readonly"/>${empBase.teamNm}
+								</div>
+							</div>
+							<!-- 직급 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>직급</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="hidden" name=positionCd value="${empBase.positionCd}" readonly="readonly"/>${empBase.positionNm}
+								</div>
+							</div>
+							<!-- email -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>email</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="text" name="email" value="${empBase.email}" />
+								</div>
+							</div>
+							<!-- 주소 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>주소</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="text" name="address" value="${empBase.address}"/>
+								</div>
+							</div>
+							<!-- 핸드폰번호 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>핸드폰번호</b></label>
+								<div class="col-sm-12 col-md-10">
+									<input type="text" name="empPhone" value="${empBase.empPhone}" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-12">
+							<!-- 서명 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>서명</b></label>
+								<div class="col-sm-12 col-md-10">
+									<!-- 기존 사인 이미지 출력 -->
+									<c:if test="${not empty empBase.signFilename}">
+										<img src="${pageContext.request.contextPath}/signImg/${empBase.signFilename}" alt="사인 이미지" style="width: 100px; height: 100px;">
+									</c:if>
+								</div>
+							</div>
+							<!-- 프로필 사진 -->
+							<div class="form-group row">
+								<label class="col-sm-12 col-md-2 col-form-label"><b>프로필 사진</b></label>
+								<div class="col-sm-12 col-md-10">
+									<c:if test="${not empty empBase.profileFilename}">
+										<img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
+									</c:if>
+									<c:if test="${empty empBase.profileFilename}">
+										<img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image" style="width: 100px; height: 100px;">
+									</c:if>
+									<!-- 프로필 이미지 변경을 위한 업로드 필드 -->
+									<input type="file" name="profileImage" class="btn btn-primary"/>
+								</div>
+							</div>
+							<!-- redirect 할때 id 값이 필요해서 hidden으로 전달함-->
+							<input type ="hidden" name="id" value="${empbase.id}">
+						</div>
+						<div class="row">
+							<div class="col-md-6 col-sm-12">
+								<div class="text-center mb-3">
+									<button type="button" id="changePasswordBtn" class="btn btn-primary">비밀번호 변경</button>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-12">
+								<div class="text-center mb-3">
+									<button type="submit" class="btn btn-primary">수정</button>
+								</div>
+							</div>
+						</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<form action="/cakecraft/emp/changePw" method="post" id="changePasswordForm">
+<!-- <form action="/cakecraft/emp/changePw" method="post" id="changePasswordForm">
     <button type="button" id="changePasswordBtn">비밀번호 변경</button>
-</form>
+</form> -->
 
 <!-- 비밀번호 변경 모달 -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
