@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.BoardAnswerMapper">
+	<!-- 답변 조회 -->
+	<select id="selectAnswerByNo"
+			parameterType="com.goodee.cakecraft.vo.BoardQuestion"
+			resultType="com.goodee.cakecraft.vo.BoardAnswer">
+		SELECT 
+			question_no questionNo,
+			id,
+			answer_content answerContent,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId 
+		FROM board_qna_answer
+		<where>
+			question_no = #{questionNo}
+		</where>
+	</select>
+	<!-- 답변 추가 -->
+	<insert id="insertAnswer"
+			parameterType="com.goodee.cakecraft.vo.BoardAnswer">
+		INSERT INTO board_qna_answer(
+			question_no,
+			id,
+			answer_content,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id)
+		VALUES(
+			#{questionNo},
+			#{id},
+			#{answerContent},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+	<!-- 답변 수정 -->
+	<update id="updateAnswer"
+			parameterType="com.goodee.cakecraft.vo.BoardAnswer">
+		UPDATE board_qna_answer
+		SET answer_content = #{answerContent},
+			mod_dtime = NOW(),
+			mod_id = #{id} 
+		<where>
+			question_no = #{questionNo}
+		</where>
+	</update>
+	<!-- 답변 삭제 -->
+	<delete id="deleteAnswer"
+			parameterType="com.goodee.cakecraft.vo.BoardQuestion">
+		DELETE FROM board_qna_answer 
+		<where>
+			question_no = #{questionNo}
+		</where>
+	</delete>
+</mapper>
