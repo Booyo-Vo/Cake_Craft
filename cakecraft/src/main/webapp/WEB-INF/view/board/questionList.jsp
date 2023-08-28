@@ -10,7 +10,7 @@ jQuery.noConflict();
 jQuery(document).ready(function($) {
 	var mydata = [ //데이터
 		<c:forEach var="q" items="${questionList}">
-			{questionNo: "${q.questionNo}", questionTitle: "${q.questionTitle}", sercretYn: "${q.secretYn}", regDtime: "${q.regDtime}", regId: "${q.regId}"},
+			{questionNo: "${q.questionNo}", questionTitle: "${q.questionTitle}", sercretYn:"${q.secretYn}", regDtime: "${q.regDtime}", regId: "${q.regId}"},
 		</c:forEach>
 	];
 
@@ -20,9 +20,18 @@ jQuery(document).ready(function($) {
 		colNames:['번호','제목','비밀글','작성일','작성자'],
 		colModel:[
 			{name:'questionNo', index:'questionNo', width:10, align: "center", sortable:false},
-			{name:'questionTitle', index:'questionTitle', width:30, align: "center", sortable:false},
-			{name:'sercretYn', index:'sercretYn', width:10, align: "center", sortable:false},
-			{name:'regDtime', index:'regDtime', width:30, align: "center"},
+			{name:'questionTitle', index:'questionTitle', width:25, align: "center", sortable:false},
+			{name:'sercretYn', index:'sercretYn', width:10, align: "center", sortable:false,
+				// 비밀글일 경우 자물쇠 이미지로 표시
+				formatter: function(cellvalue) {
+					if (cellvalue == 'Y') {
+						return '<i class="icon-copy fa fa-lock" aria-hidden="true"></i>';
+					} else {
+						return '';
+					}
+				}
+			},
+			{name:'regDtime', index:'regDtime', width:25, align: "center"},
 			{name:'regId', index:'regId', width:20, align: "center"},
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
@@ -53,9 +62,23 @@ jQuery(document).ready(function($) {
 		var rowId = $(this).closest("tr.jqgrow").attr("id");
 		var rowData = $("#list").jqGrid("getRowData", rowId);
 		var questionNo = rowData.questionNo;
-		window.location.href = "${pageContext.request.contextPath}/board/questionByNo?questionNo=" + questionNo;
+		var secretYn = rowData.sercretYn;
+		var loginId = '${loginId}';
+		var deptCd = '${empBase.deptCd}';
+		
+		// 비밀글인 경우 작성자와 관리부만 열람가능
+		if(secretYn == ''){
+			window.location.href = "${pageContext.request.contextPath}/board/questionByNo?questionNo=" + questionNo;
+		}else if(secretYn != '' && loginId == rowData.regId){
+			window.location.href = "${pageContext.request.contextPath}/board/questionByNo?questionNo=" + questionNo;
+		}else if(secretYn != '' && loginId != rowData.regId && deptCd == '1'){
+			window.location.href = "${pageContext.request.contextPath}/board/questionByNo?questionNo=" + questionNo;
+		}else{
+			alert("비밀글입니다");
+		}
+		
 	});
-
+	
 	// 선택 가능한 열에 밑줄 스타일 추가
 	$("#list").on("mouseover", ".jqgrow td[aria-describedby='list_questionTitle']", function () {
 		$(this).css("text-decoration", "underline");

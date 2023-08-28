@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.BoardQuestionService;
+import com.goodee.cakecraft.service.EmpService;
 import com.goodee.cakecraft.vo.BoardQuestion;
+import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
 
 @Controller
 public class BoardQuestionController {
 	@Autowired BoardQuestionService questionService;
+	@Autowired EmpService empService;
 	
 	// 문의 목록 조회 
 	@GetMapping("/board/questionList")
@@ -29,10 +32,14 @@ public class BoardQuestionController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 로그인한 사원 정보 가져오기
+		EmpBase empBase = empService.getEmpById(loginId);
+		
 		// 문의목록 가져오기
 		Map<String, Object> resultMap = questionService.getQuestionList(searchRegId, searchWord);
 		
 		model.addAttribute("loginId",loginId);
+		model.addAttribute("empBase",empBase);
 		model.addAttribute("questionList",resultMap.get("questionList"));
 		
 		return "/board/questionList";
@@ -46,10 +53,14 @@ public class BoardQuestionController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 로그인한 사원 정보 가져오기
+		EmpBase empBase = empService.getEmpById(loginId);
+
 		// 문의 상세정보, 답변 가져오기
 		Map<String, Object> resultMap = questionService.getQuestionByNo(question);
 
 		model.addAttribute("loginId",loginId);
+		model.addAttribute("empBase",empBase);
 		model.addAttribute("questionByNo",resultMap.get("questionByNo"));
 		model.addAttribute("answerByNo",resultMap.get("answerByNo"));
 		

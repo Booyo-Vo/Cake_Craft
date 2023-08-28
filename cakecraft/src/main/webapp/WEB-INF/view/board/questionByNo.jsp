@@ -21,7 +21,14 @@
 		</tr>
 		<tr>
 			<td>secretYn</td>
-			<td>${questionByNo.secretYn}</td>
+			<td>
+				<c:if test="${questionByNo.secretYn=='Y'}">
+					<i class="icon-copy fa fa-lock" aria-hidden="true"></i>
+				</c:if>
+				<c:if test="${questionByNo.secretYn=='N'}">
+					<i class="icon-copy fa fa-unlock" aria-hidden="true"></i>
+				</c:if>
+			</td>
 		</tr>
 		<tr>
 			<td>reg_id</td>
@@ -41,29 +48,38 @@
 		</tr>
 	</table>
 	<a href="${pageContext.request.contextPath}/board/questionList">취소</a>
-	<a href="${pageContext.request.contextPath}/board/removeQuestion?questionNo=${questionByNo.questionNo}">삭제</a>
-	<a href="${pageContext.request.contextPath}/board/modifyQuestion?questionNo=${questionByNo.questionNo}">수정</a>
-
+	<!-- 작성자만 수정,삭제버튼 노출 -->
+	<c:if test="${loginId == questionByNo.regId}">
+		<a href="${pageContext.request.contextPath}/board/removeQuestion?questionNo=${questionByNo.questionNo}">삭제</a>
+		<a href="${pageContext.request.contextPath}/board/modifyQuestion?questionNo=${questionByNo.questionNo}">수정</a>
+	</c:if>
 	<div>
-		<h4>문의 답변</h4>
 		<!-- 문의 답변이 존재하지않으면 입력폼 출력 -->
 		<c:if test="${answerByNo == null}">
-			<!-- 입력폼 -->
-			<div>
-				<form action="${pageContext.request.contextPath}/board/addAnswer" method="post" id="addAnswerFrom">
-					<input type="hidden" name="questionNo" value="${questionByNo.questionNo}">
-					<input type="hidden" name="id" value="${questionByNo.id}">
-					<textarea rows="3" cols="30" name="answerContent" id="addAnswerContent"></textarea>
-					<button type="button" id="addSubmitBtn">확인</button>
-				</form>
-			</div>
+			<!-- 관리부만 입력폼 출력 -->
+			<c:if test="${empBase.deptCd == '1'}">
+				<h4>문의 답변</h4>
+				<!-- 입력폼 -->
+				<div>
+					<form action="${pageContext.request.contextPath}/board/addAnswer" method="post" id="addAnswerFrom">
+						<input type="hidden" name="questionNo" value="${questionByNo.questionNo}">
+						<input type="hidden" name="id" value="${questionByNo.id}">
+						<textarea rows="3" cols="30" name="answerContent" id="addAnswerContent"></textarea>
+						<button type="button" id="addSubmitBtn">확인</button>
+					</form>
+				</div>
+			</c:if>
 		</c:if>
 		<!-- 문의 답변이 존재한다면 답변출력 -->
 		<c:if test="${answerByNo != null}">
+			<h4>문의 답변</h4>
 			<!-- 문의 답변 -->
 			<div id="answerDiv">
 				${answerByNo.answerContent}
-				<a href="#" onclick="modAnswerBtn(${questionByNo.questionNo})">수정</a>
+				<!-- 관리부만 답변 수정버튼 출력 -->
+				<c:if test="${empBase.deptCd == '1'}">
+					<a href="#" onclick="modAnswerBtn(${questionByNo.questionNo})">수정</a>
+				</c:if>
 			</div>
 			<!-- 수정폼 -->
 			<div id="modAnswerFormDiv" style="display: none">
