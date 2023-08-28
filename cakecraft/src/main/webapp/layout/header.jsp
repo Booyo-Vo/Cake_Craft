@@ -208,9 +208,11 @@
 						<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
 					</a>
 					<ul class="submenu">
-						<li><a href="/cakecraft/approval/apprDocListById">approvalDocumentListById</a></li>
-						<li><a href="/cakecraft/approval/apprDocListByApprId">approvalDocumentListByApprId</a></li>
-						<li><a href="/cakecraft/approval/apprDocListByRefId">approvalDocumentListByRefId</a></li>
+						<li><a href="/cakecraft/approval/apprDocWaitListByNo">결재대기문서</a></li>
+						<li><a href="/cakecraft/approval/apprDocListByApprId">결재수신문서</a></li>
+						<li><a href="/cakecraft/approval/apprDocListByRefId">참조문서</a></li>
+						<li><a href="/cakecraft/approval/apprDocListById">기안문서</a></li>
+						<li><a href="/cakecraft/approval/apprDocListByIdTempY">임시저장</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -219,7 +221,8 @@
 					</a>
 					<ul class="submenu">
 						<li><a href="/cakecraft/facility/facilityList">시설비품관리</a></li>
-						<li><a href="/cakecraft/reservation/reservation">시설비품예약</a></li>							<li><a href="/cakecraft/reservation/reservationListById">나의예약이력</a></li>
+						<li><a href="/cakecraft/reservation/reservation">시설비품예약</a></li>
+						<li><a href="/cakecraft/reservation/reservationListById">나의예약이력</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
