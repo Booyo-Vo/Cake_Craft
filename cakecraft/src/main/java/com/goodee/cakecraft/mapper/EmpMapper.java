@@ -54,7 +54,10 @@ public interface EmpMapper {
  	int selectEmpCntByCd(StStdCd stStdCd);
  	
  	//////////////////////////// 사원 마이페이지 //////////////////////// 	
-    // 사원 마이페이지 출력
+    // 사원 마이페이지에서 사원리스트 출력
+ 	List<EmpBase> selectMyEmpList(String searchWord);
+ 	
+ 	// 사원 마이페이지 출력
  	EmpBase selectMyEmpById(Map<String, Object> paramMap);
  	
  	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)

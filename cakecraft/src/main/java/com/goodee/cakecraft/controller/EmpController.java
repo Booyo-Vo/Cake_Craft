@@ -65,10 +65,25 @@ public class EmpController {
 	
 	//사원리스트 출력
 	@GetMapping("/emp/empList")
- 	public String empList(Model model) {
-		List<EmpBase> empList = empService.getEmpList();
+ 	public String empList(Model model,
+ 							HttpSession session,
+ 							@RequestParam(name="searchWord", defaultValue ="")String searchWord) {
+		//세션 로그인 아이디 가져오기
+		Object o = session.getAttribute("loginMember");
+	    String loginId = "";
+
+	    if (o instanceof EmpIdList) {
+	        loginId = ((EmpIdList) o).getId();
+	        log.debug(KMS + "loginId EmpController" + loginId + RESET);
+	    }
+
+	    //EmpBase empBase = empService.getMyEmpById(loginId);
 		
+		//익명게시판 목록 가져오기
+		List<EmpBase> empList = empService.getEmpList(searchWord);
 		model.addAttribute("empList", empList);
+		
+		model.addAttribute("loginId", loginId);
 		return "/emp/empList";
 		
 	}

@@ -180,6 +180,37 @@
 		WHERE emp_status = '재직자'
 	</select>
 	
+	<!-- *마이페이지 사원리스트 출력 -->	
+	<select id = "selectMyEmpList"
+		parameterType="String"
+		resultType="com.goodee.cakecraft.vo.EmpBase">
+		SELECT
+			id, 
+			emp_name empName, 
+			social_no socialNo, 
+			dept_cd deptCd, 
+			team_cd teamCd, 
+			position_cd positionCd, 
+			email,
+			hire_date hireDate,
+			retire_date retireDate,
+			emp_status empStatus,
+			emp_phone empPhone,
+			dayoff_cnt dayoffCnt,
+			address,
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM emp_base
+		<where>
+			1=1 
+            <if test="searchWord != null and searchWord != ''">
+                AND emp_name LIKE CONCAT('%', #{searchWord}, '%')
+            </if>
+		</where>
+        ORDER BY reg_dtime DESC
+	</select>
 	
 	<!-- *마이페이지 사원정보 조회 -->
 	<select id="selectMyEmpById" parameterType="java.lang.String" resultType="com.goodee.cakecraft.vo.EmpBase">

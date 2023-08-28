@@ -168,9 +168,10 @@ public class EmpService {
     	}	
 
 	// 사원이 보는 사원리스트
-		public List<EmpBase> getEmpList(){
+		public List<EmpBase> getEmpList(String searchWord){
 			//사원리스트 받아오기
-			List<EmpBase> empList = empMapper.selectEmpList();
+			List<EmpBase> empList = empMapper.selectMyEmpList(searchWord);
+			log.debug(KMS + "empList 사이즈/EmpService" + empList.size() +RESET);
 			
 			for (EmpBase empbase : empList) {
 				//부서 이름 받아오기
