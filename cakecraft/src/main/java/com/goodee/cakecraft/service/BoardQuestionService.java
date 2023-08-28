@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goodee.cakecraft.mapper.BoardAnswerMapper;
 import com.goodee.cakecraft.mapper.BoardQuestionMapper;
+import com.goodee.cakecraft.vo.BoardAnswer;
 import com.goodee.cakecraft.vo.BoardQuestion;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class BoardQuestionService {
 	@Autowired BoardQuestionMapper questionMapper;
+	@Autowired BoardAnswerMapper answerMapper;
 	
 	// Ansi코드
 	final String RESET = "\u001B[0m";	
@@ -44,10 +47,16 @@ public class BoardQuestionService {
 	}
 	
 	// 문의 상세 조회
-	public BoardQuestion getQuestionByNo(BoardQuestion question) {
-		BoardQuestion resultQuestion = questionMapper.selectQuestionByNo(question);
+	public Map<String, Object> getQuestionByNo(BoardQuestion question) {
+		BoardQuestion questionByNo = questionMapper.selectQuestionByNo(question);
+		BoardAnswer answerByNo = answerMapper.selectAnswerByNo(question);
 		
-		return resultQuestion;
+		// 반환값
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("questionByNo", questionByNo);
+		resultMap.put("answerByNo", answerByNo);
+				
+		return resultMap;
 	}
 	
 	// 문의 추가
@@ -66,8 +75,11 @@ public class BoardQuestionService {
 	
 	// 문의 삭제
 	public int removeQuestion(BoardQuestion question) {
-		int row = questionMapper.deleteQuestion(question);
-		
+		int row = answerMapper.deleteAnswer(question);
+		// 답변이 삭제됐다면 문의도 함께 삭제
+		if(row == 1) {
+			questionMapper.deleteQuestion(question);
+		}
 		return row;
 	}
 }

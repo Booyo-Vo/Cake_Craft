@@ -46,11 +46,12 @@ public class BoardQuestionController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		// 문의 상세정보 가져오기
-		BoardQuestion questionByNo = questionService.getQuestionByNo(question);
+		// 문의 상세정보, 답변 가져오기
+		Map<String, Object> resultMap = questionService.getQuestionByNo(question);
 
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("questionByNo",questionByNo);
+		model.addAttribute("questionByNo",resultMap.get("questionByNo"));
+		model.addAttribute("answerByNo",resultMap.get("answerByNo"));
 		
 		return "/board/questionByNo";
 	}
@@ -83,10 +84,10 @@ public class BoardQuestionController {
 		String loginId = loginMember.getId();
 		
 		// 문의 상세정보 가져오기
-		BoardQuestion questionByNo = questionService.getQuestionByNo(question);
+		Map<String, Object> resultMap = questionService.getQuestionByNo(question);
 
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("questionByNo", questionByNo);
+		model.addAttribute("questionByNo", resultMap.get("questionByNo"));
 		
 		return "/board/modifyQuestion";
 	}
