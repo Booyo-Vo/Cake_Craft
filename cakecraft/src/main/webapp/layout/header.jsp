@@ -29,7 +29,7 @@
 	//로그아웃 버튼 클릭시
 	function logout() {
 		if (localStorage.getItem('rememberedId') !== null) { //로컬스토리지에 rememberedId 값이 있다면
-			/* localStorage.removeItem('rememberedId'); */
+			localStorage.removeItem('rememberedId');
 			localStorage.removeItem('lastLoginTime'); //마지막 로그인 시간 삭제(자동로그인 방지)
 			
 			//로그아웃 요청 보내기
