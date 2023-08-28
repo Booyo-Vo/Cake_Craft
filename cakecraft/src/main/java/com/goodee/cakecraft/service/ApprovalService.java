@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.ApprovalRef;
+import com.goodee.cakecraft.vo.EmpBase;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,25 +45,63 @@ public class ApprovalService {
 	// 임시저장 문서 목록 출력
 	public List<ApprovalDocument> getApprDocListByIdTempY(String loginId, String tempSave){
 		// 반환값
-		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListById(loginId, tempSave);
+		List<ApprovalDocument> apprDocListTempY = apprDocMapper.selectApprDocListById(loginId, tempSave);
 				
-		return apprDocList;
+		return apprDocListTempY;
 	}
 	
 	// 결재자로 지정된 문서 목록 출력
 	public List<ApprovalDocument> getApprDocListByApprId(String loginId){
 		// 반환값
-		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListByApprId(loginId);
+		List<ApprovalDocument> apprDocListAppr = apprDocMapper.selectApprDocListByApprId(loginId);
 				
-		return apprDocList;
+		return apprDocListAppr;
 	}
+	
+	
+	// 결재자가 승인해야 할 문서번호 조회 및 문서 목록 출력
+	public Map<String, Object> getApprDocWaitNoMap(String loginId) {
+		// 결재자의 loginId로 승인 대기 중인 문서번호 조회
+		List<ApprovalHistory> apprDocWaitNoList = apprDocMapper.selectApprDocWaitNoById(loginId);
+		// 디버깅
+		log.debug(SHJ + apprDocWaitNoList + " <-- apprDocWaitNoList" + RESET);
+		
+		// 결과를 저장할 맵 객체 생성
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		// 문서번호에 따른 문서 목록 조회 및 결과를 저장할 리스트 생성
+		List<ApprovalDocument> resultApprDocList = new ArrayList<>();
+			
+		// 승인 대기 중인 문서번호를 하나씩 돌려서, 각 문서번호에 대한 문서 정보 조회
+		for(ApprovalHistory apprDocHist : apprDocWaitNoList) {
+			// 해당 문서번호 가져오기
+			String documentNo = apprDocHist.getDocumentNo();
+			// 해당 문서번호의 문서 정보 가져오기
+			List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocWaitListByNo(documentNo);
+			// 디버깅
+			log.debug(SHJ + apprDocList + " <-- apprDocList" + RESET);
+				
+			// 조회한 문서 정보를 결과 리스트에 추가
+			for(ApprovalDocument apprDoc : apprDocList) {
+					resultApprDocList.add(apprDoc);
+			}
+		}
+		
+		// 결과 리스트를 맵에 "apprDocList"라는 키로 저장
+		resultMap.put("apprDocList", resultApprDocList);
+		// 디버깅
+    	log.debug(SHJ + resultApprDocList + " <-- resultApprDocList" + RESET);
+
+    	return resultMap;
+    }
+	
 	
 	// 참조자로 지정된 문서 목록 출력
 	public List<ApprovalDocument> getApprDocListByRefId(String loginId){
 		// 반환값
-		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListByRefId(loginId);
+		List<ApprovalDocument> apprDocListRef = apprDocMapper.selectApprDocListByRefId(loginId);
 				
-		return apprDocList;
+		return apprDocListRef;
 	}
 	
 	

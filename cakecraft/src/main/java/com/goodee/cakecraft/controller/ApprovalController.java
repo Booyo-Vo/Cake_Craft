@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.ApprovalService;
 import com.goodee.cakecraft.vo.ApprovalDocument;
+import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.EmpIdList;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class ApprovalController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		// 제출하기 버튼을 눌러서 제출된 문서만 출력
+		// 제출완료된 문서만 출력
 		String tempSave = "N";
 		
 		List<ApprovalDocument> apprDocListById = approvalService.getApprDocListById(loginId, tempSave);
@@ -86,6 +87,23 @@ public class ApprovalController {
 		model.addAttribute("apprDocListByApprId", apprDocListByApprId);
 		log.debug(SHJ + apprDocListByApprId + " <-- apprDocListByApprId" + RESET);
 		return "/approval/apprDocListByApprId";
+	}
+	
+	
+	// 결재자가 승인해야 할 문서 목록 출력
+	@GetMapping("/approval/apprDocWaitListByNo")
+	public String apprDocWaitListByNo(HttpSession session, Model model) {		
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		Map<String, Object> apprDocWaitMap = approvalService.getApprDocWaitNoMap(loginId);
+		
+		// 뷰로 값넘기기
+		model.addAttribute("loginId",loginId);
+		model.addAttribute("apprDocList", apprDocWaitMap.get("apprDocList"));
+		log.debug(SHJ + apprDocWaitMap + " <-- apprDocWaitMap" + RESET);
+		return "/approval/apprDocWaitListByNo";
 	}
 	
 	

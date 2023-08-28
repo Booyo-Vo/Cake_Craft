@@ -46,66 +46,62 @@
 			</where>
 	</select>
 	
-	<!-- 결재자 중 lv2가 승인해야 할 문서 목록 출력 -->
-	<select id="selectApprDocWaitListByIdLv2"
+	<!-- 결재자가 승인해야 할 문서 목록 출력 -->
+	<select id="selectApprDocWaitListByNo"
 		parameterType="String"
 		resultType="com.goodee.cakecraft.vo.ApprovalDocument">
 		SELECT
-			ad.document_no documentNo,
-			ad.id id,
-			ad.document_title documentTitle,
-			ad.approval_document_cd approvalDocumentCd,
-			ad.temp_save tempSave,
-			ad.reg_dtime regDtime, 
-			ad.mod_dtime modDtime, 
-			ad.reg_id regId, 
-			ad.mod_id modId
-		FROM approval_document ad
+			document_no documentNo,
+			id id,
+			document_title documentTitle,
+			approval_document_cd approvalDocumentCd,
+			temp_save tempSave,
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM approval_document
 		<where>
-			ad.document_no IN (
-			SELECT ah2.document_no
-			FROM approval_history ah2
-		 	WHERE ah2.approval_id = #{loginId}
-			AND (ah2.approval_level = 2 AND ah2.approval_status_cd = 1))
-		</where>
+			document_no = #{documentNo} 
+		</where> 
 	</select>
 	
-	
-	<!-- 결재자 중 lv3이 승인해야 할 문서번호 조회 -->
-	<select id="selectApprDocWaitNoByIdLv3"
+	<!-- 결재자가 승인해야 할 문서번호 조회 -->
+	<select id="selectApprDocWaitNoById"
 		parameterType="String"
-		resultType="com.goodee.cakecraft.vo.ApprovalDocument">
-		SELECT document_no
-		FROM approval_history 
-		<where> approval_id = #{loginId}
-			AND (approval_level = 3 AND approval_status_cd = 1)
-		</where>
+		resultType="com.goodee.cakecraft.vo.ApprovalHistory">
+		SELECT ah2.document_no documentNo
+		FROM approval_history ah2
+		<where>
+		 		(ah2.approval_level = 2 AND ah2.approval_status_cd = 2)
+    		AND ah2.document_no IN (
+        		SELECT ah3.document_no
+        		FROM approval_history ah3
+				WHERE 
+            	(ah3.approval_id = #{loginId} AND ah3.approval_level = 3 AND ah3.approval_status_cd = 1)    
+   			)
+    		OR
+    		(ah2.approval_id = #{loginId} AND ah2.approval_level = 2 AND ah2.approval_status_cd = 1);
+		</where> 
 	</select>
 	
-           
-    <!-- 결재자 중 lv3이 승인해야 할 문서 목록 출력 (이전 레벨 결재자가 승인했을 경우) -->
-	<select id="selectApprDocWaitListByNoLv3"
-			parameterType="Map"
-			resultType="com.goodee.cakecraft.vo.ApprovalDocument">
-			SELECT
-				ad.document_no documentNo,
-				ad.id id,
-				ad.document_title documentTitle,
-				ad.approval_document_cd approvalDocumentCd,
-				ad.temp_save tempSave,
-				ad.reg_dtime regDtime, 
-				ad.mod_dtime modDtime, 
-				ad.reg_id regId, 
-				ad.mod_id modId
-			FROM approval_document ad
-			<where>
-				ad.document_no IN (
-				SELECT ah3.document_no
-				FROM approval_history ah3
-				WHERE (ah3.approval_level = 2 AND ah3.approval_status_cd = 2))
-			</where>
+	<!-- 결재자가 승인해야 할 문서 개수 조회 -->
+	<select id="selectApprDocWaitNoByIdCnt"
+		parameterType="String">
+		SELECT ah2.count(*) cnt
+		FROM approval_history ah2
+		<where>
+		 		(ah2.approval_level = 2 AND ah2.approval_status_cd = 2)
+    		AND ah2.document_no IN (
+        		SELECT ah3.document_no
+        		FROM approval_history ah3
+				WHERE 
+            	(ah3.approval_id = #{loginId} AND ah3.approval_level = 3 AND ah3.approval_status_cd = 1)    
+   			)
+    		OR
+    		(ah2.approval_id = #{loginId} AND ah2.approval_level = 2 AND ah2.approval_status_cd = 1);
+		</where> 
 	</select>
-
 
 	<!-- 참조자로 지정된 문서 목록 출력 -->
 	<select id="selectApprDocListByRefId"
@@ -157,6 +153,26 @@
 				reg_id regId, 
 				mod_id modId
 			FROM approval_document
+			<where>
+				document_no = #{documentNo}
+			</where>
+	</select>
+	
+	<!-- 결재문서 상세이력 출력 -->
+	<select id="selectApprHistByNo"
+			parameterType="String" 
+			resultType="com.goodee.cakecraft.vo.ApprovalHistory">
+			SELECT
+				approval_no approvalNo,
+				approval_id id,
+				document_no documentNo,
+				approval_level approvalLevel,
+				approval_status_cd approvalStatusCd,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM approval_history
 			<where>
 				document_no = #{documentNo}
 			</where>
