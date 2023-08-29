@@ -73,7 +73,7 @@
 		SELECT ah2.document_no documentNo
 		FROM approval_history ah2
 		<where>
-		 		(ah2.approval_level = 2 AND ah2.approval_status_cd = 2)
+		 	(ah2.approval_level = 2 AND ah2.approval_status_cd = 2)
     		AND ah2.document_no IN (
         		SELECT ah3.document_no
         		FROM approval_history ah3

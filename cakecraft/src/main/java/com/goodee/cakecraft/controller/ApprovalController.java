@@ -2,6 +2,7 @@ package com.goodee.cakecraft.controller;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,8 +155,12 @@ public class ApprovalController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 현재 날짜 가져오기
+		LocalDate currentDate = LocalDate.now();
+		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
+		model.addAttribute("currentDate", currentDate);
 		
 		return "/approval/addApprDoc";
 	}
