@@ -48,29 +48,19 @@ public class LoginController {
 		if(loginMember == null) {
 			log.debug(KMS + "로그인 실패" + RESET);
 			return "redirect:/login";
-	}
-	
-	
-	// 로그인 성공: 세션에 로그인 정보 저장
-	log.debug(KMS + "로그인 성공" + RESET);
-	log.debug(KMS + "loginMember LoginController" + loginMember + RESET);
-	HttpSession session = request.getSession();
-	
-	// 세션의 만료 시간을 설정
-    session.setMaxInactiveInterval(3 * 60 * 60); // 3시간
-	
-	session.setAttribute("loginMember", loginMember);
-	
-	// 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
-	// autowired로 EmpMapper 주입
-	String profileImagePath = empMapper.getProfileImagePath(id);
-		if (profileImagePath != null) {
-			session.setAttribute("profileImagePath", profileImagePath);
-		} else {
-			session.setAttribute("profileImagePath", "default_profile.png");
 		}
+	
+	
+		// 로그인 성공: 세션에 로그인 정보 저장
+		log.debug(KMS + "로그인 성공" + RESET);
+		log.debug(KMS + "loginMember LoginController" + loginMember + RESET);
+		HttpSession session = request.getSession();
 		
-		return "redirect:/schedule/schedule";
+		// 세션의 만료 시간을 설정
+	    session.setMaxInactiveInterval(3 * 60 * 60); // 3시간
+		session.setAttribute("loginMember", loginMember);
+	
+			return "redirect:/schedule/schedule";
 		}
 	  
 	
