@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goodee.cakecraft.mapper.FacilityMapper;
 import com.goodee.cakecraft.mapper.ReservationMapper;
+import com.goodee.cakecraft.mapper.ScheduleMapper;
 import com.goodee.cakecraft.vo.EmpIdList;
+import com.goodee.cakecraft.vo.FacilityBase;
 import com.goodee.cakecraft.vo.FacilityReservation;
+import com.goodee.cakecraft.vo.ScheduleBase;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service
 public class ReservationService {
+	@Autowired FacilityMapper facilityMapper;
 	@Autowired ReservationMapper reservationMapper;
+	@Autowired ScheduleMapper scheduleMapper;
 	final String KMJ = "\u001B[43m";
 	final String RESET = "\u001B[0m";
 	
@@ -135,16 +141,30 @@ public class ReservationService {
 	
 	public int addReservation(Map<String, Object> paramMap) {
 		int addReservRow = reservationMapper.insertReservation(paramMap);
+		
+		//schedule테이블 입력을 위하여 매개변수 가공
+		FacilityBase paramFacility = new FacilityBase();
+		paramFacility.setFacilityNo((Integer)paramMap.get("facilityNo"));
+		FacilityBase resultFacility = facilityMapper.selectFacilityByNo(paramFacility);
+		
+		ScheduleBase paramSchedule = new ScheduleBase();
+		paramSchedule.setId((String)paramMap.get("id"));
+		paramSchedule.setTeamCd((String)paramMap.get("teamCd"));
+		paramSchedule.setStartDtime((String)paramMap.get("startDtime"));
+		paramSchedule.setEndDtime((String)paramMap.get("endDtime"));
+		if(resultFacility.getCategoryCd().startsWith("1")) {
+			paramSchedule.setCategoryCd("2");
+		}else {
+			paramSchedule.setCategoryCd("3");
+		}
+		paramSchedule.setScheduleContent("[예약] "+resultFacility.getFacilityName() + " " +(String)paramMap.get("reservationContent"));
+		scheduleMapper.insertSchedule(paramSchedule);
+		
 		return addReservRow;
 	}
 	
 	public int removeReservation(FacilityReservation reservation) {
 		int rmvReservRow = reservationMapper.deleteReservation(reservation);
 		return rmvReservRow;
-	}
-	
-	public String getAnHourLater() {
-		String anHourLater = reservationMapper.selectAnHourLater();
-		return anHourLater;
 	}
 }

@@ -154,11 +154,9 @@ public class ReservationController {
 		EmpIdList emp = new EmpIdList();
 		emp.setId(loginId);
 		String teamNm = empService.getAdminEmpById(loginId).getTeamNm();
-		String anHour = reservationService.getAnHourLater();
 		List<Map<String, Object>> list = reservationService.getReservationListById(emp);	
 		model.addAttribute("list", list);
 		model.addAttribute("teamNm", teamNm);
-		model.addAttribute("anHour", anHour);
 		return "/reservation/reservationListById";
 	}
 	

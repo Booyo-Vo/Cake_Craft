@@ -5,10 +5,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<c:import url="/layout/cdn.jsp"></c:import>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script>document.getElementsByTagName("html")[0].className += " js";</script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/layout/reservation_assets/css/style.css">
+	<c:import url="/layout/cdn.jsp"></c:import>
 </head>
 <body>
 	<c:import url="/layout/header.jsp"></c:import>
@@ -27,7 +27,7 @@
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="index.html">홈</a></li>
-									<li class="breadcrumb-item active" aria-current="page">시설예약</li>
+									<li class="breadcrumb-item active" aria-current="page">시설비품 사용예약</li>
 								</ol>
 							</nav>
 						</div>
@@ -37,6 +37,7 @@
 				
 				<!-- 예약 캘린더 시작 -->
 				<div class="pd-20 card-box mb-30">
+					<label for="selectDate">예약날짜선택</label>
 					<div class="row">
 						<div class="col-3">
 							<input type="date" id="selectDate" class="form-control" value="${date}" min="${currDay}" max="${weekDay}">
@@ -94,7 +95,7 @@
 											<c:forEach var="r" items="${reservationList}">
 												<c:if test="${f.facilityNo == r.facilityNo}">
 													<li class="cd-schedule__event">
-														<a data-start="${fn:substring(r.startDtime, 10, 16)}" data-end="${fn:substring(r.endDtime, 10, 16)}" data-content="event-abs-circuit" data-event="event-2" href="#0">
+														<a data-start="${fn:substring(r.startDtime, 10, 16)}" data-end="${fn:substring(r.endDtime, 10, 16)}" data-content="event-abs-circuit" data-event="event-${(r.id % 4) + 1}" href="#0">
 															<em class="cd-schedule__name">${r.reservationContent}</em>
 														</a>
 													</li>
@@ -120,15 +121,16 @@
 											<input type="hidden" name="loginId" value="${loginId}">
 											<div class="mb-3">
 												<label for="categoryCd" class="col-form-label">카테고리</label>
-												<select name="categoryCd" id="categoryCd" class="form-control">
+												<select name="categoryCd" id="categoryCd" class="form-control" required>
+													<option value="" selected disabled>==선택==</option>
 													<option value="1">시설</option>
 													<option value="2">비품</option>
 												</select>
 											</div>
 											<div class="mb-3">
 												<label for="facilityNo" class="col-form-label">시설비품</label>
-												<select name="facilityNo" id="facilityNo" class="form-control">
-													<option value="" selected disabled>선택</option>
+												<select name="facilityNo" id="facilityNo" class="form-control" required>
+													<option value="" selected disabled>==선택==</option>
 												</select>
 											</div>
 											<div class="mb-3">
@@ -147,7 +149,7 @@
 											<div class="mb-3">
 												<label for="times" class="col-form-label">예약시간</label>
 												<select class="form-control" name="times" id="times" multiple>
-													<option disabled>&darr;&darr;예약가능시간&darr;&darr;</option>
+													<option value="" selected disabled>&darr;&darr;예약가능시간&darr;&darr;</option>
 												</select>
 											</div>
 										</form>
@@ -165,25 +167,20 @@
 						<div class="cd-schedule-modal">
 							<header class="cd-schedule-modal__header">
 								<div class="cd-schedule-modal__content">
-								<span class="cd-schedule-modal__date"></span>
-								<h3 class="cd-schedule-modal__name"></h3>
-						</div>
-						
-						<div class="cd-schedule-modal__header-bg"></div>
-						</header>
-						
-						<div class="cd-schedule-modal__body">
-					    <div class="cd-schedule-modal__event-info"></div>
-					    <div class="cd-schedule-modal__body-bg"></div>
-						</div>
-						
+									<span class="cd-schedule-modal__date"></span>
+									<h3 class="cd-schedule-modal__name"></h3>
+								</div>
+								<div class="cd-schedule-modal__header-bg"></div>
+							</header>
+							<div class="cd-schedule-modal__body">
+								<div class="cd-schedule-modal__event-info"></div>
+								<div class="cd-schedule-modal__body-bg"></div>
+							</div>
 							<a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
 						</div>
 						<!-- 예약상세 모달 끝 -->
 						<div class="cd-schedule__cover-layer"></div>
 					</div>
-					<script src="/cakecraft/layout/reservation_assets/js/util.js"></script>
-					<script src="/cakecraft/layout/reservation_assets/js/main.js"></script>
 				</div>
 				<!-- 예약 캘린더 끝 -->
 			</div>
@@ -205,6 +202,7 @@
 	$('#categoryCd').change(function(){
 		let categoryCd = $('#categoryCd').val();
 		$('#facilityNo *').remove();
+		$('#facilityNo').append('<option value="" selected disabled>==선택==</option>');
 		$.ajax({
 			url : '${pageContext.request.contextPath}/rest/facilityListByCate',
 			type : 'post',
@@ -251,7 +249,7 @@
 				unbookedList.forEach(function(item, index){
 					const now = new Date().getTime();
 					let rsrvTime = new Date('${date} '+ item.substring(0, item.indexOf(":")) + ':00:00').getTime();
-					if(rsrvTime - now > (1000*60*60)){
+					if(rsrvTime - now > (1000*60*30)){
 						$('#times').append('<option value=' + item.substring(0, item.indexOf(":")) + '>' + item + '</option>');
 					}
 				})
@@ -265,6 +263,19 @@
 	//예약 버튼 클릭 시 실행
 	function addReservation(){
 		console.log('예약버튼 클릭');
+		
+		if($('#categoryCd').val() === '' 
+			|| $('#teamNm').val() === ''
+			|| $('#reservationContent').val() === '' 
+			|| $('#date').val() === ''){
+			alert('입력창을 채워주세요');
+			return;
+		}
+		let times = $.trim($('#times option:selected').val());
+		if(times == ''){
+			alert('입력창을 채워주세요');
+			return;
+		}		
 		const addFcltForm = $('#addRsrvForm');
 		addFcltForm.attr('action', '${pageContext.request.contextPath}/reservation/addReservation');
 		addFcltForm.attr('method', 'post');

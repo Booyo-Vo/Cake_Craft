@@ -73,25 +73,25 @@ jQuery(document).ready(function($){
 		})
 		$('#modFcltModal').modal('show');
 	}
-    
-    // 데이터셀을 클릭 가능한 링크로 만드는 코드
-    $("#table").on("click", ".jqgrow td[aria-describedby='table_facilityName']", function () {
-        var rowId = $(this).closest("tr.jqgrow").attr("id");
-        var rowData = $("#table").jqGrid("getRowData", rowId);
-        var facilityNo = rowData.facilityNo;
-        showModModal(facilityNo);
-    });
-    
+
+	// 데이터셀을 클릭 가능한 링크로 만드는 코드
+	$("#table").on("click", ".jqgrow td[aria-describedby='table_facilityName']", function () {
+		var rowId = $(this).closest("tr.jqgrow").attr("id");
+		var rowData = $("#table").jqGrid("getRowData", rowId);
+		var facilityNo = rowData.facilityNo;
+		showModModal(facilityNo);
+	});
+
 	// 선택 가능한 열에 밑줄 스타일 추가
-    $("#table").on("mouseover", ".jqgrow td[aria-describedby='table_facilityName']", function () {
-        $(this).css("text-decoration", "underline");
-        $(this).css("cursor", "pointer");
-        $(this).css("color", "#007bff");
-    }).on("mouseout", ".jqgrow td[aria-describedby='table_facilityName']", function () {
-        $(this).css("text-decoration", "none");
-        $(this).css("cursor", "default");
-        $(this).css("color", ""); // 원래 색상으로 복원
-    });
+	$("#table").on("mouseover", ".jqgrow td[aria-describedby='table_facilityName']", function () {
+		$(this).css("text-decoration", "underline");
+		$(this).css("cursor", "pointer");
+		$(this).css("color", "#007bff");
+	}).on("mouseout", ".jqgrow td[aria-describedby='table_facilityName']", function () {
+		$(this).css("text-decoration", "none");
+		$(this).css("cursor", "default");
+		$(this).css("color", ""); // 원래 색상으로 복원
+	});
 	
 	//시설/비품 카테고리별 상세 리스트 출력
 	$('#category').change(function(){
@@ -337,143 +337,192 @@ function modFacility(){
 
 <body>
 <c:import url="/layout/header.jsp"></c:import>
-<div class="main-container">
-	<!-- 검색 시작 -->
-	<form action="${pageContext.request.contextPath}/facility/facilityList" method="get">
-		<div>
-			<select id="category" required>
-				<option value="" selected disabled>==선택==</option>
-				<option value="A">전체</option>
-				<option value="F">시설</option>
-				<option value="S">비품</option>
-			</select>
-			<select id="categoryCd" name="categoryCd" required>
-				<option value="" selected disabled>==선택==</option>
-				<option value="A">전체</option>
-				<c:forEach var="t" items="${categoryCdList}">
-					<option value="${t.cd}">${t.cdNm}</option>
-				</c:forEach>
-			</select>
-			<select id="useYn" name="useYn" required>
-				<option value="" selected disabled>==선택==</option>
-				<option value="A">전체</option>
-				<option value="Y">사용가능</option>
-				<option value="N">사용불가</option>
-			</select>
-			<button type="submit">검색</button>
-		</div>
-	</form>
-	<!-- 검색 끝 -->
-	
-	<div>
-		<a class="btn btn-sm btn-secondary" href="${pageContext.request.contextPath}/facility/categoryList">카테고리 관리</a>
-	</div>
-	
-	<div>
-		<button type="button" data-bs-toggle="modal" data-bs-target="#addFcltModal">추가하기</button>
-	</div>
-	
-	<!-- 시설비품 추가 모달창 시작 -->
-	<div class="modal fade" id="addFcltModal" tabindex="-1" aria-labelledby="addFcltModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="addFcltModalLabel">시설비품추가</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+	<!-- 메인 시작 -->
+	<div class="main-container">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+				<!-- 페이지 헤더 시작 -->
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-12 col-sm-12">
+							<div class="title">
+								<h4>시설비품관리</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index.html">홈</a></li>
+									<li class="breadcrumb-item active" aria-current="page">시설비품관리</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
 				</div>
-				<div class="modal-body">
-					<form id="addFcltForm">
-						<input type="hidden" name="loginId" value="${loginId}">
-						<div class="mb-3">
-							<label for="addCategory" class="col-form-label">카테고리</label>
-							<select id="addCategory" required>
-								<option value="" selected disabled>==선택==</option>
-								<option value="F">시설</option>
-								<option value="S">비품</option>
-							</select>
-							<select id="addCategoryCd" name="categoryCd" required>
-								<option value="" selected disabled>==선택==</option>
-							</select>
+				<!-- 페이지 헤더 끝 -->
+				
+				<div class="pd-20 card-box mb-30">
+				<!-- 검색 시작 -->
+
+					<form action="${pageContext.request.contextPath}/facility/facilityList" method="get">
+						<div class="row mt-3 mb-3">
+							<div class="col-2">
+								<label for="category">분류</label>
+							</div>
+							<div class="col-3">
+								<select id="category" class="custom-select form-control" required>
+									<option value="" selected disabled>==선택==</option>
+									<option value="A">전체</option>
+									<option value="F">시설</option>
+									<option value="S">비품</option>
+								</select>
+							</div>
+							<div class="col-3">
+								<select id="categoryCd" class="custom-select form-control" name="categoryCd" required>
+									<option value="" selected disabled>==선택==</option>
+									<option value="A">전체</option>
+									<c:forEach var="t" items="${categoryCdList}">
+										<option value="${t.cd}">${t.cdNm}</option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
-						<div class="mb-3">
-							<label for="addFacilityName" class="col-form-label">이름</label>
-							<input type="text" class="form-control" name="facilityName" id="addFacilityName" required>
-							<span id="addNameMsg"></span>
-						</div>
-						<div class="mb-3">
-							<label for="addFacilityNote" class="col-form-label">설명</label>
-							<textarea class="form-control" name="facilityNote" id="addFacilityNote" required></textarea>
-							<span id="addCount">0</span>자 / 100자
-							<span id="addNoteMsg"></span>
-						</div>
-						<div class="mb-3">
-							<label for="addUseYn" class="col-form-label">사용여부</label>
-							<select name="useYn" id="addUseYn" required>
-								<option value="Y" selected>사용가능</option>
-								<option value="N">사용불가</option>
-							</select>
+						<div class="row">
+							<div class="col-2">
+								<label for="useYn">사용여부</label>
+							</div>
+							<div class="col-3">
+								<select id="useYn" class="custom-select form-control" name="useYn" required>
+									<option value="" selected disabled>==선택==</option>
+									<option value="A">전체</option>
+									<option value="Y">사용가능</option>
+									<option value="N">사용불가</option>
+								</select>
+							</div>
+							<div class="col-3">
+								<button type="submit" class="btn btn-sm btn-primary">검색</button>
+							</div>
 						</div>
 					</form>
+					<!-- 검색 끝 -->
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="addFcltBtn" onclick="addFacility()" >추가</button>
+				
+				<div class="pd-20 card-box mb-30">
+					<div class="mb-3">
+						<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addFcltModal">시설비품추가</button>
+						<a class="btn btn-sm btn-secondary" href="${pageContext.request.contextPath}/facility/categoryList">카테고리 관리</a>
+					</div>
+					
+					<!-- jqgrid시작 -->
+					<div><table id="table"></table></div>
+					<div id="pager"></div>
+					<!-- jqgrid끝 -->
+					
+					<!-- 시설비품 추가 모달창 시작 -->
+					<div class="modal fade" id="addFcltModal" tabindex="-1" aria-labelledby="addFcltModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="addFcltModalLabel">시설비품추가</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<form id="addFcltForm">
+										<input type="hidden" name="loginId" value="${loginId}">
+										<div class="mb-3">
+											<label for="addCategory" class="col-form-label">카테고리</label>
+											<select id="addCategory" required>
+												<option value="" selected disabled>==선택==</option>
+												<option value="F">시설</option>
+												<option value="S">비품</option>
+											</select>
+											<select id="addCategoryCd" name="categoryCd" required>
+												<option value="" selected disabled>==선택==</option>
+											</select>
+										</div>
+										<div class="mb-3">
+											<label for="addFacilityName" class="col-form-label">이름</label>
+											<input type="text" class="form-control" name="facilityName" id="addFacilityName" required>
+											<span id="addNameMsg"></span>
+										</div>
+										<div class="mb-3">
+											<label for="addFacilityNote" class="col-form-label">설명</label>
+											<textarea class="form-control" name="facilityNote" id="addFacilityNote" required></textarea>
+											<span id="addCount">0</span>자 / 100자
+											<span id="addNoteMsg"></span>
+										</div>
+										<div class="mb-3">
+											<label for="addUseYn" class="col-form-label">사용여부</label>
+											<select name="useYn" id="addUseYn" required>
+												<option value="Y" selected>사용가능</option>
+												<option value="N">사용불가</option>
+											</select>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-primary" id="addFcltBtn" onclick="addFacility()" >추가</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 시설비품 추가 모달창 끝 -->
+					
+					<!-- 시설비품 수정 모달창 시작 -->
+					<div class="modal fade" id="modFcltModal" tabindex="-1" aria-labelledby="modFcltModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="modFcltModalLabel">시설비품수정</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<form id="modFcltForm">
+										<input type="hidden" name="facilityNo" id="modFacilityNo">
+										<input type="hidden" name="loginId" value="${loginId}">
+										<input type="hidden" name="categoryCd" id="modCategory" value="">
+										<div class="mb-3">
+											<label for="modCategoryCd" class="col-form-label">카테고리</label>
+											<input type="text" class="form-control" id="modCategoryCd" readonly>
+										</div>
+										<div class="mb-3">
+											<label for="modFacilityName" class="col-form-label">이름</label>
+											<input type="text" class="form-control" name="facilityName" id="modFacilityName" required>
+											<span id="modNameMsg"></span>
+										</div>
+										<div class="mb-3">
+											<label for="modFacilityNote" class="col-form-label">설명</label>
+											<textarea class="form-control" name="facilityNote" id="modFacilityNote" required></textarea>
+											<span id="modCount">0</span>자 / 100자
+											<span id="modNoteMsg"></span>
+										</div>
+										<div class="mb-3">
+											<label for="modUseYn" class="col-form-label">사용여부</label>
+											<select name="useYn" id="modUseYn">
+												<option value="Y">사용가능</option>
+												<option value="N">사용불가</option>
+											</select>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-primary" id="modFcltBtn" onclick="modFacility()">수정</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 시설비품 수정 모달창 끝 -->
 				</div>
 			</div>
-		</div>
-	</div>
-	<!-- 시설비품 추가 모달창 끝 -->
-	
-	<!-- jqgrid시작 -->
-	<div><table id="table"></table></div>
-	<div id="pager"></div>
-	<!-- jqgrid끝 -->
-	
-	<!-- 시설비품 수정 모달창 시작 -->
-	<div class="modal fade" id="modFcltModal" tabindex="-1" aria-labelledby="modFcltModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modFcltModalLabel">시설비품수정</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<form id="modFcltForm">
-						<input type="hidden" name="facilityNo" id="modFacilityNo">
-						<input type="hidden" name="loginId" value="${loginId}">
-						<input type="hidden" name="categoryCd" id="modCategory" value="">
-						<div class="mb-3">
-							<label for="modCategoryCd" class="col-form-label">카테고리</label>
-							<input type="text" class="form-control" id="modCategoryCd" readonly>
-						</div>
-						<div class="mb-3">
-							<label for="modFacilityName" class="col-form-label">이름</label>
-							<input type="text" class="form-control" name="facilityName" id="modFacilityName" required>
-							<span id="modNameMsg"></span>
-						</div>
-						<div class="mb-3">
-							<label for="modFacilityNote" class="col-form-label">설명</label>
-							<textarea class="form-control" name="facilityNote" id="modFacilityNote" required></textarea>
-							<span id="modCount">0</span>자 / 100자
-							<span id="modNoteMsg"></span>
-						</div>
-						<div class="mb-3">
-							<label for="modUseYn" class="col-form-label">사용여부</label>
-							<select name="useYn" id="modUseYn">
-								<option value="Y">사용가능</option>
-								<option value="N">사용불가</option>
-							</select>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="modFcltBtn" onclick="modFacility()">수정</button>
-				</div>
+			
+			<!-- 푸터 시작 -->
+			<div class="footer-wrap pd-20 mb-20 card-box">
+				DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a>
 			</div>
+			<!-- 푸터 끝 -->
 		</div>
 	</div>
-	<!-- 시설비품 수정 모달창 끝 -->
-</div>
+	<!-- 메인 끝 -->
 </body>
 </html>

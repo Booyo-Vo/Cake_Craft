@@ -25,6 +25,4 @@ public interface ReservationMapper {
 	//예약 취소하기
 	int deleteReservation(FacilityReservation reservation);
 	
-	//1시간 뒤 구하기
-	String selectAnHourLater();
 }
