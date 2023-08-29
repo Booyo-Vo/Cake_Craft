@@ -150,6 +150,18 @@ public class EmpController {
 	    }
 	    // 사원 정보 수정
 	    empService.modifyMyEmp(empBase, path);
+	    
+	    // 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
+		// autowired로 EmpMapper 주입
+		String profileImagePath = empMapper.getProfileImagePath(loginId);
+			if (profileImagePath != null) {
+				session.setAttribute("profileImagePath", profileImagePath);
+				log.debug(KMS + profileImagePath +  "profileImagePath /LoginController"+RESET);
+			} else {
+				session.setAttribute("profileImagePath", "default_profile.png");
+			}
+
+		  
 
 	    return "redirect:/emp/myPage?id=" + empBase.getId();
 	}

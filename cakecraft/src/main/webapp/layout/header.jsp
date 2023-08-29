@@ -80,7 +80,7 @@
 					<span class="user-icon">
 					<!-- 세션 값을 사용하여 프로필 이미지 표시 -->
 						<c:choose>
-						    <c:when test="${empty sessionScope.profileImagePath}">
+						    <c:when test="${profileImagePath == 'default_profile.png'}">
 						        <img src="${pageContext.request.contextPath}/profileImg/profile.png">
 						    </c:when>
 						    <c:otherwise>
