@@ -24,6 +24,10 @@
     align-items: center; /* 세로 가운데 정렬 */
     margin-bottom: 10px; /* 아이템 간격 설정 */
 }
+/* 로고 이미지 여백 */
+.logo-container {
+    padding: 20px; 
+}
 </style>
 
 <script>
@@ -181,8 +185,10 @@
 	<div class="brand-logo">
 	<!-- 왼쪽 사이드 로고이미지 -->
 		<a href="/cakecraft/schedule/schedule">
-			<img src="${pageContext.request.contextPath}/layout/vendors/images/deskapp-logo.svg" class="dark-logo">
-			<img src="${pageContext.request.contextPath}/layout/vendors/images/deskapp-logo-white.jpg" class="light-logo">
+			<div class="logo-container">
+				<img src="${pageContext.request.contextPath}/layout/vendors/images/deskapp-logo.svg" class="dark-logo">
+				<img src="${pageContext.request.contextPath}/layout/vendors/images/deskapp-logo-white.png" class="light-logo">
+			</div>
 		</a>
 		<div class="close-sidebar" data-toggle="left-sidebar-close">
 			<i class="ion-close-round"></i>
