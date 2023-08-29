@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.AttendanceMapper">
+	<!-- 출근 기록 저장 -->
+	<insert id="insertStartDtime" parameterType="com.goodee.cakecraft.vo.EmpAttendance">
+		INSERT INTO emp_attendance (
+			id,
+			start_dtime,
+			end_dtime,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+		) VALUES (
+			#{id},
+			NOW(),
+			NULL,
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+
+<!-- 퇴근 기록 저장 -->
+	<update id="updateEndDtime" parameterType="com.goodee.cakecraft.vo.EmpAttendance">
+	    UPDATE emp_attendance
+	    SET end_dtime = NOW(),
+	        mod_dtime = NOW(),
+	        mod_id = #{id}
+	    WHERE id = #{id}
+	        AND DATE(start_dtime) = CURDATE()
+	        AND end_dtime IS NULL
+	</update>
+
+</mapper>

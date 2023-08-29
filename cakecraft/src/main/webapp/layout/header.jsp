@@ -79,14 +79,13 @@
 				<a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
 					<span class="user-icon">
 					<!-- 세션 값을 사용하여 프로필 이미지 표시 -->
-					<!-- 프로필 이미지가 없을 경우에는 기본 이미지가 표시 -->
 						<c:choose>
-							<c:when test="${not empty sessionScope.profileImagePath}">
-								<img src="${pageContext.request.contextPath}/profileImg/${sessionScope.profileImagePath}" alt="employee image">
-							</c:when>
-							<c:otherwise>
-								<img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image">
-							</c:otherwise>
+						    <c:when test="${empty sessionScope.profileImagePath}">
+						        <img src="${pageContext.request.contextPath}/profileImg/profile.png">
+						    </c:when>
+						    <c:otherwise>
+						        <img src="${pageContext.request.contextPath}/profileImg/${sessionScope.profileImagePath}" alt="employee image">
+						    </c:otherwise>
 						</c:choose>
 					</span>
 					<span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다! &nbsp;
@@ -193,9 +192,12 @@
 			<ul id="accordion-menu">
 			<!-- 출/퇴근 버튼 -->
 				<div class="menu-item">
-					<button id="startWorkBtn" class="btn btn-primary" disabled>출근</button>
-					&nbsp;
-					<button id="endWorkBtn" class="btn btn-danger" disabled>퇴근</button>
+				    <form id="attendanceForm">
+				    <input type="hidden" value="${loginId}" name="id">
+				        <button id="startWorkBtn" type="button" class="btn btn-primary">출근</button>
+				        &nbsp;
+				        <button id="endWorkBtn" type="button" class="btn btn-primary">퇴근</button>
+				    </form>
 				</div>
 			<!-- 메인메뉴 드롭다운 -->		
 				<li>
@@ -253,6 +255,51 @@
 	
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+	const startWorkBtn = document.getElementById("startWorkBtn");
+	const endWorkBtn = document.getElementById("endWorkBtn");
+	
+	// 로컬 스토리지에서 버튼 상태 가져오기
+	const startBtnDisabled = localStorage.getItem("startBtnDisabled");
+	const endBtnDisabled = localStorage.getItem("endBtnDisabled");
+	
+	// 버튼 상태 설정
+	startWorkBtn.disabled = startBtnDisabled === "true";
+	endWorkBtn.disabled = endBtnDisabled === "true";
+
+	// 출근 버튼 클릭 이벤트 처리
+	startWorkBtn.addEventListener("click", function() {
+		startWorkBtn.disabled = true;
+		localStorage.setItem("startBtnDisabled", "true");
+		
+		const attendanceForm = document.getElementById("attendanceForm");
+		attendanceForm.setAttribute("action", '${pageContext.request.contextPath}/emp/start');
+		attendanceForm.submit();
+	});
+
+	// 퇴근 버튼 클릭 이벤트 처리
+	endWorkBtn.addEventListener("click", function() {
+		endWorkBtn.disabled = true;
+		localStorage.setItem("endBtnDisabled", "true");
+		
+		const attendanceForm = document.getElementById("attendanceForm");
+		attendanceForm.setAttribute("action", '${pageContext.request.contextPath}/emp/end');
+		attendanceForm.submit();
+		
+		// 출근 버튼 활성화
+		startWorkBtn.disabled = false;
+		localStorage.setItem("startBtnDisabled", "false");
+	});
+
+	// 폼을 서버로 제출하는 함수
+	function submitForm(action) {
+		const form = document.getElementById("attendanceForm");
+		form.setAttribute("action", action);
+		form.setAttribute("method", "get");
+		form.submit();
+	}
+});
+
 	// 사용자의 위치 정보 가져오기
 	navigator.geolocation.getCurrentPosition(
 		position => {
@@ -291,22 +338,6 @@
 		longitude: 126.8788276 // 퇴근 버튼 활성화 경도
 	};
 
-	// 출근 버튼 활성화 여부 결정
-	const startWorkBtn = document.getElementById("startWorkBtn");
-	if (calculateDistance(userLocation, startWorkLocation) <= thresholdDistance) {
-	  startWorkBtn.disabled = false;
-	} else {
-	  startWorkBtn.disabled = true;
-	}
-	
-	// 퇴근 버튼 활성화 여부 결정
-	const endWorkBtn = document.getElementById("endWorkBtn");
-	if (!startWorkBtn.disabled && calculateDistance(userLocation, endWorkLocation) <= thresholdDistance) {
-		endWorkBtn.disabled = false;
-	} else {
-		endWorkBtn.disabled = true;
-	}
-
 	// 두 위치 간의 거리 계산 함수
 	function calculateDistance(location1, location2) {
 		const earthRadius = 6371; // 지구 반지름 (단위: km)
@@ -328,41 +359,6 @@
 	function degToRad(degrees) {
 		return degrees * (Math.PI / 180);
 	}
-	document.addEventListener("DOMContentLoaded", function () {
-		// 출근 버튼과 퇴근 버튼 가져오기
-		const startWorkBtn = document.getElementById("startWorkBtn");
-		const endWorkBtn = document.getElementById("endWorkBtn");
-		
-		// 근무 기록을 저장하는 함수
-		function saveWorkHistory(history) {
-			const workHistory = JSON.parse(localStorage.getItem('workHistory')) || [];
-			workHistory.push(history);
-			localStorage.setItem('workHistory', JSON.stringify(workHistory));
-    	}	
-    
-	 	// 출근 버튼 클릭 이벤트 처리
-		startWorkBtn.addEventListener("click", () => {
-			const currentTime = new Date().toISOString();
-			const startWorkHistory = {
-				type: "출근",
-				time: currentTime
-		    };
-			saveWorkHistory(startWorkHistory);
-			startWorkBtn.disabled = true;
-			endWorkBtn.disabled = false;
-	    });
 
-	    // 퇴근 버튼 클릭 이벤트 처리
-		endWorkBtn.addEventListener("click", () => {
-			const currentTime = new Date().toISOString();
-			const endWorkHistory = {
-				type: "퇴근",
-				time: currentTime
-	        };
-			saveWorkHistory(endWorkHistory);
-			endWorkBtn.disabled = true;
-			startWorkBtn.disabled = false;
-	    });
-	});
  	
 </script>
