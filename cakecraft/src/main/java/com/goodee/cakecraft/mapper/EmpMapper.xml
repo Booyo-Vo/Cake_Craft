@@ -15,38 +15,38 @@
 	
 	<!-- 사원추가 -->
 	<insert id="insertEmp"
-	    parameterType="com.goodee.cakecraft.vo.EmpBase">
-	    INSERT INTO emp_base(
-	        id, 
-	        emp_name, 
-	        social_no, 
-	        dept_cd, 
-	        team_cd, 
-	        position_cd, 
-	        email,
-	        hire_date,
-	        emp_phone,
-	        address,
-	        reg_dtime, 
-	        mod_dtime, 
-	        reg_id, 
-	        mod_id
-	    ) VALUES (
-	        #{id},
-	        #{empName},
-	        #{socialNo},
-	        #{deptCd},
-	        #{teamCd},
-	        #{positionCd},
-	        #{email},
-	        #{hireDate},
-	        #{empPhone},
-	        #{address},
-	        NOW(),
-	        NOW(),
-	        #{regId},
-	        #{modId}
-	    )
+		parameterType="com.goodee.cakecraft.vo.EmpBase">
+		INSERT INTO emp_base(
+			id, 
+			emp_name, 
+			social_no, 
+			dept_cd, 
+			team_cd, 
+			position_cd, 
+			email,
+			hire_date,
+			emp_phone,
+			address,
+			reg_dtime, 
+			mod_dtime, 
+			reg_id, 
+			mod_id
+		) VALUES (
+			#{id},
+			#{empName},
+			#{socialNo},
+			#{deptCd},
+			#{teamCd},
+			#{positionCd},
+			#{email},
+			#{hireDate},
+			#{empPhone},
+			#{address},
+			NOW(),
+			NOW(),
+			#{regId},
+			#{modId}
+		)
 	</insert>
 		
 	<!-- 사원리스트 출력 -->	
@@ -119,37 +119,37 @@
 	
 	<!-- 해당월 입사자 -->
 	<select id="selectHireMonthCnt" parameterType="string" resultType="int">
-	    SELECT COUNT(*) AS hireMonthCnt
-	    FROM emp_base
-	    WHERE (MONTH(hire_date) = ${month}) AND (YEAR(hire_date) =  ${year})
+		SELECT COUNT(*) AS hireMonthCnt
+		FROM emp_base
+		WHERE (MONTH(hire_date) = ${month}) AND (YEAR(hire_date) =  ${year})
 	</select>
 	
 	<!-- 해당월 퇴사자 -->
 	<select id="selectRetireMonthCnt" parameterType="string" resultType="int">
-	    SELECT COUNT(*) AS retireMonthCnt
-	    FROM emp_base
-	    WHERE (MONTH(retire_date) = ${month}) AND (YEAR(hire_date) =  ${year})
+		SELECT COUNT(*) AS retireMonthCnt
+		FROM emp_base
+		WHERE (MONTH(retire_date) = ${month}) AND (YEAR(hire_date) =  ${year})
 	</select>
 	
 	<!-- 이번년도 입사자 -->
 	<select id="selectHireYearCnt" parameterType="string" resultType="int">
-	    SELECT COUNT(*) AS hireYearCnt
-	    FROM emp_base
-	    WHERE (YEAR(hire_date) =  ${year})
+		SELECT COUNT(*) AS hireYearCnt
+		FROM emp_base
+		WHERE (YEAR(hire_date) =  ${year})
 	</select>
 	
 	<!-- 이번년도 퇴사자 -->
 	<select id="selectRetireYearCnt"  parameterType="string" resultType="int">
-	    SELECT COUNT(*) AS retireYearCnt
-	    FROM emp_base
-	    WHERE (YEAR(retire_date) =  ${year})
+		SELECT COUNT(*) AS retireYearCnt
+		FROM emp_base
+		WHERE (YEAR(retire_date) =  ${year})
 	</select>
 	
 	<!-- 직급별 인원수 조회 -->
 	<select id="selectPositionCnt" resultType="Map">
 		SELECT p.position_cd AS positionCd, s.cd_nm AS positionName, COUNT(p.position_cd) AS positionCnt
-	    FROM st_std_cd s
-	    LEFT JOIN emp_base p ON p.position_cd = s.cd AND p.emp_status = '재직자'
+		FROM st_std_cd s
+		LEFT JOIN emp_base p ON p.position_cd = s.cd AND p.emp_status = '재직자'
 		WHERE s.grp_cd = 'P001' AND s.use_yn = 'y' 
 		GROUP BY s.cd, s.cd_nm;
 	</select>
@@ -157,25 +157,25 @@
 	<!-- 부서별 인원수 조회 -->
 	<select id="selectDeptCnt" resultType="Map">
 		SELECT p.dept_cd AS deptCd, s.cd_nm AS deptName, COUNT(p.dept_cd) AS deptCnt
-	    FROM st_std_cd s
-	    LEFT JOIN emp_base p ON p.dept_cd = s.cd
+		FROM st_std_cd s
+		LEFT JOIN emp_base p ON p.dept_cd = s.cd
 		WHERE s.grp_cd = 'D001' AND s.use_yn = 'y' AND p.emp_status = '재직자'
 		GROUP BY s.cd, s.cd_nm;
 	</select>
 	
 	<!-- 팀별 인원수 조회 -->
 	<select id="selectTeamCnt" resultType="Map">
-	    SELECT s.cd AS teamCd, s.cd_nm AS teamName, COUNT(p.team_cd) AS teamCnt
-	    FROM st_std_cd s
-	    LEFT JOIN emp_base p ON p.team_cd = s.cd AND p.emp_status = '재직자'
-	    WHERE s.grp_cd = 'T001' AND s.use_yn = 'y'
-	    GROUP BY s.cd, s.cd_nm;
+		SELECT s.cd AS teamCd, s.cd_nm AS teamName, COUNT(p.team_cd) AS teamCnt
+		FROM st_std_cd s
+		LEFT JOIN emp_base p ON p.team_cd = s.cd AND p.emp_status = '재직자'
+		WHERE s.grp_cd = 'T001' AND s.use_yn = 'y'
+		GROUP BY s.cd, s.cd_nm;
 	</select>
 	
 	<!-- 성별 인원수 조회 -->
 	<select id="selectGenderCnt" resultType="Map">
 		SELECT SUM(CASE WHEN SUBSTRING(social_no, 8, 1) IN ('1', '3') THEN 1 ELSE 0 END) AS maleCount,
-		       SUM(CASE WHEN SUBSTRING(social_no, 8, 1) IN ('2', '4') THEN 1 ELSE 0 END) AS femaleCount
+			SUM(CASE WHEN SUBSTRING(social_no, 8, 1) IN ('2', '4') THEN 1 ELSE 0 END) AS femaleCount
 		FROM emp_base
 		WHERE emp_status = '재직자'
 	</select>
@@ -205,35 +205,35 @@
 		FROM emp_base
 		<where>
 			1=1 
-            <if test="searchWord != null and searchWord != ''">
-                AND emp_name LIKE CONCAT('%', #{searchWord}, '%')
-            </if>
+			<if test="searchWord != null and searchWord != ''">
+				AND emp_name LIKE CONCAT('%', #{searchWord}, '%')
+			</if>
 		</where>
-        ORDER BY reg_dtime DESC
+		ORDER BY reg_dtime DESC
 	</select>
 	
 	<!-- *마이페이지 사원정보 조회 -->
 	<select id="selectMyEmpById" parameterType="java.lang.String" resultType="com.goodee.cakecraft.vo.EmpBase">
-    SELECT 
-	    E.id id,
-	    E.emp_name empName,
-	    E.social_no socialNo,
-	    E.dept_cd deptCd,
-	    E.team_cd teamCd,
-	    E.position_cd positionCd,
-	    E.email email,
-	    E.hire_date hireDate,
-	    E.retire_date retireDate,
-	    E.emp_status empStatus,
-	    E.dayoff_cnt dayoffCnt,
-	    E.address address,
-	    E.emp_phone empPhone,
-	    E.reg_dtime regDtime,
-	    E.mod_dtime modDtime,
-	    E.reg_id regId,
-	    E.mod_id modId,
-	    S.sign_filename signFilename,
-	    P.profile_filename profileFilename
+	SELECT 
+		E.id id,
+		E.emp_name empName,
+		E.social_no socialNo,
+		E.dept_cd deptCd,
+		E.team_cd teamCd,
+		E.position_cd positionCd,
+		E.email email,
+		E.hire_date hireDate,
+		E.retire_date retireDate,
+		E.emp_status empStatus,
+		E.dayoff_cnt dayoffCnt,
+		E.address address,
+		E.emp_phone empPhone,
+		E.reg_dtime regDtime,
+		E.mod_dtime modDtime,
+		E.reg_id regId,
+		E.mod_id modId,
+		S.sign_filename signFilename,
+		P.profile_filename profileFilename
 	FROM emp_base E
 	LEFT JOIN emp_signImg S ON E.id = S.id
 	LEFT JOIN emp_profileImg P ON E.id = P.id
@@ -254,38 +254,38 @@
 			mod_dtime,
 			reg_id,
 			mod_id
-        ) VALUES (
-        	#{id},
-        	#{profileFilename},
-        	#{profilePath},
-        	#{profileType},
-        	NOW(),
-        	NOW(),
-        	#{id},
-        	#{id}
-        )
-    </insert>
-    
-    <!-- *마이페이지 프로필사진 조회 -->
-    <select id="selectEmpProfileImg" resultType="com.goodee.cakecraft.vo.EmpProfileImg" parameterType="com.goodee.cakecraft.vo.EmpBase">
-    	SELECT
-    		id,
-    		profile_filename profileFilename,
-    		profile_path profilePath,
-    		profile_type profileType,
-    		reg_dtime regDtime,
-    		mod_dtime modDtime,
-    		reg_id regId,
-    		mod_id modId
-    	FROM emp_profileImg
-    	WHERE id=#{id}
-    </select>
+		) VALUES (
+			#{id},
+			#{profileFilename},
+			#{profilePath},
+			#{profileType},
+			NOW(),
+			NOW(),
+			#{id},
+			#{id}
+		)
+	</insert>
+
+	<!-- *마이페이지 프로필사진 조회 -->
+	<select id="selectEmpProfileImg" resultType="com.goodee.cakecraft.vo.EmpProfileImg" parameterType="com.goodee.cakecraft.vo.EmpBase">
+		SELECT
+			id,
+			profile_filename profileFilename,
+			profile_path profilePath,
+			profile_type profileType,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM emp_profileImg
+		WHERE id=#{id}
+	</select>
 	
 	<!-- *프로필사진 경로 조회 (헤더용)-->
 	<select id="getProfileImagePath" parameterType="String" resultType="String">
-    SELECT profile_filename
-    FROM emp_profileImg
-    WHERE id = #{id}
+	SELECT profile_filename
+	FROM emp_profileImg
+	WHERE id = #{id}
 	</select>
 	
 	<!-- *마이페이지 사인 추가 -->

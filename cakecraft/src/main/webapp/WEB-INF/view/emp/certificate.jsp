@@ -6,12 +6,13 @@
 <meta charset="UTF-8">
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
-    <script>
-  	var printPage = function() {
-  		document.body.innerHTML = printSection.innerHTML;
-  		window.print();
-  		};
-    </script>
+<!--  증명서 출력 -->
+<script>
+var printPage = function() {
+	document.body.innerHTML = printSection.innerHTML;
+	window.print();
+};
+</script>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div id="printSection">

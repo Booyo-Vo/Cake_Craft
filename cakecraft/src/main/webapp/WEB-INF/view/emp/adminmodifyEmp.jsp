@@ -100,7 +100,7 @@ $(document).ready(function() {
 						<h4 class="text-blue h4">${empbase.empName} 사원정보수정</h4>
 					</div>
 				</div> 
-				<form action="/cakecraft/emp/modifyEmp" method="post">
+				<form action="/cakecraft/emp/adminmodifyEmp" method="post">
 					<div class="form-group row">
 						<label class="col-sm-12 col-md-2 col-form-label">사번</label>
 						<div class="col-sm-12 col-md-4">

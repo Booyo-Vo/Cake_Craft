@@ -3,247 +3,247 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 </head>
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
 <script>//부서추가
 function addDept() {
 	//입력한 값을 받아옴
-    var deptNm = document.getElementById("addDeptNm").value;
-    
-    // 입력값이 비어있거나 공백만 포함하는지 확인
-    if (!deptNm || !deptNm.trim()) {
-        alert("부서명을 입력해주세요.");
-        return;
-    }
-	
-    $.ajax({
-        type: "GET",
-        url: "/cakecraft/stStdCd/addDept",
-        data: {deptNm: deptNm },
-        success: function(response) {
-            if (response === "DUPLICATE") {
-                alert("이미 존재하는 부서명입니다.");
-            } else if (response === "SUCCESS") {
-                alert("부서가 추가되었습니다.");
-                $('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
-                // 페이지 새로고침
-                window.location.reload();
-            } else {
-                alert("부서 추가에 실패했습니다.");
-            }
-        },
-        error: function() {
-            alert("오류가 발생했습니다.");
-            $('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
-            // 페이지 새로고침
-            window.location.reload();
-        }
-    });
+	var deptNm = document.getElementById("addDeptNm").value;
+
+	// 입력값이 비어있거나 공백만 포함하는지 확인
+	if (!deptNm || !deptNm.trim()) {
+		alert("부서명을 입력해주세요.");
+		return;
+	}
+
+	$.ajax({
+		type: "GET",
+		url: "/cakecraft/stStdCd/addDept",
+		data: {deptNm: deptNm },
+		success: function(response) {
+	if (response === "DUPLICATE") {
+			alert("이미 존재하는 부서명입니다.");
+			}else if(response === "SUCCESS") {
+				alert("부서가 추가되었습니다.");
+				$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
+				// 페이지 새로고침
+				window.location.reload();
+			}else{
+				alert("부서 추가에 실패했습니다.");
+			}
+		},
+		error: function() {
+			alert("오류가 발생했습니다.");
+			$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
+			// 페이지 새로고침
+			window.location.reload();
+		}
+	});
 }
 </script>
 <script>//팀추가
 function addTeam() {
 	//입력한 값을 받아옴
-    var teamNm = document.getElementById("addTeamNm").value;
-    var teamDeptNm = document.getElementById("addTeamDeptNm").value;
-    
-    // 입력값이 비어있거나 공백만 포함하는지 확인
-    if (!teamNm || !teamNm.trim()) {
-        alert("팀명을 입력해주세요.");
-        return;
-    }
-    
-    $.ajax({
-        type: "GET",
-        url: "/cakecraft/stStdCd/addTeam",
-        data: { teamNm: teamNm, teamDeptNm: teamDeptNm },
-        success: function(response) {
-            if (response === "DUPLICATE") {
-                alert("이미 존재하는 팀명입니다.");
-            } else if (response === "SUCCESS") {
-            	alert("팀이 추가되었습니다.");
-            	$('#addTeamModal').modal('hide');// 모달 닫기
-                // 페이지 새로고침
-                window.location.reload();
-            } else {
-                alert("팀 추가에 실패했습니다.");
-            }
-        },
-        error: function() {
-            alert("오류가 발생했습니다.");
-        	$('#addTeamModal').modal('hide');// 모달 닫기
-            // 페이지 새로고침
-            window.location.reload();
-        }
-    });
+	var teamNm = document.getElementById("addTeamNm").value;
+	var teamDeptNm = document.getElementById("addTeamDeptNm").value;
+
+	// 입력값이 비어있거나 공백만 포함하는지 확인
+	if(!teamNm || !teamNm.trim()) {
+		alert("팀명을 입력해주세요.");
+		return;
+	}
+
+	$.ajax({
+		type: "GET",
+		url: "/cakecraft/stStdCd/addTeam",
+		data: { teamNm: teamNm, teamDeptNm: teamDeptNm },
+		success: function(response) {
+			if(response === "DUPLICATE") {
+			alert("이미 존재하는 팀명입니다.");
+			}else if(response === "SUCCESS") {
+				alert("팀이 추가되었습니다.");
+				$('#addTeamModal').modal('hide');// 모달 닫기
+				// 페이지 새로고침
+				window.location.reload();
+			}else{
+				alert("팀 추가에 실패했습니다.");
+			}
+		},
+		error: function() {
+			alert("오류가 발생했습니다.");
+			$('#addTeamModal').modal('hide');// 모달 닫기
+			// 페이지 새로고침
+			window.location.reload();
+		}
+	});
 }
 </script>
 <script> //부서수정
 function openModifyDeptCdModal(deptName) {
-    // 해당 부서명을 모달에 표시
-    document.getElementById("originDeptcdNm").value = deptName;
-    // 모달을 열기
-    $('#modifyDeptCdNmModal').modal('show');
+	// 해당 부서명을 모달에 표시
+	document.getElementById("originDeptcdNm").value = deptName;
+	// 모달을 열기
+	$('#modifyDeptCdNmModal').modal('show');
 }
 function modifyDeptCdNm() {
 	//입력한 값을 받아옴
-    var originDeptCdNm = document.getElementById("originDeptcdNm").value;
-    var updatedDeptCdNm = document.getElementById("updateDeptcdNm").value;
+	var originDeptCdNm = document.getElementById("originDeptcdNm").value;
+	var updatedDeptCdNm = document.getElementById("updateDeptcdNm").value;
 
-    // 입력값이 비어있거나 공백만 포함하는지 확인
-    if (!updatedDeptCdNm || !updatedDeptCdNm.trim()) {
-        alert("수정할 부서명을 입력해주세요.");
-        return;
-    }
-    
-    $.ajax({
-        type: "GET", 
-        url: "/cakecraft/stStdCd/modifyDeptCdNm", 
-        data: {
-            originDeptCdNm: originDeptCdNm,
-            updatedDeptCdNm: updatedDeptCdNm
-        },
-        success: function(response) {
-            if (response === "DUPLICATE") {
-                alert("이미 존재하는 부서명입니다.");
-            } else if (response === "SUCCESS") {
-                alert("수정되었습니다.");
-                $('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
-                // 페이지 새로고침
-                window.location.reload();
-            } else {
-                alert("부서명 수정에 실패하였습니다.");
-                $('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
-            }
-        },
-        error: function() {
-            alert("오류가 발생했습니다.");
-            $('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
-            // 페이지 새로고침
-            window.location.reload();
-        }
-    });
+	// 입력값이 비어있거나 공백만 포함하는지 확인
+	if (!updatedDeptCdNm || !updatedDeptCdNm.trim()) {
+		alert("수정할 부서명을 입력해주세요.");
+		return;
+	}
+	
+	$.ajax({
+		type: "GET", 
+		url:"/cakecraft/stStdCd/modifyDeptCdNm", 
+		data:{
+			originDeptCdNm: originDeptCdNm,
+			updatedDeptCdNm: updatedDeptCdNm
+		},
+		success: function(response) {
+			if (response === "DUPLICATE") {
+				alert("이미 존재하는 부서명입니다.");
+			} else if (response === "SUCCESS") {
+				alert("수정되었습니다.");
+				$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
+				// 페이지 새로고침
+				window.location.reload();
+			} else {
+				alert("부서명 수정에 실패하였습니다.");
+				$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
+			}
+		},
+		error: function() {
+			alert("오류가 발생했습니다.");
+			$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
+			// 페이지 새로고침
+			window.location.reload();
+		}
+	});
 }
 </script>
 <script> //팀수정
 function openModifyTeamCdModal(teamName) {
-    // 해당 부서명을 모달에 표시
-    document.getElementById("originTeamcdNm").value = teamName;
-    // 모달을 열기
-    $('#modifyTeamCdNmModal').modal('show');
+	// 해당 부서명을 모달에 표시
+	document.getElementById("originTeamcdNm").value = teamName;
+	// 모달을 열기
+	$('#modifyTeamCdNmModal').modal('show');
 }
 function modifyTeamCdNm() {
 	//입력한 값을 받아옴
-    var originTeamCdNm = document.getElementById("originTeamcdNm").value;
-    var updatedTeamCdNm = document.getElementById("updateTeamcdNm").value;
+	var originTeamCdNm = document.getElementById("originTeamcdNm").value;
+	var updatedTeamCdNm = document.getElementById("updateTeamcdNm").value;
 
-    // 입력값이 비어있거나 공백만 포함하는지 확인
-    if (!updatedTeamCdNm || !updatedTeamCdNm.trim()) {
-        alert("수정할 팀명을 입력해주세요.");
-        return;
-    }
-    
-    $.ajax({
-        type: "GET", 
-        url: "/cakecraft/stStdCd/modifyTeamCdNm", 
-        data: {
-            originTeamCdNm: originTeamCdNm,
-            updatedTeamCdNm: updatedTeamCdNm
-        },
-        success: function(response) {
-            if (response === "DUPLICATE") {
-                alert("이미 존재하는 부서명입니다.");
-            } else if (response === "SUCCESS") {
-                alert("수정되었습니다.");
-                $('#modifyTeamCdNmModal').modal('hide');
-                // 페이지 새로고침
-                window.location.reload();
-            } else {
-                alert("부서명 수정에 실패하였습니다.");
-            }
-        },
-        error: function() {
-            alert("오류가 발생했습니다.");
-            $('#modifyTeamCdNmModal').modal('hide');
-            // 페이지 새로고침
-            window.location.reload();
-        }
-    });
+	// 입력값이 비어있거나 공백만 포함하는지 확인
+	if (!updatedTeamCdNm || !updatedTeamCdNm.trim()) {
+		alert("수정할 팀명을 입력해주세요.");
+		return;
+	}
+
+	$.ajax({
+		type: "GET", 
+		url: "/cakecraft/stStdCd/modifyTeamCdNm", 
+		data: {
+			originTeamCdNm: originTeamCdNm,
+			updatedTeamCdNm: updatedTeamCdNm
+		},
+		success: function(response) {
+			if (response === "DUPLICATE") {
+				alert("이미 존재하는 부서명입니다.");
+			} else if (response === "SUCCESS") {
+				alert("수정되었습니다.");
+				$('#modifyTeamCdNmModal').modal('hide');
+				// 페이지 새로고침
+				window.location.reload();
+			} else {
+				alert("부서명 수정에 실패하였습니다.");
+			}
+		},
+		error: function() {
+			alert("오류가 발생했습니다.");
+			$('#modifyTeamCdNmModal').modal('hide');
+			// 페이지 새로고침
+			window.location.reload();
+		}
+	});
 }
 </script>
 <script>
 $(document).ready(function() {
-    $('.dept-delete-button').click(function() { // 삭제 버튼을 누르면
-        var row = $(this).closest('tr'); // 삭제 버튼이 속한 행(tr)을 가져옴
-        var deptGrpCd = row.find('th:first').text(); // 부서 코드를 가져옴
-        var deptCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
-        var deptName = row.find('td:eq(1)').text(); // 부서명을 가져옴
-        
-        var confirmDelete = confirm(deptName + "을 정말 삭제하시겠습니까?\n");
-        
-        if (confirmDelete) { // 확인을 눌렀을 때
-            $.ajax({
-                type: "GET", 
-                url: "/cakecraft/stStdCd/removeStStdCd", 
-                data: {
-                    grpCd: deptGrpCd, // 그룹 코드
-                    cd: deptCd // 부서 번호
-                },
-                success: function(response) {
-                    if (response === "FAIL") {
-                        alert("해당 부서에 근무하는 사원이 있습니다.");
-                    } else if (response === "SUCCESS") {
-                        alert("부서 삭제에 성공했습니다.");
-                        // 페이지 새로고침
-                        window.location.reload();
-                    } else {
-                        alert("부서 삭제에 실패하였습니다.");
-                    }
-                },
-                error: function() {
-                    alert("오류가 발생했습니다.");
-                }
-            });
-        }
-    });
+	$('.dept-delete-button').click(function() { // 삭제 버튼을 누르면
+		var row = $(this).closest('tr'); // 삭제 버튼이 속한 행(tr)을 가져옴
+		var deptGrpCd = row.find('th:first').text(); // 부서 코드를 가져옴
+		var deptCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
+		var deptName = row.find('td:eq(1)').text(); // 부서명을 가져옴
+
+		var confirmDelete = confirm(deptName + "을 정말 삭제하시겠습니까?\n");
+
+		if (confirmDelete) { // 확인을 눌렀을 때
+			$.ajax({
+				type: "GET", 
+				url: "/cakecraft/stStdCd/removeStStdCd", 
+				data: {
+					grpCd: deptGrpCd, // 그룹 코드
+					cd: deptCd // 부서 번호
+				},
+				success: function(response) {
+					if (response === "FAIL") {
+						alert("해당 부서에 근무하는 사원이 있습니다.");
+					} else if (response === "SUCCESS") {
+						alert("부서 삭제에 성공했습니다.");
+						// 페이지 새로고침
+						window.location.reload();
+					} else {
+						alert("부서 삭제에 실패하였습니다.");
+					}
+				},
+				error: function() {
+					alert("오류가 발생했습니다.");
+				}
+			});
+		}
+	});
 });
 </script>
 <script>
 $(document).ready(function() {
-    $('.team-delete-button').click(function() { // 삭제 버튼을 누르면
-        var row = $(this).closest('tr'); // 삭제 버튼이 속한 행(tr)을 가져옴
-        var teamGrpCd = row.find('th:first').text(); // 부서 코드를 가져옴
-        var teamCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
-        var teamName = row.find('td:eq(1)').text(); // 부서명을 가져옴
-        
-        var confirmDelete = confirm(teamName + "을 정말 삭제하시겠습니까?\n");
-        
-        if (confirmDelete) { // 확인을 눌렀을 때
-            $.ajax({
-                type: "GET", 
-                url: "/cakecraft/stStdCd/removeStStdCd", 
-                data: {
-                    grpCd: teamGrpCd, // 그룹 코드
-                    cd: teamCd // 부서 번호
-                },
-                success: function(response) {
-                    if (response === "FAIL") {
-                        alert("해당 팀에 근무하는 사원이 있습니다.");
-                    } else if (response === "SUCCESS") {
-                        alert("팀 삭제에 성공했습니다.");
-                        // 페이지 새로고침
-                        window.location.reload();
-                    } else {
-                        alert("팀 삭제에 실패하였습니다.");
-                    }
-                },
-                error: function() {
-                    alert("오류가 발생했습니다.");
-                }
-            });
-        }
-    });
+	$('.team-delete-button').click(function() { // 삭제 버튼을 누르면
+		var row = $(this).closest('tr'); // 삭제 버튼이 속한 행(tr)을 가져옴
+		var teamGrpCd = row.find('th:first').text(); // 부서 코드를 가져옴
+		var teamCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
+		var teamName = row.find('td:eq(1)').text(); // 부서명을 가져옴
+
+		var confirmDelete = confirm(teamName + "을 정말 삭제하시겠습니까?\n");
+
+		if (confirmDelete) { // 확인을 눌렀을 때
+			$.ajax({
+				type: "GET", 
+				url: "/cakecraft/stStdCd/removeStStdCd", 
+				data: {
+					grpCd: teamGrpCd, // 그룹 코드
+					cd: teamCd // 부서 번호
+				},
+				success: function(response) {
+					if (response === "FAIL") {
+					alert("해당 팀에 근무하는 사원이 있습니다.");
+					} else if (response === "SUCCESS") {
+						alert("팀 삭제에 성공했습니다.");
+						// 페이지 새로고침
+						window.location.reload();
+					} else {
+						alert("팀 삭제에 실패하였습니다.");
+					}
+				},
+				error: function() {
+					alert("오류가 발생했습니다.");
+				}
+			});
+		}
+	});
 });
 </script>
 <body>
@@ -261,7 +261,7 @@ $(document).ready(function() {
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item"><a href="">Home</a></li>
 								<li class="breadcrumb-item active" aria-current="page">부서 팀 관리</li>
 							</ol>
 							<!-- 부서/팀 추가 수정 모달창 -->

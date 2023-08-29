@@ -38,56 +38,54 @@ public interface EmpMapper {
 	int selectRetireMonthCnt(String month, String year);
 	
 	// 직급별 인원수 조회
-    List<Map<String, Object>> selectPositionCnt();
-    
+	List<Map<String, Object>> selectPositionCnt();
+	
 	// 부서별 인원수
-    List<Map<String, Object>> selectDeptCnt();
-    
-    //팀별 인원수
-    List<Map<String, Object>> selectTeamCnt();
-   
-    
-    //성별 인원수
-    List<Map<String, Object>> selectGenderCnt();
-    
-    // 부서/팀 번호에 따른 사원존재여부
- 	int selectEmpCntByCd(StStdCd stStdCd);
- 	
- 	//////////////////////////// 사원 마이페이지 //////////////////////// 	
-    // 사원 마이페이지에서 사원리스트 출력
- 	List<EmpBase> selectMyEmpList(String searchWord);
- 	
- 	// 사원 마이페이지 출력
- 	EmpBase selectMyEmpById(Map<String, Object> paramMap);
- 	
- 	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
- 	EmpBase selectMyEmpById(String id);
- 	
- 	// 사인 등록
-  	public int insertSign(EmpSignImg sign);
-  	
-  	// 사인 삭제
-   	public int removeSign(EmpSignImg sign);
+	List<Map<String, Object>> selectDeptCnt();
 
- 	// 사원이 보는 마이페이지 수정(empBase + profileImg 수정 cf. signImg는 마이페이지 출력 창에서 )
-   	int updateEmpInfo(EmpBase empBase);
-   	
-   	int updateEmpProfilePic(EmpProfileImg empProfileImg);
- 	
-   	int deleteEmpProfilePic(EmpBase empBase);
-   	
-   	// 헤더에 프로필 사진 띄우는 용
-   	String getProfileImagePath(String id);
-   	
-   	// 비밀번호 변경
-   	void updateEmployee(EmpBase empBase);
-    void changePassword(@Param("id") String id, @Param("newPassword") String newPassword);
-   	
-   	//게시판에 프로필 파일 추가
-   	int insertEmpProfileImg(EmpProfileImg empProfileImg);
-   	
-   	List<EmpProfileImg> selectEmpProfileImg(EmpBase empBase);
-   	
-   	void updateProfileImagePath(EmpProfileImg empProfileImg);
-   	
+	//팀별 인원수
+	List<Map<String, Object>> selectTeamCnt();
+	
+	//성별 인원수
+	List<Map<String, Object>> selectGenderCnt();
+	    
+	// 부서/팀 번호에 따른 사원존재여부
+	int selectEmpCntByCd(StStdCd stStdCd);
+	
+	//////////////////////////// 사원 마이페이지 //////////////////////// 	
+	// 사원 마이페이지에서 사원리스트 출력
+	List<EmpBase> selectMyEmpList(String searchWord);
+	
+	// 사원 마이페이지 출력
+	EmpBase selectMyEmpById(Map<String, Object> paramMap);
+	
+	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
+	EmpBase selectMyEmpById(String id);
+	
+	// 사인 등록
+	public int insertSign(EmpSignImg sign);
+	
+	// 사인 삭제
+	public int removeSign(EmpSignImg sign);
+
+	// 사원이 보는 마이페이지 수정(empBase + profileImg 수정 cf. signImg는 마이페이지 출력 창에서 )
+	int updateEmpInfo(EmpBase empBase);
+	
+	int updateEmpProfilePic(EmpProfileImg empProfileImg);
+
+	int deleteEmpProfilePic(EmpBase empBase);
+	
+	// 헤더에 프로필 사진 띄우는 용
+	String getProfileImagePath(String id);
+	
+	// 비밀번호 변경
+	void updateEmployee(EmpBase empBase);
+	void changePassword(@Param("id") String id, @Param("newPassword") String newPassword);
+	
+	//게시판에 프로필 파일 추가
+	int insertEmpProfileImg(EmpProfileImg empProfileImg);
+	
+	List<EmpProfileImg> selectEmpProfileImg(EmpBase empBase);
+	
+	void updateProfileImagePath(EmpProfileImg empProfileImg);
 }

@@ -42,9 +42,9 @@ public class StStdCdService {
 	
 	//부서이름이 선택되었을대 그 부서에 맞는 팀 가져오기
 	public List<StStdCd> getTeamListByDept(String deptNm) {
-	   log.debug(LJY + deptNm +"<- getTeamListByDept deptNm" + RESET);	
-	   // 부서이름이 넘어오면 부서 코드를 받아옴
-	   Map<String, Object> deptCdMap = commonMapper.getCode(deptNm);
+		log.debug(LJY + deptNm +"<- getTeamListByDept deptNm" + RESET);	
+		// 부서이름이 넘어오면 부서 코드를 받아옴
+		Map<String, Object> deptCdMap = commonMapper.getCode(deptNm);
 		//cd가 int이으로 toString() 해준다
 		String deptCd = deptCdMap.get("cd").toString();
 		log.debug(LJY + deptCd +"<- getTeamListByDept deptCd" + RESET);	
@@ -53,33 +53,32 @@ public class StStdCdService {
 		List<StStdCd> teamListbyEmpt = stStdCdMapper.selectTeamListByDept(deptCd);
 		log.debug(LJY + teamListbyEmpt +"<- getTeamListByDept teamListbyEmpt" + RESET);	
 
-	   return teamListbyEmpt;
-	   
-	  
-    }
+		return teamListbyEmpt;
+
+	}
 	//관리자가 보는 부서, 팀관리 리스트
 	public Map<String, Object> getStdStdCdList(){
 		//부서,팀 코드 설정
 		String deptCode = "D001";
-	    // 부서리스트 받아오기
-	    List<StStdCd> deptList = stStdCdMapper.selectStStdCdList(deptCode);
-	    
-	    //리스트를 담아 보낼 맵선언
-	    Map<String, Object> StStdCdListMap = new HashMap<>();
-	    
-	    //부서 리스트 안에서
-	    for (StStdCd dept : deptList) {
-	    	// 부서 코드를 가져옴 int 타입이라 String 으로 반환함
-	    	String deptCd = dept.getCd();
-	    	log.debug(LJY + deptCd +"<- getStdStdCdList deptCd" + RESET);	
-	    	//코드를 받아와 해당 팀리스트 받아오기
-	    	List<StStdCd> teamList = stStdCdMapper.selectTeamListByDept(deptCd);
-	    	//부서코드마다 고유한 키를 생성하여 담기
-	    	StStdCdListMap.put(deptCd, teamList);
-	    }
-	    //맵에 부서 리스트 담기
-	    StStdCdListMap.put("deptList", deptList);
-	    return StStdCdListMap; 
+		// 부서리스트 받아오기
+		List<StStdCd> deptList = stStdCdMapper.selectStStdCdList(deptCode);
+
+		//리스트를 담아 보낼 맵선언
+		Map<String, Object> StStdCdListMap = new HashMap<>();
+
+		//부서 리스트 안에서
+		for (StStdCd dept : deptList) {
+			// 부서 코드를 가져옴 int 타입이라 String 으로 반환함
+			String deptCd = dept.getCd();
+			log.debug(LJY + deptCd +"<- getStdStdCdList deptCd" + RESET);	
+			//코드를 받아와 해당 팀리스트 받아오기
+			List<StStdCd> teamList = stStdCdMapper.selectTeamListByDept(deptCd);
+			//부서코드마다 고유한 키를 생성하여 담기
+			StStdCdListMap.put(deptCd, teamList);
+			}
+		//맵에 부서 리스트 담기
+		StStdCdListMap.put("deptList", deptList);
+		return StStdCdListMap; 
 	}
 	
 	//부서추가
@@ -90,9 +89,9 @@ public class StStdCdService {
 		//1) 입력된 부서이름 중복확인
 		int deptNmCnt = stStdCdMapper.selectCdNmCnt(stStdCd);
 		log.debug(LJY + deptNmCnt +"<- addDept deptNmCnt" + RESET);	
-	    if (deptNmCnt > 0) {
-	        return -1; // 중복된 값이 있음을 나타내는 음수
-	    }
+		if (deptNmCnt > 0) {
+			return -1; // 중복된 값이 있음을 나타내는 음수
+		}
 		// cd값 추가를 위해 count+1을 하여 cd값에 넣어준다 
 		int deptCnt =  stStdCdMapper.selectDeptCnt(stStdCd);
 		log.debug(LJY + deptCnt +"<- addDept deptCnt" + RESET);	

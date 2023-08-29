@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.service.CommonService;
+import com.goodee.cakecraft.service.EmpService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
@@ -34,6 +35,8 @@ public class AdminEmpController {
 	private StStdCdService stStdCdService;
 	@Autowired 
 	private CommonService commonService;
+	@Autowired
+	private EmpService empService;
 
 	// 사원추가 폼
 	@GetMapping("/emp/addEmp")
@@ -103,7 +106,7 @@ public class AdminEmpController {
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
 		//사원상세내역 받아오기
-		EmpBase empbase = adminEmpService.getAdminEmpById(id); 
+		EmpBase empbase = empService.getMyEmpById(id); 
 		
 		//뷰로 값넘기기
 		model.addAttribute("empbase", empbase);

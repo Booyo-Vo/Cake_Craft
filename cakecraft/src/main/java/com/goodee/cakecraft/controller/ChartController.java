@@ -39,11 +39,11 @@ public class ChartController {
 	log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
 	// 선택된 년도가 없다면 현재 년도 가져오기
-    if (year == null || year.isEmpty()) {
-        Calendar calendar = Calendar.getInstance();
-        year = String.valueOf(calendar.get(Calendar.YEAR));
-        log.debug(LJY +"chartList year:"+year +RESET);
-    }
+	if (year == null || year.isEmpty()) {
+		Calendar calendar = Calendar.getInstance();
+		year = String.valueOf(calendar.get(Calendar.YEAR));
+		log.debug(LJY +"chartList year:"+year +RESET);
+	}
 		
 	//해당년도 입사자 퇴사자
 	Map<String, Object> YearCntMap= chartService.getYearCnt(year);
@@ -51,19 +51,19 @@ public class ChartController {
 	//1~12월 입사자 퇴사자
 	Map<String, List<Integer>>MonthCntMap= chartService.getMonthCnt(year);
 	//직급별 인원수
-    List<Map<String, Object>> positionCnt = chartService.getPositionCnt();
-    
-    //부서별 인원수
-    List<Map<String, Object>> deptCnt = chartService.getDeptCnt();
-    
-    //팀별 인원수
-    List<Map<String, Object>> teamCnt = chartService.getTeamCnt();
-    
-    //성별 인원수
-    List<Map<String, Object>> genderCnt = chartService.getGenderCnt();
-    Map<String, Object> genderCounts = genderCnt.get(0);
-    
-    //view로 넘길때는 다시 분리해서
+	List<Map<String, Object>> positionCnt = chartService.getPositionCnt();
+
+	//부서별 인원수
+	List<Map<String, Object>> deptCnt = chartService.getDeptCnt();
+	
+	//팀별 인원수
+	List<Map<String, Object>> teamCnt = chartService.getTeamCnt();
+
+	//성별 인원수
+	List<Map<String, Object>> genderCnt = chartService.getGenderCnt();
+	Map<String, Object> genderCounts = genderCnt.get(0);
+
+	//view로 넘길때는 다시 분리해서
 	model.addAttribute("hireYearCnt", YearCntMap.get("hireYearCnt"));
 	model.addAttribute("retireYearCnt", YearCntMap.get("retireYearCnt"));
 	model.addAttribute("MonthCntMap", MonthCntMap);
@@ -71,8 +71,8 @@ public class ChartController {
 	model.addAttribute("deptCnt", deptCnt);
 	model.addAttribute("teamCnt", teamCnt);
 	model.addAttribute("year", year);
-    model.addAttribute("maleCnt", genderCounts.get("maleCount"));
-    model.addAttribute("femaleCnt", genderCounts.get("femaleCount"));
+	model.addAttribute("maleCnt", genderCounts.get("maleCount"));
+	model.addAttribute("femaleCnt", genderCounts.get("femaleCount"));
 	model.addAttribute("loginId",loginId);
 	return "/emp/chartList";
 	}

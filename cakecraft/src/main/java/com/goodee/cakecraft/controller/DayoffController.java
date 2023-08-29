@@ -31,10 +31,10 @@ public class DayoffController {
 	
 	// 연차상세내역조회
 	@GetMapping("/emp/dayoffById")
-	 	public String dayoffList(HttpSession session, Model model,
-	 							@RequestParam String id) {
+		public String dayoffList(HttpSession session, Model model,
+								@RequestParam String id) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		
@@ -51,9 +51,9 @@ public class DayoffController {
 		empDayoff.setEndDay(empDayoff.getEndDay().substring(0, empDayoff.getEndDay().length() - 3));
 		}
 		//뷰로 값넘기기
-	    model.addAttribute("empDayoff", empDayoff);
-	    model.addAttribute("empBase", empBase);
-	    model.addAttribute("loginId", loginId);
-	    return "/emp/dayoffById";
+		model.addAttribute("empDayoff", empDayoff);
+		model.addAttribute("empBase", empBase);
+		model.addAttribute("loginId", loginId);
+		return "/emp/dayoffById";
 	}	
 }

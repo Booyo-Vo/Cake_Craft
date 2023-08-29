@@ -31,7 +31,7 @@
 </table>
 </c:if>
 <c:if test="${empty empDayoff}">
-    <p>연차사용내역이 없습니다</p>
+	<p>연차사용내역이 없습니다</p>
 </c:if>
 <p>잔여 연차 : ${empBase.dayoffCnt}</p>
 </div>
