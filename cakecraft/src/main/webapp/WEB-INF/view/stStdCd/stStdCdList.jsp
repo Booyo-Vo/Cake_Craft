@@ -261,7 +261,7 @@ $(document).ready(function() {
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item active" aria-current="page">부서 팀 관리</li>
 							</ol>
 							<!-- 부서/팀 추가 수정 모달창 -->

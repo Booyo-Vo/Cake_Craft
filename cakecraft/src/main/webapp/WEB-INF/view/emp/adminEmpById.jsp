@@ -42,6 +42,12 @@
 			<div class="row">
 				<div class="col-md-6 col-sm-12">
 					<div class="form-group row">
+						<label class="col-sm-12 col-md-3 col-form-label"><b>이름</b></label>
+						<div class="col-sm-12 col-md-3">
+							${empbase.empName}
+						</div>
+					</div>
+					<div class="form-group row">
 						<label class="col-sm-12 col-md-3 col-form-label"><b>사번</b></label>
 						<div class="col-sm-12 col-md-3">
 							${empbase.id}
@@ -105,7 +111,7 @@
 					</div>
 					<div class="form-group row">
 						<label class="col-sm-12 col-md-3 col-form-label"><b>주소</b></label>
-						<div class="col-sm-12 col-md-3">
+						<div class="col-sm-12 col-md-5">
 							${empbase.address}
 						</div>
 					</div>
@@ -119,11 +125,11 @@
 			<div class="col-md-6 col-sm-12">
 			<div class="form-group row">
 				<label class="col-sm-12 col-md-3 col-form-label"><b>프로필 사진</b></label>
-					<div class="col-sm-12 col-md-3">
-						<c:if test="${not empty empBase.profileFilename}">
-								<img src="${pageContext.request.contextPath}/profileImg/${empBase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
+					<div class="col-sm-12 col-md-5">
+						<c:if test="${not empty empbase.profileFilename}">
+								<img src="${pageContext.request.contextPath}/profileImg/${empbase.profileFilename}" alt="employee image" style="width: 200px; height: 200px;">
 							</c:if>
-							<c:if test="${empty empBase.profileFilename}">
+							<c:if test="${empty empbase.profileFilename}">
 								<img src="${pageContext.request.contextPath}/profileImg/profile.png" alt="default profile image" style="width: 100px; height: 100px;">
 							</c:if>
 						</div>
@@ -134,6 +140,8 @@
 		</div>
 	</div>
 </div>
+<br>
+<br>
 <!-- 사원정보끝 -->
 </body>
 </html>

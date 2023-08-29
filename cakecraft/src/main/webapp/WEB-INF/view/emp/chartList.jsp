@@ -21,7 +21,7 @@
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item active" aria-current="page">차트</li>
 							</ol>
 						</nav>
@@ -98,7 +98,7 @@
 				<div class="pd-20 card-box height-100-p">
 				<div class="text-center">
 					<h4 class="mb-15 h4">부서별 재직자 수</h4>
-				</div>>
+				</div>
 				<!-- 부서별 인원수 차트 -->
 				<canvas id="deptCntChart" style="width:100%;max-width:600px"></canvas>
 

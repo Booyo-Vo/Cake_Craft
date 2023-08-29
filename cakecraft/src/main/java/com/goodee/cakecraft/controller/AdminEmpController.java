@@ -67,7 +67,7 @@ public class AdminEmpController {
 	@PostMapping("/emp/addEmp")
 		public String addEmp(HttpSession session, EmpBase empbase) {
 		//세선에 저장된 로그인 아이디를 받아옴
-    	EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 		//empbase에 로그인된 아이디 담기

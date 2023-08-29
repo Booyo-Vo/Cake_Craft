@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -175,6 +176,82 @@ public class ExcelController {
 			// 예외 처리
 		}
 	}
+	
+	//엑셀로 체크박스로 선택된 사원 정보 다운로드
+	@GetMapping("/emp/getSelectExcel")
+	public void getSelectExcel(@RequestParam("ids") String ids, 
+								HttpServletResponse response) throws IOException {
+		
+		log.debug(LJY + ids + "<- getSelectExcel ids"+ RESET);
+		// 선택된 사원 아이디 목록을 문자열로부터 배열로 변환
+		String[] selectedIds = ids.split(",");
+		
+		 // 선택된 사원 정보를 저장할 리스트 생성
+		List<EmpBase> selectedEmpList = new ArrayList<>();
+		
+		//받아온 아이디값을 돌려서
+		for (String id : selectedIds) {
+			//해당아이디 정보를 받아옴
+			EmpBase empbase = adminEmpService.getAdminEmpById(id); 
+			if (empbase != null) {
+				//정보를 리스트에 저장
+				selectedEmpList.add(empbase);
+			}
+		}
+		
+		try{
+			// 새로운 워크북 생성
+			Workbook workbook = new XSSFWorkbook();
+			//시트이름을 Employee Data로 지정
+			Sheet sheet = workbook.createSheet("Employee Data");
+			//시트이름을 엑셀 파일이름을 Employee Data로 지정
+			final String fileName = "Employee Data";
+			
+			// 헤더 행 생성
+			Row headerRow = sheet.createRow(0);
+			headerRow.createCell(0).setCellValue("사원번호");
+			headerRow.createCell(1).setCellValue("이름");
+			headerRow.createCell(2).setCellValue("주민번호");
+			headerRow.createCell(3).setCellValue("부서");
+			headerRow.createCell(4).setCellValue("팀");
+			headerRow.createCell(5).setCellValue("직급");
+			headerRow.createCell(6).setCellValue("전화번호");
+			headerRow.createCell(7).setCellValue("연차개수");
+			headerRow.createCell(8).setCellValue("주소");
+			headerRow.createCell(9).setCellValue("이메일");
+			headerRow.createCell(10).setCellValue("입사일");
+			headerRow.createCell(11).setCellValue("퇴사일");
+			headerRow.createCell(12).setCellValue("근무상태");
+
+			// 데이터 행 생성
+			int rowNum = 1;
+			for (EmpBase emp : selectedEmpList) {
+				Row dataRow = sheet.createRow(rowNum++);
+				dataRow.createCell(0).setCellValue(emp.getId());
+				dataRow.createCell(1).setCellValue(emp.getEmpName());
+				dataRow.createCell(2).setCellValue(emp.getSocialNo());
+				dataRow.createCell(3).setCellValue(emp.getDeptNm());
+				dataRow.createCell(4).setCellValue(emp.getTeamNm());
+				dataRow.createCell(5).setCellValue(emp.getPositionNm());
+				dataRow.createCell(6).setCellValue(emp.getEmpPhone());
+				dataRow.createCell(7).setCellValue(emp.getDayoffCnt());
+				dataRow.createCell(8).setCellValue(emp.getAddress());
+				dataRow.createCell(9).setCellValue(emp.getEmail());
+				dataRow.createCell(10).setCellValue(emp.getHireDate());
+				dataRow.createCell(11).setCellValue(emp.getRetireDate());
+				dataRow.createCell(12).setCellValue(emp.getEmpStatus());
+			}
+			// HTTP 응답 헤더에 Content-Type을 excel로 설정
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(fileName, "UTF-8")+".xlsx");//파일이름을 설정하여 다운로드 하도록
+	
+			workbook.write(response.getOutputStream());
+			workbook.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	    
 }
 
 

@@ -114,7 +114,7 @@ function addExcel() {
 			}
 		},
 			error: function() {
-			alert("오류가 발생했습니다.");
+			alert("파일을 다시 확인해주세요.");
 		}
 	});
 }
@@ -222,18 +222,17 @@ function addExcel() {
 				<p class="text-danger">반드시 정해진 엑셀 양식으로 작성후 업로드해야합니다</p>
 			</div>
 		</div>
-		<a href="/cakecraft/excel/getExcelFrom"><i class="icon-copy fa fa-edit" aria-hidden="true"></i>사원추가 엑셀양식</a>
+			<a href="/cakecraft/excel/getExcelFrom"><i class="icon-copy fa fa-edit" aria-hidden="true"></i>사원추가 엑셀양식</a>
 		<br>
 		<br> 
-		<div class="col-sm-12 col-md-6">
-		<input type="file" name="file" accept=".xlsx" required class="form-control-file form-control height-auto">
+			<div class="col-sm-12 col-md-6">
+			<input type="file" name="file" accept=".xlsx" required class="form-control-file form-control height-auto">
 		</div>
 		<br>
 		<button type="submit" onclick="addExcel()" class="btn btn-primary">추가</button>
 	</div>
 </div>
 </div>
-<br>
 <br>
 </body>
 </html>

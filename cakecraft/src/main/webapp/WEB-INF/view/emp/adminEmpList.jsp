@@ -109,6 +109,27 @@ jQuery(document).ready(function($) {
 			$(this).css("color", ""); // 원래 색상으로 복원
 		}
 	});
+	//체크 박스 선택후 선택된 사원 다운로드를 눌렀을때
+	$("#submitIdButton").on("click", function() {
+		console.log("Submit button clicked"); // 디버그용 로그 메시지
+		
+	    var selectedRows = $("#list").jqGrid("getGridParam", "selarrrow"); // 선택된 행의 아이디 목록을 가져옴
+	    
+	    if (selectedRows.length > 0) { // 선택된 행이 있는 경우에만 실행
+	        var selectedIds = [];
+	        
+	        for (var i = 0; i < selectedRows.length; i++) {
+	            var rowData = $("#list").jqGrid("getRowData", selectedRows[i]);
+	            selectedIds.push(rowData.id); // 선택된 행의 아이디를 배열에 추가
+	        }
+	        
+	        // 선택된 아이디 목록을 서버로 보내어 엑셀 다운로드 요청
+	        var selectedIdsStr = selectedIds.join(","); // 선택된 아이디 배열을 문자열로 변환
+	        window.location.href = "/cakecraft/emp/getSelectExcel?ids=" + selectedIdsStr; // 서버 URL을 요청하여 다운로드
+	    } else {
+	        alert("선택된 사원이 없습니다.");
+	    }
+	});
 	
 });
 </script>
@@ -118,19 +139,31 @@ jQuery(document).ready(function($) {
 <div class="main-container">
 	<div class="pd-ltr-20 xs-pd-20-10">
 		<div class="min-height-200px">
-			<div class="pd-20 card-box mb-30">
-				<div class="clearfix">
-					<div class="pull-left">
-						<h4 class="text-blue h4"></h4>
-						<a href="/cakecraft/emp/getExcel" class="btn btn-primary">사원전체정보 엑셀로 다운로드</a>
-						<a href="/cakecraft/emp/addEmp" class="btn btn-primary">사원추가</a>
+			<div class="page-header">
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<div class="title">
+							<h4>사원리스트</h4>
+						</div>
+						<nav aria-label="breadcrumb" role="navigation">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">사원리스트</li>
+							</ol>
+							<!-- 사원추가-->
+							<div class="d-flex justify-content-end mb-3">
+								<a href="/cakecraft/emp/addEmp" class="btn btn-primary">사원추가</a>
+							</div>
+						</nav>
 					</div>
 				</div>
+			</div>
+			<div class="pd-20 card-box mb-30">
 				<br>
 				<div class="form-group row">
 					<div class="col-sm-4 col-md-2">
 						<select class="custom-select form-control" id="searchTypeSelect">
-							<option value="All" selected>전체 검색</option>
+							<option value="" selected>-- 선택하세요 --</option>
 							<option value="name">이름</option>
 							<option value="deptNm">부서</option>
 							<option value="teamNm">팀</option>
@@ -150,9 +183,12 @@ jQuery(document).ready(function($) {
 						<div id="pager"></div>
 					</div>
 				</div>
+				<a href="/cakecraft/emp/getExcel" class="btn btn-primary">사원전체정보 다운로드 <i class="icon-copy fi-download"></i></a>
+				<button id="submitIdButton"  class="btn btn-primary">선택된사원정보 다운로드 <i class="icon-copy fi-download"></i></button>
 			</div>
 		</div>
 	</div>
 </div>
+<br>
 </body>
 </html>
