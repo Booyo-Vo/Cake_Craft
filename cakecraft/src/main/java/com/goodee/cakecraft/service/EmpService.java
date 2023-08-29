@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.goodee.cakecraft.mapper.AttendanceMapper;
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
+import com.goodee.cakecraft.vo.EmpAttendance;
 import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
@@ -274,6 +276,9 @@ public class EmpService {
 		        empProfileImg.setProfileFilename(profileFilename);
 		        empProfileImg.setProfilePath(profilePath);
 		        empProfileImg.setProfileType(profileType);
+		        
+		        log.debug(KMS+ profilePath + "<-profilePath / EmpService" +RESET);
+		        
 
 		        empMapper.insertEmpProfileImg(empProfileImg);
 		    }
@@ -282,6 +287,4 @@ public class EmpService {
 		}
 		
 		
-		
-
 }

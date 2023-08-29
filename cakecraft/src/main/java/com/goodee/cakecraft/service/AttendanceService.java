@@ -1,5 +1,7 @@
 package com.goodee.cakecraft.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +35,14 @@ public class AttendanceService {
         empAttendance.setId(id);
         attendanceMapper.updateEndDtime(empAttendance);
     }
-
+    
+    //나의 출퇴근 이력 리스트 출력
+    public List<EmpAttendance> getMyAttendanceList(String searchWord){
+    	//리스트 받아오기
+    	List<EmpAttendance> empAttList = attendanceMapper.selectMyAttendanceList(searchWord);
+    	log.debug(KMS+ empAttList.size() +"empAttList 사이즈 / AttendanceService" +RESET);
+    
+    	return empAttList;
+    }
+    
 }

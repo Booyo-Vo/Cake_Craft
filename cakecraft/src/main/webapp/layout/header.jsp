@@ -31,7 +31,8 @@
 		if (localStorage.getItem('rememberedId') !== null) { //로컬스토리지에 rememberedId 값이 있다면
 			localStorage.removeItem('rememberedId');
 			localStorage.removeItem('lastLoginTime'); //마지막 로그인 시간 삭제(자동로그인 방지)
-			
+			localStorage.removeItem('startBtnDisabled'); // 출근 버튼 상태 제거
+	        localStorage.removeItem('endBtnDisabled');
 			//로그아웃 요청 보내기
 			fetch('/cakecraft/logout', {
 				method: 'GET',
@@ -319,14 +320,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	// 사용자의 실제 위치 정보
 	const userLocation = {
-		latitude: 37.4730836,
-		longitude: 126.8788276
+		latitude: 37.476434,
+		longitude: 126.879777
 	};
 
 	// 출근 버튼을 활성화할 위치 범위
 	const startWorkLocation = {
-		latitude: 37.4730836,
-		longitude: 126.8788276
+		latitude: 37.476434,
+		longitude: 126.879777
 	};
 	
 	// 출퇴근 버튼 활성화 여부 결정에 사용할 거리 임계값(범위)
@@ -334,8 +335,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// 퇴근 버튼을 활성화할 위치 범위
 	const endWorkLocation = {
-		latitude: 37.4730836, // 퇴근 버튼 활성화 위도
-		longitude: 126.8788276 // 퇴근 버튼 활성화 경도
+		latitude: 37.476434, // 퇴근 버튼 활성화 위도
+		longitude: 126.879777 // 퇴근 버튼 활성화 경도
 	};
 
 	// 두 위치 간의 거리 계산 함수

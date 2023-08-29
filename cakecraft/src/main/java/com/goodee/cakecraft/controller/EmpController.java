@@ -76,10 +76,8 @@ public class EmpController {
 	        loginId = ((EmpIdList) o).getId();
 	        log.debug(KMS + "loginId EmpController" + loginId + RESET);
 	    }
-
-	    //EmpBase empBase = empService.getMyEmpById(loginId);
 		
-		//익명게시판 목록 가져오기
+		//사원 목록 가져오기
 		List<EmpBase> empList = empService.getEmpList(searchWord);
 		model.addAttribute("empList", empList);
 		

@@ -59,7 +59,17 @@ public class LoginController {
 		// 세션의 만료 시간을 설정
 	    session.setMaxInactiveInterval(3 * 60 * 60); // 3시간
 		session.setAttribute("loginMember", loginMember);
-	
+		
+		// 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
+				// autowired로 EmpMapper 주입
+				String profileImagePath = empMapper.getProfileImagePath(id);
+					if (profileImagePath != null) {
+						session.setAttribute("profileImagePath", profileImagePath);
+						log.debug(KMS + profileImagePath +  "profileImagePath /LoginController"+RESET);
+					} else {
+						session.setAttribute("profileImagePath", "default_profile.png");
+					}
+
 			return "redirect:/schedule/schedule";
 		}
 	  

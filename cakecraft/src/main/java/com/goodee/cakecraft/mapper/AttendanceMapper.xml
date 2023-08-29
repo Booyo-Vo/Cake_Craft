@@ -32,5 +32,26 @@
 	        AND DATE(start_dtime) = CURDATE()
 	        AND end_dtime IS NULL
 	</update>
-
+	
+	<!-- 출퇴근 이력 리스트 출력 -->
+	<select id = "selectMyAttendanceList"
+		parameterType="String"
+		resultType="com.goodee.cakecraft.vo.EmpAttendance">
+		SELECT
+			id,
+			start_dtime startDtime,
+			end_dtime endDtime,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM emp_attendance
+		<where>
+			1=1 
+            <if test="searchWord != null and searchWord != ''">
+                AND start_dtime LIKE CONCAT('%', #{searchWord}, '%')
+            </if>
+		</where>
+        ORDER BY reg_dtime DESC
+	</select>
 </mapper>

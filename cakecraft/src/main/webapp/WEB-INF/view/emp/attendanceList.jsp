@@ -9,22 +9,19 @@
 jQuery.noConflict(); 
 jQuery(document).ready(function($) {
 	var mydata = [ //데이터
-        <c:forEach var="e" items="${empList}">
-        	{name: "${e.empName}", id: "${e.id}", deptNm: "${e.deptNm}", teamNm: "${e.teamNm}", positionNm: "${e.positionNm}", email: "${e.email}", empStatus: "${e.empStatus}", dayoffCnt: "${e.dayoffCnt}"},
+        <c:forEach var="e" items="${empAttList}">
+        	{id: "${e.id}", startDtime: "${e.startDtime}", endDtime: "${e.endDtime}", regDtime: "${e.regDtime}"},
     	</c:forEach>
 	];
 
 	$("#list").jqGrid({
 		datatype: "local",
 		data: mydata,
-		colNames:['이름','사원번호','부서','팀','직급','이메일'],
+		colNames:['사원번호','출근시간','퇴근시간'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
-			{name:'name', index:'name', width:80, align: "center"},
-			{name:'id', index:'id', width:80 , align: "center" },
-			{name:'deptNm', index:'deptNm', width:80, align: "center"},
-			{name:'teamNm', index:'teamNm', width:80, align: "center"},
-			{name:'positionNm', index:'positionNm', width:80, align: "center"},
-			{name:'email', index:'email', width:80, align: "center"} 
+			{name:'id', index:'id', width:80, align: "center"},
+			{name:'startDtime', index:'startDtime', width:80 , align: "center" },
+			{name:'endDtime', index:'endDtime', width:80, align: "center"},
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
 		rownumbers : false, // 각 행앞에 번호를 표시
@@ -34,7 +31,7 @@ jQuery(document).ready(function($) {
 		sortname: 'name', // 기본정렬열
 		sortorder: 'asc', //기본정렬순서
 		height: "auto",//표의 높이
-	    caption: "직원 목록" // 테이블 캡션 설정
+	    caption: "출퇴근 이력" // 테이블 캡션 설정
 	});
 	// 윈도우 크기가 조정 될 때 표의 너비를 조정
 	$(window).on('resize.jqGrid', function() { // 윈도우 크기가 조정 될 때 표의 너비를 조정
@@ -83,13 +80,13 @@ jQuery(document).ready(function($) {
 				<div class="row">
 					<div class="col-md-6 col-sm-12">
 						<div class="title">
-							<h4>사원 조회</h4>
+							<h4>출퇴근 이력 조회</h4>
 						</div>
 						<!-- breadcrumb 시작 -->
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Emp list</li>
+								<li class="breadcrumb-item active" aria-current="page">My Attendance list</li>
 							</ol>
 						</nav>
 						<!-- breadcrumb 끝 -->
@@ -100,9 +97,9 @@ jQuery(document).ready(function($) {
 				<div class="clearfix mb-20">
 					<!-- 제목 검색 시작 -->
 					<div class="pull-left">
-						<form action="${pageContext.request.contextPath}/emp/empList" method="get">
+						<form action="${pageContext.request.contextPath}/emp/attendanceList" method="get">
 							<div class="d-flex">
-								<input class="form-control d-inline-block" style="width: 400px;" type="text" name="searchWord" placeholder="이름 검색">
+								<input class="form-control d-inline-block" style="width: 400px;" type="text" name="searchWord" placeholder="날짜 검색">
 								&nbsp;
 								<button class="d-inline-block btn-none" type="submit">
 									<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
@@ -112,7 +109,7 @@ jQuery(document).ready(function($) {
 					</div>
 					<!-- 제목 검색 끝 -->
 				</div>
-				<!-- 익명게시판 목록 -->
+				<!-- 리스트 목록 -->
 				<table id="list"></table>
 				<!-- 페이징 -->
 				<div id="pager"></div>
@@ -120,6 +117,7 @@ jQuery(document).ready(function($) {
 		</div>
 	</div>
 </div>
+
 <jsp:include page="/layout/footer.jsp"></jsp:include>	
 </body>
 </html>

@@ -3,6 +3,8 @@ package com.goodee.cakecraft.mapper;
 
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -15,4 +17,7 @@ public interface AttendanceMapper {
     
     // 퇴근시간 업데이트
     void updateEndDtime(EmpAttendance empAttendance);
+    
+    // 나의 출근이력 리스트
+    List<EmpAttendance> selectMyAttendanceList(String searchWord);
 }

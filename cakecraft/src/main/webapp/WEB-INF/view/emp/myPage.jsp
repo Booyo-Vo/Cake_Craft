@@ -194,14 +194,19 @@
 								</form>
 							</div>
 						<div class="row">
-							<div class="col-md-6 col-sm-12">
+							<div class="col-md-4 col-sm-12">
 								<div class="text-center mb-3">
 									<a href="/cakecraft/emp/modifyMyEmp" class="btn btn-primary">정보수정</a>
 								</div>
 							</div>
-							<div class="col-md-6 col-sm-12">
+							<div class="col-md-4 col-sm-12">
 								<div class="text-center mb-3">
 									<a href="/cakecraft/emp/empList" class="btn btn-primary">사원조회</a>
+								</div>
+							</div>
+							<div class="col-md-4 col-sm-12">
+								<div class="text-center mb-3">
+									<a href="/cakecraft/emp/attendanceList" class="btn btn-primary">출퇴근이력조회</a>
 								</div>
 							</div>
 				</div>
