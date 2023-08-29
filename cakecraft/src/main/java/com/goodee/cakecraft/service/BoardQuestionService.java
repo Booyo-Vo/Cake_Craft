@@ -75,11 +75,11 @@ public class BoardQuestionService {
 	
 	// 문의 삭제
 	public int removeQuestion(BoardQuestion question) {
-		int row = answerMapper.deleteAnswer(question);
-		// 답변이 삭제됐다면 문의도 함께 삭제
-		if(row == 1) {
-			questionMapper.deleteQuestion(question);
-		}
+		// 답변 삭제
+		answerMapper.deleteAnswer(question);
+		// 문의 삭제
+		int row = questionMapper.deleteQuestion(question);
+		
 		return row;
 	}
 }

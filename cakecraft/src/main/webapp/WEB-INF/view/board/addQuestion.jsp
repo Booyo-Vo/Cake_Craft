@@ -33,13 +33,13 @@
 			
 			<!-- 입력폼 시작 -->
 			<div class="html-editor pd-20 card-box mb-30">
-				<form action="${pageContext.request.contextPath}/board/addQuestion" method="post">
+				<form action="${pageContext.request.contextPath}/board/addQuestion" method="post" id="addQuestionForm">
 					<input type="hidden" name="id" value="${loginId}">
 					<div class="form-group">
-						<input class="form-control" type="text" name="questionTitle" placeholder="Enter title">
+						<input class="form-control" type="text" name="questionTitle" id="questionTitle" placeholder="Enter title">
 					</div>
 					<div class="form-group">
-						<textarea class="textarea_editor form-control border-radius-0" placeholder="Enter content" name="questionContent"></textarea>
+						<textarea class="textarea_editor form-control border-radius-0" placeholder="Enter content" name="questionContent" id="questionContent"></textarea>
 					</div>
 					<div class="form-group">
 						<input type="checkbox" name="secretYn" value="Y"> 비밀글 여부
@@ -47,7 +47,7 @@
 					<div style="display: flex;">
 						<div style="margin-left: auto;">
 							<a href="${pageContext.request.contextPath}/board/questionList"><button type="button" class="btn btn-primary">취소</button></a>
-							<button type="submit" class="btn btn-primary">확인</button>
+							<button type="button" id="btn" class="btn btn-primary">확인</button>
 						</div>
 					</div>
 				</form>
@@ -56,5 +56,18 @@
 		</div>
 	</div>
 </div>
+<script>
+// 입력폼 유효성검사
+$('#btn').click(function(){
+	if($('#questionTitle').val() == ''){
+		alert('제목을 입력해주세요');
+		$('#questionTitle').focus();
+	}else if($('#questionContent').val() == ''){
+		alert('내용을 입력해주세요');
+	}else {
+		$('#addQuestionForm').submit();
+	}
+});
+</script>
 </body>
 </html>

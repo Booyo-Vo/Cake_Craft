@@ -80,9 +80,15 @@ public class BoardQuestionController {
 	}
 	
 	@PostMapping("/board/addQuestion")
-	public String addQuestion(BoardQuestion question) {
+	public String addQuestion(BoardQuestion question,
+					@RequestParam(name = "secretYn", defaultValue = "N") String secretYn) {
+		BoardQuestion paramQuestion = new BoardQuestion();
+		paramQuestion.setId(question.getId());
+		paramQuestion.setSecretYn(secretYn);
+		paramQuestion.setQuestionTitle(question.getQuestionTitle());
+		paramQuestion.setQuestionContent(question.getQuestionContent());
 		
-		questionService.addQuestion(question);
+		questionService.addQuestion(paramQuestion);
 		
 		return "redirect:/board/questionList";
 	}
@@ -104,9 +110,16 @@ public class BoardQuestionController {
 	}
 	
 	@PostMapping("/board/modifyQuestion")
-	public String modifyQuestion(BoardQuestion question) {
+	public String modifyQuestion(BoardQuestion question,
+			@RequestParam(name = "secretYn", defaultValue = "N") String secretYn) {
+		BoardQuestion paramQuestion = new BoardQuestion();
+		paramQuestion.setId(question.getId());
+		paramQuestion.setQuestionNo(question.getQuestionNo());
+		paramQuestion.setSecretYn(secretYn);
+		paramQuestion.setQuestionTitle(question.getQuestionTitle());
+		paramQuestion.setQuestionContent(question.getQuestionContent());
 		
-		questionService.modifyQuestion(question);
+		questionService.modifyQuestion(paramQuestion);
 		
 		return "redirect:/board/questionByNo?questionNo="+question.getQuestionNo();
 	}

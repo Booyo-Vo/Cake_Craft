@@ -23,7 +23,7 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/questionList">QnA</a></li>
-								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/questionByNo">QuestionByNo</a></li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/questionByNo?questionNo=${questionByNo.questionNo}">QuestionByNo</a></li>
 								<li class="breadcrumb-item active" aria-current="page">modifyQuestion</li>
 							</ol>
 						</nav>
@@ -34,14 +34,14 @@
 			
 			<!-- 입력폼 시작 -->
 			<div class="html-editor pd-20 card-box mb-30">
-				<form action="${pageContext.request.contextPath}/board/modifyQuestion" method="post">
+				<form action="${pageContext.request.contextPath}/board/modifyQuestion" method="post" id="modQuestionForm">
 					<input type="hidden" name="id" value="${loginId}">
 					<input type="hidden" name="questionNo" value="${questionByNo.questionNo}">
 					<div class="form-group">
-						<input class="form-control" type="text" name="questionTitle" value="${questionByNo.questionTitle}">
+						<input class="form-control" type="text" name="questionTitle" id="questionTitle" value="${questionByNo.questionTitle}">
 					</div>
 					<div class="form-group">
-						<textarea class="textarea_editor form-control border-radius-0" name="questionContent">${questionByNo.questionContent}</textarea>
+						<textarea class="textarea_editor form-control border-radius-0" name="questionContent" id="questionContent">${questionByNo.questionContent}</textarea>
 					</div>
 					<div class="form-group">
 						<c:if test="${questionByNo.secretYn == 'Y'}">
@@ -54,7 +54,7 @@
 					<div style="display: flex;">
 						<div style="margin-left: auto;">
 							<a href="${pageContext.request.contextPath}/board/questionByNo?questionNo=${questionByNo.questionNo}"><button type="button" class="btn btn-primary">취소</button></a>
-							<button type="submit" class="btn btn-primary">확인</button>
+							<button type="button" id="btn" class="btn btn-primary">확인</button>
 						</div>
 					</div>
 				</form>
@@ -63,5 +63,18 @@
 		</div>
 	</div>
 </div>
+<script>
+// 입력폼 유효성검사
+$('#btn').click(function(){
+	if($('#questionTitle').val() == ''){
+		alert('제목을 입력해주세요');
+		$('#questionTitle').focus();
+	}else if($('#questionContent').val() == ''){
+		alert('내용을 입력해주세요');
+	}else {
+		$('#modQuestionForm').submit();
+	}
+});
+</script>
 </body>
 </html>
