@@ -138,6 +138,19 @@
 		WHERE category_cd = #{cd}
 	</select>
 	
+	<!-- 카테고리이름 중복검사 -->
+	<select id="selectCategoryName"
+			parameterType="com.goodee.cakecraft.vo.StStdCd"
+			resultType="Integer">
+		SELECT COUNT(*) cnt
+		FROM st_std_cd
+		<where>
+			grp_cd = 'F001'
+			AND cd_nm = #{cdNm}
+			AND cd != #{cd}
+		</where>
+	</select>
+	
 	<!-- 카테고리 코드 추가 -->
 	<insert id="insertCategoryCd"
 			parameterType="com.goodee.cakecraft.vo.StStdCd">

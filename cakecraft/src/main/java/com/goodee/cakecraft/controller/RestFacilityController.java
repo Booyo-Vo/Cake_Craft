@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.controller;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -72,5 +73,12 @@ public class RestFacilityController {
 	public List<StStdCd> listBySearch(@RequestParam(name="cd") String cd){
 		List<StStdCd> searchList = facilityService.getFacilityCdList(cd);
 		return searchList;
+	}
+	
+	//카테고리 이름 중복검사
+	@PostMapping("/rest/categoryNameCheck")
+	public int categoryNameCheck(StStdCd stStdCd) {
+		int row = facilityService.getCategoryNameCheck(stStdCd);
+		return row;
 	}
 }

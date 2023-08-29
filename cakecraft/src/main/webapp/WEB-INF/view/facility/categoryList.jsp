@@ -152,25 +152,49 @@
 	function modName(cd){
 		let cdNm = $('#cdNm'+cd).val();
 		console.log(cdNm);
-		$.ajax({
-			url : '${pageContext.request.contextPath}/rest/modifyFacilityCategory',
-			type : 'post',
-			data : {
-				cd : cd,
-				cdNm : cdNm
-			},
-			success : function(row){
-				if(row == 1){
-					console.log('변경성공');
-					location.reload();
-				} else {
-					alert('수정에 실패하였습니다');
+		if(cdNm === ''){
+			alert('이름을 입력하세요');
+			$('#cdNm'+cd).focus();
+			return;
+		} else {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/rest/categoryNameCheck',
+				type : 'post',
+				data : {
+					cd : cd,
+					cdNm : cdNm},
+				success : function(row){
+					console.log('ajax성공');
+					if(row > 0){
+						alert('이미 사용중인 이름입니다');
+						$('#cdNm'+cd).focus();
+					}else {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/rest/modifyFacilityCategory',
+							type : 'post',
+							data : {
+								cd : cd,
+								cdNm : cdNm
+							},
+							success : function(row){
+								if(row == 1){
+									console.log('변경성공');
+									location.reload();
+								} else {
+									alert('수정에 실패하였습니다');
+								}
+							},
+							error : function(){
+								console.log('수정 ajax실패');
+							}
+						});
+					}
+				},
+				error : function(){
+					console.log('유효성 검사 ajax실패');
 				}
-			},
-			error : function(){
-				console.log('ajax실패');
-			}
-		})
+			});
+		}
 	}
 
 </script>

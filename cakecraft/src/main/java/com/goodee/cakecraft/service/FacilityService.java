@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.service;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.FacilityMapper;
-import com.goodee.cakecraft.mapper.StStdCdMapper;
 import com.goodee.cakecraft.vo.FacilityBase;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -96,6 +96,15 @@ public class FacilityService {
 		paramMap.put("cd", cd);
 		List<StStdCd> cdList = facilityMapper.selectFacilityCdList(paramMap);
 		return cdList;
+	}
+	
+	//시설비품 카테고리이름 중복확인
+	public int getCategoryNameCheck(StStdCd stStdCd){
+		int cnt = -1;
+		cnt = facilityMapper.selectCategoryName(stStdCd);
+		log.debug(KMJ + cnt + RESET);
+		
+		return cnt;
 	}
 	
 	//시설비품 카테고리 추가
