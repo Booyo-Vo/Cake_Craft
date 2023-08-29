@@ -115,11 +115,26 @@ public class ApprovalService {
 	}
 	
 	// 결재문서 상세정보 출력
-	public ApprovalDocument getApprDocByNo(String documentNo){
-		// 반환값
+	public Map<String, Object> getApprDocByNo(String documentNo, String loginId){
+		// 결재문서 상세정보
 		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(documentNo);
 		
-		return resultApprDoc;
+		// 결재문서 상세이력
+		ApprovalHistory resultApprHist = apprDocMapper.selectApprHistByNo(documentNo, loginId);
+		
+		// 바로 직전 결재자의 결재상태를 조회하기 위해, 이전 결재이력의 번호를 변수에 저장
+		int approvalNo = (resultApprHist.getApprovalNo())-1;
+		
+		// 이전 결재자의 상세이력
+		ApprovalHistory resultApprHistPreLv = apprDocMapper.selectApprHistByNoPreLv(approvalNo);
+		
+		// 반환값
+		Map<String, Object> resultApprMap = new HashMap<String, Object>();
+		resultApprMap.put("resultApprDoc", resultApprDoc);
+		resultApprMap.put("resultApprHist", resultApprHist);
+		resultApprMap.put("resultApprHistPreLv", resultApprHistPreLv);
+		
+		return resultApprMap;
 	}
 	
 	

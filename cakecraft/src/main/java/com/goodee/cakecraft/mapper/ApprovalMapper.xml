@@ -87,8 +87,9 @@
 	
 	<!-- 결재자가 승인해야 할 문서 개수 조회 -->
 	<select id="selectApprDocWaitNoByIdCnt"
-		parameterType="String">
-		SELECT ah2.count(*) cnt
+		parameterType="String"
+		resultType="int">
+		SELECT COUNT(*) cnt
 		FROM approval_history ah2
 		<where>
 		 		(ah2.approval_level = 2 AND ah2.approval_status_cd = 2)
@@ -158,7 +159,7 @@
 			</where>
 	</select>
 	
-	<!-- 결재문서 상세이력 출력 -->
+	<!-- 결재이력 상세정보 출력 -->
 	<select id="selectApprHistByNo"
 			parameterType="String" 
 			resultType="com.goodee.cakecraft.vo.ApprovalHistory">
@@ -175,9 +176,26 @@
 			FROM approval_history
 			<where>
 				document_no = #{documentNo}
+				And approval_id = #{loginId}
 			</where>
 	</select>
 	
+	<!-- 이전 결재자의 결재상태 출력 -->
+	<select id="selectApprHistByNoPreLv"
+			parameterType="int" 
+			resultType="com.goodee.cakecraft.vo.ApprovalHistory">
+			SELECT
+				approval_no approvalNo,
+				approval_id approvalId,
+				document_no documentNo,
+				approval_level approvalLevel,
+				approval_status_cd approvalStatusCd
+			FROM approval_history
+			<where>
+				approval_no = #{approvalNo}
+			</where>
+	</select>
+
 	<!-- 문서번호 생성 -->
 	<select id="selectDocumentNo"
 		parameterType="Map"
@@ -369,11 +387,9 @@
 			parameterType="com.goodee.cakecraft.vo.ApprovalHistory">
 			UPDATE approval_history
 			SET approval_status_cd = #{approvalStatusCd},
-				reg_dtime = NOW(),
 				mod_dtime = NOW(), 
-				mod_id = #{loginId}
+				mod_id = #{loginId}		<!-- 수정한사람 = 결재자 이름 -->
 			WHERE document_no = #{documentNo}
-			AND approval_level = #{approvalLevel}
-			AND approval_id = #{loginId}	 <!-- 수정한사람 = 결재자 이름 -->
+			AND approval_level = #{approvalLevel} 
 	</update>
 </mapper>

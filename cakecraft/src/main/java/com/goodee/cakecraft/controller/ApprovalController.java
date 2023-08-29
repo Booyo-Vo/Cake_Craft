@@ -134,13 +134,15 @@ public class ApprovalController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		// 결재문서 상세내역 받아오기
-		ApprovalDocument apprDoc = approvalService.getApprDocByNo(documentNo);
+		// 결재문서 정보 및 상세 이력 받아오기
+		Map<String, Object> resultApprMap = approvalService.getApprDocByNo(documentNo, loginId);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("apprDoc",apprDoc);
-		log.debug(SHJ + apprDoc + " <-- apprDoc" + RESET);
+		model.addAttribute("apprDoc", resultApprMap.get("resultApprDoc"));
+		model.addAttribute("apprHist", resultApprMap.get("resultApprHist"));
+		model.addAttribute("apprHistPreLv", resultApprMap.get("resultApprHistPreLv"));
+		
 		return "/approval/apprDocByNo";
 	}
 		
