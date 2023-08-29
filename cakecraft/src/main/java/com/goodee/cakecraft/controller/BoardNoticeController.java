@@ -85,7 +85,7 @@ public class BoardNoticeController {
 		
 		noticeService.modifyNotice(notice);
 		
-		return "redirect:/board/noticeList";
+		return "redirect:/board/noticeByNo?noticeNo="+notice.getNoticeNo();
 	}
 	
 	// 공지 삭제

@@ -22,6 +22,7 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/anonyList">Anony</a></li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/anonyByNo?anonyNo=${anonyByNo.anonyNo}">AnonyByNo</a></li>
 								<li class="breadcrumb-item active" aria-current="page">modifyAnony</li>
 							</ol>
 						</nav>
@@ -32,22 +33,24 @@
 			
 			<!-- 입력폼 시작 -->
 			<div class="html-editor pd-20 card-box mb-30">
-				<form action="${pageContext.request.contextPath}/board/modifyAnony" method="post" enctype="multipart/form-data">
+				<form action="${pageContext.request.contextPath}/board/modifyAnony" method="post" enctype="multipart/form-data" id="modAnonyForm">
 					<input type="hidden" name="id" value="${loginId}">
 					<input type="hidden" name="anonyNo" value="${anonyByNo.anonyNo}">
 					<div class="form-group">
-						<input class="form-control" type="text" name="anonyTitle" value="${anonyByNo.anonyTitle}">
+						<input type="text" class="form-control" name="anonyTitle" id="anonyTitle" value="${anonyByNo.anonyTitle}">
 					</div>
 					<div class="form-group">
-						<textarea class="textarea_editor form-control border-radius-0" name="anonyContent">${anonyByNo.anonyContent}</textarea>
+						<textarea class="textarea_editor form-control border-radius-0" name="anonyContent" id="anonyContent">${anonyByNo.anonyContent}</textarea>
 					</div>
 					<div class="form-group">
 						<input type="file" name="multipartFile" multiple="multiple">
 					</div>
 					<div style="display: flex;">
 						<div style="margin-left: auto;">
-							<a href="${pageContext.request.contextPath}/board/anonyByNo?anonyNo=${anonyByNo.anonyNo}"><button type="button" class="btn btn-primary">취소</button></a>
-							<button type="submit" class="btn btn-primary">확인</button>
+							<a href="${pageContext.request.contextPath}/board/anonyByNo?anonyNo=${anonyByNo.anonyNo}">
+								<button type="button" class="btn btn-secondary">취소</button>
+							</a>
+							<button type="button" class="btn btn-primary" id="btn">확인</button>
 						</div>
 					</div>
 				</form>
@@ -56,5 +59,18 @@
 		</div>
 	</div>
 </div>
+<script>
+// 입력폼 유효성검사
+$('#btn').click(function(){
+	if($('#anonyTitle').val() == ''){
+		alert('제목을 입력해주세요');
+		$('#anonyTitle').focus();
+	}else if($('#anonyContent').val() == ''){
+		alert('내용을 입력해주세요');
+	}else {
+		$('#modAnonyForm').submit();
+	}
+});
+</script>
 </body>
 </html>

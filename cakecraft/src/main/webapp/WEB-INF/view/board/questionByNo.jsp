@@ -71,7 +71,7 @@
 					</div>
 					<div class="pull-right">
 						<a href="${pageContext.request.contextPath}/board/questionList">
-							<button type="button" class="btn btn-primary form-group">취 소</button>
+							<button type="button" class="btn btn-secondary form-group">취 소</button>
 						</a>
 						<!-- 작성자만 수정,삭제버튼 노출 -->
 						<c:if test="${loginId == questionByNo.regId}">
@@ -99,7 +99,7 @@
 							<div>
 								<br>
 								<label><b>문의 답변</b></label>
-								<button type="button" id="addSubmitBtn" class="pull-right btn btn-primary">등 록</button>
+								<button type="button" class="pull-right btn btn-primary" id="addSubmitBtn">등 록</button>
 							</div>
 							<br>
 							<form action="${pageContext.request.contextPath}/board/addAnswer" method="post" id="addAnswerForm">
@@ -138,8 +138,8 @@
 								<label><b>문의 답변 수정</b></label>
 							</div>
 							<div class="pull-right">
-								<button type="button" id="cancelBtn" class="btn btn-primary">취 소</button>
-								<button type="button" id="modSubmitBtn" class="btn btn-primary">확 인</button>
+								<button type="button" class="btn btn-secondary" id="cancelBtn">취 소</button>
+								<button type="button" class="btn btn-primary" id="modSubmitBtn">확 인</button>
 							</div>
 							<br>
 						</div>

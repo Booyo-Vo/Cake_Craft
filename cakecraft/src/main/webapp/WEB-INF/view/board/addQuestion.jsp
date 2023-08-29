@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,18 +35,20 @@
 				<form action="${pageContext.request.contextPath}/board/addQuestion" method="post" id="addQuestionForm">
 					<input type="hidden" name="id" value="${loginId}">
 					<div class="form-group">
-						<input class="form-control" type="text" name="questionTitle" id="questionTitle" placeholder="Enter title">
+						<input type="text" class="form-control" name="questionTitle" id="questionTitle" placeholder="Enter title">
 					</div>
 					<div class="form-group">
-						<textarea class="textarea_editor form-control border-radius-0" placeholder="Enter content" name="questionContent" id="questionContent"></textarea>
+						<textarea class="textarea_editor form-control border-radius-0" name="questionContent" id="questionContent" placeholder="Enter content"></textarea>
 					</div>
 					<div class="form-group">
 						<input type="checkbox" name="secretYn" value="Y"> 비밀글 여부
 					</div>
 					<div style="display: flex;">
 						<div style="margin-left: auto;">
-							<a href="${pageContext.request.contextPath}/board/questionList"><button type="button" class="btn btn-primary">취소</button></a>
-							<button type="button" id="btn" class="btn btn-primary">확인</button>
+							<a href="${pageContext.request.contextPath}/board/questionList">
+								<button type="button" class="btn btn-secondary">취소</button>
+							</a>
+							<button type="button" class="btn btn-primary" id="btn">확인</button>
 						</div>
 					</div>
 				</form>

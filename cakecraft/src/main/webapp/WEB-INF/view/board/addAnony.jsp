@@ -32,21 +32,23 @@
 			
 			<!-- 입력폼 시작 -->
 			<div class="html-editor pd-20 card-box mb-30">
-				<form action="${pageContext.request.contextPath}/board/addAnony" method="post" enctype="multipart/form-data">
+				<form action="${pageContext.request.contextPath}/board/addAnony" method="post" enctype="multipart/form-data" id="addAnonyForm">
 					<input type="hidden" name="id" value="${loginId}">
 					<div class="form-group">
-						<input class="form-control" type="text" name="anonyTitle" placeholder="Enter title">
+						<input type="text" class="form-control" name="anonyTitle" id="anonyTitle" placeholder="Enter title">
 					</div>
 					<div class="form-group">
-						<textarea class="textarea_editor form-control border-radius-0" placeholder="Enter content" name="anonyContent"></textarea>
+						<textarea class="textarea_editor form-control border-radius-0" name="anonyContent" id="anonyContent" placeholder="Enter content"></textarea>
 					</div>
 					<div class="form-group">
 						<input type="file" name="multipartFile" multiple="multiple">
 					</div>
 					<div style="display: flex;">
 						<div style="margin-left: auto;">
-							<a href="${pageContext.request.contextPath}/board/anonyList"><button type="button" class="btn btn-primary">취소</button></a>
-							<button type="submit" class="btn btn-primary">확인</button>
+							<a href="${pageContext.request.contextPath}/board/anonyList">
+								<button type="button" class="btn btn-secondary">취소</button>
+							</a>
+							<button type="button" class="btn btn-primary" id="btn">확인</button>
 						</div>
 					</div>
 				</form>
@@ -55,5 +57,18 @@
 		</div>
 	</div>
 </div>
+<script>
+// 입력폼 유효성검사
+$('#btn').click(function(){
+	if($('#anonyTitle').val() == ''){
+		alert('제목을 입력해주세요');
+		$('#anonyTitle').focus();
+	}else if($('#anonyContent').val() == ''){
+		alert('내용을 입력해주세요');
+	}else {
+		$('#addAnonyForm').submit();
+	}
+});
+</script>
 </body>
 </html>

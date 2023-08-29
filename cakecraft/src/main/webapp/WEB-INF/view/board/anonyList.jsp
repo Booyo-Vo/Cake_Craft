@@ -17,7 +17,7 @@ jQuery(document).ready(function($) {
 	$("#list").jqGrid({
 		datatype: "local",
 		data: mydata,
-		colNames:['번호','제목','&#9825; 좋아요 수','작성일'],
+		colNames:['번호','제목','&#9825; 좋아요','작성일'],
 		colModel:[
 			{name:'anonyNo', index:'noticeNo', width:10, align: "center", sortable:false},
 			{name:'anonyTitle', index:'noticeTitle', width:30, align: "center", sortable:false},
@@ -98,9 +98,9 @@ jQuery(document).ready(function($) {
 					<div class="pull-left">
 						<form action="${pageContext.request.contextPath}/board/anonyList" method="get">
 							<div class="d-flex">
-								<input class="form-control d-inline-block" style="width: 400px;" type="text" name="searchWord" placeholder="제목 검색">
+								<input type="text" class="form-control d-inline-block" name="searchWord" placeholder="제목 검색" style="width: 400px;">
 								&nbsp;
-								<button class="d-inline-block btn-none" type="submit">
+								<button type="submit" class="d-inline-block btn-none">
 									<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
 								</button>
 							</div>
@@ -110,7 +110,9 @@ jQuery(document).ready(function($) {
 					
 					<!-- 익명게시글 추가버튼 시작 -->
 					<div class="pull-right">
-						<a href="${pageContext.request.contextPath}/board/addAnony"><button type="button" class="btn btn-primary">게시글 작성</button></a>
+						<a href="${pageContext.request.contextPath}/board/addAnony">
+							<button type="button" class="btn btn-primary">게시글 작성</button>
+						</a>
 					</div>
 					<!-- 익명게시글 추가버튼 끝 -->
 				</div>

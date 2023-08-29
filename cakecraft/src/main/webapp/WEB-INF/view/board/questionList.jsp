@@ -122,11 +122,13 @@ jQuery(document).ready(function($) {
 					<div class="pull-left">
 						<form action="${pageContext.request.contextPath}/board/questionList" method="get">
 							<div class="d-flex">
-								<input class="form-control d-inline-block" type="text" name="searchRegId" placeholder="작성자 검색">
+								<input type="text" class="form-control d-inline-block" name="searchRegId" placeholder="작성자 검색">
 								&nbsp;
-								<input class="form-control d-inline-block" type="text" name="searchWord" placeholder="문의제목 검색">
+								<input type="text" class="form-control d-inline-block" name="searchWord" placeholder="문의제목 검색">
 								&nbsp;
-								<button class="d-inline-block btn-none" type="submit"><div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div></button>
+								<button type="submit" class="d-inline-block btn-none">
+									<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
+								</button>
 							</div>
 						</form>
 					</div>
@@ -134,7 +136,9 @@ jQuery(document).ready(function($) {
 					
 					<!-- 문의사항 추가버튼 시작 -->
 					<div class="pull-right">
-						<a href="${pageContext.request.contextPath}/board/addQuestion"><button type="button" class="btn btn-primary">문의사항 작성</button></a>
+						<a href="${pageContext.request.contextPath}/board/addQuestion">
+							<button type="button" class="btn btn-primary">문의사항 작성</button>
+						</a>
 					</div>
 					<!-- 문의사항 추가버튼 끝 -->
 				</div>

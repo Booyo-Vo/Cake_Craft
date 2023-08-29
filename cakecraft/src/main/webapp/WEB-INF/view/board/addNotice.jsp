@@ -32,18 +32,20 @@
 			
 			<!-- 입력폼 시작 -->
 			<div class="html-editor pd-20 card-box mb-30">
-				<form action="${pageContext.request.contextPath}/board/addNotice" method="post">
+				<form action="${pageContext.request.contextPath}/board/addNotice" method="post" id="addNoticeForm">
 					<input type="hidden" name="id" value="${loginId}">
 					<div class="form-group">
-						<input class="form-control" type="text" name="noticeTitle" placeholder="Enter title">
+						<input type="text" class="form-control" name="noticeTitle" id="noticeTitle" placeholder="Enter title">
 					</div>
 					<div class="form-group">
-						<textarea class="textarea_editor form-control border-radius-0" placeholder="Enter content" name="noticeContent"></textarea>
+						<textarea class="textarea_editor form-control border-radius-0" name="noticeContent" id="noticeContent" placeholder="Enter content"></textarea>
 					</div>
 					<div style="display: flex;">
 						<div style="margin-left: auto;">
-							<a href="${pageContext.request.contextPath}/board/noticeList"><button type="button" class="btn btn-primary">취소</button></a>
-							<button type="submit" class="btn btn-primary">확인</button>
+							<a href="${pageContext.request.contextPath}/board/noticeList">
+								<button type="button" class="btn btn-secondary">취소</button>
+							</a>
+							<button type="button" class="btn btn-primary" id="btn">확인</button>
 						</div>
 					</div>
 				</form>
@@ -52,5 +54,18 @@
 		</div>
 	</div>
 </div>
+<script>
+// 입력폼 유효성검사
+$('#btn').click(function(){
+	if($('#noticeTitle').val() == ''){
+		alert('제목을 입력해주세요');
+		$('#noticeTitle').focus();
+	}else if($('#noticeContent').val() == ''){
+		alert('내용을 입력해주세요');
+	}else {
+		$('#addNoticeForm').submit();
+	}
+});
+</script>
 </body>
 </html>
