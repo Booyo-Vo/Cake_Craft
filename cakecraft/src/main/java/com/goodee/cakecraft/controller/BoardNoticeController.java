@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.BoardNoticeService;
+import com.goodee.cakecraft.service.EmpService;
 import com.goodee.cakecraft.vo.BoardNotice;
+import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
 
 @Controller
 public class BoardNoticeController {
 	@Autowired BoardNoticeService noticeService;
-	
+	@Autowired EmpService empService;
 	// 공지 목록 조회 
 	@GetMapping("/board/noticeList")
 	public String noticeList(Model model, HttpSession session,
@@ -29,10 +31,14 @@ public class BoardNoticeController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 로그인한 사원 정보 가져오기
+		EmpBase empBase = empService.getEmpById(loginId);
+		
 		// 공지목록 가져오기
 		Map<String, Object> resultMap = noticeService.getNoticeList(searchRegId, searchWord);
 		
 		model.addAttribute("loginId",loginId);
+		model.addAttribute("empBase",empBase);
 		model.addAttribute("noticeList",resultMap.get("noticeList"));
 		
 		return "/board/noticeList";

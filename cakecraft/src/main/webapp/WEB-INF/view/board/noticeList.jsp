@@ -110,7 +110,11 @@ jQuery(document).ready(function($) {
 					
 					<!-- 공지사항 추가버튼 시작 -->
 					<div class="pull-right">
-						<a href="${pageContext.request.contextPath}/board/addNotice"><button type="button" class="btn btn-primary">공지사항 작성</button></a>
+						<c:if test="${empBase.deptCd == '1'}">
+							<a href="${pageContext.request.contextPath}/board/addNotice">
+								<button type="button" class="btn btn-primary">공지사항 작성</button>
+							</a>
+						</c:if>
 					</div>
 					<!-- 공지사항 추가버튼 끝 -->
 				</div>

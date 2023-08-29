@@ -61,8 +61,11 @@
 		</tr>
 	</table>
 	<a href="${pageContext.request.contextPath}/board/anonyList">취소</a>
-	<a href="${pageContext.request.contextPath}/board/removeAnony?anonyNo=${anonyByNo.anonyNo}">삭제</a>
-	<a href="${pageContext.request.contextPath}/board/modifyAnony?anonyNo=${anonyByNo.anonyNo}">수정</a>
+	<!-- 작성자만 수정,삭제 버튼 출력 -->
+	<c:if test="${loginId == anonyByNo.id}">
+		<a href="${pageContext.request.contextPath}/board/modifyAnony?anonyNo=${anonyByNo.anonyNo}">수정</a>
+		<a href="${pageContext.request.contextPath}/board/removeAnony?anonyNo=${anonyByNo.anonyNo}">삭제</a>
+	</c:if>
 	<button type="button" id="likeBtn"></button>
 	<!-- 게시글 상세 정보 끝 -->
 	

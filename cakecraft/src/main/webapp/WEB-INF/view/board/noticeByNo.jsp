@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,8 +37,11 @@
 		</tr>
 	</table>
 	<a href="${pageContext.request.contextPath}/board/noticeList">취소</a>
-	<a href="${pageContext.request.contextPath}/board/removeNotice?noticeNo=${noticeByNo.noticeNo}">삭제</a>
-	<a href="${pageContext.request.contextPath}/board/modifyNotice?noticeNo=${noticeByNo.noticeNo}">수정</a>
+	<!-- 작성자만 수정,삭제버튼 출력 -->
+	<c:if test="${loginId == noticeByNo.id}">
+		<a href="${pageContext.request.contextPath}/board/removeNotice?noticeNo=${noticeByNo.noticeNo}">삭제</a>
+		<a href="${pageContext.request.contextPath}/board/modifyNotice?noticeNo=${noticeByNo.noticeNo}">수정</a>
+	</c:if>
 </div>
 </body>
 </html>
