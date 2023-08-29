@@ -52,3 +52,6 @@
 <!------------- 사인용 캔버스 ------------->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
 
+<!------------- sweet alert ------------->
+<script src="${pageContext.request.contextPath}/layout/src/plugins/sweetalert2/sweetalert2.all.js"></script>
+<script src="${pageContext.request.contextPath}/layout/src/plugins/sweetalert2/sweet-alert.init.js"></script>
