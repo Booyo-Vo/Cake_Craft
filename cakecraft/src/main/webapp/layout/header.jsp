@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 /* 동그란 이미지 스타일 */
 .circular-image {
@@ -218,14 +219,17 @@
 						<li><a href="/cakecraft/approval/apprDocListByIdTempY">임시저장</a></li>
 					</ul>
 				</li>
+				
 				<li class="dropdown">
 					<a href="javascript:;" class="dropdown-toggle">
 						<span class="micon dw dw-edit2"></span><span class="mtext">시설예약</span>
 					</a>
 					<ul class="submenu">
-						<li><a href="/cakecraft/facility/facilityList">시설비품관리</a></li>
-						<li><a href="/cakecraft/reservation/reservation">시설비품예약</a></li>
-						<li><a href="/cakecraft/reservation/reservationListById">나의예약이력</a></li>
+						<c:if test="${fn:substring(loginId, 2, 5) eq '114'}">
+							<li><a href="/cakecraft/facility/facilityList">시설비품관리</a></li>
+						</c:if>
+							<li><a href="/cakecraft/reservation/reservation">시설비품예약</a></li>
+							<li><a href="/cakecraft/reservation/reservationListById">나의예약이력</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -238,18 +242,21 @@
 						<li><a href="/cakecraft/board/questionList">Q&A</a></li>
 					</ul>
 				</li>
-				<li class="dropdown">
-					<a href="javascript:;" class="dropdown-toggle">
-						<span class="micon dw dw-analytics-21"></span><span class="mtext">관리자메뉴</span>
-					</a>
-					<ul class="submenu">
-						<li><a href="/cakecraft/emp/addEmp">사원추가</a></li>
-						<li><a href="/cakecraft/emp/adminEmpList">사원관리</a></li>
-						<li><a href="/cakecraft/stStdCd/stStdCdList">부서/팀관리</a></li>
-						<li><a href="/cakecraft/emp/chartList">차트</a></li>
-					</ul>
-				</li>
-			</ul>
+				 <!-- 관리자 메뉴 -->
+		        <c:if test="${fn:substring(loginId, 2, 5) eq '111'}">
+		            <li class="dropdown">
+		                <a href="javascript:;" class="dropdown-toggle">
+		                    <span class="micon dw dw-analytics-21"></span><span class="mtext">관리자메뉴</span>
+		                </a>
+		                <ul class="submenu">
+		                    <li><a href="/cakecraft/emp/addEmp">사원추가</a></li>
+		                    <li><a href="/cakecraft/emp/adminEmpList">사원관리</a></li>
+		                    <li><a href="/cakecraft/stStdCd/stStdCdList">부서/팀관리</a></li>
+		                    <li><a href="/cakecraft/emp/chartList">차트</a></li>
+		                </ul>
+		            </li>
+		        </c:if>
+		    </ul>
 		</div>
 	</div>
 </div>
