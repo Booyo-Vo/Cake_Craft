@@ -27,8 +27,8 @@ jQuery(document).ready(function($) {
 
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
-		rownumbers : true, // 각 행앞에 번호를 표시
-		multiselect:true, // 다중선택 활성화
+		rownumbers: true, // 각 행앞에 번호를 표시
+		multiselect: false, // 다중선택 활성화
 		pager:'#pager',
 		rowNum: 10, // 표시할 행의 수 
 		rowList: [10, 20, 50], // 행수를 선택할 수 있는 옵션 설정
@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
         var rowId = $(this).closest("tr.jqgrow").attr("id");
         var rowData = $("#list").jqGrid("getRowData", rowId);
         var no = rowData.no;
-        window.location.href = "/cakecraft/approval/apprDocByNo?documentNo=" + no;
+        window.location.href = "/cakecraft/approval/apprDocInfoByNo?documentNo=" + no;
     });
     
  	// 선택 가능한 열에 밑줄 스타일 추가
@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item active" aria-current="page">참조문서</li>
 							</ol>
 						</nav>
@@ -113,7 +113,7 @@ jQuery(document).ready(function($) {
 				<div class="form-group row">
 					<div class="col-sm-4 col-md-2">
 						<select class="custom-select form-control" id="searchTypeSelect">
-							<option value="All" selected>전체 검색</option>
+							<option value="" selected>-- 선택하세요 --</option>
 							<option value="cd">문서형식</option>
 							<option value="title">제목</option>
 						</select>

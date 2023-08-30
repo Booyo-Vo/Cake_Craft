@@ -4,8 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container">
 	<h1>apprDocByNo</h1>
 	<div>${apprDoc.documentContent}</div>
 	
@@ -30,12 +33,12 @@
 		<div>반려버튼</div>
 	</c:if>
 	
-	<!-- 작성자로 지정된 경우 : 기안회수 버튼 -->
+	<!-- 작성자 본인인 경우 : 기안회수 버튼 -->
 	<c:if test="${apprDoc.id == loginId}">
 		<div>회수버튼</div>
 	</c:if>
 	
-	<!-- 참조자로 지정된 경우, 이미 결재를 승인한 경우 : 버튼 없음 -->
-	
+	<!-- 이미 결재를 승인한 경우 : 버튼 없음 -->
+</div>	
 </body>
 </html>

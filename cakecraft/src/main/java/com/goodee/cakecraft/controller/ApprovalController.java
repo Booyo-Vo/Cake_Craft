@@ -125,7 +125,7 @@ public class ApprovalController {
 	}
 	
 	
-	// 결재문서 상세보기
+	// 결재문서 상세보기 (결재대기문서, 결재수신문서, 기안문서)
 	@GetMapping("/approval/apprDocByNo")
 	public String apprDocByNo(
 					HttpSession session,
@@ -146,7 +146,23 @@ public class ApprovalController {
 		
 		return "/approval/apprDocByNo";
 	}
+	
+	// 문서정보 상세보기 (임시저장, 참조문서)
+	@GetMapping("/approval/apprDocInfoByNo")
+	public String apprDocInfoByNo(HttpSession session, Model model,
+					@RequestParam String documentNo) {
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
 		
+		// 문서정보 받아오기
+		ApprovalDocument apprDoc = approvalService.getApprDocInfoByNo(documentNo);
+		
+		// 뷰로 값넘기기
+		model.addAttribute("apprDoc", apprDoc);
+		model.addAttribute("loginId", loginId);
+		return "/approval/apprDocInfoByNo";
+	}
 	
 	// 결재문서 추가 폼
 	@GetMapping("/approval/addApprDoc")

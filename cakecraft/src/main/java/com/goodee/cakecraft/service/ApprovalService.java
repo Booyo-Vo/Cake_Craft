@@ -114,7 +114,7 @@ public class ApprovalService {
 		
 	}
 	
-	// 결재문서 상세정보 출력
+	// 결재문서 상세정보 출력 (결재대기문서, 결재수신문서, 기안문서)
 	public Map<String, Object> getApprDocByNo(String documentNo, String loginId){
 		// 결재문서 상세정보
 		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(documentNo);
@@ -135,6 +135,14 @@ public class ApprovalService {
 		resultApprMap.put("resultApprHistPreLv", resultApprHistPreLv);
 		
 		return resultApprMap;
+	}
+	
+	// 결재문서 상세정보 출력 (임시저장, 참조문서)
+	public ApprovalDocument getApprDocInfoByNo(String documentNo) {
+		ApprovalDocument apprDoc = apprDocMapper.selectApprDocByNo(documentNo);
+	
+		// 반환값
+		return apprDoc;
 	}
 	
 	

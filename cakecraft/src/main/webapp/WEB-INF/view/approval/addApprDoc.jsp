@@ -5,8 +5,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/layout/cdn.jsp"></jsp:include>
 </head>
-<body>  
+<body>
+<jsp:include page="/layout/header.jsp"></jsp:include>
+<div class="main-container"> 
 	<h1>기안서</h1>
 	<form action="/cakecraft/approval/addApprDoc" method="post" name="requestForm" id="requestForm">
 	<div id="tableTempY">
@@ -137,7 +140,7 @@
 		</table>
 	</div>
 </form>
-
+</div>
 <script>
 	// 임시저장 버튼을 눌렀을 때 호출되는 함수
 	function tempSaveAndSubmit() {
