@@ -50,7 +50,7 @@ jQuery(document).ready(function($){
 		let currentTime = new Date();
         let nowMs = Date.now();
         if(startDtimeMs - nowMs > 1000*60*30){
-			str += '<a id="delBtn' + rowId + '">삭제</a>';
+			str += '<a id="delBtn' + rowId + '">예약취소</a>';
         }
 		return str;
 	}
@@ -69,7 +69,19 @@ jQuery(document).ready(function($){
 		var rowId = $(this).closest("tr.jqgrow").attr("id");
 		var rowData = $("#table").jqGrid("getRowData", rowId);
 		var reservationNo = rowData.reservationNo;
-		window.location.href = "${pageContext.request.contextPath}/reservation/removeReservation?reservationNo="+reservationNo;
+		swal({
+			title: '예약을 취소하시겠습니까?',
+			text: "취소된 예약은 복구할 수 없으므로 다시 예약해주시기 바랍니다.",
+			type: 'warning',
+			confirmButtonText: '예',
+			cancelButtonText: '아니오',
+			showCancelButton: true,
+		}).then((result) => {
+			console.log(result);
+			if (result.value == true) {
+				window.location.href = "${pageContext.request.contextPath}/reservation/removeReservation?reservationNo="+reservationNo;
+			}
+		});
 	});
 	    
 	// 선택 가능한 열에 밑줄 스타일 추가
