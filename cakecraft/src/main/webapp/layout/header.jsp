@@ -57,7 +57,7 @@
 						    </c:otherwise>
 						</c:choose>
 					</span>
-					<span class="user-name" data-empid="${loginId}">${loginId} 님 환영합니다! &nbsp;
+					<span class="user-name" data-empid="${loginEmpBase.id}">${loginEmpBase.id} 님 환영합니다! &nbsp;
 						<button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
 					</span>
 				</a>
@@ -104,7 +104,7 @@
 						<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
 					</a>
 					<ul class="submenu">
-						<li><a href="/cakecraft/approval/apprDocWaitListByNo">승인대기문서</a></li>
+						<li><a href="/cakecraft/approval/apprDocWaitListByNo">결재대기문서</a></li>
 						<li><a href="/cakecraft/approval/apprDocListByApprId">결재수신문서</a></li>
 						<li><a href="/cakecraft/approval/apprDocListByRefId">참조문서</a></li>
 						<li><a href="/cakecraft/approval/apprDocListById">기안문서</a></li>
@@ -120,7 +120,7 @@
 						<!-- 총무팀: 사용자의 deptCd가 "1"이고 teamCd가 "14"인 경우를 확인 -->
 						<!-- 특정 deptCd와 teamCd에 대해서만 "시설비품관리"를 표시 -->
 						<c:choose>
-							<c:when test="${empBase.deptCd == '1' && empBase.teamCd == '14'}">
+							<c:when test="${loginEmpBase.deptCd == '1' && loginEmpBase.teamCd == '14'}">
 							<!-- Show "시설비품관리" tab only for the specific deptCd and teamCd -->
 							<li><a href="/cakecraft/facility/facilityList">시설비품관리</a></li>
 						</c:when>
@@ -144,7 +144,7 @@
 					<!-- 인사팀: 사용자의 deptCd가 "1"이고 teamCd가 "11"인 경우를 확인 -->
 					<!-- 특정 deptCd와 teamCd에 대해서만 "관리자메뉴"를 표시 -->
 					<c:choose>
-						<c:when test="${empBase.deptCd == '1' && empBase.teamCd == '11'}">
+						<c:when test="${loginEmpBase.deptCd == '1' && loginEmpBase.teamCd == '11'}">
 						<li class="dropdown">
 							<a href="javascript:;" class="dropdown-toggle">
 								<span class="micon dw dw-analytics-21"></span><span class="mtext">관리자메뉴</span>

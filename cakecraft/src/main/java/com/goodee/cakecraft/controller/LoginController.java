@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.service.LoginService;
+import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ public class LoginController {
 		empIdList.setId(id);
 		empIdList.setPw(pw);
 		EmpIdList loginMember = loginService.login(empIdList);
+		EmpBase loginEmpBase = empMapper.selectEmpById(id);
 		
 		if(loginMember == null) {
 			log.debug(KMS + "로그인 실패" + RESET);
@@ -59,6 +61,7 @@ public class LoginController {
 		// 세션의 만료 시간을 설정
 	    session.setMaxInactiveInterval(3 * 60 * 60); // 3시간
 		session.setAttribute("loginMember", loginMember);
+		session.setAttribute("loginEmpBase", loginEmpBase);
 		
 		// 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
 				// autowired로 EmpMapper 주입
@@ -69,7 +72,6 @@ public class LoginController {
 					} else {
 						session.setAttribute("profileImagePath", "default_profile.png");
 					}
-
 			return "redirect:/schedule/schedule";
 		}
 	  
