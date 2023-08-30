@@ -83,8 +83,6 @@ function addTeam() {
 function openModifyDeptCdModal(deptName) {
 	// 해당 부서명을 모달에 표시
 	document.getElementById("originDeptcdNm").value = deptName;
-	// 모달을 열기
-	$('#modifyDeptCdNmModal').modal('show');
 }
 function modifyDeptCdNm() {
 	//입력한 값을 받아옴
@@ -130,8 +128,6 @@ function modifyDeptCdNm() {
 function openModifyTeamCdModal(teamName) {
 	// 해당 부서명을 모달에 표시
 	document.getElementById("originTeamcdNm").value = teamName;
-	// 모달을 열기
-	$('#modifyTeamCdNmModal').modal('show');
 }
 function modifyTeamCdNm() {
 	//입력한 값을 받아옴
