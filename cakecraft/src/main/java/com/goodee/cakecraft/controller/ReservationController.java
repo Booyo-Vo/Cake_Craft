@@ -157,6 +157,7 @@ public class ReservationController {
 		List<Map<String, Object>> list = reservationService.getReservationListById(emp);	
 		model.addAttribute("list", list);
 		model.addAttribute("teamNm", teamNm);
+		model.addAttribute("loginId", loginId);
 		return "/reservation/reservationListById";
 	}
 	
