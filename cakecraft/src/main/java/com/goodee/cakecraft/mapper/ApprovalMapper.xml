@@ -304,23 +304,21 @@
 <!-- 결재 참조자 : ApprovalRef -->
 	<!-- 결재 참조자 추가 -->
 	<insert id="insertApprRef"
-			parameterType="com.goodee.cakecraft.vo.ApprovalRef">
+			parameterType="Map">
 			INSERT INTO approval_ref(
-				ref_no refNo,
-				ref_id refId,
-				document_no documentNo,
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
+				ref_id,
+				document_no,
+				reg_dtime, 
+				mod_dtime, 
+				reg_id, 
+				mod_id
 			)VALUES(
-				#{refNo},
 				#{refId},
 				#{documentNo},
 				NOW(),
 				NOW(),
-				#{loginId},
-				#{loginId}
+				#{id},
+				#{id}
 			)
 	</insert>
 	

@@ -354,4 +354,23 @@
 		
 	</select>
 	
+	<!-- 사원명으로 검색하여 사원정보 조회 -->
+	<select id="getEmpListByNm" parameterType="String" resultType="HashMap">
+		SELECT emp_name AS empName,
+			id,
+			(SELECT cd_nm
+			FROM st_std_cd
+			WHERE grp_cd="D001"
+			AND cd = dept_cd) AS deptNm,
+			(SELECT cd_nm
+			FROM st_std_cd
+			WHERE grp_cd="T001"
+			AND cd = team_cd) AS teamNm,
+			(SELECT cd_nm
+			FROM st_std_cd
+			WHERE grp_cd="P001"
+			AND cd = position_cd) AS positionNm
+		 FROM emp_base
+		WHERE emp_Name LIKE CONCAT("%" , #{empName}, "%")
+	</select>
 </mapper>

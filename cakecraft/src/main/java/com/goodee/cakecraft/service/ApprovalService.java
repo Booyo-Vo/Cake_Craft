@@ -215,15 +215,25 @@ public class ApprovalService {
 			            apprHistoryLv3.setModId(loginId);
 						int addApprHistLv3Row = apprDocMapper.insertApprHistory(apprHistoryLv3);
 						log.debug(SHJ + addApprHistLv3Row + " <-- addApprDoc addApprHistLv3Row"+ RESET);
+						
+						// 참조자가 있다면 추가
+						if(addApprHistLv3Row > 0 && (param.get("refId").toString()) != null) {
+							ApprovalRef apprRef = new ApprovalRef();
+							apprRef.setRefId(param.get("refId").toString());
+							apprRef.setDocumentNo(documentNo);
+							apprRef.setRegId(loginId);
+							apprRef.setModId(loginId);
+							int addApprRefRow = apprDocMapper.insertApprRef(param);
+							log.debug(SHJ + addApprRefRow + " <-- addApprDoc addApprRefRow"+ RESET);
+						}
 					}
 				}
-			 /* 
+				
+			/* 
 				if(파일이 있다면) {
 					파일 추가
-				 
-				if(참조자가 있다면) {
-					참조자 추가
 			*/
+				
 			}
 			
 			// 문서 추가 성공 시 반환값
@@ -271,6 +281,7 @@ public class ApprovalService {
 	
 	
 	/* 결재 참조자 : ApprovalRef */
+	/*
 	// 결재 참조자 추가
 	public int addApprRef(ApprovalRef apprRef){
 		// 반환값
@@ -286,7 +297,7 @@ public class ApprovalService {
 				
 		return deleteApprRefRow;
 	}
-	
+	*/
 	
 	/* 결재 이력 : ApprovalHistory */
 	// 결재 이력 목록 출력

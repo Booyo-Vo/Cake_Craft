@@ -1,4 +1,5 @@
 package com.goodee.cakecraft.mapper;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
@@ -88,4 +89,8 @@ public interface EmpMapper {
 	List<EmpProfileImg> selectEmpProfileImg(EmpBase empBase);
 	
 	void updateProfileImagePath(EmpProfileImg empProfileImg);
+	
+	// 사원명으로 검색하여 사원정보 조회
+	List<HashMap<String, Object>> getEmpListByNm(String empName);
+	
 }

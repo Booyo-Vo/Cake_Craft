@@ -68,7 +68,7 @@ public interface ApprovalMapper {
 	
 	/* 결재참조자 : ApprovalRef */
 	// 결재참조자 추가
-	int insertApprRef(ApprovalRef apprRef);
+	int insertApprRef(Map param);
 	
 	// 결재참조자 삭제
 	int deleteApprRef(ApprovalRef apprRef);

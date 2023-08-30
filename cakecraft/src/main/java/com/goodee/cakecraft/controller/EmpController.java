@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -190,5 +192,25 @@ public class EmpController {
         return "/emp/myPage";
     }
 
-	
+
+	/*
+	 * // 사원검색 : 사원명으로 사원리스트 받아오기
+	 * 
+	 * @PostMapping("/emp/getEmpList") public void getEmpList(HttpServletRequest
+	 * request, HttpServletResponse response) {
+	 * 
+	 * List<Map<String, Object>> resultMap = new List<Map<>(); Map<String, Object>
+	 * param = new HashMap<>();
+	 * 
+	 * param = CommonController.getParameterMap(request);
+	 * 
+	 * 
+	 * resultMap = empService.getEmpList(param);
+	 * 
+	 * JSONObject jsonObject = new JSONObject(resultMap);
+	 * 
+	 * response.getWriter().write(jsonObject.toString());
+	 * 
+	 * }
+	 */
 }

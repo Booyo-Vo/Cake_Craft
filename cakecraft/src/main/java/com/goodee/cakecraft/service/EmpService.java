@@ -286,5 +286,11 @@ public class EmpService {
 		    return row;
 		}
 		
+		// 사원명으로 검색하여 사원정보리스트 조회
+		 public List<HashMap<String, Object>> getEmpListByNm(String empName) {
+			 List<HashMap<String, Object>> enmList = empMapper.getEmpListByNm(empName);
+		  return enmList; 
+		  }
+		 		
 		
 }
