@@ -13,4 +13,6 @@ public class BoardQuestion {
 	private String modDtime;
 	private String regId;
 	private String modId;
+	
+	private String answerContent;
 }

@@ -10,18 +10,18 @@ jQuery.noConflict();
 jQuery(document).ready(function($) {
 	var mydata = [ //데이터
 		<c:forEach var="q" items="${questionList}">
-			{questionNo: "${q.questionNo}", questionTitle: "${q.questionTitle}", sercretYn:"${q.secretYn}", regDtime: "${q.regDtime}", regId: "${q.regId}"},
+			{questionNo: "${q.questionNo}", questionTitle: "${q.questionTitle}", sercretYn:"${q.secretYn}", regDtime: "${q.regDtime}", regId: "${q.regId}", answerContent: "${q.answerContent}"},
 		</c:forEach>
 	];
 
 	$("#list").jqGrid({
 		datatype: "local",
 		data: mydata,
-		colNames:['번호','제목','비밀글','작성일','작성자'],
+		colNames:['번호','제목','비밀글','작성일','작성자','답변상태'],
 		colModel:[
-			{name:'questionNo', index:'questionNo', width:10, align: "center", sortable:false},
+			{name:'questionNo', index:'questionNo', width:7, align: "center", sortable:false},
 			{name:'questionTitle', index:'questionTitle', width:25, align: "center", sortable:false},
-			{name:'sercretYn', index:'sercretYn', width:10, align: "center", sortable:false,
+			{name:'sercretYn', index:'sercretYn', width:7, align: "center", sortable:false,
 				// 비밀글일 경우 자물쇠 이미지로 표시
 				formatter: function(cellvalue) {
 					if (cellvalue == 'Y') {
@@ -33,6 +33,16 @@ jQuery(document).ready(function($) {
 			},
 			{name:'regDtime', index:'regDtime', width:25, align: "center"},
 			{name:'regId', index:'regId', width:20, align: "center"},
+			{name:'answerContent', index:'answerContent', width:15, align: "center",
+				// 답변이 있을시 답변완료, 없을시 답변대기로 표시
+				formatter: function(cellvalue) {
+					if (cellvalue == null || cellvalue.trim() == '') {
+						return '답변대기';
+					} else {
+						return '답변완료';
+					}
+				}
+			},
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
 		rownumbers : false, // 각 행앞에 번호를 표시

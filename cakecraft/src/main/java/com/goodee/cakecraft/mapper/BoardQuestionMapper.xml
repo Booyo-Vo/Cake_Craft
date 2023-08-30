@@ -6,26 +6,28 @@
 			parameterType="java.util.Map"
 			resultType="com.goodee.cakecraft.vo.BoardQuestion">
 		SELECT 
-			question_no questionNo,
-			id,
-			secret_yn secretYn,
-			question_title questionTitle,
-			question_content questionContent,
-			reg_dtime regDtime,
-			mod_dtime modDtime,
-			reg_id regId,
-			mod_id modId 
-		FROM board_qna_question
+			q.question_no questionNo,
+			q.id id,
+			q.secret_yn secretYn,
+			q.question_title questionTitle,
+			q.question_content questionContent,
+			q.reg_dtime regDtime,
+			q.mod_dtime modDtime,
+			q.reg_id regId,
+			q.mod_id modId,
+			a.answer_content answerContent
+		FROM board_qna_question q LEFT JOIN board_qna_answer a
+		ON q.question_no = a.question_no
 		<where>
 			1=1 
 			<if test="searchRegId != null and searchRegId != ''">
-				AND reg_id = #{searchRegId}
+				AND q.reg_id = #{searchRegId}
 			</if>
 			<if test="searchWord != null and searchWord != ''">
-				AND question_title LIKE CONCAT('%', #{searchWord}, '%')
+				AND q.question_title LIKE CONCAT('%', #{searchWord}, '%')
 			</if>
 		</where>
-		ORDER BY reg_dtime DESC
+		ORDER BY q.reg_dtime DESC
 	</select>
 	<!-- 문의 상세 조회 -->
 	<select id="selectQuestionByNo"
