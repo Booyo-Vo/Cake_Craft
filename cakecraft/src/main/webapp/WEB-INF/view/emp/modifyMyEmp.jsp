@@ -138,7 +138,8 @@ $(document).ready(function() {
 							<div class="form-group row">
 								<label class="col-sm-12 col-md-2 col-form-label"><b>주소</b></label>
 								<div class="col-sm-12 col-md-10">
-									<input type="text" name="address" value="${empBase.address}"/>
+									<input type="text" name="address" id="address" value="${empBase.address}"/>
+									<a onclick="findAddr()" class="btn btn-primary" style="color:white">주소검색</a>
 								</div>
 							</div>
 							<!-- 핸드폰번호 -->
@@ -222,5 +223,23 @@ $(document).ready(function() {
 
 </div>
 <jsp:include page="/layout/footer.jsp"></jsp:include>
+<!-- 주소 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script>
+function findAddr(){
+		new daum.Postcode({
+			oncomplete: function(data) {
+				
+				console.log(data);
+				 
+				var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var zonecode = data.zonecode; // 우편번호
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('address').value = roadAddr;
+			}
+		}).open();
+}
+</script>
 </body>
 </html>

@@ -111,7 +111,7 @@
 					</div>
 					<div class="form-group row">
 						<label class="col-sm-12 col-md-3 col-form-label"><b>주소</b></label>
-						<div class="col-sm-12 col-md-5">
+						<div class="col-sm-12 col-md-9">
 							${empbase.address}
 						</div>
 					</div>

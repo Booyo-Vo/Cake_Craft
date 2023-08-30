@@ -61,7 +61,6 @@ $(document).ready(function() {
 		var empPhone2 = $('input[name="empPhone2"]').val();
 		var empPhone3 = $('input[name="empPhone3"]').val();
 		var hireDate = $('input[name="hireDate"]').val();
-		var address = $('input[name="address"]').val();
 
 		var socialNo = socialNo1 + "-" + socialNo2;
 		var empPhone = empPhone1 + "-" + empPhone2 + "-" + empPhone3;
@@ -85,7 +84,7 @@ $(document).ready(function() {
 		if (empName.trim() === '' || socialNo.trim() === '' || email.trim() === '' || empPhone.trim() === '' || hireDate.trim() === '' || address.trim() === '') {
 			alert('필수 입력 항목을 모두 입력해주세요.');
 			event.preventDefault(); // 폼 제출 중지
-			}
+		}
 
 	});
 });
@@ -204,7 +203,10 @@ function addExcel() {
 				<div class="form-group row">
 					<label class="col-sm-12 col-md-2 col-form-label">주소</label>
 					<div class="col-sm-12 col-md-6">
-						<input type="text"class="form-control" name="address" required>
+						<input type="text" class="form-control" id="address" name="address" required>
+					</div>
+					<div class="col-sm-12 col-md-2">
+						<a onclick="findAddr()" class="btn btn-primary" style="color:white">주소검색</a>
 					</div>
 				</div>
 				<input type="hidden" name="empPhone">
@@ -234,5 +236,23 @@ function addExcel() {
 </div>
 </div>
 <br>
+<!-- 주소 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script>
+function findAddr(){
+		new daum.Postcode({
+			oncomplete: function(data) {
+				
+				console.log(data);
+				 
+				 var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var zonecode = data.zonecode; // 우편번호
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('address').value = roadAddr;
+			}
+		}).open();
+}
+</script>
 </body>
 </html>
