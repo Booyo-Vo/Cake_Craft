@@ -253,35 +253,9 @@ function addFacility(){
 	addFcltForm.submit();
 }
 
-//시설비품 클릭 시 상세보기 및 수정 모달 띄우기
-function facilityNo(facilityNo){
-	console.log(facilityNo);
-	
-	$.ajax({
-		url : '${pageContext.request.contextPath}/rest/modifyFacility',
-		type : 'post',
-		data : {facilityNo : facilityNo},
-		success : function(facility){
-			console.log('ajax성공');
-			console.log(facility);
-			$('#modFacilityNo').val(facility.facilityNo);
-			$('#modCategory').val(facility.categoryCd);
-			$('#modCategoryCd').val(facility.cdNm);
-			$('#modFacilityName').val(facility.facilityName);
-			$('#modFacilityNote').val(facility.facilityNote);
-			$('#modCount').text(facility.facilityNote.length);
-			$('#modUseYn').val(facility.useYn);
-		},
-		error : function(){
-			console.log('ajax실패');
-		}
-	})
-	$('#modFcltModal').modal('toggle');
-}
-
 //수정폼 유효성 검사(이름 공백금지/중복검사, 모든 입력폼 필수입력)
 //이름 유효성검사
-$('#modFacilityName').blur(function() {
+function handleNameBlur() {
 	console.log($('#modFacilityName').val()); 
 	$('#modFacilityName').val($('#modFacilityName').val().replace(/ /g,'')); //모든 공백제거
 	$.ajax({
@@ -300,10 +274,10 @@ $('#modFacilityName').blur(function() {
 	})
 	$('#modNameMsg').text('');
 	$('#modFacilityNote').focus();
-});
+};
   
 //설명 유효성검사
-$('#modFacilityNote').keyup(function(){
+function handleNoteKeyUp(){
 	const MAX_COUNT = 100;
 	let len = $('#modFacilityNote').val().length;
 	if(len > MAX_COUNT) {
@@ -313,7 +287,34 @@ $('#modFacilityNote').keyup(function(){
 	} else {
 		$('#modCount').text(len);
 	}
-})
+}
+
+//수정 시 사용여부 유효성 검사
+function handleUseYnChange(){
+	let facilityNo = $('#modFacilityNo').val();
+	let useYn = $('#modUseYn').val();
+	
+	if(useYn == 'N'){ //사용여부를 Y->N으로 바꾸는 경우
+		$.ajax({
+			url : '${pageContext.request.contextPath}/rest/getReservationCnt',
+			type : 'post',
+			data : {facilityNo : facilityNo},
+			success : function(cnt){
+				console.log(cnt + '<-- cnt ajax성공');
+				if(cnt > 0){
+					swal('변경 불가', '사용이 예약된 시설비품입니다.', 'warning');
+					$('#modUseYn').val('Y').prop('selected', true);
+				} else {
+					swal('변경 가능', '사용여부가 변경되었습니다.', 'info');
+					$('#modUseYn').val('N').prop('selected', true);
+				}
+			},
+			error : function(){
+				console.log('ajax실패');
+			}
+		})
+	}
+}
 
 //수정버튼 클릭 시 폼 제출
 function modFacility(){
@@ -369,7 +370,7 @@ function modFacility(){
 								<label for="category">분류</label>
 							</div>
 							<div class="col-3">
-								<select id="category" class="custom-select form-control" required>
+								<select id="category" class="form-control" required>
 									<option value="" selected disabled>==선택==</option>
 									<option value="A">전체</option>
 									<option value="F">시설</option>
@@ -377,7 +378,7 @@ function modFacility(){
 								</select>
 							</div>
 							<div class="col-3">
-								<select id="categoryCd" class="custom-select form-control" name="categoryCd" required>
+								<select id="categoryCd" class="form-control" name="categoryCd" required>
 									<option value="" selected disabled>==선택==</option>
 									<option value="A">전체</option>
 									<c:forEach var="t" items="${categoryCdList}">
@@ -391,7 +392,7 @@ function modFacility(){
 								<label for="useYn">사용여부</label>
 							</div>
 							<div class="col-3">
-								<select id="useYn" class="custom-select form-control" name="useYn" required>
+								<select id="useYn" class="form-control" name="useYn" required>
 									<option value="" selected disabled>==선택==</option>
 									<option value="A">전체</option>
 									<option value="Y">사용가능</option>
@@ -399,7 +400,7 @@ function modFacility(){
 								</select>
 							</div>
 							<div class="col-3">
-								<button type="submit" class="btn btn-sm btn-primary">검색</button>
+								<button type="submit" class="btn btn-primary">검색</button>
 							</div>
 						</div>
 					</form>
@@ -487,18 +488,18 @@ function modFacility(){
 										</div>
 										<div class="mb-3">
 											<label for="modFacilityName" class="col-form-label">이름</label>
-											<input type="text" class="form-control" name="facilityName" id="modFacilityName" required>
+											<input type="text" class="form-control" name="facilityName" id="modFacilityName" onblur="handleNameBlur()" required>
 											<span id="modNameMsg"></span>
 										</div>
 										<div class="mb-3">
 											<label for="modFacilityNote" class="col-form-label">설명</label>
-											<textarea class="form-control" name="facilityNote" id="modFacilityNote" required></textarea>
+											<textarea class="form-control" name="facilityNote" id="modFacilityNote" onkeyup="handleNoteKeyUp()" required></textarea>
 											<span id="modCount">0</span>자 / 100자
 											<span id="modNoteMsg"></span>
 										</div>
 										<div class="mb-3">
 											<label for="modUseYn" class="col-form-label">사용여부</label>
-											<select name="useYn" id="modUseYn">
+											<select name="useYn" id="modUseYn" onchange="handleUseYnChange()">
 												<option value="Y">사용가능</option>
 												<option value="N">사용불가</option>
 											</select>

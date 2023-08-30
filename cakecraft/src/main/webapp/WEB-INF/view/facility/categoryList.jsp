@@ -33,7 +33,7 @@
 			<!-- 페이지 헤더 끝 -->
 			
 			<div class="pd-20 card-box mb-30">
-				<form action="${pageContext.request.contextPath}/facility/addFacilityCd" method="post">
+				<form id="addCategoryForm" action="${pageContext.request.contextPath}/facility/addFacilityCd" method="post">
 					<input type="hidden" name="regId" value="${loginId}">
 					<table class="table table-bordered">
 						<thead>
@@ -69,13 +69,13 @@
 									</select>
 								</td>
 								<td>
-									<input type="text" class="form-control" name="cd" id="cd" value="" readonly required>
+									<input type="text" class="form-control" name="cd" id="addCd" value="" readonly required>
 								</td>
 								<td>
-									<input type="text" class="form-control" name="cdNm" required>
+									<input type="text" class="form-control" name="cdNm" id="addCdNm" onblur="checkCategoryName()">
 								</td>
 								<td>
-									<select name="useYn" class="custom-select form-control" required>
+									<select name="useYn" class="custom-select form-control" id="addUseYn" required>
 										<option value="" selected disabled>==선택==</option>
 										<option value="Y">Y</option>
 										<option value="N">N</option>
@@ -99,6 +99,8 @@
 <!-- 메인 끝 -->
 
 <script>
+	//1. 카테고리 추가
+	//1) 코드 생성
 	$('#facility').change(function(){
 		let cd = $('#facility').val();
 		$.ajax({
@@ -107,7 +109,7 @@
 			data : {cd : cd},
 			success : function(code){
 				console.log('ajax성공');
-				$('#cd').val(code);
+				$('#addCd').val(code);
 			},
 			error: function(){
 				console.log('ajax실패');
@@ -115,6 +117,34 @@
 		})
 	})
 	
+	//2) 유효성 검사
+	function checkCategoryName(){
+		let cdNm = $('#addCdNm').val();
+		
+		if(cdNm === ''){
+			swal('입력 확인','이름을 입력하세요','warning');
+			return;
+		} else {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/rest/categoryNameCheck',
+				type : 'post',
+				data : {cdNm : cdNm},
+				success : function(row){
+					console.log('checkCategoryName() ajax성공');
+					if(row > 0){
+						swal('수정 실패','이미 사용중인 이름입니다','warning');
+						$('#addCdNm').val('');
+					}
+				},
+				error : function(){
+					console.log('checkCategoryName() ajax실패');
+				}
+			});
+		}
+	}
+	
+	//2. 카테고리 수정
+	//1) 사용여부 수정
 	function changeUse(cd){
 		let useYn = '';
 		let use = $('#use'+cd).text();
@@ -135,7 +165,7 @@
 					console.log('변경성공');
 					$('#use'+cd).text(useYn);
 				} else {
-					alert('이미 사용중인 카테고리입니다.');
+					swal('변경 실패','사용 중인 카테고리입니다.', 'warning');
 				}
 			},
 			error : function(){
@@ -144,16 +174,18 @@
 		})
 	}
 	
+	//2) 종류 입력폼
 	function modNameForm(cd, cdNm){
 		$('#nameForm'+cd).html('<input id="cdNm' +cd+ '" type="text" name="cdNm" value="' +cdNm+ '">');
 		$('#modBtn'+cd).html('<button type="button" class="btn btn-sm btn-secondary" id="modNameBtn'+cd+'" onclick="modName('+cd+')">수정</button>');
 	}
 	
+	//3) 입력값 유효성 검사(중복)
 	function modName(cd){
 		let cdNm = $('#cdNm'+cd).val();
 		console.log(cdNm);
 		if(cdNm === ''){
-			alert('이름을 입력하세요');
+			swal('입력 확인','이름을 입력하세요','warning');
 			$('#cdNm'+cd).focus();
 			return;
 		} else {
@@ -166,7 +198,7 @@
 				success : function(row){
 					console.log('ajax성공');
 					if(row > 0){
-						alert('이미 사용중인 이름입니다');
+						swal('수정 실패','이미 사용중인 이름입니다','warning');
 						$('#cdNm'+cd).focus();
 					}else {
 						$.ajax({
@@ -181,7 +213,7 @@
 									console.log('변경성공');
 									location.reload();
 								} else {
-									alert('수정에 실패하였습니다');
+									swal('수정 실패','카테고리 수정에 실패하였습니다.','warning');
 								}
 							},
 							error : function(){

@@ -147,8 +147,18 @@
 		<where>
 			grp_cd = 'F001'
 			AND cd_nm = #{cdNm}
+			<if test="cd != null">
 			AND cd != #{cd}
+			</if>
 		</where>
+	</select>
+	
+	<!--  -->
+	<select id="selectReservationCnt">
+		SELECT COUNT(*)
+		FROM facility_reservation
+		WHERE facility_no = #{facilityNo}
+		AND timestampDIFF(minute, start_dtime, NOW()) &lt; 0
 	</select>
 	
 	<!-- 카테고리 코드 추가 -->

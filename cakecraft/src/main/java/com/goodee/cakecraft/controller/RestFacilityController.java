@@ -81,4 +81,11 @@ public class RestFacilityController {
 		int row = facilityService.getCategoryNameCheck(stStdCd);
 		return row;
 	}
+	
+	//시설비품 추후 예약 수
+	@PostMapping("/rest/getReservationCnt")
+	public int getReservationCnt(FacilityBase facility) {
+		int cnt = facilityService.getReservationCnt(facility);
+		return cnt;
+	}
 }

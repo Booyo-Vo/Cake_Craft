@@ -136,4 +136,10 @@ public class FacilityService {
 		int cnt = facilityMapper.selectCategoryCnt(paramMap);
 		return cnt;
 	}
+	
+	//시설 비품 추후 예약 수
+	public int getReservationCnt(FacilityBase facility) {
+		int cnt = facilityMapper.selectReservationCnt(facility);
+		return cnt;
+	}
 }

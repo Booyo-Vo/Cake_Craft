@@ -33,6 +33,9 @@ public interface FacilityMapper {
 	
 	//특정 시설비품 수
 	int selectFacilityCnt(StStdCd stStdCd);
+	
+	//시설비품 추후 예약 수
+	int selectReservationCnt(FacilityBase facility);
 
 	//시설/비품 코드 추가
 	int insertCategoryCd(StStdCd stStdCd);
