@@ -104,7 +104,7 @@
 						<span class="micon dw dw-house-1"></span><span class="mtext">전자결재</span>
 					</a>
 					<ul class="submenu">
-						<li><a href="/cakecraft/approval/apprDocWaitListByNo">결재대기문서</a></li>
+						<li><a href="/cakecraft/approval/apprDocWaitListByNo">승인대기문서</a></li>
 						<li><a href="/cakecraft/approval/apprDocListByApprId">결재수신문서</a></li>
 						<li><a href="/cakecraft/approval/apprDocListByRefId">참조문서</a></li>
 						<li><a href="/cakecraft/approval/apprDocListById">기안문서</a></li>

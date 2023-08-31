@@ -6,7 +6,8 @@ import lombok.Data;
 public class ApprovalDocument {
 	private String documentNo;
 	private String id;
-	private String approvalDocumentCd;
+	private String documentCd;
+	private String documentSubCd;
 	private String documentTitle;
 	private String documentContent;
 	private String tempSave;
@@ -14,4 +15,7 @@ public class ApprovalDocument {
 	private String modDtime;
 	private String regId;
 	private String modId;
+	
+	private String documentNm;
+	private String documentSubNm;
 }

@@ -52,7 +52,7 @@
 			<tr>
 				<th>문서구분</th>
 				<td>
-					<select name="approvalDocumentNm" id="approvalDocumentNm">
+					<select name="documentNm" id="documentNm">
 						<option value="">== 선택하세요 ==</option>
 						<option value="업무">업무</option>
 						<option value="인사">인사</option>
@@ -71,7 +71,7 @@
 			<tr>
 				<th>항목구분</th>
 				<td>
-					<select name="Nm" id="Nm">
+					<select name="documentSubNm" id="documentSubNm">
 						<option value="">== 선택하세요 ==</option>
 						<option value="연차">연차</option>
 						<option value="반차">반차</option>
@@ -134,14 +134,14 @@
 			</tr>
 			<tr>
 				<th>문서구분</th>
-				<td><div id="hidapprovalDocumentNm"></div></td>
+				<td><div id="hidDocumentNm"></div></td>
 				<td rowspan="2"><div id="hidApprIdLv1"></div></td>
 				<td rowspan="2"><div id="hidApprIdLv2"></div></td>
 				<td rowspan="2"><div id="hidApprIdLv3"></div></td>
 			</tr>
 			<tr>
 				<th>항목구분</th>
-				<td><div id="hidNm"></div></td>
+				<td><div id="hidDocumentSubNm"></div></td>
 			</tr>
 			<tr>
 				<th>기 안 자</th>
@@ -203,11 +203,11 @@
 	
 	// 제출하기 버튼을 눌렀을 때 호출되는 함수
 	function submitForm() {
-		$('#hidapprovalDocumentNm').html($("#approvalDocumentNm").val());
+		$('#hidDocumentNm').html($("#documentNm").val());
 		$('#hidApprIdLv1').html($("#approvalIdLv1").val());
 		$('#hidApprIdLv2').html($("#approvalIdLv2").val());
 		$('#hidApprIdLv3').html($("#approvalIdLv3").val());
-		$('#hidNm').html($("#Nm").val());
+		$('#hidDocumentSubNm').html($("#documentSubNm").val());
 		$('#hidloginId').html($("#loginId").val());
 		$('#hidRefId').html($("#refId").val());
 		$('#hidCrntDT').html($("#crntDT").val());

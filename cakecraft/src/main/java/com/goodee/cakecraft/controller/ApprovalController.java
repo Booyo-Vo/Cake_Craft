@@ -189,7 +189,8 @@ public class ApprovalController {
 			
 		HashMap<String, Object> param = new HashMap<>();
 		param = CommonController.getParameterMap(request);
-		log.debug(SHJ + param.get("approvalDocumentNm").toString() + " <-- addApprDoc approvalDocumentNm"+ RESET);
+		log.debug(SHJ + param.get("documentNm").toString() + " <-- addApprDoc documentNm"+ RESET);
+		log.debug(SHJ + param.get("documentSubNm").toString() + " <-- addApprDoc documentSubNm"+ RESET);
 		log.debug(SHJ + param.get("documentContent").toString() + " <-- addApprDoc documentContent"+ RESET);
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
@@ -199,5 +200,26 @@ public class ApprovalController {
 		
 		return "redirect:/approval/apprDocListByApprId";
 	}
+	
+	
+	// 결재 이력 수정(승인)
+	@PostMapping("/approval/modifyApprHistAccept")
+	public String modifyApprHistAccept(ApprovalHistory apprHistory) {
+		
+		approvalService.modifyApprHistory(apprHistory);
+		
+		return "redirect:/approval/apprDocListByApprId";
+	}
+	
+	
+	// 결재 이력 수정(반려)
+	@PostMapping("/approval/modifyApprHistReturn")
+	public String modifyApprHistReturn(ApprovalHistory apprHistory) {
+		
+		approvalService.modifyApprHistory(apprHistory);
+		
+		return "redirect:/approval/apprDocListByApprId";
+	}
+	
 	
 }

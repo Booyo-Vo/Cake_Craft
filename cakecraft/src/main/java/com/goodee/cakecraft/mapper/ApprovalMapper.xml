@@ -10,7 +10,8 @@
 				document_no documentNo,
 				id,
 				document_title documentTitle,
-				approval_document_cd approvalDocumentCd,
+				document_cd documentCd,
+				document_sub_cd documentSubCd,
 				temp_save tempSave,
 				reg_dtime regDtime, 
 				mod_dtime modDtime, 
@@ -31,7 +32,8 @@
 				ad.document_no documentNo,
 				ad.id id,
 				ad.document_title documentTitle,
-				ad.approval_document_cd approvalDocumentCd,
+				ad.document_cd documentCd,
+				ad.document_sub_cd documentSubCd,
 				ad.temp_save tempSave,
 				ad.reg_dtime regDtime, 
 				ad.mod_dtime modDtime, 
@@ -54,7 +56,8 @@
 			document_no documentNo,
 			id id,
 			document_title documentTitle,
-			approval_document_cd approvalDocumentCd,
+			document_cd documentCd,
+			document_sub_cd documentSubCd,
 			temp_save tempSave,
 			reg_dtime regDtime, 
 			mod_dtime modDtime, 
@@ -112,7 +115,8 @@
 				ad.document_no documentNo,
 				ad.id id,
 				ad.document_title documentTitle,
-				ad.approval_document_cd approvalDocumentCd,
+				ad.document_cd documentCd,
+				ad.document_sub_cd documentSubCd,
 				ad.temp_save tempSave,
 				ad.reg_dtime regDtime, 
 				ad.mod_dtime modDtime, 
@@ -147,7 +151,8 @@
 				id,
 				document_title documentTitle,
 				document_content documentContent,
-				approval_document_cd approvalDocumentCd,
+				document_cd documentCd,
+				document_sub_cd documentSubCd,
 				temp_save tempSave,
 				reg_dtime regDtime, 
 				mod_dtime modDtime, 
@@ -204,7 +209,8 @@
 			CONCAT(
 			RIGHT(YEAR(CURRENT_TIMESTAMP), 2), 
 			LPAD(MONTH(CURRENT_TIMESTAMP), 2, '0'),
-			#{approvalDocumentCd},
+			#{documentCd},
+			#{documentSubCd},
 			RIGHT(CURRENT_TIMESTAMP(4), 4)) AS documentNo;
 	</select>
 	
@@ -216,7 +222,8 @@
 				id,
 				document_title,
 				document_content,
-				approval_document_cd,
+				document_cd,
+				document_sub_cd,
 				temp_save,
 				reg_dtime, 
 				mod_dtime, 
@@ -227,7 +234,8 @@
 				#{id},
 				#{documentTitle},
 				#{documentContent},
-				#{approvalDocumentCd},
+				#{documentCd},
+				#{documentSubCd},
 				#{tempSave},
 				NOW(),
 				NOW(),
@@ -388,6 +396,6 @@
 				mod_dtime = NOW(), 
 				mod_id = #{loginId}		<!-- 수정한사람 = 결재자 이름 -->
 			WHERE document_no = #{documentNo}
-			AND approval_level = #{approvalLevel} 
+			AND approval_id = #{loginId} 
 	</update>
 </mapper>
