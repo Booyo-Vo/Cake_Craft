@@ -23,21 +23,21 @@ function addDept() {
 		data: {deptNm: deptNm },
 		success: function(response) {
 	if (response === "DUPLICATE") {
-			alert("이미 존재하는 부서명입니다.");
+			swal('추가 실패','이미 존재하는 부서명 입니다.','warning');
 			}else if(response === "SUCCESS") {
-				alert("부서가 추가되었습니다.");
-				$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
-				// 페이지 새로고침
-				window.location.reload();
+				swal('추가 성공','부서가 추가되었습니다.','success').then(() => {
+					$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
+					window.location.reload();
+				});
 			}else{
-				alert("부서 추가에 실패했습니다.");
+				swal('추가 실패','부서 추가에 실패했습니다.','warning');
 			}
 		},
 		error: function() {
-			alert("오류가 발생했습니다.");
-			$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
-			// 페이지 새로고침
-			window.location.reload();
+			swal('추가 실패','오류가 발생했습니다.','warning');.then(() => {
+				$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
+				window.location.reload();
+			});
 		}
 	});
 }
@@ -60,21 +60,21 @@ function addTeam() {
 		data: { teamNm: teamNm, teamDeptNm: teamDeptNm },
 		success: function(response) {
 			if(response === "DUPLICATE") {
-			alert("이미 존재하는 팀명입니다.");
+			swal('추가 실패','이미 존재하는 팀명입니다.','warning');
 			}else if(response === "SUCCESS") {
-				alert("팀이 추가되었습니다.");
-				$('#addTeamModal').modal('hide');// 모달 닫기
-				// 페이지 새로고침
-				window.location.reload();
+				swal('추가 성공','팀이 추가되었습니다','success').then(() => {
+					$('#addTeamModal').modal('hide'); // 모달 닫기
+					window.location.reload();
+				});
 			}else{
-				alert("팀 추가에 실패했습니다.");
+				swal('추가 실패','팀 추가에 실패했습니다','warning');
 			}
 		},
 		error: function() {
-			alert("오류가 발생했습니다.");
-			$('#addTeamModal').modal('hide');// 모달 닫기
-			// 페이지 새로고침
-			window.location.reload();
+			swal('추가 실패','오류가 발생했습니다.','warning').then(() => {
+				$('#addTeamModal').modal('hide'); // 모달 닫기
+				window.location.reload();
+			});
 		}
 	});
 }
@@ -91,7 +91,7 @@ function modifyDeptCdNm() {
 
 	// 입력값이 비어있거나 공백만 포함하는지 확인
 	if (!updatedDeptCdNm || !updatedDeptCdNm.trim()) {
-		alert("수정할 부서명을 입력해주세요.");
+		swal('수정 실패','수정할 부서명을 입력해주세요','warning');
 		return;
 	}
 	
@@ -104,22 +104,23 @@ function modifyDeptCdNm() {
 		},
 		success: function(response) {
 			if (response === "DUPLICATE") {
-				alert("이미 존재하는 부서명입니다.");
+				swal('수정 실패','이미 존재하는 부서명입니다','warning');
 			} else if (response === "SUCCESS") {
-				alert("수정되었습니다.");
-				$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
-				// 페이지 새로고침
-				window.location.reload();
+				swal('수정 성공','부서명이 수정되었습니다','success').then(() => {
+					$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
+					window.location.reload();
+				});
 			} else {
 				alert("부서명 수정에 실패하였습니다.");
 				$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
+				swal('수정 실패','부서명 수정에 실패하였습니다.','warning');
 			}
 		},
 		error: function() {
-			alert("오류가 발생했습니다.");
-			$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
-			// 페이지 새로고침
-			window.location.reload();
+			swal('수정 실패','"오류가 발생했습니다.','warning').then(() => {
+				$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
+				window.location.reload();
+			});
 		}
 	});
 }
@@ -136,7 +137,7 @@ function modifyTeamCdNm() {
 
 	// 입력값이 비어있거나 공백만 포함하는지 확인
 	if (!updatedTeamCdNm || !updatedTeamCdNm.trim()) {
-		alert("수정할 팀명을 입력해주세요.");
+		swal('수정 실패','수정할 팀명을 입력해주세요','warning');
 		return;
 	}
 
@@ -149,21 +150,21 @@ function modifyTeamCdNm() {
 		},
 		success: function(response) {
 			if (response === "DUPLICATE") {
-				alert("이미 존재하는 부서명입니다.");
+				swal('수정 실패','이미 존재하는 팀명입니다','warning');
 			} else if (response === "SUCCESS") {
-				alert("수정되었습니다.");
-				$('#modifyTeamCdNmModal').modal('hide');
-				// 페이지 새로고침
-				window.location.reload();
+				swal('수정 성공','팀명이 수정되었습니다','success').then(() => {
+					$('#modifyTeamCdNmModal').modal('hide'); // 모달 닫기
+					window.location.reload();
+				});
 			} else {
-				alert("부서명 수정에 실패하였습니다.");
+				swal('수정 실패','팀명 수정에 실패하였습니다.','warning');
 			}
 		},
 		error: function() {
-			alert("오류가 발생했습니다.");
-			$('#modifyTeamCdNmModal').modal('hide');
-			// 페이지 새로고침
-			window.location.reload();
+			swal('수정 실패','오류가 발생했습니다.','warning').then(() => {
+				$('#modifyTeamCdNmModal').modal('hide'); // 모달 닫기
+				window.location.reload();
+			});
 		}
 	});
 }
@@ -176,32 +177,41 @@ $(document).ready(function() {
 		var deptCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
 		var deptName = row.find('td:eq(1)').text(); // 부서명을 가져옴
 
-		var confirmDelete = confirm(deptName + "을 정말 삭제하시겠습니까?\n");
-
-		if (confirmDelete) { // 확인을 눌렀을 때
-			$.ajax({
-				type: "GET", 
-				url: "/cakecraft/stStdCd/removeStStdCd", 
-				data: {
-					grpCd: deptGrpCd, // 그룹 코드
+		swal({
+			title: deptName + "을 삭제하시겠습니까?",
+			text: "근무하는 사원이 있을 경우 삭제할 수 없습니다.",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: '확인',
+			cancelButtonText: '취소',
+			showCancelButton: true
+		}).then((result) => {
+			if (result.value == true) {// "확인" 버튼을 눌렀을 때
+				$.ajax({
+					type: "GET",
+					url: "/cakecraft/stStdCd/removeStStdCd",
+					data: {
+						grpCd: deptGrpCd, // 그룹 코드
 					cd: deptCd // 부서 번호
-				},
-				success: function(response) {
-					if (response === "FAIL") {
-						alert("해당 부서에 근무하는 사원이 있습니다.");
-					} else if (response === "SUCCESS") {
-						alert("부서 삭제에 성공했습니다.");
-						// 페이지 새로고침
-						window.location.reload();
-					} else {
-						alert("부서 삭제에 실패하였습니다.");
+					},
+					success: function(response) {
+						if (response === "FAIL") {
+							swal('삭제 실패', '해당 부서에 근무하는 사원이 있습니다.', 'warning');
+						} else if (response === "SUCCESS") {
+							swal('삭제 성공', '부서가 삭제되었습니다.', 'success').then(() => {
+							// 페이지 새로고침
+							window.location.reload();
+							});
+						} else {
+							swal('삭제 실패', '부서 삭제에 실패하였습니다.', 'warning');
+						}
+					},
+					error: function() {
+						swal('오류', '오류가 발생했습니다.', 'warning');
 					}
-				},
-				error: function() {
-					alert("오류가 발생했습니다.");
-				}
-			});
-		}
+				});
+			}
+		});
 	});
 });
 </script>
@@ -213,32 +223,41 @@ $(document).ready(function() {
 		var teamCd = row.find('td:eq(0)').text(); // 부서 번호를 가져옴
 		var teamName = row.find('td:eq(1)').text(); // 부서명을 가져옴
 
-		var confirmDelete = confirm(teamName + "을 정말 삭제하시겠습니까?\n");
-
-		if (confirmDelete) { // 확인을 눌렀을 때
-			$.ajax({
-				type: "GET", 
-				url: "/cakecraft/stStdCd/removeStStdCd", 
-				data: {
-					grpCd: teamGrpCd, // 그룹 코드
-					cd: teamCd // 부서 번호
-				},
-				success: function(response) {
-					if (response === "FAIL") {
-					alert("해당 팀에 근무하는 사원이 있습니다.");
-					} else if (response === "SUCCESS") {
-						alert("팀 삭제에 성공했습니다.");
-						// 페이지 새로고침
-						window.location.reload();
-					} else {
-						alert("팀 삭제에 실패하였습니다.");
+		 swal({
+				title: teamName + "을 삭제하시겠습니까?",
+				text: "근무하는 사원이 있을 경우 삭제할 수 없습니다.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+				showCancelButton: true
+			}).then((result) => {
+				if (result.value == true) {// "확인" 버튼을 눌렀을 때
+				$.ajax({
+					type: "GET", 
+					url: "/cakecraft/stStdCd/removeStStdCd", 
+					data: {
+						grpCd: teamGrpCd, // 그룹 코드
+						cd: teamCd // 부서 번호
+					},
+					success: function(response) {
+						if (response === "FAIL") {
+							swal('삭제 실패', '해당 팀에 근무하는 사원이 있습니다.', 'warning');
+						} else if (response === "SUCCESS") {
+							swal('삭제 성공', '팀이 삭제되었습니다.', 'success').then(() => {
+							// 페이지 새로고침
+							window.location.reload();
+							});
+						} else {
+							swal('삭제 실패', '팀 삭제에 실패하였습니다.', 'warning');
+						}
+					},
+					error: function() {
+						swal('오류', '오류가 발생했습니다.', 'warning');
 					}
-				},
-				error: function() {
-					alert("오류가 발생했습니다.");
-				}
-			});
-		}
+				});
+			}
+		});
 	});
 });
 </script>
@@ -334,7 +353,7 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="addDeptStStdCdModalLabel">부서추가</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModalInputs('#addDeptStStdCdModal')"></button>
 			</div>
 			<div class="modal-body">
 				<form id="addDeptStStdCdForm">
@@ -345,7 +364,7 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="clearModalInputs('#addDeptStStdCdModal')">닫기</button>
 				<button type="button" class="btn btn-primary" id="addDeptBtn" onclick="addDept()">추가</button>
 			</div>
 		</div>
@@ -359,7 +378,7 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="addTeamStStdCdModalLabel">팀추가</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModalInputs('#addTeamStStdCdModal')"></button>
 			</div>
 			<div class="modal-body">
 				<form id="addTeamStStdCdForm">
@@ -378,7 +397,7 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="clearModalInputs('#addTeamStStdCdModal')">닫기</button>
 				<button type="button" class="btn btn-primary" id="addTeamBtn" onclick="addTeam()">추가</button>
 			</div>
 		</div>
@@ -392,7 +411,7 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="modifyDeptCdNmModalLabel">팀추가</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModalInputs('#modifyDeptCdNmModal')"></button>
 			</div>
 			<div class="modal-body">
 				<form id="modifyDeptCdNmForm">
@@ -407,7 +426,7 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  onclick="clearModalInputs('#modifyDeptCdNmModal')">닫기</button>
 				<button type="button" class="btn btn-primary" id="modifyDeptCdNmBtn" onclick="modifyDeptCdNm()">수정</button>
 			</div>
 		</div>
@@ -421,7 +440,7 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="modifyTeamCdNmModalLabel">팀추가</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  onclick="clearModalInputs('#modifyTeamCdNmModal')"></button>
 			</div>
 			<div class="modal-body">
 				<form id="modifyTeamCdNmForm">
@@ -436,12 +455,21 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="clearModalInputs('#modifyTeamCdNmModal')">닫기</button>
 				<button type="button" class="btn btn-primary" id="modifyTeamCdNmBtn" onclick="modifyTeamCdNm()">수정</button>
 			</div>
 		</div>
 	</div>
 </div>
 <!-- 팀 수정 모달창 끝 -->
+<!-- 모달창 닫을때 입력된 값 초기화 -->
+<script>
+function clearModalInputs(modalId) {
+    var inputs = document.querySelectorAll(modalId + " input");
+    inputs.forEach(function(input) {
+        input.value = "";
+    });
+}
+</script>
 </body>
 </html>

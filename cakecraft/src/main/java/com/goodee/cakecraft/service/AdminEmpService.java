@@ -75,12 +75,12 @@ public class AdminEmpService {
 				insertIdListRow = idlistMapper.insertIdList(empBase);
 				log.debug(LJY + insertIdListRow +"<- addEmp insertIdListRow"+RESET);
 			}
-		        // 사원 정보 추가 및 비밀번호 추가 결과 반환
-		        return insertIdListRow;
-		    }
-		    
-		    // 사원번호 생성 실패 시 반환
-		    return 0;
+			// 사원 정보 추가 및 비밀번호 추가 결과 반환
+			return insertIdListRow;
+			}
+			
+			// 사원번호 생성 실패 시 반환
+			return 0;
 		}
 	
 	// 관리자가 보는 사원리스트
@@ -112,8 +112,8 @@ public class AdminEmpService {
 			
 			//받아온 이름값 저장하기
 			empbase.setDeptNm(deptNm);
-	        empbase.setTeamNm(teamNm);
-	        empbase.setPositionNm(positionNm);
+			empbase.setTeamNm(teamNm);
+			empbase.setPositionNm(positionNm);
 		} 
 		return adminEmpList;
 	}
@@ -145,8 +145,8 @@ public class AdminEmpService {
 			log.debug(LJY + positionNm +"<- getAdminEmpById positionNm"+RESET);
 			//받아온 이름값 저장하기
 			empbase.setDeptNm(deptNm);
-	        empbase.setTeamNm(teamNm);
-	        empbase.setPositionNm(positionNm);
+			empbase.setTeamNm(teamNm);
+			empbase.setPositionNm(positionNm);
 		 }
 		return empbase;
 	}

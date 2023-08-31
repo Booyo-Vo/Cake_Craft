@@ -66,6 +66,9 @@ var printPage = function() {
 							<div class="invoice-desc-footer">
 								<h5 class="text-center mb-30 weight-600">${currentDate}</h5>
 							</div>
+							<div class="invoice-desc-footer">
+								<h5 class="text-center mb-30 weight-600 font-24">(주)cakecraft</h5>
+							</div>
 						</div>
 					</div>
 				</div>
