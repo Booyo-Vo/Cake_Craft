@@ -168,7 +168,6 @@
 		DELETE FROM schedule_base 
 		<where>
 			schedule_no = #{scheduleNo}
-			AND id = #{id}
 		</where>
 	</delete>
 </mapper>

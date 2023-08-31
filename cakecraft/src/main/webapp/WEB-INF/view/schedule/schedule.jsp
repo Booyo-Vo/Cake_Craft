@@ -12,15 +12,25 @@
 	width: 14%;
 	font-size: 12px;
 }
+.p-rel{
+	position: relative;
+}
 .text-top-right {
 	position: absolute;
 	top: 7px;
 	right: 6px;
 }
-.p-rel{
-	position: relative;
+.ell{
+	display: block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 90%;
 }
-
+.ell-parent {
+	position: absolute;
+	width: 90%; /* 부모 요소의 너비 값 */
+}
 </style>
 </head>
 <body>
@@ -85,50 +95,64 @@
 												<!-- 전사일정 조회 -->
 												<c:forEach var="c" items="${scheduleListByCateAll}">
 													<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
-														<div>
+														<div class="ell-parent">
+															<ul>
 															<!-- 인사팀인 경우만 전사일정 수정,삭제 가능 -->
 															<c:if test="${c.teamCd == '11'}">
+																<li>
 																<a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">
-																	<span style="background-color: #638899; color: #FFFFFF;">&nbsp;${c.scheduleContent}&nbsp;</span>
+																	<span class="ell" style="background-color: #638899; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
 																</a>
+																</li>
 															</c:if>
 															<c:if test="${c.teamCd != '11'}">
-																<span style="background-color: #638899; color: #FFFFFF;">&nbsp;${c.scheduleContent}&nbsp;</span>
+																<li><span class="ell" style="background-color: #638899; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span></li>
 															</c:if>
+															</ul>
 														</div>
 													</c:if>
 												</c:forEach>
 												<!-- 팀일정 조회 -->
 												<c:forEach var="c" items="${scheduleListByCateTeam}">
 													<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
-														<div>
+														<div class="ell-parent">
+															<ul>
 															<c:if test="${c.categoryCd == '2'}">
+																<!-- 시설 예약인 경우엔 수정,삭제 불가능 -->
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) == '[예약]'}">
-																	<span style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;${c.scheduleContent}&nbsp;</span>
+																	<li><span class="ell" style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span></li>
 																</c:if>
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) != '[예약]'}">
+																	<li>
 																	<a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">
-																		<span style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;${c.scheduleContent}&nbsp;</span>
+																		<span class="ell" style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
 																	</a>
+																	</li>
 																</c:if>
 															</c:if>
+															</ul>
 														</div>
 													</c:if>
 												</c:forEach>
 												<!-- 개인일정 조회 -->
 												<c:forEach var="c" items="${scheduleListByCateId}">
 													<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
-														<div>
+														<div class="ell-parent">
+															<ul>
 															<c:if test="${c.categoryCd == '3'}">
+																<!-- 비품 예약인 경우엔 수정,삭제 불가능 -->
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) == '[예약]'}">
-																	<span style="background-color: #919CD4; color: #FFFFFF;">&nbsp;${c.scheduleContent}&nbsp;</span>
+																	<li><span class="ell" style="background-color: #919CD4; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span></li>
 																</c:if>
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) != '[예약]'}">
+																	<li>
 																	<a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">
-																		<span style="background-color: #919CD4; color: #FFFFFF;">&nbsp;${c.scheduleContent}&nbsp;</span>
+																		<span class="ell" style="background-color: #919CD4; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
 																	</a>
+																	</li>
 																</c:if>
 															</c:if>
+															</ul>
 														</div>
 													</c:if>
 												</c:forEach>
@@ -144,7 +168,7 @@
 						<div class="col-md-2" style="padding-top: 50px;">
 							<span><b>today schedule</b><br><br></span>
 							<div class="mb-5">
-								<span style="background-color: #638899; color: #FFFFFF;">&nbsp;전사일정&nbsp;</span>
+								<span style="background-color: #638899; color: #FFFFFF; display:block; width: 100%;">&nbsp;전사일정&nbsp;</span>
 								<c:forEach var="c" items="${scheduleListByDate}">
 									<c:if test="${c.categoryCd == '1'}">
 										<div>
@@ -154,7 +178,7 @@
 								</c:forEach>
 							</div>
 							<div class="mb-5">
-								<span style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;팀 일정&nbsp;</span>
+								<span style="background-color: #F68E8E; color: #FFFFFF; display:block; width: 100%;">&nbsp;팀 일정&nbsp;</span>
 								<c:forEach var="c" items="${scheduleListByDate}">
 									<c:if test="${c.categoryCd == '2'}">
 										<div>
@@ -164,7 +188,7 @@
 								</c:forEach>
 							</div>
 							<div>
-								<span style="background-color: #919CD4; color: #FFFFFF;">&nbsp;개인 일정&nbsp;</span>
+								<span style="background-color: #919CD4; color: #FFFFFF; display:block; width: 100%;">&nbsp;개인 일정&nbsp;</span>
 								<c:forEach var="c" items="${scheduleListByDate}">
 									<c:if test="${c.categoryCd == '3'}">
 										<div>
@@ -381,10 +405,9 @@ function modifySchedule(){
 // 일정 삭제 버튼 클릭 시
 function removeSchedule() {
 	const scheduleNo = $('#modScheduleNo').val(); 
-	const id = '${loginId}';
 
 	if (confirm('일정을 삭제하시겠습니까?')) {
-		window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo + '&id=' + id;
+		window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo;
 	}
 }
 
