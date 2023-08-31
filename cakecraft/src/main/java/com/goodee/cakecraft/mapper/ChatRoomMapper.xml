@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.ChatRoomMapper">
+	<select id="selectChatRoomList"
+			resultType="com.goodee.cakecraft.vo.ChatRoom">
+		SELECT 
+			room_id roomId,
+			room_name roomName,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM chat_room
+		ORDER BY reg_dtime DESC
+	</select>
+	
+	<select id="selectChatRoomById"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom"
+			resultType="com.goodee.cakecraft.vo.ChatRoom">
+		SELECT
+			room_id roomId,
+			room_name roomName,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM chat_room
+		WHERE room_id = #{roomId}
+	</select>
+	
+	<insert id="insertChatRoom" parameterType="com.goodee.cakecraft.vo.ChatRoom">
+		INSERT INTO chat_room (
+			room_id,
+			room_name,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+		) VALUES (
+			#{roomId},
+			#{roomName},
+			NOW(),
+			NOW(),
+			#{regId},
+			#{regId}
+		)
+	</insert>
+</mapper>
