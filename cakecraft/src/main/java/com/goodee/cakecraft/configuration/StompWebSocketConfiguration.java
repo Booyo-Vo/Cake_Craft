@@ -13,7 +13,7 @@ public class StompWebSocketConfiguration implements WebSocketMessageBrokerConfig
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/stomp").setAllowedOrigins("http://localhost:80");
+		registry.addEndpoint("/stomp").setAllowedOrigins("*");
 
 	}
 	
