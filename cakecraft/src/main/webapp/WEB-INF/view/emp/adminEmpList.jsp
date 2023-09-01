@@ -127,7 +127,7 @@ jQuery(document).ready(function($) {
 	        var selectedIdsStr = selectedIds.join(","); // 선택된 아이디 배열을 문자열로 변환
 	        window.location.href = "/cakecraft/emp/getSelectExcel?ids=" + selectedIdsStr; // 서버 URL을 요청하여 다운로드
 	    } else {
-	        alert("선택된 사원이 없습니다.");
+	        swal('실패','선택된 사원이 없습니다.','warning');
 	    }
 	});
 	
