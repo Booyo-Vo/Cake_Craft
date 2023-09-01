@@ -373,17 +373,4 @@
 		 FROM emp_base
 		WHERE emp_Name LIKE CONCAT("%" , #{empName}, "%")
 	</select>
-	
-	<!-- 채팅방 idList조회 -->
-	<select id="selectEmpIdList"
-			resultType="com.goodee.cakecraft.vo.EmpIdList">
-		SELECT
-			id,
-			pw,
-			reg_dtime regDtime,
-			mod_dtime modDtime,
-			reg_id regId,
-			mod_id modId
-		FROM emp_id_list
-	</select>
 </mapper>

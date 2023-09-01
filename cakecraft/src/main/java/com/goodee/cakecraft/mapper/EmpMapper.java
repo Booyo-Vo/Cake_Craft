@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.goodee.cakecraft.vo.EmpBase;
-import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
 import com.goodee.cakecraft.vo.StStdCd;
@@ -94,6 +93,4 @@ public interface EmpMapper {
 	// 사원명으로 검색하여 사원정보 조회
 	List<HashMap<String, Object>> getEmpListByNm(String empName);
 	
-	////////////////////// 채팅 ///////////////////////////
-	List<EmpIdList> selectEmpIdList();
 }
