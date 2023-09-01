@@ -83,7 +83,7 @@ var printPage = function() {
 			<div class="min-height-200px">
 			<button onclick="printPage();">프린트 출력</button>
 			</div>
-			</div>
-			</div>
+		</div>
+	</div>
 </body>
 </html>

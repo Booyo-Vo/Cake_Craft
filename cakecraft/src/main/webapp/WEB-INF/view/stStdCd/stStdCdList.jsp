@@ -13,7 +13,7 @@ function addDept() {
 
 	// 입력값이 비어있거나 공백만 포함하는지 확인
 	if (!deptNm || !deptNm.trim()) {
-		alert("부서명을 입력해주세요.");
+		swal('추가 실패','부서명을 입력해주세요','warning');
 		return;
 	}
 
@@ -34,7 +34,7 @@ function addDept() {
 			}
 		},
 		error: function() {
-			swal('추가 실패','오류가 발생했습니다.','warning');.then(() => {
+			swal('추가 실패','오류가 발생했습니다.','warning').then(() => {
 				$('#addDeptStStdCdModal').modal('hide'); // 모달 닫기
 				window.location.reload();
 			});
@@ -465,10 +465,10 @@ $(document).ready(function() {
 <!-- 모달창 닫을때 입력된 값 초기화 -->
 <script>
 function clearModalInputs(modalId) {
-    var inputs = document.querySelectorAll(modalId + " input");
-    inputs.forEach(function(input) {
-        input.value = "";
-    });
+	var inputs = document.querySelectorAll(modalId + " input");
+	inputs.forEach(function(input) {
+		input.value = "";
+	});
 }
 </script>
 </body>
