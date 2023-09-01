@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goodee.cakecraft.service.ApprovalService;
+import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.EmpIdList;
+import com.goodee.cakecraft.vo.StStdCd;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class ApprovalController {
 	@Autowired ApprovalService approvalService;
+	@Autowired StStdCdService stStdCdService;
 	
 	// ANSI 코드
 	final String SHJ = "\u001B[46m";
@@ -125,7 +128,7 @@ public class ApprovalController {
 	}
 	
 	
-	// 결재문서 상세보기 (결재대기문서, 결재수신문서, 기안문서)
+	// 결재문서 상세보기
 	@GetMapping("/approval/apprDocByNo")
 	public String apprDocByNo(
 					HttpSession session,
@@ -141,28 +144,19 @@ public class ApprovalController {
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDoc", resultApprMap.get("resultApprDoc"));
+		if (resultApprMap.get("resultApprHist") != null) {
 		model.addAttribute("apprHist", resultApprMap.get("resultApprHist"));
 		model.addAttribute("apprHistPreLv", resultApprMap.get("resultApprHistPreLv"));
+		}
+		model.addAttribute("apprRef", resultApprMap.get("resultApprRef"));
+		model.addAttribute("apprInfoLv1", resultApprMap.get("resultApprInfoLv1"));
+		model.addAttribute("apprInfoLv2", resultApprMap.get("resultApprInfoLv2"));
+		model.addAttribute("apprInfoLv3", resultApprMap.get("resultApprInfoLv3"));
+		model.addAttribute("documentNo", documentNo);
 		
 		return "/approval/apprDocByNo";
 	}
-	
-	// 문서정보 상세보기 (임시저장, 참조문서)
-	@GetMapping("/approval/apprDocInfoByNo")
-	public String apprDocInfoByNo(HttpSession session, Model model,
-					@RequestParam String documentNo) {
-		// 세션에서 로그인 된 loginId 추출
-		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
-		String loginId = loginMember.getId();
-		
-		// 문서정보 받아오기
-		ApprovalDocument apprDoc = approvalService.getApprDocInfoByNo(documentNo);
-		
-		// 뷰로 값넘기기
-		model.addAttribute("apprDoc", apprDoc);
-		model.addAttribute("loginId", loginId);
-		return "/approval/apprDocInfoByNo";
-	}
+
 	
 	// 결재문서 추가 폼
 	@GetMapping("/approval/addApprDoc")
@@ -171,11 +165,19 @@ public class ApprovalController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 문서구분, 항목구분 리스트 각각 가져오기
+		String doctCode = "A002";
+		String docSubCode = "A003";
+		List<StStdCd> docCodeList = stStdCdService.getCdList(doctCode);
+		List<StStdCd> docSubCodeList = stStdCdService.getCdList(docSubCode);		
+		
 		// 현재 날짜 가져오기
 		LocalDate currentDate = LocalDate.now();
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
+		model.addAttribute("docCodeList", docCodeList);
+		model.addAttribute("docSubCodeList", docSubCodeList);
 		model.addAttribute("currentDate", currentDate);
 		
 		return "/approval/addApprDoc";

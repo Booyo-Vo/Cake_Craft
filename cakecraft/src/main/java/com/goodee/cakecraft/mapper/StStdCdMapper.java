@@ -14,6 +14,9 @@ public interface StStdCdMapper {
 	//각 부서에 따른 팀리스트 받아오기
 	List<StStdCd> selectTeamListByDept(String deptCd);
 	
+	// 문서구분에 따른 하위 항목 받아오기
+	List<StStdCd> selectDocSubCdListByDocCd(String docCode);
+	
 	//코드이름 중복확인
 	int selectCdNmCnt(StStdCd stStdCd);
 	

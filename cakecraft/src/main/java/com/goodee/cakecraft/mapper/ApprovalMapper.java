@@ -33,8 +33,10 @@ public interface ApprovalMapper {
 	// 참조자로 지정된 문서 목록 출력
 	List<ApprovalDocument> selectApprDocListByRefId(String loginId);
 	
+	/*
 	// 결재문서 개수 출력
 	int selectApprDocCnt();
+	*/
 	
 	// 결재문서 상세정보 출력
 	ApprovalDocument selectApprDocByNo(String documentNo);
@@ -42,8 +44,11 @@ public interface ApprovalMapper {
 	// 결재문서 상세이력 출력
 	ApprovalHistory selectApprHistByNo(String documentNo, String loginId);
 	
-	// 이전 결재자의 상세이력 출력
+	// 이전 결재자의 결재상태 조회
 	ApprovalHistory selectApprHistByNoPreLv(int approvalNo);
+	
+	// 문서번호 및 결제레벨로 결재정보 조회
+	ApprovalHistory selectApprInfoByNo(String documentNo, int approvalLevel);
 	
 	// 문서번호 생성
 	String selectDocumentNo(Map param);
@@ -67,6 +72,9 @@ public interface ApprovalMapper {
 	
 	
 	/* 결재참조자 : ApprovalRef */
+	// 결재참조자 조회
+	ApprovalRef selectApprRefByNo(String documentNo);
+	
 	// 결재참조자 추가
 	int insertApprRef(Map param);
 	

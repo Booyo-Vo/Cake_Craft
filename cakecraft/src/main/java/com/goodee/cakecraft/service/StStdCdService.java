@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StStdCdService {
 	//ANSI코드
 	final String LJY = "\u001B[42m";
+	final String SHJ = "\u001B[46m";
 	final String RESET = "\u001B[0m"; 
 	
 	@Autowired
@@ -40,7 +41,7 @@ public class StStdCdService {
 		return cdList;
 	}
 	
-	//부서이름이 선택되었을대 그 부서에 맞는 팀 가져오기
+	//부서이름이 선택되었을때 그 부서에 맞는 팀 가져오기
 	public List<StStdCd> getTeamListByDept(String deptNm) {
 		log.debug(LJY + deptNm +"<- getTeamListByDept deptNm" + RESET);	
 		// 부서이름이 넘어오면 부서 코드를 받아옴
@@ -56,6 +57,24 @@ public class StStdCdService {
 		return teamListbyEmpt;
 
 	}
+	
+	// 문서구분에 따른 하위 항목 받아오기
+	public List<StStdCd> getDocSubCdListByDocCd(String docNm) {
+		log.debug(SHJ + docNm + " <-- getDocSubCdListByDocCd docNm" + RESET);	
+		// 문서구분 이름이 넘어오면 하위 항목구분 리스트를 받아옴
+		Map<String, Object> docCdMap = commonMapper.getCode(docNm);
+		
+		// cd가 int이으로 toString() 해준다
+		String docCd = docCdMap.get("cd").toString();
+		log.debug(SHJ + docCd + " <-- getDocSubCdListByDocCd docCd" + RESET);	
+		
+		// 가져온 문서구분 코드로 문서코드에 맞는 하위 항목리스트를 가져온다
+		List<StStdCd> docSubCdList = stStdCdMapper.selectDocSubCdListByDocCd(docCd);
+		log.debug(SHJ + docSubCdList + " <-- getDocSubCdListByDocCd docSubCdList" + RESET);	
+
+		return docSubCdList;
+	}
+	
 	//관리자가 보는 부서, 팀관리 리스트
 	public Map<String, Object> getStdStdCdList(){
 		//부서,팀 코드 설정

@@ -35,6 +35,23 @@
 	WHERE grp_cd = 'T001' AND CD LIKE CONCAT(#{deptCd}, '%') AND use_yn = 'y'
 </select>
 
+<!-- 문서구분에 따른 하위 항목 받아오기 -->
+<select id = "selectDocSubCdListByDocCd"
+	parameterType = "String"
+	resultType="com.goodee.cakecraft.vo.StStdCd">
+	select
+		grp_cd grpCd,
+		cd,
+		cd_nm cdNm,
+		use_yn useYn,
+		reg_dtime regDtime, 
+		mod_dtime modDtime, 
+		reg_id regId, 
+		mod_id modId
+	FROM st_std_cd
+	WHERE grp_cd = 'A003' AND CD LIKE CONCAT(#{docCode}, '%') AND use_yn = 'y'
+</select>
+
 <!-- 부서,팀 추가 시 이름 중복확인 -->
 <select id = "selectCdNmCnt"
    parameterType="com.goodee.cakecraft.vo.StStdCd"

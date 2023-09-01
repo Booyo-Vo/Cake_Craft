@@ -10,6 +10,8 @@ public class ApprovalDocument {
 	private String documentSubCd;
 	private String documentTitle;
 	private String documentContent;
+	private String startDay;
+	private String endDay;
 	private String tempSave;
 	private String regDtime;
 	private String modDtime;

@@ -133,7 +133,7 @@ jQuery(document).ready(function($) {
 						<div id="pager"></div>
 					</div>
 					<div class="col-sm-12 col-md-12">
-						<a href="/cakecraft/approval/addApprDoc">기안문작성</a>
+						<a href="/cakecraft/approval/addApprDoc" class="btn btn-primary">기안문작성</a>
 					</div>
 				</div>
 			</div>

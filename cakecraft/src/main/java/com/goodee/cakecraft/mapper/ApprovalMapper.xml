@@ -12,6 +12,8 @@
 				document_title documentTitle,
 				document_cd documentCd,
 				document_sub_cd documentSubCd,
+				start_day startDay,
+				end_day endDay,
 				temp_save tempSave,
 				reg_dtime regDtime, 
 				mod_dtime modDtime, 
@@ -34,6 +36,8 @@
 				ad.document_title documentTitle,
 				ad.document_cd documentCd,
 				ad.document_sub_cd documentSubCd,
+				ad.start_day startDay,
+				ad.end_day endDay,
 				ad.temp_save tempSave,
 				ad.reg_dtime regDtime, 
 				ad.mod_dtime modDtime, 
@@ -58,6 +62,8 @@
 			document_title documentTitle,
 			document_cd documentCd,
 			document_sub_cd documentSubCd,
+			start_day startDay,
+			end_day endDay,
 			temp_save tempSave,
 			reg_dtime regDtime, 
 			mod_dtime modDtime, 
@@ -117,6 +123,8 @@
 				ad.document_title documentTitle,
 				ad.document_cd documentCd,
 				ad.document_sub_cd documentSubCd,
+				ad.start_day startDay,
+				ad.end_day endDay,
 				ad.temp_save tempSave,
 				ad.reg_dtime regDtime, 
 				ad.mod_dtime modDtime, 
@@ -131,7 +139,8 @@
 			</where>
 	</select>
 	
-	<!-- 결재 문서 개수 출력 -->
+	
+	<!-- 결재 문서 개수 출력 
 	<select id="selectApprDocCnt"
 			parameterType="String"
 			resultType="int">
@@ -141,6 +150,7 @@
 				id = #{loginId}
 			</where>
 	</select>
+	-->
 	
 	<!-- 결재문서 상세정보 출력 -->
 	<select id="selectApprDocByNo"
@@ -153,6 +163,8 @@
 				document_content documentContent,
 				document_cd documentCd,
 				document_sub_cd documentSubCd,
+				start_day startDay,
+				end_day endDay,
 				temp_save tempSave,
 				reg_dtime regDtime, 
 				mod_dtime modDtime, 
@@ -185,7 +197,7 @@
 			</where>
 	</select>
 	
-	<!-- 이전 결재자의 결재상태 출력 -->
+	<!-- 이전 결재자의 결재상태 조회 -->
 	<select id="selectApprHistByNoPreLv"
 			parameterType="int" 
 			resultType="com.goodee.cakecraft.vo.ApprovalHistory">
@@ -200,7 +212,27 @@
 				approval_no = #{approvalNo}
 			</where>
 	</select>
-
+	
+	<!-- 문서번호 및 결제레벨로 결재정보 조회 -->
+	<select id="selectApprInfoByNo"
+			parameterType="String" 
+			resultType="com.goodee.cakecraft.vo.ApprovalHistory">
+			SELECT
+				approval_no approvalNo,
+				approval_id approvalId,
+				approval_level approvalLevel,
+				approval_status_cd approvalStatusCd,
+				reg_dtime regDtime, 
+				mod_dtime modDtime, 
+				reg_id regId, 
+				mod_id modId
+			FROM approval_history
+			<where>
+				document_no = #{documentNo}
+				AND approval_level = #{approvalLevel}
+			</where>
+	</select>
+	
 	<!-- 문서번호 생성 -->
 	<select id="selectDocumentNo"
 		parameterType="Map"
@@ -224,6 +256,8 @@
 				document_content,
 				document_cd,
 				document_sub_cd,
+				start_day,
+				end_day,
 				temp_save,
 				reg_dtime, 
 				mod_dtime, 
@@ -236,6 +270,8 @@
 				#{documentContent},
 				#{documentCd},
 				#{documentSubCd},
+				#{startDay},
+				#{endDay},
 				#{tempSave},
 				NOW(),
 				NOW(),
@@ -251,6 +287,8 @@
 			SET document_title documentTitle,
 				document_content = #{documentContent},
 				approval_status_cd = #{approvalStatusCd},
+				start_day = #{startDay},
+				end_day = #{endDay},
 				temp_save = #{tempSave},
 				reg_dtime = NOW(),
 				mod_dtime = NOW(), 
@@ -310,6 +348,17 @@
 
 	
 <!-- 결재 참조자 : ApprovalRef -->
+	<!-- 결재 참조자 조회 -->
+	<select id="selectApprRefByNo"
+			parameterType="String"
+			resultType="com.goodee.cakecraft.vo.ApprovalRef">
+			SELECT ref_id refId
+				FROM approval_ref
+			<where>
+				document_no = #{documentNo}
+			</where>
+	</select>
+	
 	<!-- 결재 참조자 추가 -->
 	<insert id="insertApprRef"
 			parameterType="Map">

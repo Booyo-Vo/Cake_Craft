@@ -39,7 +39,7 @@ public class ApprovalService {
 		// 반환값
 		List<ApprovalDocument> apprDocList = apprDocMapper.selectApprDocListById(loginId, tempSave);
 		
-		for (ApprovalDocument apprDoc : apprDocList) {
+		for(ApprovalDocument apprDoc : apprDocList) {
 			// 문서구분 이름 받아오기
 			Map<String,Object> documentNmMap = new HashMap<String,Object>();
 			documentNmMap.put("grpCd", "A002");
@@ -65,7 +65,7 @@ public class ApprovalService {
 		// 반환값
 		List<ApprovalDocument> apprDocListTempY = apprDocMapper.selectApprDocListById(loginId, tempSave);
 			
-		for (ApprovalDocument apprDoc : apprDocListTempY) {
+		for(ApprovalDocument apprDoc : apprDocListTempY) {
 			// 문서구분 이름 받아오기
 			Map<String,Object> documentNmMap = new HashMap<String,Object>();
 			documentNmMap.put("grpCd", "A002");
@@ -91,7 +91,7 @@ public class ApprovalService {
 		// 반환값
 		List<ApprovalDocument> apprDocListAppr = apprDocMapper.selectApprDocListByApprId(loginId);
 				
-		for (ApprovalDocument apprDoc : apprDocListAppr) {
+		for(ApprovalDocument apprDoc : apprDocListAppr) {
 			// 문서구분 이름 받아오기
 			Map<String,Object> documentNmMap = new HashMap<String,Object>();
 			documentNmMap.put("grpCd", "A002");
@@ -141,7 +141,7 @@ public class ApprovalService {
 			}
 		}
 		
-		for (ApprovalDocument apprDoc : resultApprDocList) {
+		for(ApprovalDocument apprDoc : resultApprDocList) {
 			// 문서구분 이름 받아오기
 			Map<String,Object> documentNmMap = new HashMap<String,Object>();
 			documentNmMap.put("grpCd", "A002");
@@ -173,7 +173,7 @@ public class ApprovalService {
 		// 반환값
 		List<ApprovalDocument> apprDocListRef = apprDocMapper.selectApprDocListByRefId(loginId);
 				
-		for (ApprovalDocument apprDoc : apprDocListRef) {
+		for(ApprovalDocument apprDoc : apprDocListRef) {
 			// 문서구분 이름 받아오기
 			Map<String,Object> documentNmMap = new HashMap<String,Object>();
 			documentNmMap.put("grpCd", "A002");
@@ -194,7 +194,7 @@ public class ApprovalService {
 		return apprDocListRef;
 	}
 	
-	
+	/*
 	// 결재문서 개수 출력
 	public int getApprDocCnt(ApprovalDocument apprDoc){
 		// 반환값
@@ -203,8 +203,10 @@ public class ApprovalService {
 		return apprDocCnt;
 		
 	}
+	*/
+
 	
-	// 결재문서 상세정보 출력 (결재대기문서, 결재수신문서, 기안문서)
+	// 결재문서 상세정보 출력 (승인대기문서, 결재수신문서, 기안문서)
 	public Map<String, Object> getApprDocByNo(String documentNo, String loginId){
 		// 결재문서 상세정보
 		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(documentNo);
@@ -212,27 +214,63 @@ public class ApprovalService {
 		// 결재문서 상세이력
 		ApprovalHistory resultApprHist = apprDocMapper.selectApprHistByNo(documentNo, loginId);
 		
-		// 바로 직전 결재자의 결재상태를 조회하기 위해, 이전 결재이력의 번호를 변수에 저장
-		int approvalNo = (resultApprHist.getApprovalNo())-1;
-		
 		// 이전 결재자의 상세이력
-		ApprovalHistory resultApprHistPreLv = apprDocMapper.selectApprHistByNoPreLv(approvalNo);
+		ApprovalHistory resultApprHistPreLv = null;
+		
+		if(resultApprHist != null) {
+			// 바로 직전 결재자의 결재상태를 조회하기 위해, 이전 결재이력의 번호를 변수에 저장
+			int approvalNo = (resultApprHist.getApprovalNo())-1;
+			resultApprHistPreLv = apprDocMapper.selectApprHistByNoPreLv(approvalNo);
+		}
+		
+		// 참조자 상세정보
+		ApprovalRef resultApprRef = apprDocMapper.selectApprRefByNo(documentNo);
+		
+		
+		// 문서번호 및 결제레벨로 결재정보 조회
+		int approvalLevel = 1;
+		ApprovalHistory resultApprInfoLv1 = apprDocMapper.selectApprInfoByNo(documentNo, approvalLevel);
+		resultApprInfoLv1.setApprovalLevel(approvalLevel);
+		
+		approvalLevel = 2;
+		ApprovalHistory resultApprInfoLv2 = apprDocMapper.selectApprInfoByNo(documentNo, approvalLevel);
+		resultApprInfoLv2.setApprovalLevel(approvalLevel);
+		
+		approvalLevel = 3;
+		ApprovalHistory resultApprInfoLv3 = apprDocMapper.selectApprInfoByNo(documentNo, approvalLevel);
+		resultApprInfoLv3.setApprovalLevel(approvalLevel);
+		
+		
+		// 문서구분 이름 받아오기
+		Map<String,Object> documentNmMap = new HashMap<String,Object>();
+		documentNmMap.put("grpCd", "A002");
+		documentNmMap.put("cd", resultApprDoc.getDocumentCd());
+		String documentNm =  commonMapper.getName(documentNmMap);
+		
+		// 항목구분 이름 받아오기
+		Map<String,Object> documentSubNmMap = new HashMap<String,Object>();
+		documentSubNmMap.put("grpCd", "A003");
+		documentSubNmMap.put("cd", resultApprDoc.getDocumentSubCd());
+		String documentSubNm =  commonMapper.getName(documentSubNmMap);
+		
+		// 받아온 이름값 저장하기
+		resultApprDoc.setDocumentNm(documentNm);
+		resultApprDoc.setDocumentSubNm(documentSubNm);
+		
 		
 		// 반환값
 		Map<String, Object> resultApprMap = new HashMap<String, Object>();
 		resultApprMap.put("resultApprDoc", resultApprDoc);
+		if(resultApprHist != null) {
 		resultApprMap.put("resultApprHist", resultApprHist);
 		resultApprMap.put("resultApprHistPreLv", resultApprHistPreLv);
+		}
+		resultApprMap.put("resultApprRef", resultApprRef);
+		resultApprMap.put("resultApprInfoLv1", resultApprInfoLv1);
+		resultApprMap.put("resultApprInfoLv2", resultApprInfoLv2);
+		resultApprMap.put("resultApprInfoLv3", resultApprInfoLv3);
 		
 		return resultApprMap;
-	}
-	
-	// 결재문서 상세정보 출력 (임시저장, 참조문서)
-	public ApprovalDocument getApprDocInfoByNo(String documentNo) {
-		ApprovalDocument apprDoc = apprDocMapper.selectApprDocByNo(documentNo);
-	
-		// 반환값
-		return apprDoc;
 	}
 	
 	

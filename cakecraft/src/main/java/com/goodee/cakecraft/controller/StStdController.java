@@ -36,6 +36,14 @@ public class StStdController {
 			List<StStdCd> teamList = stStdCdService.getTeamListByDept(deptNm);
 				return teamList;
 	}
+	
+	// 선택된 문서코드에 따른 하위 항목리스트 받아오기
+	@GetMapping("/stStdCd/getDocSubListByDoc")
+	@ResponseBody //restController 대신 사용
+		public List<StStdCd> docSubCdListByDocCd(@RequestParam String docNm) {
+			List<StStdCd> docSubCodeList = stStdCdService.getDocSubCdListByDocCd(docNm);
+				return docSubCodeList;
+	}
 
 	//부서, 팀 관리 페이지 (Modal로 추가, 수정)
 	@GetMapping("/stStdCd/stStdCdList")
