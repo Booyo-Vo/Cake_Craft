@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.goodee.cakecraft.service.ApprovalService;
+import com.goodee.cakecraft.service.BoardNoticeService;
 import com.goodee.cakecraft.service.ScheduleService;
 import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.ScheduleBase;
@@ -18,6 +20,8 @@ import com.goodee.cakecraft.vo.ScheduleBase;
 @Controller
 public class ScheduleController {
 	@Autowired ScheduleService scheduleService;
+	@Autowired BoardNoticeService noticeService;
+	@Autowired ApprovalService approvalService;
 	
 	@GetMapping("/schedule/schedule")
 	public String schedule(Model model, HttpSession session,
@@ -33,18 +37,31 @@ public class ScheduleController {
 		// 일정 목록 조회 (월간, 일간)
 		Map<String, Object> resultMap = scheduleService.getSchedule(loginId, targetYear, targetMonth);
 		
+		// 공지사항 조회(최근일순 3개)
+		Map<String, Object> resultMapNotice = noticeService.getNoticeList("", "");
+		
+		// 결재문서 조회
+		Map<String, Object> apprDocWaitMap = approvalService.getApprDocWaitNoMap(loginId);
+		
 		model.addAttribute("targetYear",resultMap.get("targetYear"));
 		model.addAttribute("targetMonth",resultMap.get("targetMonth"));
 		model.addAttribute("lastDate",resultMap.get("lastDate"));
 		model.addAttribute("beginBlank",resultMap.get("beginBlank"));
 		model.addAttribute("endBlank",resultMap.get("endBlank"));
 		model.addAttribute("totalTd",resultMap.get("totalTd"));
+		model.addAttribute("todayYear",resultMap.get("todayYear"));
+		model.addAttribute("todayMonth",resultMap.get("todayMonth"));
+		model.addAttribute("strTargetMonth",resultMap.get("strTargetMonth"));
 		
 		model.addAttribute("empBase",resultMap.get("empBase"));
 		model.addAttribute("scheduleListByCateAll",resultMap.get("scheduleListByCateAll"));
 		model.addAttribute("scheduleListByCateTeam",resultMap.get("scheduleListByCateTeam"));
 		model.addAttribute("scheduleListByCateId",resultMap.get("scheduleListByCateId"));
 		model.addAttribute("scheduleListByDate",resultMap.get("scheduleListByDate"));
+		
+		model.addAttribute("noticeList",resultMapNotice.get("noticeList"));
+		model.addAttribute("apprDocList",apprDocWaitMap.get("apprDocList"));
+		
 		
 		return "/schedule/schedule";
 	}

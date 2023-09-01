@@ -50,6 +50,36 @@ public class ScheduleService {
 		// 오늘 날짜 
 		Calendar today = Calendar.getInstance();
 		int todayDate = today.get(Calendar.DATE);
+		int todayYear = today.get(Calendar.YEAR);
+		int todayMonth = today.get(Calendar.MONTH);
+		
+		// targetMonth 영문으로 변환
+		String strTargetMonth = null;
+		if(targetMonth == 0) {
+			strTargetMonth = "January";
+		}else if(targetMonth == 1) {
+			strTargetMonth = "February";
+		}else if(targetMonth == 2) {
+			strTargetMonth = "March";
+		}else if(targetMonth == 3) {
+			strTargetMonth = "April";
+		}else if(targetMonth == 4) {
+			strTargetMonth = "May";
+		}else if(targetMonth == 5) {
+			strTargetMonth = "June";
+		}else if(targetMonth == 6) {
+			strTargetMonth = "July";
+		}else if(targetMonth == 7) {
+			strTargetMonth = "August";
+		}else if(targetMonth == 8) {
+			strTargetMonth = "September";
+		}else if(targetMonth == 9) {
+			strTargetMonth = "October";
+		}else if(targetMonth == 10) {
+			strTargetMonth = "November";
+		}else {
+			strTargetMonth = "December";
+		}
 		
 		// 1일의 요일을 이용하여 출력할 시작 공백 수 -> 요일 맵핑 수 - 1
 		int beginBlank = firstDate.get(Calendar.DAY_OF_WEEK) - 1;
@@ -70,6 +100,8 @@ public class ScheduleService {
 		log.debug(GEH + beginBlank + " <-- beginBlank"+ RESET);
 		log.debug(GEH + endBlank + " <-- endBlank" + RESET);
 		log.debug(GEH + totalTd + " <-- totalTd" + RESET);
+		log.debug(GEH + todayYear + " <-- todayYear" + RESET);
+		log.debug(GEH + todayMonth + " <-- todayMonth" + RESET);
 		
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -79,6 +111,9 @@ public class ScheduleService {
 		resultMap.put("beginBlank",beginBlank);
 		resultMap.put("endBlank",endBlank);
 		resultMap.put("totalTd",totalTd);
+		resultMap.put("todayYear",todayYear);
+		resultMap.put("todayMonth",todayMonth);
+		resultMap.put("strTargetMonth",strTargetMonth);
 		
 		// 로그인한 사원정보 가져오기
 		EmpBase empBase = empMapper.selectEmpById(id);

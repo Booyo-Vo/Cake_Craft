@@ -31,6 +31,7 @@
 	position: absolute;
 	width: 90%;
 }
+
 </style>
 </head>
 <body>
@@ -58,11 +59,12 @@
 			</div>
 			<div class="pd-20 card-box mb-30">
 				<div class="container">
-					<h1>${targetYear}년 ${targetMonth+1}월 </h1>
+					<h1>${strTargetMonth} ${targetYear}</h1>
 					<div class="row">
 						<!-- 달력 시작 -->
 						<div class="col-md-10">
 							<div class="pull-right">
+								<a class="btn" href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${todayYear}&targetMonth=${todayMonth}">today</a>
 								<a class="btn" href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">&#10094;</a>
 								<a class="btn" href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">&#10095;</a>
 							</div>
@@ -193,6 +195,45 @@
 					</div>
 				</div>
 			</div>
+			
+			<!-- 결재문서 알림, 공지사항 알림 시작 -->
+			<div class="pd-20 card-box mb-30">
+				<div class="row">
+					<!-- 결재문서알림 : 최신작성일순 3개 -->
+					<div class="col-md-6">
+						<div class="container" style="width: 80%">
+							<div style="padding-bottom: 10px;">
+								<b>[결재문서알림]</b>
+								<div class="pull-right">
+									<a href="${pageContext.request.contextPath}/approval/apprDocWaitListByNo">+더보기</a>
+								</div>
+							</div>
+							<c:forEach var="a" items="${apprDocList}" varStatus="status">
+								<c:if test="${status.index < 3}">
+									<div>&nbsp;&#8226; ${a.documentTitle}</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					</div>
+					<!-- 공지사항알림: 최신작성일순 3개 -->
+					<div class="col-md-6">
+						<div class="container" style="width: 80%">
+							<div style="padding-bottom: 10px;">
+								<b>[공지사항알림]</b>
+								<div class="pull-right">
+									<a href="${pageContext.request.contextPath}/board/noticeList">+더보기</a>
+								</div>
+							</div>
+							<c:forEach var="n" items="${noticeList}" varStatus="status">
+								<c:if test="${status.index < 3}">
+									<div>&nbsp;&#8226; ${n.noticeTitle}</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 결재문서 알림, 공지사항 알림 끝 -->
 		</div>
 	</div>
 </div>
