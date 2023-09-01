@@ -19,7 +19,6 @@ import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.vo.EmpAttendance;
 import com.goodee.cakecraft.vo.EmpBase;
-import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.EmpProfileImg;
 import com.goodee.cakecraft.vo.EmpSignImg;
 
@@ -293,9 +292,5 @@ public class EmpService {
 		  return enmList; 
 		  }
 		 		
-		//채팅방 리스트 출력
-		public List<EmpIdList> getEmpIdList(){
-			List<EmpIdList> empIdList = empMapper.selectEmpIdList();
-			return empIdList;
-		}
+		
 }
