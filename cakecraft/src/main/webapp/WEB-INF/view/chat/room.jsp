@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <c:import url="/layout/cdn.jsp"></c:import>
+<style>
+	#msgArea{
+		height: 300px;
+		overflow-y: scroll;
+	}
+</style>
 </head>
 <body>
 <c:import url="/layout/header.jsp"></c:import>
@@ -14,9 +20,26 @@
 	</div>
 	<div>
 		<div id="msgArea" class="col">
+			<c:if test="${messageList != null }">
+				<c:forEach var="m" items="${messageList}">
+					<c:if test="${loginEmpBase.id eq m.writer}">
+						<div class="col-6">
+							<div class='alert alert-secondary'>
+								<b>${m.writer} : ${m.message}</b>
+							</div>
+						</div>
+					</c:if>
+					<c:if test="${!loginEmpBase.id eq m.writer}">
+						<div class="col-6">
+							<div class='alert alert-warning'>
+								<b>${m.writer} : ${m.message}</b>
+							</div>
+						</div>
+					</c:if>
+				</c:forEach>
+			</c:if>
 		</div>
 		<div>
-		<div id="msgArea" class="col"></div>
 		<div class="col-6">
 			<div class="input-group mb-3">
 			<input type="text" id="msg" class="form-control">
@@ -34,12 +57,12 @@
 <script>
 	const roomName = '${room.roomName}';
 	const roomId = '${room.roomId}';
-	const username = '${loginEmpBase.id}';
+	const username = '${loginEmpBase.empName}';
 	
 	console.log(roomName + ", " + roomId + ", " + username);
 	
 	//1. websocket 내부에 들고있는 stomp를 내어준다
-	const websocket = new WebSocket("ws://localhost:80/cakecraft/stomp");
+	const websocket = new WebSocket("ws://localhost:80/cakecraft/stomp"); //배포 전 배포주소로 바꾸기
 	const stomp = Stomp.over(websocket);
 	
 	//2. connection이 맺어지면 실행
@@ -66,6 +89,7 @@
 			}
 			
 			$('#msgArea').append(str);
+			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight); //가장 아래의 채팅을 보여주기 위함
 		})
 		
 		//3.send(path, header, message)로 메세지를 보낼 수 있다

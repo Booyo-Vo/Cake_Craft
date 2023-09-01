@@ -18,9 +18,20 @@
 				<li><a href="${pageContext.request.contextPath}/chat/room?roomId=${r.roomId}">${r.roomName}</a></li>
 			</c:forEach>
 		</ul>
+		
 		<form action="${pageContext.request.contextPath}/chat/room" method="post">
 			<input type="hidden" name="regId" value="${loginEmpBase.id}">
+			<input type="hidden" name="member" value="${loginEmpBase.id}">
 			<input id="roomName" type="text" name="roomName">
+			<c:forEach var="e" items="${empList}">
+			<div>
+				<ul>
+					<c:if test="${e.empStatus.equals('재직자')}">
+						<li><input type="checkbox" id="${e.id}" name="member" value="${e.id}"><label for="${e.id}">${e.empName}</label></li>
+					</c:if>
+				</ul>
+			</div>	
+			</c:forEach>
 			<button class="btn btn-secondary">개설하기</button>
 		</form>
 	</div>

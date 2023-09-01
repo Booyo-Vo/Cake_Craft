@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.cakecraft.mapper.ChatMapper">
+	<!-- 채팅방 리스트 -->
+	<select id="selectChatRoomList"
+			parameterType="com.goodee.cakecraft.vo.EmpBase"
+			resultType="com.goodee.cakecraft.vo.ChatRoom">
+		SELECT 
+			room_id roomId,
+			room_member roomMember,
+			room_name roomName,
+			member_cnt memberCnt,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM chat_room
+		WHERE room_member = #{id}
+		ORDER BY reg_dtime DESC
+	</select>
+	
+	<!-- 채팅방 -->
+	<select id="selectChatRoomById"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom"
+			resultType="com.goodee.cakecraft.vo.ChatRoom">
+		SELECT
+			room_id roomId,
+			room_member roomMember,
+			room_name roomName,
+			member_cnt memberCnt,
+			reg_dtime regDtime,
+			mod_dtime modDtime,
+			reg_id regId,
+			mod_id modId
+		FROM chat_room
+		WHERE room_id = #{roomId}
+		AND reg_id = #{regId}
+	</select>
+	
+	<!-- 채팅방 개설 -->
+	<insert id="insertChatRoom" 
+			parameterType="com.goodee.cakecraft.vo.ChatRoom">
+		INSERT INTO chat_room (
+			room_id,
+			room_member,
+			room_name,
+			member_cnt,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+		) VALUES (
+			#{roomId},
+			#{roomMember},
+			#{roomName},
+			#{memberCnt},
+			NOW(),
+			NOW(),
+			#{regId},
+			#{regId}
+		)
+	</insert>
+	
+	<!-- 채팅방 나가기 -->
+	<delete id="deleteChatRoom"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom">
+		DELETE FROM chat_room
+		WHERE room_id = #{roomId}
+		AND room_member = #{roomMember}
+	</delete>
+	
+	<!-- 채팅내용저장 -->
+	<insert id="insertChatMessage"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom">
+		INSERT INTO chat_message(
+			room_id,
+			writer,
+			message,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+		) VALUES (
+			#{roomId},
+			#{writer},
+			#{message},
+			NOW(),
+			NOW(),
+			#{writer},
+			#{writer}
+		)
+	</insert>
+	
+	<!-- 채팅내용 불러오기 -->
+	<select id="selectChatMessageById"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom"
+			resultType="com.goodee.cakecraft.vo.ChatMessage">
+		SELECT
+			message_no,
+			room_id,
+			writer,
+			message,
+			reg_dtime,
+			mod_dtime,
+			reg_id,
+			mod_id
+		FROM chat_message
+		WHERE room_id = #{roomId}
+		AND timestampDIFF(DAY, reg_dtime, NOW()) &lt; 7
+	</select>
+</mapper>
