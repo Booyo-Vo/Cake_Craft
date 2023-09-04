@@ -9,153 +9,155 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-	<div class="pd-ltr-20 xs-pd-20-10">
-		<div class="min-height-200px">
-			<div class="page-header">
-				<div class="row">
-					<div class="col-md-6 col-sm-12">
-						<div class="title">
-							<h4>문의 상세보기</h4>
+	<div class="container w85">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>문의 상세보기</h4>
+							</div>
+							
+							<!-- breadcrumb 시작 -->
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+									<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/questionList">QnA</a></li>
+									<li class="breadcrumb-item active" aria-current="page">questionByNo</li>
+								</ol>
+							</nav>
+							<!-- breadcrumb 끝 -->
 						</div>
-						
-						<!-- breadcrumb 시작 -->
-						<nav aria-label="breadcrumb" role="navigation">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
-								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/board/questionList">QnA</a></li>
-								<li class="breadcrumb-item active" aria-current="page">questionByNo</li>
-							</ol>
-						</nav>
-						<!-- breadcrumb 끝 -->
 					</div>
 				</div>
-			</div>
-			<!-- 문의상세 시작 -->
-			<div class="pd-20 card-box mb-30">
-				<div class="container" style="width: 90%;">
-					<br>
-					<div class="form-group row">
-						<label class="col-md-2 col-form-label"><b>제목</b></label>
-						<div class="col-md-10">
-							${questionByNo.questionTitle}
+				<!-- 문의상세 시작 -->
+				<div class="pd-20 card-box mb-30">
+					<div class="container w90">
+						<br>
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label"><b>제목</b></label>
+							<div class="col-md-10">
+								${questionByNo.questionTitle}
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-md-2 col-form-label"><b>내용</b></label>
-						<div class="col-md-10">
-							${questionByNo.questionContent}
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label"><b>내용</b></label>
+							<div class="col-md-10">
+								${questionByNo.questionContent}
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-md-2 col-form-label"><b>비밀글</b></label>
-						<div class="col-md-10">
-							<c:if test="${questionByNo.secretYn=='Y'}">
-								<i class="icon-copy fa fa-lock" aria-hidden="true"></i>
-							</c:if>
-							<c:if test="${questionByNo.secretYn=='N'}">
-								<i class="icon-copy fa fa-unlock" aria-hidden="true"></i>
-							</c:if>
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label"><b>비밀글</b></label>
+							<div class="col-md-10">
+								<c:if test="${questionByNo.secretYn=='Y'}">
+									<i class="icon-copy fa fa-lock" aria-hidden="true"></i>
+								</c:if>
+								<c:if test="${questionByNo.secretYn=='N'}">
+									<i class="icon-copy fa fa-unlock" aria-hidden="true"></i>
+								</c:if>
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-md-2 col-form-label"><b>작성자</b></label>
-						<div class="col-md-10">
-							${questionByNo.regId}
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label"><b>작성자</b></label>
+							<div class="col-md-10">
+								${questionByNo.regId}
+							</div>
 						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-md-2 col-form-label"><b>작성일</b></label>
-						<div class="col-md-10">
-							${questionByNo.regDtime}
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label"><b>작성일</b></label>
+							<div class="col-md-10">
+								${questionByNo.regDtime}
+							</div>
 						</div>
-					</div>
-					<div class="pull-right">
-						<a href="${pageContext.request.contextPath}/board/questionList">
-							<button type="button" class="btn btn-secondary form-group">취 소</button>
-						</a>
-						<!-- 작성자만 수정,삭제버튼 노출 -->
-						<c:if test="${loginId == questionByNo.regId}">
-							<a href="${pageContext.request.contextPath}/board/modifyQuestion?questionNo=${questionByNo.questionNo}">
-								<button type="button" class="btn btn-primary form-group">수 정</button>
+						<div class="pull-right">
+							<a href="${pageContext.request.contextPath}/board/questionList">
+								<button type="button" class="btn btn-secondary form-group">취 소</button>
 							</a>
-							<button type="button" class="btn btn-primary form-group" onclick="removeQuestion(${questionByNo.questionNo})">삭 제</button>
-						</c:if>
+							<!-- 작성자만 수정,삭제버튼 노출 -->
+							<c:if test="${loginId == questionByNo.regId}">
+								<a href="${pageContext.request.contextPath}/board/modifyQuestion?questionNo=${questionByNo.questionNo}">
+									<button type="button" class="btn btn-primary form-group">수 정</button>
+								</a>
+								<button type="button" class="btn btn-primary form-group" onclick="removeQuestion(${questionByNo.questionNo})">삭 제</button>
+							</c:if>
+						</div>
+						<br><br>
 					</div>
-					<br><br>
 				</div>
+				<!-- 문의상세 끝 -->
 			</div>
-			<!-- 문의상세 끝 -->
-		</div>
-		
-		<!-- 답변 시작 -->
-		<div class="pd-20 card-box mb-30">
-			<div class="container" style="width: 90%;">
-				<!-- 문의 답변이 존재하지않으면 입력폼 출력 -->
-				<c:if test="${answerByNo == null}">
-					<!-- 관리부만 입력폼 출력 -->
-					<c:if test="${empBase.deptCd == '1'}">
-						<!-- 입력폼 -->
-						<div class="form-group">
+			
+			<!-- 답변 시작 -->
+			<div class="pd-20 card-box mb-30">
+				<div class="container w90">
+					<!-- 문의 답변이 존재하지않으면 입력폼 출력 -->
+					<c:if test="${answerByNo == null}">
+						<!-- 관리부만 입력폼 출력 -->
+						<c:if test="${empBase.deptCd == '1'}">
+							<!-- 입력폼 -->
+							<div class="form-group">
+								<div>
+									<br>
+									<label><b>문의 답변</b></label>
+									<button type="button" class="pull-right btn btn-primary" id="addSubmitBtn">등 록</button>
+								</div>
+								<br>
+								<form action="${pageContext.request.contextPath}/board/addAnswer" method="post" id="addAnswerForm">
+									<input type="hidden" name="questionNo" value="${questionByNo.questionNo}">
+									<input type="hidden" name="id" value="${questionByNo.id}">
+									<textarea class="form-control" name="answerContent" id="addAnswerContent"></textarea>
+								</form>
+							</div>
+						</c:if>
+					</c:if>
+					
+					<!-- 문의 답변이 존재한다면 답변출력 -->
+					<c:if test="${answerByNo != null}">
+						<!-- 문의 답변 -->
+						<div id="answerDiv">
 							<div>
 								<br>
 								<label><b>문의 답변</b></label>
-								<button type="button" class="pull-right btn btn-primary" id="addSubmitBtn">등 록</button>
+								<!-- 관리부만 답변 수정버튼 출력 -->
+								<c:if test="${empBase.deptCd == '1'}">
+									<a href="#" onclick="modAnswerBtn(${questionByNo.questionNo})">
+										<button type="button" class="pull-right btn btn-primary">수 정</button>
+									</a>
+								</c:if>
 							</div>
 							<br>
-							<form action="${pageContext.request.contextPath}/board/addAnswer" method="post" id="addAnswerForm">
+							${answerByNo.answerContent}
+						</div>
+						<br>
+						
+						<!-- 수정폼 -->
+						<div id="modAnswerFormDiv" class="dis-none">
+							<div>
+								<br>
+								<div class="pull-left">
+									<label><b>문의 답변 수정</b></label>
+								</div>
+								<div class="pull-right">
+									<button type="button" class="btn btn-secondary" id="cancelBtn">취 소</button>
+									<button type="button" class="btn btn-primary" id="modSubmitBtn">확 인</button>
+								</div>
+								<br>
+							</div>
+							<br>
+							<form action="${pageContext.request.contextPath}/board/modifyAnswer" method="post" id="modAnswerForm">
 								<input type="hidden" name="questionNo" value="${questionByNo.questionNo}">
 								<input type="hidden" name="id" value="${questionByNo.id}">
-								<textarea class="form-control" name="answerContent" id="addAnswerContent"></textarea>
+								<textarea class="form-control" name="answerContent" id="modAnswerContent">${answerByNo.answerContent}</textarea>
 							</form>
+							<br>
 						</div>
 					</c:if>
-				</c:if>
-				
-				<!-- 문의 답변이 존재한다면 답변출력 -->
-				<c:if test="${answerByNo != null}">
-					<!-- 문의 답변 -->
-					<div id="answerDiv">
-						<div>
-							<br>
-							<label><b>문의 답변</b></label>
-							<!-- 관리부만 답변 수정버튼 출력 -->
-							<c:if test="${empBase.deptCd == '1'}">
-								<a href="#" onclick="modAnswerBtn(${questionByNo.questionNo})">
-									<button type="button" class="pull-right btn btn-primary">수 정</button>
-								</a>
-							</c:if>
-						</div>
-						<br>
-						${answerByNo.answerContent}
-					</div>
-					<br>
-					
-					<!-- 수정폼 -->
-					<div id="modAnswerFormDiv" style="display: none">
-						<div>
-							<br>
-							<div class="pull-left">
-								<label><b>문의 답변 수정</b></label>
-							</div>
-							<div class="pull-right">
-								<button type="button" class="btn btn-secondary" id="cancelBtn">취 소</button>
-								<button type="button" class="btn btn-primary" id="modSubmitBtn">확 인</button>
-							</div>
-							<br>
-						</div>
-						<br>
-						<form action="${pageContext.request.contextPath}/board/modifyAnswer" method="post" id="modAnswerForm">
-							<input type="hidden" name="questionNo" value="${questionByNo.questionNo}">
-							<input type="hidden" name="id" value="${questionByNo.id}">
-							<textarea class="form-control" name="answerContent" id="modAnswerContent">${answerByNo.answerContent}</textarea>
-						</form>
-						<br>
-					</div>
-				</c:if>
+				</div>
 			</div>
+			<!-- 답변 끝 -->
+			<br>
 		</div>
-		<!-- 답변 끝 -->
-		<br>
 	</div>
 </div>
 <script>

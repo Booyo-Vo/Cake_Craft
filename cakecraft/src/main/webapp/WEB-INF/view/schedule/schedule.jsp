@@ -6,33 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
-<style>
-.td01 {
-	height:100px;
-	width: 14%;
-	font-size: 12px;
-}
-.p-rel{
-	position: relative;
-}
-.text-top-right {
-	position: absolute;
-	top: 7px;
-	right: 6px;
-}
-.ell{
-	display: block;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 90%;
-}
-.ell-parent {
-	position: absolute;
-	width: 90%;
-}
-
-</style>
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
@@ -97,13 +70,13 @@
 												
 												<!-- 해당 일자의 공휴일을 출력 -->
 												<c:forEach var="l" items="${holidayList}">
-													<div class="ell-parent">
-														<c:if test="${fn:substring(l.locdate,4,6) == (targetMonth+1) && fn:substring(l.locdate,6,8) == d}">
-															<span class="ell" style="background-color: #99004C; color: #FFFFFF;">&nbsp;${l.dateName}</span>
-														</c:if>
-													</div>
+													<c:if test="${fn:substring(l.locdate,4,6) == (targetMonth+1) && fn:substring(l.locdate,6,8) == d}">
+														<div class="ell-parent">
+															<span class="ell schedule01">&nbsp;${l.dateName}</span>
+														</div>
+														<div class="p-b-26"></div>
+													</c:if>
 												</c:forEach>
-												<div style="padding-bottom:26%;"></div>
 												
 												<!-- 전사일정 조회 -->
 												<c:forEach var="c" items="${scheduleListByCateAll}">
@@ -112,14 +85,14 @@
 															<!-- 인사팀인 경우만 전사일정 수정,삭제 가능 -->
 															<c:if test="${c.teamCd == '11'}">
 																<a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">
-																	<span class="ell" style="background-color: #638899; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
+																	<span class="ell schedule02">&nbsp;${c.scheduleContent}</span>
 																</a>
 															</c:if>
 															<c:if test="${c.teamCd != '11'}">
-																<span class="ell" style="background-color: #638899; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
+																<span class="ell schedule02">&nbsp;${c.scheduleContent}</span>
 															</c:if>
 														</div>
-														<div style="padding-bottom:26%;"></div>
+														<div class="p-b-26"></div>
 													</c:if>
 												</c:forEach>
 												<!-- 팀일정 조회 -->
@@ -129,16 +102,16 @@
 															<c:if test="${c.categoryCd == '2'}">
 																<!-- 시설 예약인 경우엔 수정,삭제 불가능 -->
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) == '[예약]'}">
-																	<span class="ell" style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
+																	<span class="ell schedule03">&nbsp;${c.scheduleContent}</span>
 																</c:if>
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) != '[예약]'}">
 																	<a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">
-																		<span class="ell" style="background-color: #F68E8E; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
+																		<span class="ell schedule03">&nbsp;${c.scheduleContent}</span>
 																	</a>
 																</c:if>
 															</c:if>
 														</div>
-														<div style="padding-bottom: 26%;"></div>
+														<div class="p-b-26"></div>
 													</c:if>
 												</c:forEach>
 												<!-- 개인일정 조회 -->
@@ -148,16 +121,16 @@
 															<c:if test="${c.categoryCd == '3'}">
 																<!-- 비품 예약인 경우엔 수정,삭제 불가능 -->
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) == '[예약]'}">
-																	<span class="ell" style="background-color: #919CD4; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
+																	<span class="ell schedule04">&nbsp;${c.scheduleContent}</span>
 																</c:if>
 																<c:if test="${fn:substring(c.scheduleContent, 0, 4) != '[예약]'}">
 																	<a data-bs-toggle="modal" href="#modifyScheduleModal" onclick="scheduleNo(${c.scheduleNo})">
-																		<span class="ell" style="background-color: #919CD4; color: #FFFFFF;">&nbsp;${c.scheduleContent}</span>
+																		<span class="ell schedule04">&nbsp;${c.scheduleContent}</span>
 																	</a>
 																</c:if>
 															</c:if>
 														</div>
-														<div style="padding-bottom: 26%;"></div>
+														<div class="p-b-26"></div>
 													</c:if>
 												</c:forEach>
 											</td>
@@ -169,10 +142,10 @@
 						<!-- 달력 끝 -->
 				
 						<!-- 오늘의 일정 시작 -->
-						<div class="col-md-2" style="padding-top: 50px;">
-							<span><b>today schedule</b><br><br></span>
+						<div class="col-md-2 p-t-50">
+							<span><b>today's schedule</b><br><br></span>
 							<div class="mb-5">
-								<span style="background-color: #638899; color: #FFFFFF; display:block; width: 100%;">&nbsp;전사일정&nbsp;</span>
+								<span class="schedule02 dis-block">&nbsp;전사일정&nbsp;</span>
 								<c:forEach var="c" items="${scheduleListByDate}">
 									<c:if test="${c.categoryCd == '1'}">
 										<div>
@@ -182,7 +155,7 @@
 								</c:forEach>
 							</div>
 							<div class="mb-5">
-								<span style="background-color: #F68E8E; color: #FFFFFF; display:block; width: 100%;">&nbsp;팀 일정&nbsp;</span>
+								<span class="schedule03 dis-block">&nbsp;팀 일정&nbsp;</span>
 								<c:forEach var="c" items="${scheduleListByDate}">
 									<c:if test="${c.categoryCd == '2'}">
 										<div>
@@ -192,7 +165,7 @@
 								</c:forEach>
 							</div>
 							<div>
-								<span style="background-color: #919CD4; color: #FFFFFF; display:block; width: 100%;">&nbsp;개인 일정&nbsp;</span>
+								<span class="schedule04 dis-block">&nbsp;개인 일정&nbsp;</span>
 								<c:forEach var="c" items="${scheduleListByDate}">
 									<c:if test="${c.categoryCd == '3'}">
 										<div>
@@ -212,32 +185,40 @@
 				<div class="row">
 					<!-- 결재문서알림 : 최신작성일순 3개 -->
 					<div class="col-md-6">
-						<div class="container" style="width: 80%">
-							<div style="padding-bottom: 10px;">
-								<b>[결재문서알림]</b>
+						<div class="container w80">
+							<div class="p-b-10">
+								<b>[결재문서 알림]</b>
 								<div class="pull-right">
 									<a href="${pageContext.request.contextPath}/approval/apprDocWaitListByNo">+더보기</a>
 								</div>
 							</div>
 							<c:forEach var="a" items="${apprDocList}" varStatus="status">
 								<c:if test="${status.index < 3}">
-									<div>&nbsp;&#8226; ${a.documentTitle}</div>
+									<div>
+										<a href="${pageContext.request.contextPath}/approval/apprDocByNo?documentNo=${a.documentNo}">
+											&nbsp;&#8226; ${a.documentTitle}
+										</a>
+									</div>
 								</c:if>
 							</c:forEach>
 						</div>
 					</div>
 					<!-- 공지사항알림: 최신작성일순 3개 -->
 					<div class="col-md-6">
-						<div class="container" style="width: 80%">
-							<div style="padding-bottom: 10px;">
-								<b>[공지사항알림]</b>
+						<div class="container w80">
+							<div class="p-b-10">
+								<b>[공지사항 알림]</b>
 								<div class="pull-right">
 									<a href="${pageContext.request.contextPath}/board/noticeList">+더보기</a>
 								</div>
 							</div>
 							<c:forEach var="n" items="${noticeList}" varStatus="status">
 								<c:if test="${status.index < 3}">
-									<div>&nbsp;&#8226; ${n.noticeTitle}</div>
+									<div>
+										<a href="${pageContext.request.contextPath}/board/noticeByNo?noticeNo=${n.noticeNo}">
+											&nbsp;&#8226; ${n.noticeTitle}
+										</a>
+									</div>
 								</c:if>
 							</c:forEach>
 						</div>
