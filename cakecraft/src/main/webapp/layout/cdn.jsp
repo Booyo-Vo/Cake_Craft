@@ -55,3 +55,6 @@
 <!------------- sweet alert ------------->
 <script src="${pageContext.request.contextPath}/layout/src/plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="${pageContext.request.contextPath}/layout/src/plugins/sweetalert2/sweet-alert.init.js"></script>
+
+<!-- 추가된 css -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/layout/subcss.css">
