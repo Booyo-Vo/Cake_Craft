@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalRef;
+import com.goodee.cakecraft.vo.BoardAnony;
+import com.goodee.cakecraft.vo.BoardAnonyFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 
 @Mapper
@@ -64,6 +66,9 @@ public interface ApprovalMapper {
 	
 	
 	/* 결재파일 : ApprovalFile */
+	// 결재파일 목록 조회
+	List<ApprovalFile> selectApprFile(ApprovalDocument apprDoc);
+	
 	// 결재파일 추가
 	int insertApprFile(ApprovalFile apprFile);
 	

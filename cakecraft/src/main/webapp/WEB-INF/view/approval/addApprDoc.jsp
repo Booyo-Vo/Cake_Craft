@@ -79,85 +79,123 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
-	<h1>기안서</h1>
-	<form action="/cakecraft/approval/addApprDoc" method="post" name="requestForm" id="requestForm">
-		<table border="1">
-			<tr>
-				<th>문서번호</th>
-				<td></td>
-				<th rowspan="3">결<br>재</th>
-				<th>담당자</th>
-				<th>결재자1</th>
-				<th>결재자2</th>
-			</tr>
-			<tr>
-				<th>문서구분</th>
-				<td>
-					<select name="documentNm" id="documentNm">
-						<c:forEach items="${docCodeList}" var="dc">
-							<option value="${dc.cdNm}">${dc.cdNm}</option>
-						</c:forEach>
-					</select>
-				</td>
-				<td rowspan="2"><input type="text" name="approvalIdLv1" id="approvalIdLv1" value="${loginId}" readonly="readonly"></td>
-				<td rowspan="2">
-					<input type="text" name="approvalIdLv2" id="approvalIdLv2" value="" readonly="readonly">
-					<button type="button" class="btn btn-primary" onClick="modalcall('approvalIdLv2')">검색</button>
-				</td>
-				<td rowspan="2">
-					<input type="text" name="approvalIdLv3" id="approvalIdLv3" value="" readonly="readonly">
-					<button type="button" class="btn btn-primary" onClick="modalcall('approvalIdLv3')">검색</button>
-				</td>
-			</tr>
-			<tr>
-				<th>항목구분</th>
-				<td>
-					<select name="documentSubNm" id="documentSubNm">
-						<c:forEach items="${docSubCodeList}" var="dsc">
-							<option value="${dsc.cdNm}">${dsc.cdNm}</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>기 안 자</th>
-				<td><input type="text" name="loginId" id="loginId" value="${loginId}" readonly="readonly"></td>
-				<th>참<br>조</th>
-				<td colspan="3">
-					<input type="text" name="refId" id="refId" value="" readonly="readonly">
-					<button type="button" class="btn btn-primary" onClick="modalcall('refId')">검색</button>
-				</td>
-			</tr>
-			<tr>
-				<th>기안일자</th>
-				<td colspan="5"><input type="text" name="crntDT" id="crntDT" value="${currentDate}" readonly="readonly"></td>
-			</tr>
-			<tr>
-				<th>시행일자</th>
-				<td colspan="5">
-					<input type="datetime-local" name="startDay" id="startDay">
-					~
-					<input type="datetime-local" name="endDay" id="endDay">
-				</td>
-			</tr>
-			<tr>
-				<th>제 &nbsp; &nbsp; 목</th>
-				<td colspan="5"><input type="text" name="documentTitle" id="documentTitle" value=""></td>
-			</tr>
-			<tr>
-				<th>내 &nbsp; &nbsp; 용</th>
-				<td colspan="5"><input type="text" name="documentContent" id="documentContent" size="100" value=""></td>
-			</tr>
-			<tr>
-				<th>파 &nbsp; &nbsp; 일</th>
-				<td colspan="5"></td>
-			</tr>
-		</table>
-	<!-- 기본값을 N으로 설정 -->
-	<input type="hidden" name="tempSave" id="tempSave" value="N">
-	<button type="button" class="btn btn-primary" onclick="tempSaveAndSubmit()">임시저장</button>
-	<button type="button" class="btn btn-primary" id="submitBtn" onclick="submitForm()">제출하기</button>
-</form>
+
+<div class="pd-ltr-20 xs-pd-20-10">
+	<form action="/cakecraft/approval/addApprDoc" method="post" name="requestForm" id="requestForm" enctype="multipart/form-data">
+		<div class="min-height-200px">
+			<div class="invoice-wrap">
+				<div class="invoice-box">
+					<div class="invoice-header">
+					</div>
+					<h4 class="text-center mb-30 weight-600">기 안 서</h4>
+					<br>
+					<div class="row pb-30">
+						<div class="col-md-6">
+						</div>
+						<div class="col-md-6">
+							<div class="text-center">
+								<table class="table table-bordered">
+									<tr>
+										<td rowspan="3">결<br>재</td>
+										<td>
+											<input type="text" class="form-control" name="approvalIdLv1" id="approvalIdLv1" value="${loginId}" readonly="readonly">
+										</td>
+										<td>
+											<input type="text" class="form-control" name="approvalIdLv2" id="approvalIdLv2" value="" readonly="readonly">
+										</td>
+										<td>
+											<input type="text" class="form-control" name="approvalIdLv3" id="approvalIdLv3" value="" readonly="readonly">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											&nbsp;
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary" onClick="modalcall('approvalIdLv2')">검색</button>											
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary" onClick="modalcall('approvalIdLv3')">검색</button>											
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="invoice-desc pb-30">
+						<table class="table table-bordered">
+							<tr>
+								<td>문서번호</td>
+								<td colspan="3">&nbsp;</td>
+							</tr>
+							<tr>
+								<td>문서구분</td>
+								<td>
+								<select class="form-control" name="documentNm" id="documentNm">
+									<c:forEach items="${docCodeList}" var="dc">
+										<option value="${dc.cdNm}">${dc.cdNm}</option>
+									</c:forEach>
+								</select>
+								</td>
+								<td>항목구분</td>
+								<td>
+									<select class="form-control" name="documentSubNm" id="documentSubNm">
+										<c:forEach items="${docSubCodeList}" var="dsc">
+											<option value="${dsc.cdNm}">${dsc.cdNm}</option>
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+								<tr>
+								<td>기안자</td>
+								<td>${loginId}</td>
+								<td>참조자</td>
+								<td>
+									<div class="col-md-5">
+									<input type="text" class="form-control" name="refId" id="refId" value="" readonly="readonly" >
+									</div>
+									<div class="col-md-6">
+									<button type="button" class="btn btn-primary" onClick="modalcall('refId')">검색</button>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>기안일자</td>
+								<td colspan="3"><input type="text" class="form-control" name="crntDT" id="crntDT" value="${currentDate}"></td>
+							</tr>
+							<tr>
+								<td>시행일자</td>
+								<td colspan="3">
+								<div class="col-md-5">
+									<input type="datetime-local" class="form-control" name="startDay" id="startDay" >
+								</div>
+									&nbsp; ~ &nbsp;
+								<div class="col-md-5">
+									<input type="datetime-local" class="form-control" name="endDay" id="endDay" >
+								</div>
+								</td>
+							</tr>
+							<tr>
+						</table> 
+						<div class="form-group">
+                           <input type="text" class="form-control" name="documentTitle" id="documentTitle" placeholder="문서제목" value="">
+                        </div>
+						<div class="form-group">
+                           <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent" placeholder="내용을 입력하세요"></textarea>
+                        </div>
+                        <div class="form-group">
+							<input type="file" name="multipartFile" multiple="multiple">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 기본값을 N으로 설정 -->
+		<input type="hidden" name="tempSave" id="tempSave" value="N">
+		<button type="button" class="btn btn-primary" onclick="tempSaveAndSubmit()">임시저장</button>
+		<button type="button" class="btn btn-primary" id="submitBtn" onclick="submitForm()">제출하기</button>
+	</form>
+</div>
 </div>
 <script>
 	// 임시저장 버튼을 눌렀을 때 호출되는 함수

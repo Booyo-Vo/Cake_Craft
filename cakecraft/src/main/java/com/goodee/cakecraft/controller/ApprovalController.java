@@ -3,6 +3,7 @@ package com.goodee.cakecraft.controller;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.goodee.cakecraft.service.ApprovalService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.ApprovalDocument;
+import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
+import com.goodee.cakecraft.vo.BoardAnony;
 import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -187,36 +192,33 @@ public class ApprovalController {
 	// 결재문서 추가 액션
 	@PostMapping("/approval/addApprDoc")
 	public String addApprDoc(HttpServletRequest request,
-				            HttpSession session) {
+				            HttpSession session,
+				            ApprovalFile approvalfile) {
 			
 		HashMap<String, Object> param = new HashMap<>();
 		param = CommonController.getParameterMap(request);
 		log.debug(SHJ + param.get("documentNm").toString() + " <-- addApprDoc documentNm"+ RESET);
 		log.debug(SHJ + param.get("documentSubNm").toString() + " <-- addApprDoc documentSubNm"+ RESET);
 		log.debug(SHJ + param.get("documentContent").toString() + " <-- addApprDoc documentContent"+ RESET);
+		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		approvalService.addApprDoc(param, loginId);
+		String path = request.getServletContext().getRealPath("/apprupload/");
+	
+		log.debug(SHJ + approvalfile + " <-- addApprDoc approvalfile"+ RESET);
 		
-		return "redirect:/approval/apprDocListByApprId";
+		param.put("path", path);
+		approvalService.addApprDoc(param, loginId, approvalfile);
+		
+		return "redirect:/approval/apprDocListById";
 	}
 	
 	
-	// 결재 이력 수정(승인)
-	@PostMapping("/approval/modifyApprHistAccept")
+	// 결재 이력 수정
+	@PostMapping("/approval/modifyApprHist")
 	public String modifyApprHistAccept(ApprovalHistory apprHistory) {
-		
-		approvalService.modifyApprHistory(apprHistory);
-		
-		return "redirect:/approval/apprDocListByApprId";
-	}
-	
-	
-	// 결재 이력 수정(반려)
-	@PostMapping("/approval/modifyApprHistReturn")
-	public String modifyApprHistReturn(ApprovalHistory apprHistory) {
 		
 		approvalService.modifyApprHistory(apprHistory);
 		

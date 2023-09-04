@@ -309,29 +309,47 @@
 	
 	
 <!-- 결재 파일 : ApprovalFile -->
+	<!-- 결재 파일 목록 조회 -->
+	<select id="selectApprFile"
+			parameterType="com.goodee.cakecraft.vo.ApprovalDocument"
+			resultType="com.goodee.cakecraft.vo.ApprovalFile">
+		SELECT 
+			approval_file_no approvalFileNo,
+			document_no documentNo,
+			approval_filename approvalFilename,
+			approval_filesize approvalFilesize,
+			approval_type approvalType,
+			reg_dtime regDtime, 
+			mod_dtime modDtime, 
+			reg_id regId, 
+			mod_id modId
+		FROM approval_file
+		<where>
+			document_no = #{documentNo}
+		</where>
+	</select>
+	
 	<!-- 결재 파일 추가 -->
 	<insert id="insertApprFile"
 			parameterType="com.goodee.cakecraft.vo.ApprovalFile">
 			INSERT INTO approval_file(
-				file_no fileNo,
-				document_no documentNo,
-				approval_filename approvalFilename,
-				approval_path approvalPath,
-				approval_type approvalType,
-				reg_dtime regDtime, 
-				mod_dtime modDtime, 
-				reg_id regId, 
-				mod_id modId
+				document_no,
+				approval_filename,
+				approval_filesize,
+				approval_type,
+				reg_dtime, 
+				mod_dtime, 
+				reg_id, 
+				mod_id
 			)VALUES(
-				#{fileNo},
 				#{documentNo},
 				#{approvalFilename},
-				#{approvalPath},
+				#{approvalFilesize},
 				#{approvalType},
 				NOW(),
 				NOW(),
-				#{loginId},
-				#{loginId}
+				#{regId},
+				#{modId}
 			)
 	</insert>
 	
@@ -340,9 +358,7 @@
 			parameterType="com.goodee.cakecraft.vo.ApprovalFile">
 			DELETE FROM approval_file
 			<where>
-				file_no = #{fileNo}
 				document_no = #{documentNo}
-				AND id = #{loginId}
 			</where>
 	</delete>
 
@@ -443,8 +459,8 @@
 			UPDATE approval_history
 			SET approval_status_cd = #{approvalStatusCd},
 				mod_dtime = NOW(), 
-				mod_id = #{loginId}		<!-- 수정한사람 = 결재자 이름 -->
+				mod_id = #{modId}		<!-- 수정한사람 = 결재자 이름 -->
 			WHERE document_no = #{documentNo}
-			AND approval_id = #{loginId} 
+			AND approval_id = #{approvalId} 
 	</update>
 </mapper>

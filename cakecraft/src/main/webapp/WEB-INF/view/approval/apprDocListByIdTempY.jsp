@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
 		var rowId = $(this).closest("tr.jqgrow").attr("id");
 		var rowData = $("#list").jqGrid("getRowData", rowId);
 		var no = rowData.no;
-		window.location.href = "/cakecraft/approval/apprDocByNo?documentNo=" + no;
+		window.location.href = "/cakecraft/approval/modifyApprDoc?documentNo=" + no;
 	});
 
 	// 선택 가능한 열에 밑줄 스타일 추가
