@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,11 +79,21 @@
 	</div>
 </div>
 <script>
-//문의 삭제 버튼 클릭 시
+//공지 삭제 버튼 클릭 시
 function removeNotice(noticeNo) {
-	if (confirm('공지를 삭제하시겠습니까?')) {
-		window.location.href = '${pageContext.request.contextPath}/board/removeNotice?noticeNo='+noticeNo;
-	}
+	swal({
+		title: '공지를 삭제하시겠습니까?',
+		text: "삭제된 게시글은 복구할 수 없습니다.",
+		type: 'warning',
+		confirmButtonText: '예',
+		cancelButtonText: '아니오',
+		showCancelButton: true,
+	}).then(function(result){
+		console.log(result);
+		if (result.value == true) {
+			window.location.href = '${pageContext.request.contextPath}/board/removeNotice?noticeNo='+noticeNo;
+		}
+	});
 }
 </script>
 </body>

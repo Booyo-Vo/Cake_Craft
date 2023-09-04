@@ -70,16 +70,17 @@
 						<div class="col-md-10">
 							<c:forEach var="a" items="${anonyFileList}">
 								<!-- 이미지 파일 -->
-								<c:if test="${a.anonyType == 'image/png'}">
+								<c:if test="${a.anonyType == 'image/png'|| a.anonyType == 'image/jpeg'}">
 									<img src="${pageContext.request.contextPath}/anonyupload/${a.anonyFilename}" alt="IMG-REVIEW" style="width:80px; height:80px;">
 									&nbsp;
 								</c:if>
 								<!-- 이미지 외 파일들 다운로드 가능 -->
-								<c:if test="${a.anonyType != 'image/png'}">
-									<br>
+								<c:if test="${a.anonyType != 'image/png' && a.anonyType != 'image/jpeg'}">
+									<div>
 									<a href="${pageContext.request.contextPath}/anonyupload/${a.anonyFilename}" target="_blank">
 										${a.anonyFilename.substring(0, a.anonyFilename.lastIndexOf("_"))}${a.anonyFilename.substring(a.anonyFilename.lastIndexOf("."))}
 									</a>
+									</div>
 								</c:if>
 							</c:forEach>
 						</div>
@@ -270,16 +271,36 @@ function modCommentsBtn(commentsNo, anonyNo){
 
 // 게시글 삭제 버튼 클릭시
 function removeAnony(anonyNo) {
-	if (confirm('게시글을 삭제하시겠습니까?')) {
-		window.location.href = '${pageContext.request.contextPath}/board/removeAnony?anonyNo='+anonyNo;
-	}
+	swal({
+		title: '게시글을 삭제하시겠습니까?',
+		text: "삭제된 게시글은 복구할 수 없습니다.",
+		type: 'warning',
+		confirmButtonText: '예',
+		cancelButtonText: '아니오',
+		showCancelButton: true,
+	}).then(function(result){
+		console.log(result);
+		if (result.value == true) {
+			window.location.href = '${pageContext.request.contextPath}/board/removeAnony?anonyNo='+anonyNo;
+		}
+	});
 }
 
 // 댓글 삭제 버튼 클릭시
 function removeCommentsBtn(commentsNo, anonyNo) {
-	if (confirm('댓글을 삭제하시겠습니까?')) {
-		window.location.href = '${pageContext.request.contextPath}/board/removeComments?commentsNo='+ commentsNo +'&anonyNo='+ anonyNo;
-	}
+	swal({
+		title: '댓글을 삭제하시겠습니까?',
+		text: "삭제된 댓글은 복구할 수 없습니다.",
+		type: 'warning',
+		confirmButtonText: '예',
+		cancelButtonText: '아니오',
+		showCancelButton: true,
+	}).then(function(result){
+		console.log(result);
+		if (result.value == true) {
+			window.location.href = '${pageContext.request.contextPath}/board/removeComments?commentsNo='+ commentsNo +'&anonyNo='+ anonyNo;
+		}
+	});
 }
 </script>
 </body>

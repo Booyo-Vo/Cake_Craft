@@ -191,9 +191,19 @@ function modAnswerBtn(questionNo){
 } 
 // 문의 삭제 버튼 클릭 시
 function removeQuestion(questionNo) {
-	if (confirm('문의를 삭제하시겠습니까?')) {
-		window.location.href = '${pageContext.request.contextPath}/board/removeQuestion?questionNo=' + questionNo;
-	}
+	swal({
+		title: '문의를 삭제하시겠습니까?',
+		text: "삭제된 게시글은 복구할 수 없습니다.",
+		type: 'warning',
+		confirmButtonText: '예',
+		cancelButtonText: '아니오',
+		showCancelButton: true,
+	}).then(function(result){
+		console.log(result);
+		if (result.value == true) {
+			window.location.href = '${pageContext.request.contextPath}/board/removeQuestion?questionNo=' + questionNo;
+		}
+	});
 }
 </script>
 </body>
