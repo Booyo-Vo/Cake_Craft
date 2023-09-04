@@ -68,7 +68,7 @@
 								<a class="btn" href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth-1}">&#10094;</a>
 								<a class="btn" href="${pageContext.request.contextPath}/schedule/schedule?targetYear=${targetYear}&targetMonth=${targetMonth+1}">&#10095;</a>
 							</div>
-								<br><br>
+							<br><br>
 							<table class="table table-bordered">
 								<tr class="text-center">
 									<th>Sun</th>
@@ -94,6 +94,17 @@
 													<a data-bs-toggle="modal" href="#addScheduleModal" onclick="date(${d},${targetYear},${targetMonth})">${d}</a>
 												</div>
 												<br>
+												
+												<!-- 해당 일자의 공휴일을 출력 -->
+												<c:forEach var="l" items="${holidayList}">
+													<div class="ell-parent">
+														<c:if test="${fn:substring(l.locdate,4,6) == (targetMonth+1) && fn:substring(l.locdate,6,8) == d}">
+															<span class="ell" style="background-color: #99004C; color: #FFFFFF;">&nbsp;${l.dateName}</span>
+														</c:if>
+													</div>
+												</c:forEach>
+												<div style="padding-bottom:26%;"></div>
+												
 												<!-- 전사일정 조회 -->
 												<c:forEach var="c" items="${scheduleListByCateAll}">
 													<c:if test="${fn:substring(c.startDtime, 8, 10) == d}">
@@ -441,7 +452,6 @@ function removeSchedule() {
 		window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo;
 	}
 }
-
 </script>
 </body>
 </html>

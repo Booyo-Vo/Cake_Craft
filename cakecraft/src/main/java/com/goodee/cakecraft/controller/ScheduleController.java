@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class ScheduleController {
 	@GetMapping("/schedule/schedule")
 	public String schedule(Model model, HttpSession session,
 							@RequestParam(required = false, name = "targetYear") Integer targetYear,
-							@RequestParam(required = false, name = "targetMonth") Integer targetMonth) {
+							@RequestParam(required = false, name = "targetMonth") Integer targetMonth) throws IOException {
 		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
@@ -58,10 +59,10 @@ public class ScheduleController {
 		model.addAttribute("scheduleListByCateTeam",resultMap.get("scheduleListByCateTeam"));
 		model.addAttribute("scheduleListByCateId",resultMap.get("scheduleListByCateId"));
 		model.addAttribute("scheduleListByDate",resultMap.get("scheduleListByDate"));
-		
+		model.addAttribute("holidayList",resultMap.get("holidayList"));
+
 		model.addAttribute("noticeList",resultMapNotice.get("noticeList"));
 		model.addAttribute("apprDocList",apprDocWaitMap.get("apprDocList"));
-		
 		
 		return "/schedule/schedule";
 	}
@@ -92,4 +93,5 @@ public class ScheduleController {
 		
 		return "redirect:/schedule/schedule";
 	}
+	
 }

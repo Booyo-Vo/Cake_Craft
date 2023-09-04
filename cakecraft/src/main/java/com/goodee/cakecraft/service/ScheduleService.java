@@ -1,11 +1,21 @@
 package com.goodee.cakecraft.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +39,7 @@ public class ScheduleService {
 	final String GEH = "\u001B[45m";
 	
 	// 일정 목록 조회(월간, 일간)
-	public Map<String, Object> getSchedule(String id, Integer targetYear, Integer targetMonth){
+	public Map<String, Object> getSchedule(String id, Integer targetYear, Integer targetMonth) throws IOException{
 		
 		Calendar firstDate = Calendar.getInstance();
 		// 첫번째 날짜
@@ -149,6 +159,53 @@ public class ScheduleService {
 		resultMap.put("scheduleListByCateTeam",scheduleListByCateTeam);
 		resultMap.put("scheduleListByCateId",scheduleListByCateId);
 		resultMap.put("scheduleListByDate",scheduleListByDate);
+		
+		// 공휴일 정보 불러오기
+		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"); // URL
+		urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "="+ "byt3nbMXPBzGrVyimxHzEnHsLXz9mRAqzovfs3mwJqRdpG3gEmWdic8%2BMPAz5ZnygLMCRXMEH521vFMEXDJN8Q%3D%3D"); // Service Key
+		urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); // 타입
+		urlBuilder.append("&" + URLEncoder.encode("solYear","UTF-8") + "=" + URLEncoder.encode(targetYear.toString(), "UTF-8")); // 검색할 연도
+		urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("365", "UTF-8")); // 최대로 출력할 공휴일 수
+		
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-type", "application/json");
+		// 공휴일 정보를 저장할 Array
+		List<Map<String, Object>> holidayList = new ArrayList<>();
+
+		try {
+			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+				JSONParser jsonParser = new JSONParser();
+				JSONObject jsonObject = (JSONObject) jsonParser.parse(rd);
+				JSONObject responseResult = (JSONObject) jsonObject.get("response");
+				JSONObject bodyInfo = (JSONObject) responseResult.get("body");
+				JSONObject itemsInfo = (JSONObject) bodyInfo.get("items");
+				JSONArray itemInfo = (JSONArray) itemsInfo.get("item");
+
+				for (int i = 0; i < itemInfo.size(); i++) {
+					JSONObject day = (JSONObject) itemInfo.get(i);
+					String locdate = day.get("locdate").toString();
+					String dateName = day.get("dateName").toString();
+					
+					// 공휴일 정보를 Map에 추가
+					Map<String, Object> holidayMap = new HashMap<String, Object>();
+					holidayMap.put("locdate", locdate);
+					holidayMap.put("dateName", dateName);
+					// Map을 리스트에 추가
+					holidayList.add(holidayMap);
+				}
+				rd.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conn.disconnect();
+		}
+		
+		// 반환값
+		resultMap.put("holidayList",holidayList);
 		
 		return resultMap;
 	}
