@@ -99,7 +99,9 @@ public class BoardNoticeController {
 	
 	// 공지 상세 정보 조회
 	@GetMapping("/board/noticeByNo")
-	public String noticeByNo(Model model, HttpSession session, BoardNotice notice) {
+	public String noticeByNo(Model model, HttpSession session, BoardNotice notice,
+			@RequestParam(name = "searchRegId", defaultValue = "") String searchRegId,
+			@RequestParam(name = "searchWord", defaultValue = "") String searchWord) {
 		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
@@ -107,9 +109,13 @@ public class BoardNoticeController {
 		
 		// 공지 상세정보 가져오기
 		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
-
+		
+		// 공지목록 가져오기
+		Map<String, Object> resultMap = noticeService.getNoticeList(searchRegId, searchWord);
+		
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("noticeByNo",noticeByNo);
+		model.addAttribute("noticeList",resultMap.get("noticeList"));
 		
 		return "/board/noticeByNo";
 	}
