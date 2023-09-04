@@ -22,6 +22,9 @@ public interface ChatMapper {
 	//채팅방 나가기
 	int deleteChatRoom(ChatRoom chatRoom);
 	
+	//채팅방 인원수정
+	int updateChatRoomCnt(ChatRoom chatRoom);
+	
 	//채팅내용 저장
 	int insertChatMessage(ChatMessage chatMessage);
 	

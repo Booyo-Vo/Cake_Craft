@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.service.ChatService;
@@ -73,9 +74,18 @@ public class ChatController {
 		return "/chat/room";
 	}
 	
+	//채팅 메시지 저장
+	@ResponseBody
 	@PostMapping("/chat/addMessage")
 	public int addMessage(ChatMessage chatMessage) {
 		int row = chatService.addChatMessage(chatMessage);
 		return row;
+	}
+	
+	//채팅방 나가기
+	@GetMapping("/chat/removeChatRoom")
+	public String removeChatRoom(ChatRoom chatRoom) {
+		chatService.removeChatRoom(chatRoom);
+		return "redirect:/chat/rooms";
 	}
 }

@@ -36,6 +36,7 @@ public class ChatService {
 	
 	//채팅방 나가기
 	public int removeChatRoom(ChatRoom chatRoom) {
+		chatMapper.updateChatRoomCnt(chatRoom);
 		int row = chatMapper.deleteChatRoom(chatRoom);
 		return row;
 	}

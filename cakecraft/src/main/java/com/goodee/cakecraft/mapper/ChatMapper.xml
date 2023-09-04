@@ -34,7 +34,7 @@
 			mod_id modId
 		FROM chat_room
 		WHERE room_id = #{roomId}
-		AND reg_id = #{regId}
+		AND room_member = #{roomMember}
 	</select>
 	
 	<!-- 채팅방 개설 -->
@@ -69,6 +69,15 @@
 		AND room_member = #{roomMember}
 	</delete>
 	
+	<!-- 채팅방 인원 수정 -->
+	<update id="updateChatRoomCnt"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom">
+		UPDATE chat_room
+		SET
+			member_cnt = member_cnt - 1
+		WHERE room_id = #{roomId}
+	</update>
+	
 	<!-- 채팅내용저장 -->
 	<insert id="insertChatMessage"
 			parameterType="com.goodee.cakecraft.vo.ChatRoom">
@@ -86,8 +95,8 @@
 			#{message},
 			NOW(),
 			NOW(),
-			#{writer},
-			#{writer}
+			#{regId},
+			#{regId}
 		)
 	</insert>
 	
@@ -106,6 +115,6 @@
 			mod_id
 		FROM chat_message
 		WHERE room_id = #{roomId}
-		AND timestampDIFF(DAY, reg_dtime, NOW()) &lt; 7
+		AND TIMESTAMPDIFF(DAY, reg_dtime, NOW()) &lt; 7
 	</select>
 </mapper>
