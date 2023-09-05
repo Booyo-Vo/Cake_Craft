@@ -3,7 +3,7 @@
 <mapper namespace="com.goodee.cakecraft.mapper.BoardCommentsMapper">
 	<!-- 댓글 목록 조회 -->
 	<select id="selectCommentsList"
-			parameterType="com.goodee.cakecraft.vo.BoardAnony"
+			parameterType="java.util.Map"
 			resultType="com.goodee.cakecraft.vo.BoardAnonyComments">
 		SELECT 
 			comments_no commentsNo,
@@ -16,9 +16,10 @@
 			mod_id modId 
 		FROM board_anony_comments
 		<where>
-            anony_no = #{anonyNo}
-        </where>
+			anony_no = #{anonyNo}
+		</where>
 		ORDER BY reg_dtime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 댓글 상세 정보 조회 -->
 	<select id="selectCommentsByNo"
@@ -35,8 +36,8 @@
 			mod_id modId 
 		FROM board_anony_comments
 		<where>
-            comments_no = #{commentsNo}
-        </where>
+			comments_no = #{commentsNo}
+		</where>
 	</select>
 	<!-- 댓글 추가 -->
 	<insert id="insertComments"
@@ -78,4 +79,13 @@
 			comments_no = #{commentsNo}
 		</where>
 	</delete>
+	<!-- 댓글 개수 조회 -->
+	<select id="selectCommentsCount" 
+			parameterType="com.goodee.cakecraft.vo.BoardAnony"
+			resultType="int">
+		SELECT count(*) FROM board_anony_comments
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</select>
 </mapper>

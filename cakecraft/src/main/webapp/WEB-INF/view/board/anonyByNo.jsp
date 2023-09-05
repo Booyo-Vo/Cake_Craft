@@ -186,6 +186,17 @@
 								</tr>
 							</c:forEach>
 						</table>
+						
+						<!-- 페이징 -->
+						<div class="text-center">
+							<c:if test="${currentPage>1}">
+								<a href="${pageContext.request.contextPath}/board/anonyByNo?currentPage=${currentPage-1}&anonyNo=${anonyByNo.anonyNo}">이전</a>
+							</c:if>
+							&nbsp;<span>${currentPage}</span>&nbsp;
+							<c:if test="${currentPage < lastPage}">
+								<a href="${pageContext.request.contextPath}/board/anonyByNo?currentPage=${currentPage+1}&anonyNo=${anonyByNo.anonyNo}">다음</a>
+							</c:if>
+						</div>
 					</div>
 					<!-- 댓글 목록 끝 -->
 				</div>

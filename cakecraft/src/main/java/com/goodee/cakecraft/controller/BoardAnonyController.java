@@ -42,14 +42,16 @@ public class BoardAnonyController {
 	
 	// 게시글 상세 정보 조회
 	@GetMapping("/board/anonyByNo")
-	public String anonyByNo(Model model, HttpSession session, BoardAnony anony) {
+	public String anonyByNo(Model model, HttpSession session, BoardAnony anony,
+							@RequestParam(name = "currentPage", defaultValue = "1") int currentPage, 
+							@RequestParam(name = "rowPerPage", defaultValue = "5") int rowPerPage) {
 		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
 		// 게시글 상세정보, 첨부파일목록, 댓글목록 가져오기	
-		Map<String, Object> resultMap = anonyService.getAnonyByNo(anony);
+		Map<String, Object> resultMap = anonyService.getAnonyByNo(anony, currentPage, rowPerPage);
 		
 		// 좋아요 눌렀는지 여부 확인
 		BoardAnony paramAnony = new BoardAnony();
@@ -61,6 +63,8 @@ public class BoardAnonyController {
 		model.addAttribute("anonyByNo", resultMap.get("resultAnony"));
 		model.addAttribute("anonyFileList", resultMap.get("anonyFileList"));
 		model.addAttribute("commentsList", resultMap.get("commentsList"));
+		model.addAttribute("lastPage", resultMap.get("lastPage"));
+		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("likeCk", likeCk);
 		
 		return "/board/anonyByNo";
@@ -89,14 +93,16 @@ public class BoardAnonyController {
 	
 	// 게시글 수정
 	@GetMapping("/board/modifyAnony")
-	public String modifyAnony(Model model, HttpSession session, BoardAnony anony) {
+	public String modifyAnony(Model model, HttpSession session, BoardAnony anony,
+								@RequestParam(name = "currentPage", defaultValue = "1") int currentPage, 
+								@RequestParam(name = "rowPerPage", defaultValue = "5") int rowPerPage) {
 		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
 		// 게시글 상세정보 가져오기
-		Map<String, Object> resultMap = anonyService.getAnonyByNo(anony);
+		Map<String, Object> resultMap = anonyService.getAnonyByNo(anony, currentPage, rowPerPage);
 		
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("anonyByNo", resultMap.get("resultAnony"));

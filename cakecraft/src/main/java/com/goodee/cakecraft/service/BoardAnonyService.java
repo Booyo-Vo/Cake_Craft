@@ -50,7 +50,7 @@ public class BoardAnonyService {
 	}
 	
 	// 게시글 상세정보
-	public Map<String, Object>  getAnonyByNo(BoardAnony anony) {
+	public Map<String, Object>  getAnonyByNo(BoardAnony anony , int currentPage, int rowPerPage) {
 		// 게시글 상세정보 조회
 		BoardAnony resultAnony = anonyMapper.selectAnonyByNo(anony);
 		log.debug(GEH + resultAnony.toString() + " <-- 게시글상세정보" + RESET);
@@ -60,14 +60,29 @@ public class BoardAnonyService {
 		log.debug(GEH + anonyFileList.size() + " <-- 첨부파일 목록.size" + RESET);
 		
 		// 댓글 목록 조회
-		List<BoardAnonyComments> commentsList = commentsMapper.selectCommentsList(anony);
+		int beginRow = (currentPage-1)*rowPerPage;
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("anonyNo", anony.getAnonyNo());
+		
+		List<BoardAnonyComments> commentsList = commentsMapper.selectCommentsList(paramMap);
 		log.debug(GEH + commentsList.size() + " <-- 댓글 목록.size" + RESET);
+		
+		int commentsCount = commentsMapper.selectCommentsCount(anony);
+		
+		int lastPage = commentsCount / rowPerPage;
+		if(commentsCount % rowPerPage != 0) {
+			lastPage += 1;
+		}
 		
 		// 반환값
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("resultAnony", resultAnony);
 		resultMap.put("anonyFileList", anonyFileList);
 		resultMap.put("commentsList", commentsList);
+		resultMap.put("lastPage", lastPage);
 		
 		return resultMap;
 	}
