@@ -24,5 +24,7 @@ public interface BoardNoticeMapper {
 	
 	// 공지 삭제
 	int deleteNotice(BoardNotice notice);
-
+	
+	// 번호를 기준으로 공지 다섯개만 조회
+	List<BoardNotice> selectNoticeListByCount(BoardNotice notice);
 }

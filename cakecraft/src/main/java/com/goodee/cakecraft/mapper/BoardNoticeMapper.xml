@@ -85,4 +85,34 @@
 			notice_no = #{noticeNo}
 		</where>
 	</delete>
+	<!-- 번호를 기준으로 공지 다섯개만 조회 -->
+	<select id="selectNoticeListByCount"
+			parameterType="com.goodee.cakecraft.vo.BoardNotice"
+			resultType="com.goodee.cakecraft.vo.BoardNotice">
+		SELECT 
+			notice_no noticeNo,
+			id,
+			notice_title noticeTitle,
+			reg_dtime regDtime,
+			reg_id regId
+		FROM (
+			SELECT *, ROW_NUMBER() OVER (ORDER BY reg_dtime DESC) AS rnum
+			FROM board_notice
+		) n2
+		WHERE rnum BETWEEN (
+			SELECT rnum - 2
+			FROM (
+				SELECT notice_no, ROW_NUMBER() OVER (ORDER BY reg_dtime DESC) AS rnum
+				FROM board_notice
+			) AS n
+			WHERE notice_no = #{noticeNo}
+		) AND (
+			SELECT rnum + 2
+			FROM (
+				SELECT notice_no, ROW_NUMBER() OVER (ORDER BY reg_dtime DESC) AS rnum
+				FROM board_notice
+			) AS n
+			WHERE notice_no = #{noticeNo}
+		);
+	</select>
 </mapper>

@@ -44,10 +44,18 @@ public class BoardNoticeService {
 	}
 	
 	// 공지 상세 정보 조회
-	public BoardNotice getNoticeByNo(BoardNotice notice) {
-		BoardNotice resultNotice = noticeMapper.selectNoticeByNo(notice);
+	public Map<String, Object> getNoticeByNo(BoardNotice notice) {
+		// 공지 상세 정보 가져오기
+		BoardNotice noticeByNo = noticeMapper.selectNoticeByNo(notice);
+		// 번호를 기준으로 공지 다섯개만 조회
+		List<BoardNotice> noticeListByCount = noticeMapper.selectNoticeListByCount(notice);
 		
-		return resultNotice;
+		// 반환값
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("noticeByNo",noticeByNo);
+		resultMap.put("noticeListByCount",noticeListByCount);
+		
+		return resultMap;
 	}
 	
 	// 공지 추가

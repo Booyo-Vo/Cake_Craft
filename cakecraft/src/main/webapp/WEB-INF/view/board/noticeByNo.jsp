@@ -77,7 +77,7 @@
 				</div>
 				<!-- 공지상세 끝 -->
 				
-				<!-- 공지사항 목록 시작 -->
+				<!-- 공지사항 목록 시작 (번호를 기준으로 공지 다섯개만 조회) -->
 				<div class="pd-20 card-box mb-30">
 					<div class="container w90">
 						<table class="table text-center">
@@ -87,7 +87,7 @@
 								<th class="w30">작성일</th>
 								<th class="w20">작성자</th>
 							</tr>
-							<c:forEach var="l" items="${noticeList}">
+							<c:forEach var="l" items="${noticeListByCount}">
 								<!-- 해당 게시글인 경우 이동 불가 -->
 								<c:if test="${l.noticeNo == noticeByNo.noticeNo}">
 									<tr>

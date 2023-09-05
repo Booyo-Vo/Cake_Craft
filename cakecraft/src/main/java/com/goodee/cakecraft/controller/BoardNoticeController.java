@@ -72,10 +72,10 @@ public class BoardNoticeController {
 		String loginId = loginMember.getId();
 		
 		// 공지 상세정보 가져오기
-		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
-
+		Map<String, Object> resultMap = noticeService.getNoticeByNo(notice);
+		
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("noticeByNo", noticeByNo);
+		model.addAttribute("noticeByNo", resultMap.get("noticeByNo"));
 		
 		return "/board/modifyNotice";
 	}
@@ -107,15 +107,12 @@ public class BoardNoticeController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
-		// 공지 상세정보 가져오기
-		BoardNotice noticeByNo = noticeService.getNoticeByNo(notice);
-		
-		// 공지목록 가져오기
-		Map<String, Object> resultMap = noticeService.getNoticeList(searchRegId, searchWord);
+		// 공지 상세정보, 공지리스트 가져오기
+		Map<String, Object> resultMap = noticeService.getNoticeByNo(notice);
 		
 		model.addAttribute("loginId",loginId);
-		model.addAttribute("noticeByNo",noticeByNo);
-		model.addAttribute("noticeList",resultMap.get("noticeList"));
+		model.addAttribute("noticeByNo", resultMap.get("noticeByNo"));
+		model.addAttribute("noticeListByCount", resultMap.get("noticeListByCount"));
 		
 		return "/board/noticeByNo";
 	}
