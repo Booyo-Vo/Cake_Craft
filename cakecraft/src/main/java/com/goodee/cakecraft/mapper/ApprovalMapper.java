@@ -65,14 +65,14 @@ public interface ApprovalMapper {
 	int deleteApprDoc(ApprovalDocument apprDoc);
 	
 	
-	/* 결재파일 : ApprovalFile */
-	// 결재파일 목록 조회
+	/* 결재 첨부파일 : ApprovalFile */
+	// 결재 첨부파일 목록 조회
 	List<ApprovalFile> selectApprFile(ApprovalDocument apprDoc);
 	
-	// 결재파일 추가
+	// 결재 첨부파일 추가
 	int insertApprFile(ApprovalFile apprFile);
 	
-	// 결재파일 삭제
+	// 결재 첨부파일 삭제
 	int deleteApprFile(ApprovalFile apprFile);
 	
 	

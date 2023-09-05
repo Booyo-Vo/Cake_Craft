@@ -157,6 +157,7 @@ public class ApprovalController {
 		model.addAttribute("apprInfoLv1", resultApprMap.get("resultApprInfoLv1"));
 		model.addAttribute("apprInfoLv2", resultApprMap.get("resultApprInfoLv2"));
 		model.addAttribute("apprInfoLv3", resultApprMap.get("resultApprInfoLv3"));
+		model.addAttribute("apprFileList", resultApprMap.get("resultApprFileList"));
 		model.addAttribute("documentNo", documentNo);
 		
 		return "/approval/apprDocByNo";

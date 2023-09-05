@@ -92,7 +92,24 @@
 							</tr>
 							<tr>
 								<td>첨부파일</td>
-								<td colspan="3">파일</td>
+								<td colspan="3">
+									<c:forEach var="af" items="${apprFileList}">
+									<c:set var="originName" value="${af.approvalFilename.substring(0, af.approvalFilename.lastIndexOf('_'))}${af.approvalFilename.substring(af.approvalFilename.lastIndexOf('.'))}" />
+									<!-- 파일들 다운로드 가능 -->
+									<div>
+										<c:if test="${af.approvalFiletype == 'image/png'|| af.approvalFiletype == 'image/jpeg'}">
+											<a href="${pageContext.request.contextPath}/apprupload/${af.approvalFilename}" download="${originName}">
+												<i class="icon-copy fa fa-file-photo-o" aria-hidden="true"></i>&nbsp;${originName}
+											</a>
+										</c:if>
+										<c:if test="${af.approvalFiletype != 'image/png'&& af.approvalFiletype != 'image/jpeg'}">
+											<a href="${pageContext.request.contextPath}/apprupload/${af.approvalFilename}" download="${originName}">
+												<i class="icon-copy fa fa-file-archive-o" aria-hidden="true"></i>&nbsp;${originName}
+											</a>
+										</c:if>
+									</div>
+									</c:forEach>
+								</td>
 							</tr>
 						</table> 
 					</div>

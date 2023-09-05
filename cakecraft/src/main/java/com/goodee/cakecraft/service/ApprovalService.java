@@ -229,6 +229,9 @@ public class ApprovalService {
 		// 참조자 상세정보
 		ApprovalRef resultApprRef = apprDocMapper.selectApprRefByNo(documentNo);
 		
+		// 첨부파일 목록 조회
+		List<ApprovalFile> resultApprFileList = apprDocMapper.selectApprFile(resultApprDoc);
+		
 		
 		// 문서번호 및 결제레벨로 결재정보 조회
 		int approvalLevel = 1;
@@ -272,6 +275,7 @@ public class ApprovalService {
 		resultApprMap.put("resultApprInfoLv1", resultApprInfoLv1);
 		resultApprMap.put("resultApprInfoLv2", resultApprInfoLv2);
 		resultApprMap.put("resultApprInfoLv3", resultApprInfoLv3);
+		resultApprMap.put("resultApprFileList", resultApprFileList);
 		
 		return resultApprMap;
 	}
@@ -381,7 +385,7 @@ public class ApprovalService {
 							af.setModId(loginId);
 							af.setRegId(loginId);
 							af.setApprovalFilesize(mf.getSize()); 
-							af.setApprovalType(mf.getContentType());
+							af.setApprovalFiletype(mf.getContentType());
 							// 원래 파일 이름
 							String originFileName = mf.getOriginalFilename().substring(0,mf.getOriginalFilename().lastIndexOf("."));
 							log.debug(SHJ + originFileName + " <-- addApprDoc originFileName"+ RESET);

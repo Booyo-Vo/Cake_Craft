@@ -12,7 +12,7 @@ public class ApprovalFile {
 	private String documentNo;		
 	private String approvalFilename;
 	private long approvalFilesize;
-	private String approvalType;
+	private String approvalFiletype;
 	private String regDtime;
 	private String modDtime;
 	private String regId;
