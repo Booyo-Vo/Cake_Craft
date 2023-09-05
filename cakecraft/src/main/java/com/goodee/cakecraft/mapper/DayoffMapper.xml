@@ -18,27 +18,27 @@
         WHERE id = #{id}
     </select>
     
-    	<!-- 사원추가 -->
-	<insert id="insertDayoff"
-	    parameterType="com.goodee.cakecraft.vo.EmpDayoff">
-	    INSERT INTO emp_dayoff(
-	        id, 
-	        dayoff_status, 
-	        start_day, 
-	        end_day, 
-	        reg_dtime, 
-	        mod_dtime, 
-	        reg_id, 
-	        mod_id
-	    ) VALUES (
-	        #{id},
-	        #{dayoffStatus},
-	        #{startDay},
-	        #{endDay},
-	        NOW(),
-	        NOW(),
-	        #{regId},
-	        #{modId}
-	    )
-	</insert>
+    <!-- 연차추가 -->
+    <insert id="insertDayoff"
+        parameterType="com.goodee.cakecraft.vo.EmpDayoff">
+        INSERT INTO emp_dayoff(
+            id, 
+            dayoff_status, 
+            start_day, 
+            end_day, 
+            reg_dtime, 
+           mod_dtime, 
+           reg_id, 
+            mod_id
+        ) VALUES (
+            #{id},
+            #{dayoffStatus},
+            #{startDay},
+            #{endDay},
+            NOW(),
+            NOW(),
+            #{regId},
+            #{modId}
+        )
+    </insert>
 </mapper>
