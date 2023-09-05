@@ -150,8 +150,8 @@
 													<div class="modal-body">
 														<canvas id="modalGoal" style="border: 1px solid black"></canvas>
 															<div>
-																<button id="modalClear" class="btn btn-default">Clear</button>
-																<button id="modalSend" class="btn btn-default">Send</button>
+																<button id="modalClear" class="btn btn-default" type="button">Clear</button>
+																<button id="modalSend" class="btn btn-default" data-bs-dismiss="modal">Send</button>
 															</div>
 														</div>
 													</div>
@@ -164,12 +164,12 @@
 													<div class="modal-content">
 														<div class="modal-header">
 															<h5 class="modal-title" id="updateSignatureLabel">서명 수정</h5>
-															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
 														</div>
 														<div class="modal-body">
 															<canvas id="updateModalGoal" style="border: 1px solid black"></canvas>
 																<div>
-																<button id="updateModalClear" class="btn btn-default">Clear</button>
+																<button id="updateModalClear" class="btn btn-default" type="button">Clear</button>
 																<button id="updateModalSend" class="btn btn-default" data-bs-dismiss="modal">Send</button>
 																</div>
 														</div>
@@ -277,7 +277,7 @@
 	
 	    // 서명 수정 모달 서명 지우기
 	    $('#updateModalClear').click(function() {
-	        updateModalSign.clear();
+ 	        updateModalSign.clear(); 
 	    });
 	
 	    // 서명 수정 모달 저장
