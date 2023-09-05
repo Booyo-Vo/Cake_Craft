@@ -280,30 +280,29 @@
 			)
 	</insert>
 	
-	<!-- 결재 문서 수정 -->
-	<update id="updateApprDoc"
+	<!-- 임시저장 문서 수정 -->
+	<update id="updateApprDocTempY"
 			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
 			UPDATE approval_document
-			SET document_title documentTitle,
+			SET document_title = #{documentTitle},
 				document_content = #{documentContent},
-				approval_status_cd = #{approvalStatusCd},
+				document_cd = #{documentCd},
+				document_sub_cd = #{documentSubCd},
 				start_day = #{startDay},
 				end_day = #{endDay},
 				temp_save = #{tempSave},
-				reg_dtime = NOW(),
-				mod_dtime = NOW(), 
-				mod_id = #{loginId}
-			WHERE document_no = #{documentNo}
-			AND id = #{loginId}
+				mod_dtime = NOW()
+			<where>
+				document_no = #{documentNo}
+			</where>
 	</update>
 	
-	<!-- 결재 문서 삭제 -->
-	<delete id="deleteApprDoc"
+	<!-- 임시저장 문서 삭제 -->
+	<delete id="deleteApprDocTempY"
 			parameterType="com.goodee.cakecraft.vo.ApprovalDocument">
 			DELETE FROM approval_document 
 			<where>
 				document_no = #{documentNo}
-				AND id = #{loginId}
 			</where>
 	</delete>
 	

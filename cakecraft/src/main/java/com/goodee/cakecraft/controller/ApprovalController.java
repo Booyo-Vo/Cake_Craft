@@ -27,6 +27,7 @@ import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.BoardAnony;
+import com.goodee.cakecraft.vo.BoardNotice;
 import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -164,6 +165,16 @@ public class ApprovalController {
 	}
 
 	
+	// 결재 이력 수정
+	@PostMapping("/approval/modifyApprHist")
+	public String modifyApprHistAccept(ApprovalHistory apprHistory) {
+		
+		approvalService.modifyApprHistory(apprHistory);
+		
+		return "redirect:/approval/apprDocListByApprId";
+	}
+	
+	
 	// 결재문서 추가 폼
 	@GetMapping("/approval/addApprDoc")
 	public String addApprDoc(HttpSession session, Model model) {
@@ -188,7 +199,6 @@ public class ApprovalController {
 		
 		return "/approval/addApprDoc";
 	}
-	
 	
 	// 결재문서 추가 액션
 	@PostMapping("/approval/addApprDoc")
@@ -217,14 +227,53 @@ public class ApprovalController {
 	}
 	
 	
-	// 결재 이력 수정
-	@PostMapping("/approval/modifyApprHist")
-	public String modifyApprHistAccept(ApprovalHistory apprHistory) {
+	// 임시저장 문서 수정 폼
+	@GetMapping("/approval/modifyApprDoc")
+	public String modifyNotice(
+					HttpSession session,
+					Model model,
+					@RequestParam("documentNo") String documentNo) {
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
 		
-		approvalService.modifyApprHistory(apprHistory);
+		// 임시저장 문서 상세정보 가져오기
+		ApprovalDocument resultApprDocTempY = approvalService.getApprDocByNoTempY(documentNo);
 		
-		return "redirect:/approval/apprDocListByApprId";
+		// 문서구분, 항목구분 리스트 각각 가져오기
+		String doctCode = "A002";
+		String docSubCode = "A003";
+		List<StStdCd> docCodeList = stStdCdService.getCdList(doctCode);
+		List<StStdCd> docSubCodeList = stStdCdService.getCdList(docSubCode);		
+		
+		// 현재 날짜 가져오기
+		LocalDate currentDate = LocalDate.now();
+		
+		// 뷰로 값 넘기기
+		model.addAttribute("loginId",loginId);
+		model.addAttribute("apprDocByNo", resultApprDocTempY);
+		model.addAttribute("docCodeList", docCodeList);
+		model.addAttribute("docSubCodeList", docSubCodeList);
+		model.addAttribute("currentDate", currentDate);
+		
+		return "/approval/modifyApprDoc";
 	}
 	
+	// 임시저장 문서 수정 액션
+	@PostMapping("/approval/modifyApprDoc")
+	public String modifyApprDocTempY(ApprovalDocument apprDoc) {
+		log.debug(SHJ + apprDoc + " <-- addApprDoc apprDoc"+ RESET);
+		approvalService.modifyApprDocTempY(apprDoc);
+		
+		return "redirect:/approval/apprDocListByIdTempY";
+	}
 	
+	// 임시저장 문서 삭제
+	@GetMapping("/approval/removeApprDoc")
+	public String removeApprDocTempY(ApprovalDocument apprDoc) {
+		
+		approvalService.removeApprDocTempY(apprDoc);
+		
+		return "/approval/apprDocListByIdTempY";
+	}
 }

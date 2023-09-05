@@ -58,11 +58,11 @@ public interface ApprovalMapper {
 	// 결재문서 추가
 	int insertApprDoc(Map param);
 	
-	// 결재문서 수정
-	int updateApprDoc(ApprovalDocument apprDoc);
+	// 임시저장 문서 수정
+	int updateApprDocTempY(ApprovalDocument apprDoc);
 	
-	// 결재문서 삭제
-	int deleteApprDoc(ApprovalDocument apprDoc);
+	// 임시저장 문서 삭제
+	int deleteApprDocTempY(ApprovalDocument apprDoc);
 	
 	
 	/* 결재 첨부파일 : ApprovalFile */

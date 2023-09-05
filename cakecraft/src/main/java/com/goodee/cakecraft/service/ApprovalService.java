@@ -209,7 +209,7 @@ public class ApprovalService {
 	*/
 
 	
-	// 결재문서 상세정보 출력 (승인대기문서, 결재수신문서, 기안문서)
+	// 결재문서 상세정보 출력 (승인대기문서, 결재수신문서, 기안문서, 참조문서)
 	public Map<String, Object> getApprDocByNo(String documentNo, String loginId){
 		// 결재문서 상세정보
 		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(documentNo);
@@ -278,6 +278,16 @@ public class ApprovalService {
 		resultApprMap.put("resultApprFileList", resultApprFileList);
 		
 		return resultApprMap;
+	}
+	
+	
+	// 임시저장 문서 상세정보 출력
+	public ApprovalDocument getApprDocByNoTempY(String documentNo){
+		// 결재문서 상세정보
+		ApprovalDocument resultApprDocTempY = apprDocMapper.selectApprDocByNo(documentNo);
+		
+		return resultApprDocTempY;
+	
 	}
 	
 	
@@ -357,7 +367,7 @@ public class ApprovalService {
 						log.debug(SHJ + addApprHistLv3Row + " <-- addApprDoc addApprHistLv3Row"+ RESET);
 						
 						// 5) 참조자가 있다면 추가
-						if(addApprHistLv3Row > 0 && (param.get("refId").toString()) != null) {
+						if(addApprHistLv3Row > 0 && param.get("refId") != null) {
 							ApprovalRef apprRef = new ApprovalRef();
 							apprRef.setRefId(param.get("refId").toString());
 							apprRef.setDocumentNo(documentNo);
@@ -365,6 +375,8 @@ public class ApprovalService {
 							apprRef.setModId(loginId);
 							int addApprRefRow = apprDocMapper.insertApprRef(param);
 							log.debug(SHJ + addApprRefRow + " <-- addApprDoc addApprRefRow"+ RESET);
+						} else {
+							log.debug(SHJ + "참조자 없음" + RESET);
 						}
 					}
 				}
@@ -423,18 +435,31 @@ public class ApprovalService {
 	}
 	
 	
-	// 결재 문서 수정
-	public int modifyApprDoc(ApprovalDocument apprDoc){
+	// 임시저장 문서 수정
+	public int modifyApprDocTempY(ApprovalDocument apprDoc){
+		// 1) 문서코드 받아오기
+		Map<String, Object> apprDocCdMap = commonMapper.getCode(apprDoc.getDocumentNm());
+		Map<String, Object> apprDocCdMap2 = commonMapper.getCode(apprDoc.getDocumentSubNm());
+		// 문서분류 이름이 넘어오면 -> DB에 입력할 코드 받아오기
+		String documentCd = apprDocCdMap.get("cd").toString();
+		String documentSubCd = apprDocCdMap2.get("cd").toString();
+		// 디버깅
+		log.debug(SHJ + documentCd + " <-- addApprDoc documentCd"+ RESET);
+		log.debug(SHJ + documentSubCd + " <-- addApprDoc documentSubCd"+ RESET);
+		
+		apprDoc.setDocumentCd(documentCd);
+		apprDoc.setDocumentSubCd(documentSubCd);
+		
 		// 반환값
-		int updateApprDocRow = apprDocMapper.updateApprDoc(apprDoc);
+		int updateApprDocRow = apprDocMapper.updateApprDocTempY(apprDoc);
 				
 		return updateApprDocRow;
 	}
 	
-	// 결재 문서 삭제
-	public int removeApprDoc(ApprovalDocument apprDoc){
+	// 임시저장 문서 삭제
+	public int removeApprDocTempY(ApprovalDocument apprDoc){
 		// 반환값
-		int deleteApprDocRow = apprDocMapper.deleteApprDoc(apprDoc);
+		int deleteApprDocRow = apprDocMapper.deleteApprDocTempY(apprDoc);
 				
 		return deleteApprDocRow;
 	}

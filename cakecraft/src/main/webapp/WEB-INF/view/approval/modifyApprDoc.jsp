@@ -49,77 +49,6 @@ $(document).ready(function() {
 	}
 });
 </script>
-<script>
-    $(document).ready(function(){
-        // 파일 개수 3개제한
-        $('#addFile').click(function(){
-            if ($('.approvalFiles').length >= 3) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '경고',
-                    text: '최대 3개의 파일만 첨부할 수 있습니다.',
-                });
-            } else if ($('.approvalFiles').last().val() == ''){
-                Swal.fire({
-                    icon: 'warning',
-                    title: '경고',
-                    text: '빈 파일 업로드가 있습니다.',
-                });
-            } else {
-                var newInput = $('<input class="form-control approvalFiles" type="file" name="multipartFile"><br>');
-                $('#files').append(newInput);
-            }
-        });
-        
-        $('#removeFile').click(function(){
-            var visibleFiles = $('.approvalFiles:visible');
-            if (visibleFiles.length === 1) {
-                if (visibleFiles.val() !== "") {
-                    visibleFiles.val("");
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '경고',
-                        text: '더 이상 삭제할 파일이 없습니다.',
-                    });
-                }
-            } else {
-                visibleFiles.last().prev().remove(); // 직전의 <input>을 제거
-                visibleFiles.last().remove(); // 현재 <input>을 제거
-            }
-        });
-        
-        // 파일 용량 3MB 제한 / 확장자 제한
-        $(document).on("change", "input[name='multipartFile']", function() {
-            var maxSize = 3 * 1024 * 1024;
-            var allowedExtensions = ["xlsx", "docs", "hwp", "pdf", "pptx", "ppt", "jpg", "jpeg", "png"];
-            
-            var file = this.files[0];
-            var fileSize = file.size;
-            var fileExtension = file.name.split('.').pop().toLowerCase();
-            
-            if (fileSize > maxSize) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '용량을 확인하세요',
-                    text: '3MB 이내로 등록 가능합니다.',
-                });
-                $(this).val('');
-                return false;
-            }
-
-            if (allowedExtensions.indexOf(fileExtension) === -1) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '확장자를 확인하세요',
-                    text: '업로드 가능 확장자 : xlsx, docs, hwp, pdf, pptx, ppt, jpg, jpeg, png',
-                });
-                $(this).val('');
-                return false;
-            }
-        });
-    });
-</script>
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
@@ -152,7 +81,7 @@ $(document).ready(function() {
 </div>
 
 <div class="pd-ltr-20 xs-pd-20-10">
-	<form action="/cakecraft/approval/addApprDoc" method="post" name="requestForm" id="requestForm" enctype="multipart/form-data">
+	<form action="/cakecraft/approval/modifyApprDoc" method="post" name="requestForm" id="requestForm">
 		<div class="min-height-200px">
 			<div class="invoice-wrap">
 				<div class="invoice-box">
@@ -191,7 +120,7 @@ $(document).ready(function() {
 						<table class="table table-bordered">
 							<tr>
 								<td>문서번호</td>
-								<td colspan="3">&nbsp;</td>
+								<td colspan="3">${apprDocByNo.documentNo}</td>
 							</tr>
 							<tr>
 								<td>문서구분</td>
@@ -238,22 +167,14 @@ $(document).ready(function() {
 							<tr>
 						</table> 
 						<div class="form-group">
-                           <input type="text" class="form-control" name="documentTitle" id="documentTitle" placeholder="문서제목" value="">
+                           <input type="text" class="form-control" name="documentTitle" id="documentTitle" value="${apprDocByNo.documentTitle}">
                         </div>
 						<div class="form-group">
-                           <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent" placeholder="내용을 입력하세요"></textarea>
+                           <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent">${apprDocByNo.documentContent}</textarea>
                         </div>
                         <div class="form-group">
 							<input type="file" name="multipartFile" multiple="multiple">
 						</div>
-						
-						<label for="files">첨부 파일:</label>
-                <button type="button" id="addFile">추가</button>
-                <button type="button" id="removeFile">삭제</button>
-            <div id="files">
-                <input class="form-control approvalFiles" type="file" name="multipartFile" multiple><br>
-            </div>
-						
 					</div>
 				</div>
 			</div>
@@ -262,33 +183,29 @@ $(document).ready(function() {
 		<br>
 		
 		<!-- 기본값을 N으로 설정 -->
-		<input type="hidden" name="tempSave" id="tempSave" value="N">
-		<div>
-			<h1 class="text-center pb-20">
-				<button type="button" class="btn btn-primary" onclick="tempSaveAndSubmit()">임시저장</button>
-				<button type="button" class="btn btn-secondary" id="submitBtn" onclick="submitForm()">제출하기</button>
-			</h1>
-		</div>
+		<input type="hidden" name="tempSave" id="tempSave" value="Y">
+		<!--  문서번호 넘기기 -->
+		<input type="hidden" name="documentNo" id="documentNo" value="${apprDocByNo.documentNo}">
+		<!-- 작성자 본인인 경우 : 임시저장/제출하기 버튼 -->
+		<c:if test="${apprDocByNo.id == loginId}">
+			<div>
+				<h1 class="text-center pb-20">
+					<button type="button" class="btn btn-secondary form-group" onclick="removeApprDoc(${apprDocByNo.documentNo})">삭제하기</button>
+					<button type="submit" class="btn btn-secondary form-group">임시저장</button>
+					<a href="" type="button" class="btn btn-primary form-group">제출하기</a>
+				</h1>
+			</div>
+		</c:if>
 	</form>
 </div>
 </div>
 <script>
-	// 임시저장 버튼을 눌렀을 때 호출되는 함수
-	function tempSaveAndSubmit() {
-		$("#tempSave").val('Y'); // tempSave 값을 Y로 설정	
-		$("#requestForm").submit();		
-	}
-	
-	// 제출하기 버튼을 눌렀을 때 호출되는 함수
-	function submitForm() {
-		$("#requestForm").submit();
-	}
 
 	// 모달창 호출 	
 	function modalcall(value){
 		console.log(value);
 		
-		 // 테이블 초기화 (모든 검색 결과 삭제)
+		// 테이블 초기화 (모든 검색 결과 삭제)
 		$('#employeeTable').empty();
 		// 선택한 값을 입력하는 입력란 초기화
 		$('#selectedValue').val("");
@@ -341,6 +258,23 @@ $(document).ready(function() {
 		// 모달 창 닫기
 		$('#testModal').modal("hide");
 	});
+	
+	// 임시저장 문서 삭제 버튼 클릭시
+	function removeApprDoc(documentNo) {
+		swal({
+			title: '임시저장된 문서를 삭제하시겠습니까?',
+			text: "삭제된 문서는 복구할 수 없습니다.",
+			type: 'warning',
+			confirmButtonText: '예',
+			cancelButtonText: '아니오',
+			showCancelButton: true,
+		}).then(function(result){
+			console.log(result);
+			if (result.value == true) {
+				window.location.href = '${pageContext.request.contextPath}/approval/removeApprDoc?documentNo='+documentNo;
+			}
+		});
+	}
 </script>
 </body>
 </html>
