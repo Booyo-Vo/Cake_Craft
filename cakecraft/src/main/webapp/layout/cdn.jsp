@@ -18,6 +18,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/layout/vendors/styles/core.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/layout/vendors/styles/icon-font.min.css">
@@ -38,7 +39,7 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.10.3/jquery-ui.min.js" /></script>
 <!-- The jqGrid language file code -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/jqgrid/4.6.0/i18n/grid.locale-kr.js" /></script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/redmond/jquery-ui.css" type="text/css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/layout/jquery-ui.theme.min.css" type="text/css" />
 <!-- jqGrid CSS -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/jqgrid/4.6.0/css/ui.jqgrid.css" type="text/css" />
 <!-- The atual jqGrid code -->
