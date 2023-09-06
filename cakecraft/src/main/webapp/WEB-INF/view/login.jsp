@@ -99,7 +99,7 @@ var jq = jQuery.noConflict();
 						</div>
 						<div>
 							<div class="input-group custom">
-								<input type="text" name="id" class="form-control form-control-lg" placeholder="Username" value="${loginId}">
+								<input type="text" name="id" class="form-control form-control-lg" placeholder="Username" value="231110941">
 								<div class="input-group-append custom">
 									<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
 								</div>
