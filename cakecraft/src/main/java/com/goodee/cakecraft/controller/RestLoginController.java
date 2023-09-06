@@ -1,6 +1,6 @@
 package com.goodee.cakecraft.controller;
 
-import java.net.http.HttpRequest;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +28,11 @@ public class RestLoginController {
     private LoginService loginService;
 	
 	//ANSI코드
-			final String KMS = "\u001B[44m";
-			final String RESET = "\u001B[0m"; 
+	final String KMS = "\u001B[44m";
+	final String RESET = "\u001B[0m"; 
 
-			@Autowired
-			private EmpMapper empMapper; 
+	@Autowired
+	private EmpMapper empMapper; 
     @PostMapping("/api/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> loginInfo,
     		HttpServletRequest request) {
@@ -74,10 +74,10 @@ public class RestLoginController {
 					} else {
 						session.setAttribute("profileImagePath", "default_profile.png");
 					}
-    
-        
-            response.put("success", true);
-            return ResponseEntity.ok(response);
-        
-    }
+	
+	
+				response.put("success", true);
+				return ResponseEntity.ok(response);
+	    
+	}
 }
