@@ -1,12 +1,15 @@
 package com.goodee.cakecraft.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,7 +72,7 @@ public class AdminEmpController {
 	// 사원추가 액션
 	@PostMapping("/emp/addEmp")
 	@ResponseBody
-		public  Map<String, Object> addEmp(HttpSession session, EmpBase empbase) {
+		public void addEmp(HttpSession session, EmpBase empbase, HttpServletResponse response) throws IOException {
 		//세선에 저장된 로그인 아이디를 받아옴
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
@@ -85,12 +88,15 @@ public class AdminEmpController {
 		//생성된 사원번호 받아오기
 		String empId = empbase.getId();
 		
-		 // JSON 응답 데이터 구성
-		Map<String, Object> response = new HashMap<>();
-		response.put("empId", empId);
-		response.put("addEmprow", addEmprow);
-	
-		return response;
+		Map<String, Object> responseMap = new HashMap<>();
+		responseMap.put("empId", empId);
+		responseMap.put("addEmprow", addEmprow);
+		
+		JSONObject json = new JSONObject(responseMap);
+		
+		response.getWriter().write(json.toJSONString());
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
 	}
 	
 	// 관리자가 보는 사원리스트 출력
