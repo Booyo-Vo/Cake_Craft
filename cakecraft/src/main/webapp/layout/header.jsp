@@ -86,7 +86,7 @@
 				    <input type="hidden" value="${loginId}" name="id">
 				        <button id="startWorkBtn" type="button" class="btn btn-primary">출근</button>
 				        &nbsp;
-				        <button id="endWorkBtn" type="button" class="btn btn-primary">퇴근</button>
+				        <button id="endWorkBtn" type="button" class="btn btn-secondary">퇴근</button>
 				    </form>
 				</div>
 				<!------------------------- 일정 ------------------------------->

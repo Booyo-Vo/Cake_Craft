@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,7 @@ public class AttendanceController {
 		attendanceService.updateEndDtime(id);
 		return new ModelAndView("redirect:/schedule/schedule");
 	}
+	
 	
 	//출퇴근 리스트 출력
 	@GetMapping("/emp/attendanceList")

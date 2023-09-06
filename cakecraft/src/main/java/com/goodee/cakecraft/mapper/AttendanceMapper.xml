@@ -14,7 +14,7 @@
 		) VALUES (
 			#{id},
 			NOW(),
-			NULL,
+			CONCAT(CURDATE() + INTERVAL 1 DAY, ' 00:00:00'), -- 다음날 0시로 설정
 			NOW(),
 			NOW(),
 			#{id},
@@ -22,7 +22,7 @@
 		)
 	</insert>
 
-<!-- 퇴근 기록 저장 -->
+	<!-- 퇴근 기록 저장 -->
 	<update id="updateEndDtime" parameterType="com.goodee.cakecraft.vo.EmpAttendance">
 	    UPDATE emp_attendance
 	    SET end_dtime = NOW(),
@@ -30,9 +30,8 @@
 	        mod_id = #{id}
 	    WHERE id = #{id}
 	        AND DATE(start_dtime) = CURDATE()
-	        AND end_dtime IS NULL
 	</update>
-	
+		
 	<!-- 출퇴근 이력 리스트 출력 -->
 	<select id = "selectMyAttendanceList"
 		parameterType="String"
