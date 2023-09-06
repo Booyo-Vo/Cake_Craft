@@ -10,28 +10,76 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
-
-<h3>사원정보</h3>
-	<div>
-	    <!-- EmpBase 객체의 id 필드 값 출력 -->
-	   이름 ${empbase.empName}
-	</div>
-	<div>
-	   사원번호 ${empbase.id}
-	</div>
-	<div>
-	    부서 ${empbase.deptNm}
-	</div>
-	<div>
-	    팀 ${empbase.teamNm}
-	</div>
-	<div>
-	    직급 ${empbase.positionNm}
-	</div>
-	<div>
-	    이메일 ${empbase.email}
-	</div>
-
-</div>
+<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>사원 상세정보</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">emp</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+				<!-- Default Basic Forms Start -->
+				<div class="pd-20 card-box mb-30">
+				<div class="clearfix">
+								<div class="pull-left">
+									<p class="mb-30"><b>${empbase.id} 님의 정보를 조회합니다</b></p>
+								</div>
+							</div>
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+								<form>
+									<!-- 이름 -->
+									<div class="form-group row">
+										<label class="col-sm-12 col-md-2 col-form-label"><b>이름</b></label>
+										<div class="col-sm-12 col-md-10">
+											${empbase.empName}
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-12 col-md-2 col-form-label"><b>사원번호</b></label>
+										<div class="col-sm-12 col-md-10">
+											${empbase.id}
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-12 col-md-2 col-form-label"><b>부서</b></label>
+										<div class="col-sm-12 col-md-10">
+											${empbase.deptNm}
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-12 col-md-2 col-form-label"><b>팀</b></label>
+										<div class="col-sm-12 col-md-10">
+											${empbase.teamNm}
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-12 col-md-2 col-form-label"><b>직급</b></label>
+										<div class="col-sm-12 col-md-10">
+											${empbase.positionNm}
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-12 col-md-2 col-form-label"><b>이메일</b></label>
+										<div class="col-sm-12 col-md-10">
+											${empbase.email}
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 </body>
 </html>

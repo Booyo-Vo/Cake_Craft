@@ -129,11 +129,11 @@
 											<!-- 서명이 없는 경우 서명 추가 버튼 출력 / 서명이 있는 경우 서명 수정 버튼 출력 -->
 												<c:choose>
 													<c:when test="${empty empBase.signFilename}">
-														<a class="btn btn-primary" id="addSignature">서명 추가</a>
+														<a class="btn btn-primary" id="addSignature" style="color: white;">서명 추가</a>
 													</c:when>
 													<c:otherwise>
 														<div class="text-center mb-3">
-															<a class="btn btn-primary" id="updateSignature">서명 수정</a>
+															<a class="btn btn-primary" id="updateSignature" style="color: white;">서명 수정</a>
 														</div>
 														<!-- <button id="updateSignature">서명 수정</button> -->
 													</c:otherwise>

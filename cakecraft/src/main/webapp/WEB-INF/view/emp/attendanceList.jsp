@@ -88,6 +88,7 @@ jQuery(document).ready(function($) {
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/emp/myPage">My Page</a></li>
 								<li class="breadcrumb-item active" aria-current="page">My Attendance list</li>
 							</ol>
 						</nav>

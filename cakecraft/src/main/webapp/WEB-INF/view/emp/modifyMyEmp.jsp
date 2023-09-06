@@ -69,7 +69,8 @@ $(document).ready(function() {
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
-									<li class="breadcrumb-item active" aria-current="page">modify My Page</li>
+									<li class="breadcrumb-item"><a href="/cakecraft/emp/My Page">My Page</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Modify My Page</li>
 								</ol>
 							</nav>
 						</div>
@@ -195,29 +196,25 @@ $(document).ready(function() {
 		</div>
 	</div>
 
-<!-- <form action="/cakecraft/emp/changePw" method="post" id="changePasswordForm">
-    <button type="button" id="changePasswordBtn">비밀번호 변경</button>
-</form> -->
-
 <!-- 비밀번호 변경 모달 -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="changePasswordModalLabel">비밀번호 변경</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="password" name="currentPassword" id="currentPassword" placeholder="현재 비밀번호">
-                <input type="password" name="newPassword" id="newPassword" placeholder="새 비밀번호">
-                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="새 비밀번호 확인">
-                <button type="button" id="confirmPasswordBtn">확인</button>
-                <div id="passwordError" style="color: red;"></div>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="changePasswordModalLabel">비밀번호 변경</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<input type="password" name="currentPassword" id="currentPassword" placeholder="현재 비밀번호">
+				<input type="password" name="newPassword" id="newPassword" placeholder="새 비밀번호">
+				<input type="password" name="confirmPassword" id="confirmPassword" placeholder="새 비밀번호 확인">
+				<button type="button" id="confirmPasswordBtn">확인</button>
+				<div id="passwordError" style="color: red;"></div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
