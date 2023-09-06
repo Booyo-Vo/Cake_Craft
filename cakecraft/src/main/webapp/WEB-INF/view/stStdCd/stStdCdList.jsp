@@ -50,7 +50,7 @@ function addTeam() {
 
 	// 입력값이 비어있거나 공백만 포함하는지 확인
 	if(!teamNm || !teamNm.trim()) {
-		alert("팀명을 입력해주세요.");
+		swal('추가 실패','팀명을 입력해주세요','warning');
 		return;
 	}
 
@@ -111,10 +111,9 @@ function modifyDeptCdNm() {
 					window.location.reload();
 				});
 			} else {
-				alert("부서명 수정에 실패하였습니다.");
-				$('#modifyDeptCdNmModal').modal('hide');// 모달 닫기
-				swal('수정 실패','부서명 수정에 실패하였습니다.','warning');
-			}
+				swal('수정 실패','부서명 수정에 실패하였습니다.','warning')).then(() => {
+					$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
+				});
 		},
 		error: function() {
 			swal('수정 실패','"오류가 발생했습니다.','warning').then(() => {
@@ -276,8 +275,8 @@ $(document).ready(function() {
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">부서 팀 관리</li>
+								<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Department Team List</li>
 							</ol>
 							<!-- 부서/팀 추가 수정 모달창 -->
 							<div class="d-flex justify-content-end mb-3">
@@ -346,6 +345,9 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 <!-- 부서/팀 추가 수정 모달창 -->
 <!-- 부서 추가 모달창 시작 -->
 <div class="modal fade" id="addDeptStStdCdModal" tabindex="-1" aria-labelledby="addDeptStStdCdModalLabel" aria-hidden="true">

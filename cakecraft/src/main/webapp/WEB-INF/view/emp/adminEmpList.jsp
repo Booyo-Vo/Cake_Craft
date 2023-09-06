@@ -147,8 +147,8 @@ jQuery(document).ready(function($) {
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">사원리스트</li>
+								<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Admin Emp list</li>
 							</ol>
 							<!-- 사원추가-->
 							<div class="d-flex justify-content-end mb-3">
@@ -189,6 +189,8 @@ jQuery(document).ready(function($) {
 		</div>
 	</div>
 </div>
-<br>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 </body>
 </html>

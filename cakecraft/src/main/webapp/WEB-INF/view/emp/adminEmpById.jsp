@@ -20,8 +20,9 @@
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">부서 팀 관리</li>
+								<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item"><a href="/cakecraft/emp/adminEmpList">Admin Emp list</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Admin Emp</li>
 							</ol>
 							<!-- 사원정보 수정버튼 -->
 							<div class="d-flex justify-content-end mb-3">
@@ -140,8 +141,9 @@
 		</div>
 	</div>
 </div>
-<br>
-<br>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 <!-- 사원정보끝 -->
 </body>
 </html>

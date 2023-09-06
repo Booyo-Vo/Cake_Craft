@@ -91,9 +91,28 @@ $(document).ready(function() {
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
+<!-- 제목 -->
 <div class="main-container">
 	<div class="pd-ltr-20 xs-pd-20-10">
 		<div class="min-height-200px">
+			<div class="page-header">
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<div class="title">
+							<h4>사원정보수정</h4>
+						</div>
+						<nav aria-label="breadcrumb" role="navigation">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item"><a href="/cakecraft/emp/adminEmpList">Admin Emp list</a></li>
+								<li class="breadcrumb-item"><a href="/cakecraft/emp/adminEmpById">Admin Emp</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Admin Modify Emp</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+<!-- 제목끝 -->
 			<div class="pd-20 card-box mb-30">
 				<div class="clearfix">
 					<div class="pull-left">
@@ -206,6 +225,9 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 <!-- 주소 api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 

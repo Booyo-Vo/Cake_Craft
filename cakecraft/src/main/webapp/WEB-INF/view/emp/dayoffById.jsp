@@ -15,12 +15,13 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
 						<div class="title">
-							<h4>사원리스트</h4>
+							<h4>연차사용내역</h4>
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">사원연차리스트</li>
+								<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item"><a href="/cakecraft/emp/adminEmpList">Admin Emp list</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Dayoff list</li>
 							</ol>
 						</nav>
 					</div>
@@ -29,7 +30,7 @@
 <!-- 제목 끝 -->
 		<div class="pd-20 card-box mb-30">
 			<div class="form-group row">
-					<h4 class="mb-15 text-blue h4">${empBase.empName}의 연차사용내역</h4>
+					<h4 class="mb-15 text-blue h4">${empBase.empName}</h4>
 					<c:if test="${not empty empDayoff}">
 					<table class="table">
 						<tr>
@@ -66,6 +67,9 @@
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->	
 </body>
 </html>

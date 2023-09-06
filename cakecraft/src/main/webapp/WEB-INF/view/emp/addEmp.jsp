@@ -147,12 +147,23 @@ function addExcel() {
 <div class="main-container">
 	<div class="pd-ltr-20 xs-pd-20-10">
 		<div class="min-height-200px">
-		<div class="pd-20 card-box mb-30">
-			<div class="clearfix">
-				<div class="pull-left">
-					<h4 class="text-blue h4">사원추가</h4>
+			<div class="page-header">
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<div class="title">
+							<h4>사원추가</h4>
+						</div>
+						<nav aria-label="breadcrumb" role="navigation">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/cakecraft/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Add Emp</li>
+							</ol>
+						</nav>
+					</div>
 				</div>
 			</div>
+		<div class="min-height-200px">
+		<div class="pd-20 card-box mb-30">
 			<form id="empForm" name="empForm">
 				<div class="form-group row">
 					<label class="col-sm-12 col-md-2 col-form-label"> 이름</label>
@@ -256,7 +267,10 @@ function addExcel() {
 	</div>
 </div>
 </div>
-<br>
+</div>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 <!-- 주소 api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
