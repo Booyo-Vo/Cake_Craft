@@ -51,8 +51,10 @@ $(document).ready(function() {
 </script>
 <!-- 공백이 입력되않도록 -->
 <script>
-$(document).ready(function() {
-	$('form[name="empForm"]').submit(function(event) {
+	function addEmp() {
+		//폼 데이터 수집
+		var empFormData = new FormData(document.getElementById('empForm'));
+
 		var empName = $('input[name="empName"]').val();
 		var socialNo1 = $('input[name="socialNo1"]').val();
 		var socialNo2 = $('input[name="socialNo2"]').val();
@@ -61,33 +63,54 @@ $(document).ready(function() {
 		var empPhone2 = $('input[name="empPhone2"]').val();
 		var empPhone3 = $('input[name="empPhone3"]').val();
 		var hireDate = $('input[name="hireDate"]').val();
-
+		var address = $('input[name="address"]').val();
+		
 		var socialNo = socialNo1 + "-" + socialNo2;
 		var empPhone = empPhone1 + "-" + empPhone2 + "-" + empPhone3;
-
 		// 글자수 체크
 		if (socialNo1.length !== 6 || socialNo2.length !== 7) {
-			alert('주민번호를 다시 확인해주세요.');
-			event.preventDefault(); // 폼 제출 중지
+			swal('오류','주민번호를 다시 확인해주세요.','warning');
 			return;
 		}
 		if (empPhone1.length !== 3 || empPhone2.length !== 4 || empPhone3.length !== 4) {
-			alert('핸드폰번호를 다시 확인해주세요.');
-			event.preventDefault(); // 폼 제출 중지
-		return	
+			swal('오류','핸드폰번호를 다시 확인해주세요.','warning');
+			return;	
 		}
-
-		// hidden 필드의 값을 설정
-		$('input[name="socialNo"]').val(socialNo);
-		$('input[name="empPhone"]').val(empPhone);
+		
+		empFormData.append("socialNo", socialNo);
+		empFormData.append("empPhone", empPhone); 
 		// 공백 검사
 		if (empName.trim() === '' || socialNo.trim() === '' || email.trim() === '' || empPhone.trim() === '' || hireDate.trim() === '' || address.trim() === '') {
-			alert('필수 입력 항목을 모두 입력해주세요.');
-			event.preventDefault(); // 폼 제출 중지
+			swal('오류','필수 입력 항목을 모두 입력해주세요.','warning');
+			return;
 		}
+		
+	// 사원추가시 생성된 사원번호를 알림창으로 띄우기 위해 -->
+	//Ajax 요청 보내기
+	$.ajax({
+		type: 'POST',  // HTTP 요청 방법 (POST)
+		url: '/cakecraft/emp/addEmp', 
+		data: empFormData,  // 폼 데이터
+		processData: false,
+		contentType: false,
+		success: function(response) {
+			 // 성공 시 실행할 코드
+			var empId = response.empId;
+			var row = response.addEmprow;
 
+			if (row > 0) { // 문자열을 정수로 변환하여 비교
+				swal('추가 성공', empId + '  사원번호가 생성되었습니다', 'success').then(() => {
+					window.location.reload();
+				});
+			} else {
+				swal('추가 실패','사원 추가에 실패했습니다.','warning');
+			}
+		},
+		error: function(error) {
+			swal('추가 실패','사원 추가에 실패했습니다.','warning');
+		}
 	});
-});
+}
 </script>
 <!--  사원대량추가 excel 성공/실패 알림창을 위해 ajax -->
 <script>
@@ -130,7 +153,7 @@ function addExcel() {
 					<h4 class="text-blue h4">사원추가</h4>
 				</div>
 			</div>
-			<form action="/cakecraft/emp/addEmp" method="post"  name="empForm">
+			<form id="empForm" name="empForm">
 				<div class="form-group row">
 					<label class="col-sm-12 col-md-2 col-form-label"> 이름</label>
 					<div class="col-sm-12 col-md-4">
@@ -209,9 +232,7 @@ function addExcel() {
 						<a onclick="findAddr()" class="btn btn-primary" style="color:white">주소검색</a>
 					</div>
 				</div>
-				<input type="hidden" name="empPhone">
-				<input type="hidden" name="socialNo">
-				<button type="submit" class="btn btn-primary">사원추가</button>
+				<button type="button" class="btn btn-primary"  onclick="addEmp()" >사원추가</button>
 			</form>
  		</div>
  	</div>

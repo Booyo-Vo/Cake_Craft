@@ -1,7 +1,9 @@
 package com.goodee.cakecraft.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodee.cakecraft.service.AdminEmpService;
 import com.goodee.cakecraft.service.CommonService;
@@ -65,7 +68,8 @@ public class AdminEmpController {
 
 	// 사원추가 액션
 	@PostMapping("/emp/addEmp")
-		public String addEmp(HttpSession session, EmpBase empbase) {
+	@ResponseBody
+		public  Map<String, Object> addEmp(HttpSession session, EmpBase empbase) {
 		//세선에 저장된 로그인 아이디를 받아옴
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
@@ -73,10 +77,20 @@ public class AdminEmpController {
 		//empbase에 로그인된 아이디 담기
 		empbase.setModId(loginId);
 		empbase.setRegId(loginId);
+		log.debug(LJY + empbase + "<- addEmp empbase"+ RESET);
 		
 		int addEmprow = adminEmpService.addEmp(empbase);
 		log.debug(LJY +"addEmprow :" + addEmprow +RESET);
-		return "redirect:/emp/adminEmpList";
+		
+		//생성된 사원번호 받아오기
+		String empId = empbase.getId();
+		
+		 // JSON 응답 데이터 구성
+		Map<String, Object> response = new HashMap<>();
+		response.put("empId", empId);
+		response.put("addEmprow", addEmprow);
+	
+		return response;
 	}
 	
 	// 관리자가 보는 사원리스트 출력
