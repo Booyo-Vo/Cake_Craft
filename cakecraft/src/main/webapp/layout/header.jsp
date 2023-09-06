@@ -137,6 +137,12 @@
 						<li><a href="/cakecraft/board/questionList">Q&A</a></li>
 					</ul>
 				</li>
+				<!------------------------- 채팅 ------------------------------->
+				<li>
+					<a href="/cakecraft/chat/rooms" class="dropdown-toggle no-arrow">
+						<span class="micon dw dw-chat3"></span><span class="mtext">채팅</span>
+					</a>
+				</li>
 				<!---------------------------- 관리자 메뉴 -------------------------->
 					<!-- 인사팀: 사용자의 deptCd가 "1"이고 teamCd가 "11"인 경우를 확인 -->
 					<!-- 특정 deptCd와 teamCd에 대해서만 "관리자메뉴"를 표시 -->
