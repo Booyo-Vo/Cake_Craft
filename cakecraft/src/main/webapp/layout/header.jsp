@@ -57,7 +57,7 @@
 						    </c:otherwise>
 						</c:choose>
 					</span>
-					<span class="user-name" data-empid="${loginEmpBase.id}">${loginEmpBase.id} 님 환영합니다! &nbsp;
+					<span class="user-name" data-empid="${loginEmpBase.empName}">${loginEmpBase.empName} 님 환영합니다! &nbsp;
 						<button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
 					</span>
 				</a>
