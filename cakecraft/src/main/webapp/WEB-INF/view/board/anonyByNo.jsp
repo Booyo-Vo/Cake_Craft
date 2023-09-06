@@ -223,8 +223,14 @@ if(likeCk > 0){
 				id : id
 			},
 			success : function(data) {
-				alert('좋아요 취소');
-				location.reload();
+				swal({
+					type: 'success',
+					title: '좋아요 취소.'
+				}).then(function(result){
+					if (result.value == true) {
+						location.reload();
+					}
+				});
 			},
 		})
 	})
@@ -239,8 +245,14 @@ if(likeCk > 0){
 				id : id
 			},
 			success : function(data) {
-				alert('좋아요');
-				location.reload();
+				swal({
+					type: 'success',
+					title: '좋아요.'
+				}).then(function(result){
+					if (result.value == true) {
+						location.reload();
+					}
+				});
 			},
 		})
 	})
@@ -249,7 +261,10 @@ if(likeCk > 0){
 // 입력폼 유효성검사
 $('#addSubmitBtn').click(function(){
 	if($('#addCommentsContent').val() == ''){
-		alert('내용을 입력해주세요');
+		swal({
+			type: 'error',
+			title: '내용을 입력해주세요.'
+		});
 		$('#addCommentsContent').focus();
 	}else {
 		$('#addCommentsForm').submit();

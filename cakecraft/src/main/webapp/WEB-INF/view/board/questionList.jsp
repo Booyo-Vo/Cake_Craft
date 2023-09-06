@@ -84,7 +84,10 @@ jQuery(document).ready(function($) {
 		}else if(secretYn != '' && loginId != rowData.regId && deptCd == '1'){
 			window.location.href = "${pageContext.request.contextPath}/board/questionByNo?questionNo=" + questionNo;
 		}else{
-			alert("비밀글입니다");
+			swal({
+				type: 'error',
+				title: '비밀글입니다.'
+			});
 		}
 		
 	});

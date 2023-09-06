@@ -164,7 +164,10 @@
 // 입력폼 유효성검사
 $('#addSubmitBtn').click(function(){
 	if($('#addAnswerContent').val() == ''){
-		alert('답변내용을 입력해주세요');
+		swal({
+			type: 'error',
+			title: '답변내용을 입력해주세요.'
+		});
 		$('#addAnswerContent').focus();
 	}else {
 		$('#addAnswerForm').submit();
@@ -179,7 +182,10 @@ function modAnswerBtn(questionNo){
 	// 수정폼 유효성검사 
 	$('#modSubmitBtn').click(function(){
 		if($('#modAnswerContent').val() == ''){
-			alert('답변내용을 입력해주세요');
+			swal({
+				type: 'error',
+				title: '답변내용을 입력해주세요.'
+			});
 			$('#modAnswerContent').focus();
 		}else {
 			$('#modAnswerForm').submit();

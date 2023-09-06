@@ -354,18 +354,31 @@ function date(d, targetYear, targetMonth){
 function addSchedule(){
 	// 입력폼 유효성 검사
 	if($('#categoryCd').val() == ''){
-		alert('카테고리를 설정해주세요');
+		swal({
+			type: 'error',
+			title: '카테고리를 설정해주세요.'
+		});
 		return;
 	}else if($('#scheduleContent').val() == ''){
-		alert('일정내용을 입력해주세요');
+		swal({
+			type: 'error',
+			title: '일정내용을 입력해주세요.'
+		});
 		return;
 	}else if($('#endDtime').val() == ''){
-		alert('종료일을 설정해주세요');
+		swal({
+			type: 'error',
+			title: '종료일을 설정해주세요.'
+		});
 		return;
 	}else if($('#endDtime').val() < $('#startDtime').val()){
-		alert('종료일을 재설정해주세요');
-		$('#endDtime').val('');
-		$('#endDtime').focus();
+		swal({
+			type: 'error',
+			title: '종료일을 재설정해주세요.'
+		}).then(function () {
+			$('#endDtime').val('');
+			$('#endDtime').focus();
+		});
 		return;
 	}
 	// 입력폼 제출
@@ -403,18 +416,31 @@ function scheduleNo(scheduleNo){
 function modifySchedule(){
 	// 수정폼 유효성 검사
 	if($('#modCategoryCd').val() == ''){
-		alert('카테고리를 설정해주세요');
+		swal({
+			type: 'error',
+			title: '카테고리를 설정해주세요.'
+		});
 		return;
 	}else if($('#modScheduleContent').val() == ''){
-		alert('일정내용을 입력해주세요');
+		swal({
+			type: 'error',
+			title: '일정내용을 입력해주세요.'
+		});
 		return;
 	}else if($('#modEndDtime').val() == ''){
-		alert('종료일을 설정해주세요');
+		swal({
+			type: 'error',
+			title: '종료일을 설정해주세요.'
+		});
 		return;
 	}else if($('#modEndDtime').val() < $('#modStartDtime').val()){
-		alert('종료일을 재설정해주세요');
-		$('#modEndDtime').val('');
-		$('#modEndDtime').focus();
+		swal({
+			type: 'error',
+			title: '종료일을 재설정해주세요.'
+		}).then(function () {
+			$('#modEndDtime').val('');
+			$('#modEndDtime').focus();
+		});
 		return;
 	}
 
@@ -423,15 +449,25 @@ function modifySchedule(){
 	modifyScheduleForm.attr('action', '${pageContext.request.contextPath}/schedule/modifySchedule');
 	modifyScheduleForm.attr('method', 'post');
 	modifyScheduleForm.submit();
+	
 }
 
 // 일정 삭제 버튼 클릭 시
 function removeSchedule() {
 	const scheduleNo = $('#modScheduleNo').val(); 
 
-	if (confirm('일정을 삭제하시겠습니까?')) {
-		window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo;
-	}
+	swal({
+		title: '일정을 삭제하시겠습니까?',
+		text: "삭제된 일정은 복구할 수 없습니다.",
+		type: 'warning',
+		confirmButtonText: '예',
+		cancelButtonText: '아니오',
+		showCancelButton: true,
+	}).then(function(result){
+		if (result.value == true) {
+			window.location.href = '${pageContext.request.contextPath}/schedule/removeSchedule?scheduleNo=' + scheduleNo;
+		}
+	});
 }
 </script>
 </body>

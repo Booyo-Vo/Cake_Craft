@@ -69,10 +69,16 @@
 // 입력폼 유효성검사
 $('#btn').click(function(){
 	if($('#questionTitle').val() == ''){
-		alert('제목을 입력해주세요');
+		swal({
+			type: 'error',
+			title: '제목을 입력해주세요.'
+		});
 		$('#questionTitle').focus();
 	}else if($('#questionContent').val() == ''){
-		alert('내용을 입력해주세요');
+		swal({
+			type: 'error',
+			title: '내용을 입력해주세요.'
+		});
 	}else {
 		$('#modQuestionForm').submit();
 	}
