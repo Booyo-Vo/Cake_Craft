@@ -7,14 +7,7 @@
 		<div class="menu-icon dw dw-menu"></div>
 	</div>
 	<div class="header-right">
-		<div class="dashboard-setting user-notification">
-			<div class="dropdown">
-				<!-- <a class="dropdown-toggle no-arrow" href="javascript:;" data-toggle="right-sidebar">
-					<i class="dw dw-settings2"></i>
-				</a> -->
-			</div>
-		</div>
-<!---------------------- 오른쪽 상단바 프로필 시작 ---------------------------->
+	<!---------------------- 오른쪽 상단바 프로필 시작 ---------------------------->
 		<div class="user-info-dropdown">
 			<div class="dropdown">
 				<a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
@@ -40,27 +33,26 @@
 <!---------------------- 오른쪽 상단바 프로필 끝  ---------------------------->
 <!-----------------------왼쪽 사이드 바 시작 -------------------------------->
 <div class="left-side-bar">
-		<!-- <a href="/cakecraft/schedule/schedule" style="padding: 0;"> -->
-			<div class="logo-container" style="padding-left: 40px; padding-right: 40px;">
-				<img src="${pageContext.request.contextPath}/layout/vendors/images/cakecraft_logo.png" class="light-logo">
-			</div>
-		<!-- </a> -->
-		<div class="close-sidebar" data-toggle="left-sidebar-close">
-			<i class="ion-close-round"></i>
-		</div>		
+	<!------------------------ 로고 이미지 ----------------------->
+	<div class="logo-container" style="padding-left: 40px; padding-right: 40px;">
+		<img src="${pageContext.request.contextPath}/layout/vendors/images/cakecraft_logo.png" class="light-logo">
+	</div>
+	<!------------------------ 사이드바 닫기 버튼 ----------------------->
+	<div class="close-sidebar" data-toggle="left-sidebar-close">
+		<i class="ion-close-round"></i>
+	</div>		
+	<!------------------------ 출/퇴근 버튼 ----------------------->
+	<div class="menu-item">
+	    <form id="attendanceForm">
+	    <input type="hidden" value="${loginId}" name="id">
+	        <button id="startWorkBtn" type="button" class="btn btn-primary">출근</button>
+	        &nbsp;
+	        <button id="endWorkBtn" type="button" class="btn btn-secondary">퇴근</button>
+	    </form>
+	</div>
 	<div class="menu-block customscroll">
 		<div class="sidebar-menu">
-		<!-- 사이드바 프로필이미지 -->
 			<ul id="accordion-menu">
-				<!------------------------ 출/퇴근 버튼 ----------------------->
-				<div class="menu-item">
-				    <form id="attendanceForm">
-				    <input type="hidden" value="${loginId}" name="id">
-				        <button id="startWorkBtn" type="button" class="btn btn-primary">출근</button>
-				        &nbsp;
-				        <button id="endWorkBtn" type="button" class="btn btn-secondary">퇴근</button>
-				    </form>
-				</div>
 				<!------------------------- 일정 ------------------------------->
 				<li>
 					<a href="/cakecraft/schedule/schedule" class="dropdown-toggle no-arrow">
@@ -125,7 +117,6 @@
 								<span class="micon dw dw-analytics-21"></span><span class="mtext">관리자메뉴</span>
 							</a>
 							<ul class="submenu">
-								<li><a href="/cakecraft/emp/addEmp">사원추가</a></li>
 								<li><a href="/cakecraft/emp/adminEmpList">사원관리</a></li>
 								<li><a href="/cakecraft/stStdCd/stStdCdList">부서/팀관리</a></li>
 								<li><a href="/cakecraft/emp/chartList">차트</a></li>
@@ -133,7 +124,7 @@
 						</li>
 					</c:when>
 				</c:choose>
-		    </ul>
+			</ul>
 		</div>
 	</div>
 </div>
