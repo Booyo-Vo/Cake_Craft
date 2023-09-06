@@ -117,6 +117,7 @@
 		</div>
 	</div>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
 //공지 삭제 버튼 클릭 시
 function removeNotice(noticeNo) {

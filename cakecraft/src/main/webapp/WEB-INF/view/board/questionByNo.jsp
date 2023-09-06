@@ -160,6 +160,7 @@
 		</div>
 	</div>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
 // 입력폼 유효성검사
 $('#addSubmitBtn').click(function(){

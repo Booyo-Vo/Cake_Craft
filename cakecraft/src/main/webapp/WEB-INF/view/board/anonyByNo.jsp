@@ -205,6 +205,7 @@
 		</div>
 	</div>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
 // 좋아요 버튼 클릭시
 var likeCk = ${likeCk};
