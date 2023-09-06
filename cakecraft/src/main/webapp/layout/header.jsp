@@ -1,34 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<style>
-/* 동그란 이미지 스타일 */
-.circular-image {
-    display: inline-block;
-    overflow: hidden;
-    border-radius: 50%; /* 이미지를 동그랗게 만듭니다 */
-    width: 100px; /* 이미지의 가로 크기를 조절해주세요 */
-    height: 100px; /* 이미지의 세로 크기를 조절해주세요 */
-    background-color: #ccc; /* 이미지 로딩 중 및 오류 시 보여질 배경 색상 설정 */
-}
-
-.circular-image img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-}
-/* 메뉴 아이템 가운데 정렬 스타일 */
-.menu-item {
-    display: flex;
-    justify-content: center; /* 가로 가운데 정렬 */
-    align-items: center; /* 세로 가운데 정렬 */
-    margin-bottom: 10px; /* 아이템 간격 설정 */
-}
-/* 로고 이미지 여백 */
-.logo-container {
-    padding: 20px; 
-}
-</style>
 
 <div class="header">
 	<div class="header-left">
