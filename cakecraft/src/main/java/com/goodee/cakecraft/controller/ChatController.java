@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -68,9 +69,10 @@ public class ChatController {
 
 		log.info("# get Chat Room, roomID : " + chatRoom.getRoomId());
 		ChatRoom room = chatService.getChatRoomById(chatRoom);
-		List<ChatMessage> messageList = chatService.getChatMessageById(chatRoom);
+		Map<String, Object> resultMap = chatService.getChatMessageById(chatRoom);
 		model.addAttribute("room", room);
-		model.addAttribute("messageList", messageList);
+		model.addAttribute("messageList", resultMap.get("messageList"));
+		model.addAttribute("memberList", resultMap.get("memberList"));
 		return "/chat/room";
 	}
 	

@@ -32,7 +32,7 @@
 			</div>
 			<div class="bg-white border-radius-4 box-shadow mb-30">
 				<div class="row">
-					<div class="col">
+					<div class="col-9">
 						<div class="chat-detail">
 							<div class="chat-profile-header clearfix">
 								<div class="row">
@@ -92,14 +92,29 @@
 							</div>
 						</div>
 					</div>
+					<div class="col card px-0">
+						 <div class="card-header bg-secondary text-white">참여인원</div>
+						<div class="card-body">
+							<ul>
+								<c:forEach var="m" items="${memberList}">
+									<li>
+										<span class="chat-img">
+											<img width="20px" height="20px" src="${pageContext.request.contextPath}/profileImg/${m.profileFilename}">
+										</span>
+										${m.empName}
+									</li>
+								</c:forEach>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="footer-wrap pd-20 mb-20 card-box">
-			DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a>
-		</div>
 	</div>
 </div>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>

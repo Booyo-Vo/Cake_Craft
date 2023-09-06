@@ -132,9 +132,7 @@ jQuery(document).ready(function($){
 		</div>
 		
 		<!-- 푸터 시작 -->
-		<div class="footer-wrap pd-20 mb-20 card-box">
-			DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a>
-		</div>
+		<c:import url="/layout/footer.jsp"></c:import>
 		<!-- 푸터 끝 -->
 	</div>
 </div>

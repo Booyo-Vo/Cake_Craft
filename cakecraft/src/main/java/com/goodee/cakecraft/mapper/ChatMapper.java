@@ -1,6 +1,7 @@
 package com.goodee.cakecraft.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,6 +28,9 @@ public interface ChatMapper {
 	
 	//채팅내용 저장
 	int insertChatMessage(ChatMessage chatMessage);
+	
+	//채팅방 참여인원
+	List<Map<String, Object>> selectMemberListByRoom(ChatRoom chatRoom);
 	
 	//채팅내용 불러오기
 	List<ChatMessage> selectChatMessageById(ChatRoom chatRoom);

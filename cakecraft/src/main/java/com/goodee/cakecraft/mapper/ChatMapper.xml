@@ -100,6 +100,24 @@
 		)
 	</insert>
 	
+	<!-- 참여인원 불러오기 -->
+	<select id="selectMemberListByRoom"
+			parameterType="com.goodee.cakecraft.vo.ChatRoom"
+			resultType="java.util.Map">
+		SELECT 
+			t.roomMember, 
+			t.empName, 
+			IFNULL(p.profile_filename, 'profile.png') profileFilename
+		FROM emp_profileImg p
+		RIGHT OUTER JOIN 
+		(SELECT c.room_member roomMember, e.emp_name empName
+		FROM chat_room c
+		INNER JOIN emp_base e
+		ON c.room_member = e.id
+		WHERE c.room_id = #{roomId}) t
+		ON p.id = t.roomMember
+	</select>
+	
 	<!-- 채팅내용 불러오기 -->
 	<select id="selectChatMessageById"
 			parameterType="com.goodee.cakecraft.vo.ChatRoom"

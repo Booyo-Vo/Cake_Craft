@@ -1,6 +1,8 @@
 package com.goodee.cakecraft.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,9 +49,13 @@ public class ChatService {
 		return row;
 	}
 	
-	//채팅내용 불러오기
-	public List<ChatMessage> getChatMessageById(ChatRoom chatRoom){
+	//채팅방내용(메시지, 참여인원) 불러오기
+	public Map<String, Object> getChatMessageById(ChatRoom chatRoom){
+		Map<String, Object> resultMap = new HashMap<>();
 		List<ChatMessage> messageList = chatMapper.selectChatMessageById(chatRoom);
-		return messageList;
+		List<Map<String, Object>> memberList = chatMapper.selectMemberListByRoom(chatRoom);
+		resultMap.put("messageList", messageList);
+		resultMap.put("memberList", memberList);
+		return resultMap;
 	}
 }

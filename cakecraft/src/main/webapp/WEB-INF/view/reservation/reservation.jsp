@@ -180,14 +180,12 @@
 				</div>
 				<!-- 예약 캘린더 끝 -->
 			</div>
-			<!-- 푸터 시작 -->
-			<div class="footer-wrap pd-20 mb-20 card-box">
-				DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a>
-			</div>
-			<!-- 푸터 끝 -->
 		</div>
 	</div>
 	<!-- 메인 끝 -->
+	<!-- 푸터 시작 -->
+	<c:import url="/layout/footer.jsp"></c:import>
+	<!-- 푸터 끝 -->
 
 	<script src="/cakecraft/layout/reservation_assets/js/util.js"></script>
 	<script src="/cakecraft/layout/reservation_assets/js/main.js"></script>

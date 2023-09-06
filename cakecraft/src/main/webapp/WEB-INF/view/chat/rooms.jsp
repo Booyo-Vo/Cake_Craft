@@ -79,11 +79,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="footer-wrap pd-20 mb-20 card-box">
-			Illusty by <a href="https://kr.freepik.com/free-vector/delicious-hand-painted-desserts-set_13312763.htm#query=%EB%94%94%EC%A0%80%ED%8A%B8%20%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8&position=10&from_view=keyword&track=ais">작가 rawpixel.com</a> 출처 Freepik <a href="https://github.com/dropways" target="_blank"></a>
-		</div>
 	</div>
 </div>
+<!-- 푸터 시작 -->
+<c:import url="/layout/footer.jsp"></c:import>
+<!-- 푸터 끝 -->
 <script>
 	let newRoomName = '${newRoomName}';
 	if(newRoomName != ''){
