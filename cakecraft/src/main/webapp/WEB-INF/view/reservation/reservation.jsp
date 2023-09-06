@@ -26,8 +26,8 @@
 							</div>
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">홈</a></li>
-									<li class="breadcrumb-item active" aria-current="page">시설비품 사용예약</li>
+									<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Reservation</li>
 								</ol>
 							</nav>
 						</div>
@@ -47,16 +47,12 @@
 						</div>
 					</div>
 				  	
-					<ul class="nav nav-pills mt-5">
-						<li class="nav-item">
-							<a class="nav-link" href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=1&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">회의실</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=2&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">비품</a>
-						</li>
-					</ul>
+				  	<div class="mt-5">
+						<a class="btn btn-secondary" href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=1&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">회의실</a>
+						<a class="btn btn-secondary" href="${pageContext.request.contextPath}/reservation/reservation?categoryCd=2&targetYear=${targetYear}&targetMonth=${targetMonth}&targetDate=${targetDate}">비품</a>
+				  	</div>
 					
-				  	<div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+				  	<div class="cd-schedule cd-schedule--loading margin-top-sm margin-bottom-lg js-cd-schedule">
 						<!-- 타임라인 시작 -->
 					    <div class="cd-schedule__timeline">
 						<ul>
@@ -268,12 +264,12 @@
 			|| $('#teamNm').val() === ''
 			|| $('#reservationContent').val() === '' 
 			|| $('#date').val() === ''){
-			alert('입력창을 채워주세요');
+			swal('입력내용 확인','예약 내용을 입력해주세요','warning');
 			return;
 		}
 		let times = $.trim($('#times option:selected').val());
 		if(times == ''){
-			alert('입력창을 채워주세요');
+			swal('입력내용 확인','예약 내용을 입력해주세요','warning');
 			return;
 		}		
 		const addFcltForm = $('#addRsrvForm');

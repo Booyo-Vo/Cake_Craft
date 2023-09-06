@@ -6,10 +6,6 @@
 <meta charset="UTF-8">
 <c:import url="/layout/cdn.jsp"></c:import>
 <style>
-	#msgArea{
-		height: 300px;
-		overflow-y: scroll;
-	}
 </style>
 </head>
 <body>
@@ -22,12 +18,13 @@
 				<div class="row">
 					<div class="col-md-6 col-sm-12">
 						<div class="title">
-							<h4>메시지</h4>
+							<h4>채팅</h4>
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">홈</a></li>
-								<li class="breadcrumb-item active" aria-current="page">메시지</li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/chat/rooms">Chat Rooms</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Chat</li>
 							</ol>
 						</nav>
 					</div>
@@ -41,7 +38,7 @@
 								<div class="row">
 									<div class="col left">
 										<div class="clearfix">
-											<div class="chat-profile-name">
+											<div>
 												<h3>${room.roomName}</h3>
 											</div>
 										</div>
@@ -85,11 +82,11 @@
 									</ul>
 								</div>
 								<div class="chat-footer">
-									<div class="chat_text_area ml-3">
+									<div class="col-10 chat_text_area ml-3">
 										<textarea id="msg" placeholder="메시지를 입력하세요"></textarea>
 									</div>
-									<div class="chat_send">
-										<button class="btn btn-link" id="sendBtn" type="button"><i class="icon-copy ion-paper-airplane"></i></button>
+									<div class="col-2 chat_send">
+										<button class="btn btn-link" id="sendBtn" type="button"><i class="icon-copy fa fa-send" aria-hidden="true"></i></button>
 									</div>
 								</div>
 							</div>
@@ -143,7 +140,7 @@
 			}
 			
 			$('#msgArea').append(str);
-			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
+			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
 		})
 		
 		//3.send(path, header, message)로 메세지를 보낼 수 있다

@@ -11,7 +11,7 @@ jQuery.noConflict();
 jQuery(document).ready(function($){
 	let mydata = [ //데이터
         <c:forEach var="r" items="${list}">
-        	{reservationNo: "${r.reservationNo}", facilityName: "${r.facilityName}", reservationContent: "${r.reservationContent}", startDtime: "${fn:substring(r.startDtime, 0, 19)}", endDtime: "${fn:substring(r.endDtime, 0, 19)}"},
+        	{reservationNo: "${r.reservationNo}", facilityName: "${r.facilityName}", reservationContent: "${r.reservationContent}", startDtime: "${fn:substring(r.startDtime, 0, 16)}", endDtime: "${fn:substring(r.endDtime, 0, 16)}"},
     	</c:forEach>
 	];
 
@@ -20,12 +20,12 @@ jQuery(document).ready(function($){
 		data: mydata,
 		colNames:['예약번호','예약시설/비품','내용','예약시작시간','예약종료시간', '삭제'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
-			{name:'reservationNo', index:'reservationNo', width:20, align: "center", sortable: false},
-			{name:'facilityName', index:'facilityName', width:70, align: "center", sortable: false},
-			{name:'reservationContent', index:'reservationContent', width:70 , align: "center", sortable: false},
-			{name:'startDtime', index:'startDtime', width:70, align: "center", sortable: false},
-			{name:'endDtime', index:'endDtime', width:70, align: "center", sortable: false},
-			{name:'delBtn', width:70, fixed:true, align: "center", sortable : false, formatter:formatOpt, formatoptions:{keys:true, editbutton:false}},
+			{name:'reservationNo', index:'reservationNo', width:10, align: "center", sortable: false},
+			{name:'facilityName', index:'facilityName', width:20, align: "center", sortable: false},
+			{name:'reservationContent', index:'reservationContent', width:20 , align: "center", sortable: false},
+			{name:'startDtime', index:'startDtime', width:20, align: "center", sortable: false},
+			{name:'endDtime', index:'endDtime', width:20, align: "center", sortable: false},
+			{name:'delBtn', width:100, fixed:true, align: "center", sortable : false, formatter:formatOpt, formatoptions:{keys:true, editbutton:false}},
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
 		rownumbers: true, // 각 행앞에 번호를 표시
@@ -50,7 +50,7 @@ jQuery(document).ready(function($){
 		let currentTime = new Date();
         let nowMs = Date.now();
         if(startDtimeMs - nowMs > 1000*60*30){
-			str += '<a id="delBtn' + rowId + '">예약취소</a>';
+			str += '<a id="delBtn' + rowId + '" class="badge badge-secondary text-white">예약취소</a>';
         }
 		return str;
 	}
@@ -114,8 +114,8 @@ jQuery(document).ready(function($){
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">홈</a></li>
-								<li class="breadcrumb-item active" aria-current="page">나의 예약이력</li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Reservation History</li>
 							</ol>
 						</nav>
 					</div>

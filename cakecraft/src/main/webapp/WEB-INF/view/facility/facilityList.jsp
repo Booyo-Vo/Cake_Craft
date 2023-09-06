@@ -19,11 +19,11 @@ jQuery(document).ready(function($){
 		data: mydata,
 		colNames:['관리번호','카테고리','시설/비품이름','설명','사용여부'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
-			{name:'facilityNo', index:'facilityNo', width:20, align: "center", sortable: false},
-			{name:'categoryCd', index:'categoryCd', width:70, align: "center", sortable: false},
-			{name:'facilityName', index:'facilityName', width:70 , align: "center", sortable: false},
-			{name:'facilityNote', index:'facilityNote', width:70, align: "center", sortable: false},
-			{name:'useYn', index:'useYn', width:70, align: "center", sortable: false},
+			{name:'facilityNo', index:'facilityNo', width:10, align: "center", sortable: false},
+			{name:'categoryCd', index:'categoryCd', width:20, align: "center", sortable: false},
+			{name:'facilityName', index:'facilityName', width:30, align: "center", sortable: false},
+			{name:'facilityNote', index:'facilityNote', width:30, align: "center", sortable: false},
+			{name:'useYn', index:'useYn', width:10, align: "center", sortable: false},
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
 		rownumbers: true, // 각 행앞에 번호를 표시
@@ -192,8 +192,8 @@ jQuery(document).ready(function($){
 			},
 			success : function(param){
 				if(param > 0){
-					$('#addNameMsg').text('이미 사용 중인 이름입니다');
-					$('#addFacilityName').focus();
+					swal('중복된 이름', '이미 사용중인 이름입니다.', 'warning');
+					//$('#addNameMsg').text('이미 사용 중인 이름입니다');
 				}
 			}
 		})
@@ -243,7 +243,7 @@ function addFacility(){
 			|| $('#addFacility').val() === '' 
 			|| $('#addFacilityNote').val() === ''
 			|| $('#useYn').val() === ''){
-		alert('입력창을 채워주세요');
+		swal('입력내용 확인', '추가할 시설/비품의 내용을 입력해주세요', 'warning');
 		return;
 	}
 	
@@ -324,7 +324,7 @@ function modFacility(){
 		|| $('#modFacility').val() === '' 
 		|| $('#modFacilityNote').val() === ''
 		|| $('#modUseYn').val() === ''){
-		alert('입력창을 채워주세요');
+		swal('입력내용 확인','수정할 시설/비품의 내용을 입력해주세요.','warning');
 		return;
 	}
 	
@@ -348,12 +348,12 @@ function modFacility(){
 					<div class="row">
 						<div class="col-md-12 col-sm-12">
 							<div class="title">
-								<h4>시설비품관리</h4>
+								<h4>시설/비품관리</h4>
 							</div>
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">홈</a></li>
-									<li class="breadcrumb-item active" aria-current="page">시설비품관리</li>
+									<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Facility / Supplies</li>
 								</ol>
 							</nav>
 						</div>
@@ -430,15 +430,21 @@ function modFacility(){
 									<form id="addFcltForm">
 										<input type="hidden" name="loginId" value="${loginId}">
 										<div class="mb-3">
-											<label for="addCategory" class="col-form-label">카테고리</label>
-											<select id="addCategory" required>
-												<option value="" selected disabled>==선택==</option>
-												<option value="F">시설</option>
-												<option value="S">비품</option>
-											</select>
-											<select id="addCategoryCd" name="categoryCd" required>
-												<option value="" selected disabled>==선택==</option>
-											</select>
+												<label for="addCategory" class="col-form-label">카테고리</label>
+												<div class="row">
+													<div class="col">
+														<select id="addCategory" class="form-control" required>
+															<option value="" selected disabled>==선택==</option>
+															<option value="F">시설</option>
+															<option value="S">비품</option>
+														</select>
+													</div>
+													<div class="col">
+														<select id="addCategoryCd" class="form-control" name="categoryCd" required>
+															<option value="" selected disabled>==선택==</option>
+														</select>
+													</div>
+											</div>
 										</div>
 										<div class="mb-3">
 											<label for="addFacilityName" class="col-form-label">이름</label>
@@ -448,12 +454,12 @@ function modFacility(){
 										<div class="mb-3">
 											<label for="addFacilityNote" class="col-form-label">설명</label>
 											<textarea class="form-control" name="facilityNote" id="addFacilityNote" required></textarea>
-											<span id="addCount">0</span>자 / 100자
+											<div class="text-right"><span id="addCount">0</span>자 / 100자</div>
 											<span id="addNoteMsg"></span>
 										</div>
 										<div class="mb-3">
 											<label for="addUseYn" class="col-form-label">사용여부</label>
-											<select name="useYn" id="addUseYn" required>
+											<select name="useYn" id="addUseYn" class="form-control" required>
 												<option value="Y" selected>사용가능</option>
 												<option value="N">사용불가</option>
 											</select>

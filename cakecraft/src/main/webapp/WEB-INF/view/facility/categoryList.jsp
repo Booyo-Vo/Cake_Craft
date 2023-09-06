@@ -19,12 +19,13 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
 						<div class="title">
-							<h4>시설비품 카테고리관리</h4>
+							<h4>시설/비품 카테고리관리</h4>
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">홈</a></li>
-								<li class="breadcrumb-item active" aria-current="page">시설비품관리</li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/facility/facilityList">Facility / Supplies</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Category</li>
 							</ol>
 						</nav>
 					</div>
@@ -57,7 +58,7 @@
 								<td>${d.cd}</td>
 								<td id="nameForm${d.cd}">${d.cdNm}</td>
 								<td><button type="button" id="use${d.cd}" onclick="changeUse(${d.cd})" class="btn btn-sm btn-secondary">${d.useYn}</button></td>
-								<td id="modBtn${d.cd}"><button class="btn btn-sm btn-secondary" type="button" onclick="modNameForm(${d.cd}, '${d.cdNm}')">이름수정</button></td>
+								<td id="modBtn${d.cd}"><button class="btn btn-sm btn-primary" type="button" onclick="modNameForm(${d.cd}, '${d.cdNm}')">이름변경</button></td>
 							</tr>
 						</c:forEach>
 							<tr>
@@ -77,8 +78,8 @@
 								<td>
 									<select name="useYn" class="custom-select form-control" id="addUseYn" required>
 										<option value="" selected disabled>==선택==</option>
-										<option value="Y">Y</option>
-										<option value="N">N</option>
+										<option value="Y">사용가능</option>
+										<option value="N">사용불가</option>
 									</select>
 								</td>
 								<td><button type="submit" class="btn btn-sm btn-primary">추가</button></td>
@@ -122,7 +123,7 @@
 		let cdNm = $('#addCdNm').val();
 		
 		if(cdNm === ''){
-			swal('입력 확인','이름을 입력하세요','warning');
+			swal('입력내용 확인','이름을 입력하세요','warning');
 			return;
 		} else {
 			$.ajax({
@@ -185,7 +186,7 @@
 		let cdNm = $('#cdNm'+cd).val();
 		console.log(cdNm);
 		if(cdNm === ''){
-			swal('입력 확인','이름을 입력하세요','warning');
+			swal('입력내용 확인','이름을 입력하세요','warning');
 			$('#cdNm'+cd).focus();
 			return;
 		} else {
