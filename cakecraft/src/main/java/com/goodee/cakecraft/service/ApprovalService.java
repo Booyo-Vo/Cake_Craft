@@ -293,30 +293,75 @@ public class ApprovalService {
 	
 	// 1) 문서분류 이름을 받아서 문서코드로 입력 
 	// 2) 문서번호 생성 
-	// 3) 결재문서 추가 
-	// 4) 결재이력 추가 (Lv 1 2 3)
-	// 5) 참조자 추가
 	// 6) 파일 추가
-	public int addApprDoc(Map<String, Object> param, String loginId, ApprovalFile approvalfile){
+	public Map<String, Object> fileAddApprDoc(Map<String, Object> param, String loginId, List<MultipartFile> fileList){
+		Map<String, Object> resultMap = new HashMap<>();
 		// 1) 문서코드 받아오기
-		Map<String, Object> apprDocCdMap = commonMapper.getCode(param.get("documentNm").toString());
-		Map<String, Object> apprDocCdMap2 = commonMapper.getCode(param.get("documentSubNm").toString());
-		// 문서분류 이름이 넘어오면 -> DB에 입력할 코드 받아오기
-		String documentCd = apprDocCdMap.get("cd").toString();
-		String documentSubCd = apprDocCdMap2.get("cd").toString();
-		// 디버깅
-		log.debug(SHJ + documentCd + " <-- addApprDoc documentCd"+ RESET);
-		log.debug(SHJ + documentSubCd + " <-- addApprDoc documentSubCd"+ RESET);
-		// 생성된 문서코드 입력
-		param.put("documentCd", documentCd);
-		param.put("documentSubCd", documentSubCd);
+		String documentNo = (String) param.get("documentNo"); 
 		
-		// 2) 문서번호 생성
-		String documentNo = apprDocMapper.selectDocumentNo(param);
-		param.put("documentNo", documentNo);
+		if(documentNo != null) { // 문서번호 생성 성공 시
+			// 생성된 문서번호 입력
+			
+				// 6) 첨부파일 추가
+				 log.debug(SHJ + fileList + " <-- addApprDoc fileList"+ RESET);
+				// 게시글 입력이 성공하고, 첨부된 파일이 1개이상 있다면
+				if(fileList != null && fileList.size() > 0) {
+					int maxFileSize = 1024 * 1024 * 100; //100Mbyte
+					// 첨부된 파일의 개수만큼 반복
+					for(MultipartFile mf : fileList) {						
+						// 파일 크기가 0보다 크고 제한 크기 이하인 경우에만 처리
+						if(mf.getSize() > 0 && mf.getSize() <= maxFileSize) {
+							ApprovalFile af = new ApprovalFile();
+							af.setDocumentNo(documentNo);
+							af.setModId(loginId);
+							af.setRegId(loginId);
+							af.setApprovalFilesize(mf.getSize()); 
+							af.setApprovalFiletype(mf.getContentType());
+							// 원래 파일 이름
+							String originFileName = mf.getOriginalFilename().substring(0,mf.getOriginalFilename().lastIndexOf("."));
+							log.debug(SHJ + originFileName + " <-- addApprDoc originFileName"+ RESET);
+							// 확장자
+							String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
+							// 저장될 파일 이름 = 원래이름 + UUID + 확장자
+							af.setApprovalFilename(originFileName + "_" + UUID.randomUUID().toString().replace("-", "").substring(0,3) + ext);
+							
+							// DB에 저장
+							apprDocMapper.insertApprFile(af);
+							
+							// 파일 저장(저장위치 필요 -> path변수)
+							String path = param.get("path").toString();
+							// path위치에 저장파일 이름으로 빈 파일을 생성
+							File f = new File(path + af.getApprovalFilename());
+							// 빈파일에 첨부된 파일의 스트림을 주입한다.
+							try {
+								mf.transferTo(f); // 스트림 주입 메서드
+								resultMap.put("resultCode", "Y");
+								resultMap.put("documentNo", documentNo);
+								
+							} catch (IllegalStateException | IOException e) {
+								e.printStackTrace();
+								resultMap.put("documentNo", documentNo);
+							}
+						}
+					}
+				}else {
+					resultMap.put("resultCode", "Y");
+					resultMap.put("documentNo", documentNo);
+				}
+				
+			}
+		
+			// 문서 추가 성공 시 반환값
+			return resultMap;
+		
+	}
+	
+	public int addApprDoc(Map<String, Object> param, String loginId){
+
 		param.put("id", loginId);
 		param.put("regId", loginId);
 		param.put("modId", loginId);
+		String documentNo = param.get("documentNo").toString();
 		// 디버깅
 		log.debug(SHJ + documentNo + " <-- addApprDoc documentNo"+ RESET);
 		
@@ -380,49 +425,7 @@ public class ApprovalService {
 						}
 					}
 				}
-				
-				// 6) 첨부파일 추가
-				 List<MultipartFile> fileList = approvalfile.getMultipartFile();
-				 log.debug(SHJ + approvalfile + " <-- addApprDoc approvalfile"+ RESET);
-				 log.debug(SHJ + fileList + " <-- addApprDoc fileList"+ RESET);
-				// 게시글 입력이 성공하고, 첨부된 파일이 1개이상 있다면
-				if(fileList != null && fileList.size() > 0) {
-					int maxFileSize = 1024 * 1024 * 100; //100Mbyte
-					// 첨부된 파일의 개수만큼 반복
-					for(MultipartFile mf : fileList) {						
-						// 파일 크기가 0보다 크고 제한 크기 이하인 경우에만 처리
-						if(mf.getSize() > 0 && mf.getSize() <= maxFileSize) {
-							ApprovalFile af = new ApprovalFile();
-							af.setDocumentNo(documentNo);
-							af.setModId(loginId);
-							af.setRegId(loginId);
-							af.setApprovalFilesize(mf.getSize()); 
-							af.setApprovalFiletype(mf.getContentType());
-							// 원래 파일 이름
-							String originFileName = mf.getOriginalFilename().substring(0,mf.getOriginalFilename().lastIndexOf("."));
-							log.debug(SHJ + originFileName + " <-- addApprDoc originFileName"+ RESET);
-							// 확장자
-							String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
-							// 저장될 파일 이름 = 원래이름 + UUID + 확장자
-							af.setApprovalFilename(originFileName + "_" + UUID.randomUUID().toString().replace("-", "").substring(0,3) + ext);
-							
-							// DB에 저장
-							apprDocMapper.insertApprFile(af);
-							
-							// 파일 저장(저장위치 필요 -> path변수)
-							String path = param.get("path").toString();
-							// path위치에 저장파일 이름으로 빈 파일을 생성
-							File f = new File(path + af.getApprovalFilename());
-							// 빈파일에 첨부된 파일의 스트림을 주입한다.
-							try {
-								mf.transferTo(f); // 스트림 주입 메서드
-							} catch (IllegalStateException | IOException e) {
-								e.printStackTrace();
-								throw new RuntimeException();
-							}
-						}
-					}
-				}
+
 				
 			}
 			
@@ -433,6 +436,7 @@ public class ApprovalService {
 		// 문서 번호 생성 실패 시 반환값
 		return 0;
 	}
+	
 	
 	
 	// 임시저장 문서 수정
@@ -529,5 +533,37 @@ public class ApprovalService {
 		int updateApprHistoryRow = apprDocMapper.updateApprHistory(apprHistory);
 				
 		return updateApprHistoryRow;
+	}
+	
+	
+	//문서번호 생성
+	public Map<String, String> insertDocumentNo(Map<String, Object> param){
+		Map<String,String> resultMap = new HashMap<>();
+		
+		Map<String, Object> apprDocCdMap = commonMapper.getCode(param.get("documentNm").toString());
+		Map<String, Object> apprDocCdMap2 = commonMapper.getCode(param.get("documentSubNm").toString());
+		// 문서분류 이름이 넘어오면 -> DB에 입력할 코드 받아오기
+		String documentCd = apprDocCdMap.get("cd").toString();
+		String documentSubCd = apprDocCdMap2.get("cd").toString();
+		// 디버깅
+		log.debug(SHJ + documentCd + " <-- addApprDoc documentCd"+ RESET);
+		log.debug(SHJ + documentSubCd + " <-- addApprDoc documentSubCd"+ RESET);
+		// 생성된 문서코드 입력
+		param.put("documentCd", documentCd);
+		param.put("documentSubCd", documentSubCd);
+		
+		// 2) 문서번호 생성
+		String documentNo = apprDocMapper.selectDocumentNo(param);
+		
+		resultMap.put("documentNo", documentNo);
+		resultMap.put("documentCd", documentCd);
+		resultMap.put("documentSubCd", documentSubCd);
+		
+		// 디버깅
+		log.debug(SHJ + documentNo + " <-- addApprDoc documentNo"+ RESET);
+		
+		
+		
+		return resultMap;
 	}
 }

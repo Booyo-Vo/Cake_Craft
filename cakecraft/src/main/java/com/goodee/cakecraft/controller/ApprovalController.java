@@ -1,5 +1,6 @@
 package com.goodee.cakecraft.controller;
 
+import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
@@ -9,25 +10,32 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.util.ParameterMap;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.goodee.cakecraft.service.ApprovalService;
+import com.goodee.cakecraft.service.EmpService;
 import com.goodee.cakecraft.service.StStdCdService;
 import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.BoardAnony;
 import com.goodee.cakecraft.vo.BoardNotice;
+import com.goodee.cakecraft.vo.EmpBase;
 import com.goodee.cakecraft.vo.EmpIdList;
 import com.goodee.cakecraft.vo.StStdCd;
 
@@ -38,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ApprovalController {
 	@Autowired ApprovalService approvalService;
 	@Autowired StStdCdService stStdCdService;
+	@Autowired EmpService empService;
 	
 	// ANSI 코드
 	final String SHJ = "\u001B[46m";
@@ -147,6 +156,19 @@ public class ApprovalController {
 		// 결재문서 정보 및 상세 이력 받아오기
 		Map<String, Object> resultApprMap = approvalService.getApprDocByNo(documentNo, loginId);
 		
+		// 결재자(Lv1)의 사원정보 받아오기 // "resultApprInfoLv1" 키를 사용하여 ApprovalHistory 가져오기
+		ApprovalHistory resultApprInfoLv1 = (ApprovalHistory) resultApprMap.get("resultApprInfoLv1");
+		EmpBase empBase1 = empService.getMyEmpById(resultApprInfoLv1.getApprovalId());
+		
+		// 결재자(Lv2)의 사원정보 받아오기 // "resultApprInfoLv2" 키를 사용하여 ApprovalHistory 가져오기
+		ApprovalHistory resultApprInfoLv2 = (ApprovalHistory) resultApprMap.get("resultApprInfoLv2");
+		EmpBase empBase2 = empService.getMyEmpById(resultApprInfoLv2.getApprovalId());
+		
+		// 결재자(Lv3)의 사원정보 받아오기 // "resultApprInfoLv3" 키를 사용하여 ApprovalHistory 가져오기
+		ApprovalHistory resultApprInfoLv3 = (ApprovalHistory) resultApprMap.get("resultApprInfoLv3");
+		EmpBase empBase3 = empService.getMyEmpById(resultApprInfoLv3.getApprovalId());
+		log.debug(SHJ + empBase3 + " <-- empBase3" + RESET);
+				
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDoc", resultApprMap.get("resultApprDoc"));
@@ -159,6 +181,9 @@ public class ApprovalController {
 		model.addAttribute("apprInfoLv2", resultApprMap.get("resultApprInfoLv2"));
 		model.addAttribute("apprInfoLv3", resultApprMap.get("resultApprInfoLv3"));
 		model.addAttribute("apprFileList", resultApprMap.get("resultApprFileList"));
+		model.addAttribute("empBase1", empBase1);
+		model.addAttribute("empBase2", empBase2);
+		model.addAttribute("empBase3", empBase3);
 		model.addAttribute("documentNo", documentNo);
 		
 		return "/approval/apprDocByNo";
@@ -203,27 +228,75 @@ public class ApprovalController {
 	// 결재문서 추가 액션
 	@PostMapping("/approval/addApprDoc")
 	public String addApprDoc(HttpServletRequest request,
-				            HttpSession session,
-				            ApprovalFile approvalfile) {
+							MultipartHttpServletRequest mulRequest,
+				            HttpSession session
+				            ) {
 			
 		HashMap<String, Object> param = new HashMap<>();
 		param = CommonController.getParameterMap(request);
-		log.debug(SHJ + param.get("documentNm").toString() + " <-- addApprDoc documentNm"+ RESET);
-		log.debug(SHJ + param.get("documentSubNm").toString() + " <-- addApprDoc documentSubNm"+ RESET);
+
 		log.debug(SHJ + param.get("documentContent").toString() + " <-- addApprDoc documentContent"+ RESET);
+		log.debug(SHJ + param + " <-- param" + RESET);
+		
 		
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
+
 		
-		String path = request.getServletContext().getRealPath("/apprupload/");
-	
-		log.debug(SHJ + approvalfile + " <-- addApprDoc approvalfile"+ RESET);
-		
-		param.put("path", path);
-		approvalService.addApprDoc(param, loginId, approvalfile);
+		approvalService.addApprDoc(param, loginId);
 		
 		return "redirect:/approval/apprDocListById";
+	}
+	
+	// 결재문서 추가 액션
+	@RequestMapping(value = "/approval/fileAddApprDoc", method = RequestMethod.POST)
+	public void fileAddApprDoc(HttpServletRequest request,
+							HttpServletResponse response,
+							MultipartHttpServletRequest mulRequest,
+					
+				            HttpSession session
+				            ) {
+		try {
+			HashMap<String, Object> param = new HashMap<>();
+			param = CommonController.getParameterMap(request);
+			
+			JSONObject resultJson = new JSONObject();
+//			documentNm
+//			documentSubNm
+			List<MultipartFile> approvalfile = mulRequest.getFiles("fileList");
+			
+			log.debug(SHJ + approvalfile + " <-- addApprDoc approvalfile"+ RESET);
+			
+			// 세션에서 로그인 된 loginId 추출
+			EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+			String loginId = loginMember.getId();
+			
+			String path = request.getServletContext().getRealPath("/apprupload/");
+		
+			log.debug(SHJ + approvalfile + " <-- addApprDoc approvalfile"+ RESET);
+			
+			param.put("path", path);
+			Map<String, String> getDocumentNo = approvalService.insertDocumentNo(param);
+			param.put("documentNo", getDocumentNo.get("documentNo"));
+			Map<String, Object> resultMap = approvalService.fileAddApprDoc(param, loginId, approvalfile);
+			if("N".equals(resultMap.get("resultCode"))) {
+				resultJson.put("success", "N");
+				
+			}else {
+				resultJson.put("success", "Y");
+				resultJson.put("documentNo", getDocumentNo.get("documentNo"));
+				resultJson.put("documentCd", getDocumentNo.get("documentCd"));
+				resultJson.put("documentSubCd", getDocumentNo.get("documentSubCd"));
+				
+			}
+		
+			response.getWriter().write(resultJson.toJSONString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -275,5 +348,32 @@ public class ApprovalController {
 		approvalService.removeApprDocTempY(apprDoc);
 		
 		return "/approval/apprDocListByIdTempY";
+	}
+	
+	// 기존의 임시저장 문서 삭제 후, 새로운 결재문서 추가
+	@PostMapping("/approval/removeaddApprDoc")
+	public String removeaddApprDoc(HttpServletRequest request,
+				            HttpSession session,
+				            ApprovalFile approvalfile) {
+		ApprovalDocument apprDoc = new ApprovalDocument();
+		// 새 문서 주가
+		HashMap<String, Object> param = new HashMap<>();
+		param = CommonController.getParameterMap(request);
+		
+		// 기존 문서 삭제
+		apprDoc.setDocumentNo(param.get("documentNo").toString());
+		approvalService.removeApprDocTempY(apprDoc);
+		
+		// 세션에서 로그인 된 loginId 추출
+		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
+		String loginId = loginMember.getId();
+		
+		String path = request.getServletContext().getRealPath("/apprupload/");
+		
+		param.put("path", path);
+		
+		approvalService.addApprDoc(param, loginId);
+		
+		return "redirect:/approval/apprDocListById";
 	}
 }

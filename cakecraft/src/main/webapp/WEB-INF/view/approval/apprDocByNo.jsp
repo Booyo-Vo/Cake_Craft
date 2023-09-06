@@ -32,19 +32,25 @@
 									<tr>
 										<td>
 											<c:if test="${apprInfoLv1.approvalStatusCd == 2}">
-												<div>사인</div>
+												<div>
+													<img src="${pageContext.request.contextPath}/signImg/${empBase1.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+												</div>
 												<div>날짜</div>
 											</c:if>
 										</td>
 										<td>
 											<c:if test="${apprInfoLv2.approvalStatusCd == 2}">
-												<div>사인</div>
+												<div>
+													<img src="${pageContext.request.contextPath}/signImg/${empBase2.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+												</div>
 												<div>날짜</div>
 											</c:if>
 										</td>
 										<td>
 											<c:if test="${apprInfoLv3.approvalStatusCd == 2}">
-												<div>사인</div>
+												<div>
+													<img src="${pageContext.request.contextPath}/signImg/${empBase3.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+												</div>
 												<div>날짜</div>
 											</c:if>
 										</td>

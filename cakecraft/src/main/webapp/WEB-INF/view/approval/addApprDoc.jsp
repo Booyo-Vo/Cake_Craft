@@ -66,7 +66,7 @@ $(document).ready(function() {
                     text: '빈 파일 업로드가 있습니다.',
                 });
             } else {
-                var newInput = $('<input class="form-control approvalFiles" type="file" name="multipartFile"><br>');
+                var newInput = $('<input class="files" type="file" name="multipartFiles" id="multipartFiles" ><br>');
                 $('#files').append(newInput);
             }
         });
@@ -243,17 +243,13 @@ $(document).ready(function() {
 						<div class="form-group">
                            <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent" placeholder="내용을 입력하세요"></textarea>
                         </div>
-                        <div class="form-group">
-							<input type="file" name="multipartFile" multiple="multiple">
-						</div>
 						
-						<label for="files">첨부 파일:</label>
-                <button type="button" id="addFile">추가</button>
-                <button type="button" id="removeFile">삭제</button>
-            <div id="files">
-                <input class="form-control approvalFiles" type="file" name="multipartFile" multiple><br>
-            </div>
-						
+						<label for="files">첨부파일</label>
+		                <button type="button" class="btn btn-secondary" id="addFile">추가</button>
+		                <button type="button" class="btn btn-secondary" id="removeFile">삭제</button>
+			            <div class="form-group" id="files">
+			                <input class="files" type="file" name="multipartFiles" id="multipartFiles" multiple="multiple"><br>
+			            </div>
 					</div>
 				</div>
 			</div>
@@ -263,10 +259,15 @@ $(document).ready(function() {
 		
 		<!-- 기본값을 N으로 설정 -->
 		<input type="hidden" name="tempSave" id="tempSave" value="N">
+		<input type="hidden" name="documentNo" id="documentNo" value="">
+		<input type="hidden" name="documentCd" id="documentCd" value="">
+		<input type="hidden" name="documentSubCd" id="documentSubCd" value="">
+		
+		
 		<div>
 			<h1 class="text-center pb-20">
-				<button type="button" class="btn btn-primary" onclick="tempSaveAndSubmit()">임시저장</button>
-				<button type="button" class="btn btn-secondary" id="submitBtn" onclick="submitForm()">제출하기</button>
+				<button type="button" class="btn btn-secondary" onclick="tempSaveAndSubmit()">임시저장</button>
+				<button type="button" class="btn btn-primary" id="submitBtn" onclick="submitForm1()">제출하기</button>
 			</h1>
 		</div>
 	</form>
@@ -279,9 +280,47 @@ $(document).ready(function() {
 		$("#requestForm").submit();		
 	}
 	
-	// 제출하기 버튼을 눌렀을 때 호출되는 함수
-	function submitForm() {
-		$("#requestForm").submit();
+	// 제출하기 버튼을 눌렀을 때 호출되는 함 수
+	function submitForm1() {
+		var formdata = new FormData();
+		var fileLength = $(".files").length;
+		formdata.append("documentNm",$("#documentNm").val());
+		formdata.append("documentSubNm",$("#documentSubNm").val());
+		for(var i=0; i < fileLength; i++){
+			if($(".files")[i].files[0] != null){
+				formdata.append("fileList", $(".files")[i].files[0]);
+			}
+			
+		}
+		
+		$.ajax({
+			url : "/cakecraft/approval/fileAddApprDoc",
+			data : formdata,
+			processData: false,	// 필수
+			contentType: false,	// 필수
+			method : "post",
+			cache: false,
+			enctype : "multipart/form-data",
+			dataType: "json",
+			success : function(data){
+				console.log(data);
+				if(data.success === "Y"){
+					$("#documentNo").val(data.documentNo);
+					$("#documentCd").val(data.documentCd);
+					$("#documentSubCd").val(data.documentSubCd);
+					console.log(documentNo);
+					$("#requestForm").submit();			
+					
+				}else{
+					alert("잠시후 다시 시도 해주세요.");
+				 }
+		    },
+		    error: function(error) {
+		        console.log("Error:", error);
+		    }
+		});
+		
+		
 	}
 
 	// 모달창 호출 	
