@@ -173,7 +173,7 @@ jQuery(document).ready(function($) {
 						<input type="text" id="searchDataInput" class="form-control">
 					</div>
 					<div class="col-sm-4 col-md-2">
-						<button class="btn btn-primary" id="searchButton" value="검색">검색</button>
+						<button  class="btn btn-primary" id="searchButton" value="검색">검색</button>
 					</div>
 				</div>
 				<div class="form-group row">
