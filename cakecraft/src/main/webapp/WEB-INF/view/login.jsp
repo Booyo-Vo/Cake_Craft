@@ -90,7 +90,7 @@ var jq = jQuery.noConflict();
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-6 col-lg-7">
-					<img src="${pageContext.request.contextPath}/layout/vendors/images/login-page-img.png" alt="">
+					<img src="${pageContext.request.contextPath}/layout/vendors/images/cakecraft.png" alt="">
 				</div>
 				<div class="col-md-6 col-lg-5">
 					<div class="login-box bg-white box-shadow border-radius-10">

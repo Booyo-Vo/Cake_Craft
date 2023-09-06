@@ -68,17 +68,14 @@
 <!---------------------- 오른쪽 상단바 프로필 끝  ---------------------------->
 <!-----------------------왼쪽 사이드 바 시작 -------------------------------->
 <div class="left-side-bar">
-	<div class="brand-logo">
-		<a href="/cakecraft/schedule/schedule">
-			<div class="logo-container">
-				<img src="${pageContext.request.contextPath}/layout/vendors/images/deskapp-logo.svg" class="dark-logo">
-				<img src="${pageContext.request.contextPath}/layout/vendors/images/deskapp-logo-white.png" class="light-logo">
+		<!-- <a href="/cakecraft/schedule/schedule" style="padding: 0;"> -->
+			<div class="logo-container" style="padding-left: 40px; padding-right: 40px;">
+				<img src="${pageContext.request.contextPath}/layout/vendors/images/cakecraft_logo.png" class="light-logo">
 			</div>
-		</a>
+		<!-- </a> -->
 		<div class="close-sidebar" data-toggle="left-sidebar-close">
 			<i class="ion-close-round"></i>
 		</div>		
-	</div>
 	<div class="menu-block customscroll">
 		<div class="sidebar-menu">
 		<!-- 사이드바 프로필이미지 -->
