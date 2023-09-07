@@ -51,6 +51,7 @@ public class RestLoginController {
 		if(loginMember == null) {
 			log.debug(KMS + "로그인 실패" + RESET);
 			response.put("success", false);
+			response.put("message", "다시 로그인 하세요!"); // 실패 메시지를 클라이언트에게 전달
             return ResponseEntity.badRequest().body(response);
 		}
 	
@@ -74,10 +75,7 @@ public class RestLoginController {
 					} else {
 						session.setAttribute("profileImagePath", "default_profile.png");
 					}
-	
-	
-				response.put("success", true);
-				return ResponseEntity.ok(response);
-	    
+		response.put("success", true);
+		return ResponseEntity.ok(response);
 	}
 }

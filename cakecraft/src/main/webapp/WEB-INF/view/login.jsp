@@ -8,7 +8,7 @@
 ////////      로그인 스크립트 시작       ///////
 var jq = jQuery.noConflict();
 
-	jq(document).ready(function () {
+	jq(document).ready(function() {
 		const rememberCheck = $("#remember-check");
 		const idInput = $("input[name='id']");
 		const pwInput = $("input[name='pw']");
@@ -51,33 +51,42 @@ var jq = jQuery.noConflict();
 			const id = idInput.val();
 			const pw = pwInput.val();
 			
-		//로그인 알림창
-		$.ajax({
-			url: "/cakecraft/api/login",
-			type: "POST",
-			contentType: "application/json",
-			data: JSON.stringify({ id: id, pw: pw }),
-			success: function (data) {
-				if (data.success) {
-					if (rememberCheck.is(":checked")) {
-						localStorage.setItem("rememberedId", id);
-					}
+			// 로그인 알림창
+			$.ajax({
+				url: "/cakecraft/api/login",
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify({ id: id, pw: pw }),
+				success: function (data) {
+					if (data.success) {
+						if (rememberCheck.is(":checked")) {
+							localStorage.setItem("rememberedId", id);
+						}
 						localStorage.setItem("lastLoginTime", Date.now());
 						
-				swal({
-						type: 'success',
-						title: '로그인성공'
-					}).then(function () {
-						window.location.href = "/cakecraft/schedule/schedule";
-					});
-				} else {
-			    	alert("다시 로그인 하세요!");
-		    		}
+						swal({
+							type: 'success',
+							title: '로그인에 성공하였습니다'
+						}).then(function () {
+							window.location.href = "/cakecraft/schedule/schedule";
+						});
+					} else {
+					    swal({
+					        type: 'error',
+					        title: '다시 로그인 해주세요',
+					        text: data.message // 서버에서 반환한 실패 메시지 사용
+					    });
+					}
 				},
-		    error: function (error) {
-				console.error("ajax 로그인 요청 에러:", error);
-		    }
-		});
+				error: function (error) {
+				    console.error("ajax 로그인 요청 에러:", error);
+				    swal({
+				        type: 'error',
+				        title: '로그인 실패',
+				        text: '다시 로그인 해주세요' // 서버와의 통신 오류 메시지
+				    });
+				}
+			});
 	});
 })
 ////////       로그인 스크립트 끝       ///////
