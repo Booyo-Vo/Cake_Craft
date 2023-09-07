@@ -137,31 +137,32 @@ public class EmpController {
 	    String path = request.getServletContext().getRealPath("/profileImg/");
 	    log.debug(KMS + path + "<--path / EmpController" + RESET);
 
-	    // 파일 저장(저장위치 필요 -> path변수)
-	    // path위치에 저장할 파일 이름 생성
-	    String profileFilename = loginId + ".jpg"; // 로그인 아이디를 기반으로 파일 이름 생성
-	    File f = new File(path + profileFilename);
-	    // 빈파일에 첨부된 파일의 스트림을 주입한다.
-	    try {
-	        profileImage.transferTo(f); // 스트림 주입 메서드
-	    } catch (IllegalStateException | IOException e) {
-	        e.printStackTrace();
-	        throw new RuntimeException();
+	    // 파일을 추가한 경우에만 저장 처리
+	    if (!profileImage.isEmpty()) {
+	        // path 위치에 저장할 파일 이름 생성
+	        String profileFilename = loginId + ".jpg"; // 로그인 아이디를 기반으로 파일 이름 생성
+	        File f = new File(path + profileFilename);
+	        // 빈 파일에 첨부된 파일의 스트림을 주입한다.
+	        try {
+	            profileImage.transferTo(f); // 스트림 주입 메서드
+	        } catch (IllegalStateException | IOException e) {
+	            e.printStackTrace();
+	            throw new RuntimeException();
+	        }
 	    }
+
 	    // 사원 정보 수정
 	    empService.modifyMyEmp(empBase, path);
-	    
-	    // 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
-		// autowired로 EmpMapper 주입
-		String profileImagePath = empMapper.getProfileImagePath(loginId);
-			if (profileImagePath != null) {
-				session.setAttribute("profileImagePath", profileImagePath);
-				log.debug(KMS + profileImagePath +  "profileImagePath /LoginController"+RESET);
-			} else {
-				session.setAttribute("profileImagePath", "default_profile.png");
-			}
 
-		  
+	    // 프로필 이미지 경로 조회 및 세션에 저장 (세션을 이용해 header.jsp 가 인클루드 된 모든 페이지에서 프로필 사진을 띄운다)
+	    // autowired로 EmpMapper 주입
+	    String profileImagePath = empMapper.getProfileImagePath(loginId);
+	    if (profileImagePath != null) {
+	        session.setAttribute("profileImagePath", profileImagePath);
+	        log.debug(KMS + profileImagePath + "profileImagePath /LoginController" + RESET);
+	    } else {
+	        session.setAttribute("profileImagePath", "default_profile.png");
+	    }
 
 	    return "redirect:/emp/myPage?id=" + empBase.getId();
 	}
@@ -192,25 +193,4 @@ public class EmpController {
         return "/emp/myPage";
     }
 
-
-	/*
-	 * // 사원검색 : 사원명으로 사원리스트 받아오기
-	 * 
-	 * @PostMapping("/emp/getEmpList") public void getEmpList(HttpServletRequest
-	 * request, HttpServletResponse response) {
-	 * 
-	 * List<Map<String, Object>> resultMap = new List<Map<>(); Map<String, Object>
-	 * param = new HashMap<>();
-	 * 
-	 * param = CommonController.getParameterMap(request);
-	 * 
-	 * 
-	 * resultMap = empService.getEmpList(param);
-	 * 
-	 * JSONObject jsonObject = new JSONObject(resultMap);
-	 * 
-	 * response.getWriter().write(jsonObject.toString());
-	 * 
-	 * }
-	 */
 }
