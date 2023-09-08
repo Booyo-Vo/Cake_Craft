@@ -23,7 +23,7 @@ $(document).ready(function() {
 					docSubSelect.append($('<option>', {
 						value: docSub.cdNm,
 						text: docSub.cdNm
-						}));
+					}));
 				});
 			});
 		} else {
@@ -238,7 +238,7 @@ $(document).ready(function() {
 							<tr>
 						</table> 
 						<div class="form-group">
-                           <input type="text" class="form-control" name="documentTitle" id="documentTitle" placeholder="문서제목" value="">
+                           <input type="text" class="form-control" name="documentTitle" id="documentTitle" placeholder="제목을 입력하세요" value="">
                         </div>
 						<div class="form-group">
                            <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent" placeholder="내용을 입력하세요"></textarea>
@@ -277,10 +277,39 @@ $(document).ready(function() {
 	// 임시저장 버튼을 눌렀을 때 호출되는 함수
 	function tempSaveAndSubmit() {
 		$("#tempSave").val('Y'); // tempSave 값을 Y로 설정	
-		$("#requestForm").submit();		
+		var formdata = new FormData();
+	    formdata.append("documentNm", $("#documentNm").val());
+	    formdata.append("documentSubNm", $("#documentSubNm").val());
+
+	    // 파일을 추가하지 않고 서버로 요청을 보냄
+	    $.ajax({
+	        url: "/cakecraft/approval/fileAddApprDoc",
+	        data: formdata,
+	        processData: false,    // 필수
+	        contentType: false,    // 필수
+	        method: "post",
+	        cache: false,
+	        enctype: "multipart/form-data",
+	        dataType: "json",
+	        success: function (data) {
+	            console.log(data);
+	            if (data.success === "Y") {
+	                $("#documentNo").val(data.documentNo);
+	                $("#documentCd").val(data.documentCd);
+	                $("#documentSubCd").val(data.documentSubCd);
+	                console.log(data.documentNo);
+	                $("#requestForm").submit();
+	            } else {
+	                alert("잠시후 다시 시도 해주세요.");
+	            }
+	        },
+	        error: function (error) {
+	            console.log("Error:", error);
+	        }
+	    });
 	}
 	
-	// 제출하기 버튼을 눌렀을 때 호출되는 함 수
+	// 제출하기 버튼을 눌렀을 때 호출되는 함수
 	function submitForm1() {
 		var formdata = new FormData();
 		var fileLength = $(".files").length;
