@@ -58,6 +58,27 @@ public class ApprovalService {
 			// 받아온 이름값 저장하기
 			apprDoc.setDocumentNm(documentNm);
 			apprDoc.setDocumentSubNm(documentSubNm);
+			
+			// 결재 상태 조회를 위해 문서번호 가져오기
+		    String documentNo = apprDoc.getDocumentNo();
+			
+			// 결재 상태 조회
+			String approvalStatusCd = "2";
+			int countAppr2 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+			
+			approvalStatusCd = "3";
+			int countAppr3 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+			
+			String approvalStatus;
+
+			if (countAppr2 == 3) {
+			    approvalStatus = "완료";
+			} else if (countAppr3 > 0) {
+			    approvalStatus = "반려";
+			} else {
+			    approvalStatus = "대기";
+			}
+			apprDoc.setApprovalStatus(approvalStatus);
 		}
 		
 		return apprDocList;
@@ -112,6 +133,27 @@ public class ApprovalService {
 			// 받아온 이름값 저장하기
 			apprDoc.setDocumentNm(documentNm);
 			apprDoc.setDocumentSubNm(documentSubNm);
+
+			// 결재 상태 조회를 위해 문서번호 가져오기
+		    String documentNo = apprDoc.getDocumentNo();
+			
+			// 결재 상태 조회
+			String approvalStatusCd = "2";
+			int countAppr2 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+			
+			approvalStatusCd = "3";
+			int countAppr3 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+			
+			String approvalStatus;
+
+			if (countAppr2 == 3) {
+			    approvalStatus = "완료";
+			} else if (countAppr3 > 0) {
+			    approvalStatus = "반려";
+			} else {
+			    approvalStatus = "대기";
+			}
+			apprDoc.setApprovalStatus(approvalStatus);
 		}
 		
 		return apprDocListAppr;
@@ -194,6 +236,27 @@ public class ApprovalService {
 			// 받아온 이름값 저장하기
 			apprDoc.setDocumentNm(documentNm);
 			apprDoc.setDocumentSubNm(documentSubNm);
+			
+			// 결재 상태 조회를 위해 문서번호 가져오기
+		    String documentNo = apprDoc.getDocumentNo();
+			
+			// 결재 상태 조회
+			String approvalStatusCd = "2";
+			int countAppr2 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+			
+			approvalStatusCd = "3";
+			int countAppr3 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+			
+			String approvalStatus;
+
+			if (countAppr2 == 3) {
+			    approvalStatus = "완료";
+			} else if (countAppr3 > 0) {
+			    approvalStatus = "반려";
+			} else {
+			    approvalStatus = "대기";
+			}
+			apprDoc.setApprovalStatus(approvalStatus);
 		}
 		
 		return apprDocListRef;
@@ -494,6 +557,7 @@ public class ApprovalService {
 	
 	
 	/* 결재 파일 : ApprovalFile */
+	/*
 	// 결재 파일 추가
 	public int addApprFile(ApprovalFile apprFile){
 		// 반환값
@@ -502,7 +566,6 @@ public class ApprovalService {
 		return insertApprFileRow;
 	}
 	
-	/*
 	// 결재 파일 삭제
 	public int removeApprFile(ApprovalFile apprFile){
 		// 반환값

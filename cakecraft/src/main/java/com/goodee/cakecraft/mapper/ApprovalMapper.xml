@@ -139,7 +139,6 @@
 			</where>
 	</select>
 	
-	
 	<!-- 결재 문서 개수 출력 
 	<select id="selectApprDocCnt"
 			parameterType="String"
@@ -151,6 +150,18 @@
 			</where>
 	</select>
 	-->
+	
+	<!-- 결재 상태 조회 -->
+	<select id="selectApprStatusCnt"
+			parameterType="String"
+			resultType="int">
+			SELECT COUNT(*) AS apprStatusCnt
+			FROM approval_history
+			<where>
+				document_no = #{documentNo}
+				AND approval_status_cd = #{approvalStatusCd}
+			</where>
+	</select>
 	
 	<!-- 결재문서 상세정보 출력 -->
 	<select id="selectApprDocByNo"

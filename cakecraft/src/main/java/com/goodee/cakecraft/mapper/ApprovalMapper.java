@@ -40,6 +40,9 @@ public interface ApprovalMapper {
 	int selectApprDocCnt();
 	*/
 	
+	// 결재 상태 조회
+	int selectApprStatusCnt(String documentNo, String approvalStatusCd);
+	
 	// 결재문서 상세정보 출력
 	ApprovalDocument selectApprDocByNo(String documentNo);
 	
