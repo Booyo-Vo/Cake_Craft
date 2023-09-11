@@ -82,41 +82,40 @@ function addTeam() {
 <script> //부서수정
 function openModifyDeptCdModal(deptName) {
 	// 해당 부서명을 모달에 표시
-	document.getElementById("originDeptcdNm").value = deptName;
+	  document.getElementById("originDeptcdNm").value = deptName;
 }
 function modifyDeptCdNm() {
-	//입력한 값을 받아옴
+	// 입력한 값을 받아옴
 	var originDeptCdNm = document.getElementById("originDeptcdNm").value;
 	var updatedDeptCdNm = document.getElementById("updateDeptcdNm").value;
 
 	// 입력값이 비어있거나 공백만 포함하는지 확인
 	if (!updatedDeptCdNm || !updatedDeptCdNm.trim()) {
-		swal('수정 실패','수정할 부서명을 입력해주세요','warning');
+		swal('수정 실패', '수정할 부서명을 입력해주세요', 'warning');
 		return;
 	}
-	
-	$.ajax({
-		type: "GET", 
-		url:"/cakecraft/stStdCd/modifyDeptCdNm", 
-		data:{
+
+  	  $.ajax({
+		type: "GET",
+		url: "/cakecraft/stStdCd/modifyDeptCdNm",
+		data: {
 			originDeptCdNm: originDeptCdNm,
-			updatedDeptCdNm: updatedDeptCdNm
+		updatedDeptCdNm: updatedDeptCdNm
 		},
-		success: function(response) {
+		success: function (response) {
 			if (response === "DUPLICATE") {
-				swal('수정 실패','이미 존재하는 부서명입니다','warning');
+				swal('수정 실패', '이미 존재하는 부서명입니다', 'warning');
 			} else if (response === "SUCCESS") {
-				swal('수정 성공','부서명이 수정되었습니다','success').then(() => {
-					$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
-					window.location.reload();
+				swal('수정 성공', '부서명이 수정되었습니다', 'success').then(() => {
+				$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
+				window.location.reload();
 				});
 			} else {
-				swal('수정 실패','부서명 수정에 실패하였습니다.','warning')).then(() => {
-					$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
-				});
+				swal('수정 실패', '부서명 수정에 실패하였습니다.', 'warning');
+			}
 		},
-		error: function() {
-			swal('수정 실패','"오류가 발생했습니다.','warning').then(() => {
+			error: function () {
+			swal('수정 실패', '오류가 발생했습니다.', 'warning').then(() => {
 				$('#modifyDeptCdNmModal').modal('hide'); // 모달 닫기
 				window.location.reload();
 			});
@@ -412,7 +411,7 @@ $(document).ready(function() {
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modifyDeptCdNmModalLabel">팀추가</h5>
+				<h5 class="modal-title" id="modifyDeptCdNmModalLabel">부서명수정</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModalInputs('#modifyDeptCdNmModal')"></button>
 			</div>
 			<div class="modal-body">
@@ -441,7 +440,7 @@ $(document).ready(function() {
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modifyTeamCdNmModalLabel">팀추가</h5>
+				<h5 class="modal-title" id="modifyTeamCdNmModalLabel">팀명 수정</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  onclick="clearModalInputs('#modifyTeamCdNmModal')"></button>
 			</div>
 			<div class="modal-body">
