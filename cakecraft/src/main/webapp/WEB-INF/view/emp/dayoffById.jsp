@@ -32,25 +32,25 @@
 			<div class="form-group row">
 					<h4 class="mb-15 text-blue h4">${empBase.empName}</h4>
 					<c:if test="${not empty empDayoff}">
-					<table class="table">
-						<tr>
-							<td></td>   
-							<td>사번</td>   
-							<td>이름</td>   
-							<td>상태</td>   
-							<td>시작일</td> 
-							<td>종료일</td>     
-						</tr>
+						<table class="table">
 							<tr>
-							<td></td>   
-							<td>${empDayoff.id}</td>   
-							<td>${empBase.empName}</td>   
-							<td>${empDayoff.dayoffStatus}</td>   
-							<td>${empDayoff.startDay}</td> 
-							<td>${empDayoff.endDay}</td>     
-						</tr>
+								<td></td>   
+								<td>사번</td>   
+								<td>상태</td>   
+								<td>시작일</td> 
+								<td>종료일</td>     
+							</tr>
+						<c:forEach items="${empDayoff}" var="e">
+							<tr>
+								<td></td>   
+								<td>${e.id}</td>   
+								<td>${e.dayoffStatusNm}</td>   
+								<td>${e.startDay}</td> 
+								<td>${e.endDay}</td>     
+							</tr>
+						</c:forEach>
 					</table>
-					</c:if>
+				</c:if>
 					<c:if test="${empty empDayoff}">
 						<p class ="text-center">연차사용내역이 없습니다</p>
 					</c:if>

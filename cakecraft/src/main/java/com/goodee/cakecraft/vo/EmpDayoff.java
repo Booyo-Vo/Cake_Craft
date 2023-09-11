@@ -13,4 +13,6 @@ public class EmpDayoff {
 	private String modDtime;
 	private String regId;
 	private String modId;
+	
+	private String dayoffStatusNm;
 }
