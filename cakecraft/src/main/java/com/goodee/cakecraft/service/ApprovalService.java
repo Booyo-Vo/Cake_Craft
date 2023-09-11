@@ -15,10 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.goodee.cakecraft.mapper.ApprovalMapper;
 import com.goodee.cakecraft.mapper.CommonMapper;
+import com.goodee.cakecraft.mapper.DayoffMapper;
+import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.vo.ApprovalDocument;
 import com.goodee.cakecraft.vo.ApprovalFile;
 import com.goodee.cakecraft.vo.ApprovalHistory;
 import com.goodee.cakecraft.vo.ApprovalRef;
+import com.goodee.cakecraft.vo.EmpBase;
+import com.goodee.cakecraft.vo.EmpDayoff;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +32,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ApprovalService {
 	@Autowired 
 	private ApprovalMapper apprDocMapper;
+	
+	@Autowired
+	private DayoffMapper dayoffMapper;
+	
+	@Autowired
+	private EmpMapper empMapper;
 	
 	@Autowired
 	private CommonMapper commonMapper;
@@ -620,9 +630,61 @@ public class ApprovalService {
 	
 	
 	// 결재 이력 수정 (승인/반려)
-	public int modifyApprHistory(ApprovalHistory apprHistory){
+	public int modifyApprHistory(String loginId, ApprovalHistory apprHistory){
+		
 		// 반환값
 		int updateApprHistoryRow = apprDocMapper.updateApprHistory(apprHistory);
+		
+		// 문서 상세 정보
+		String documentNo = apprHistory.getDocumentNo();
+		ApprovalDocument resultApprDoc = apprDocMapper.selectApprDocByNo(documentNo);
+		
+		// 결재 상태 조회
+		String approvalStatusCd = "2";
+		int countAppr2 = apprDocMapper.selectApprStatusCnt(documentNo, approvalStatusCd);
+		
+		// 버튼을 눌러서 결재상태가 수정되고 && 결재라인 3명 모두 승인한 상태일 때 
+		if(updateApprHistoryRow > 0 && countAppr2 == 3) {
+			// 연차 이력 추가
+			EmpDayoff empdayoff = new EmpDayoff();
+			empdayoff.setId(resultApprDoc.getId());
+			empdayoff.setDayoffStatus(resultApprDoc.getDocumentSubCd());
+			empdayoff.setStartDay(resultApprDoc.getStartDay());
+			empdayoff.setEndDay(resultApprDoc.getEndDay());
+			empdayoff.setModId(loginId);
+			empdayoff.setRegId(loginId);
+			int insertDayoffInfoRow = dayoffMapper.insertDayoff(empdayoff);
+			// 디버깅
+			log.debug(SHJ + insertDayoffInfoRow + " <-- modifyApprHistory insertDayoffInfoRow"+ RESET);
+			
+			// 연차 이력 추가되면 연차잔여개수 차감
+			if(insertDayoffInfoRow > 0) {
+				// 기안 작성자의 상세정보
+				EmpBase empbase = empMapper.selectEmpById(resultApprDoc.getId());
+				Double dayoff = empbase.getDayoffCnt();
+				
+				// 연차 승인 시 - 1
+				if(resultApprDoc.getDocumentSubCd().equals("21")) {
+					Double dayoffCnt = dayoff - 1.0;
+					empbase.setDayoffCnt(dayoffCnt);
+					empbase.setId(resultApprDoc.getId());
+					empbase.setModId(loginId);
+					int updateDayoffCntRow1 = empMapper.updateDayoffCnt(empbase);
+					// 디버깅
+					log.debug(SHJ + updateDayoffCntRow1 + " <-- modifyApprHistory updateDayoffCntRow1"+ RESET);
+					
+				// 반차 승인 시 - 0.5
+				} else if(resultApprDoc.getDocumentSubCd().equals("22")) {
+					Double dayoffCnt = dayoff - 0.5;
+					empbase.setDayoffCnt(dayoffCnt);
+					empbase.setId(resultApprDoc.getId());
+					empbase.setModId(loginId);
+					int updateDayoffCntRow2 = empMapper.updateDayoffCnt(empbase);
+					// 디버깅
+					log.debug(SHJ + updateDayoffCntRow2 + " <-- modifyApprHistory updateDayoffCntRow2"+ RESET);
+				}
+			}
+		}
 				
 		return updateApprHistoryRow;
 	}
