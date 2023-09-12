@@ -1,31 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <div class="header">
 	<div class="header-left">
 		<div class="menu-icon dw dw-menu"></div>
 	</div>
 	<div class="header-right">
 	<!---------------------- 오른쪽 상단바 프로필 시작 ---------------------------->
-		<div class="user-info-dropdown">
+		<div class="dashboard-setting user-notification">
 			<div class="dropdown">
-				<a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
-					<span class="user-icon">
-					<!-- 세션 값을 사용하여 프로필 이미지 표시 -->
-						<c:choose>
-						    <c:when test="${profileImagePath == 'default_profile.png'}">
-						        <img src="${pageContext.request.contextPath}/profileImg/profile.png">
-						    </c:when>
-						    <c:otherwise>
-						        <img src="${pageContext.request.contextPath}/profileImg/${sessionScope.profileImagePath}" alt="employee image">
-						    </c:otherwise>
-						</c:choose>
-					</span>
-					<span class="user-name" data-empid="${loginEmpBase.empName}">${loginEmpBase.empName} 님 환영합니다! &nbsp;
-						<button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
-					</span>
-				</a>
+			</div>
+		</div>
+<!---------------------- 오른쪽 상단바 프로필 시작 ---------------------------->
+		<div class="user-info-dropdown">
+			<div class="row dropdown">
+				<div class="col">
+					<a class="dropdown-toggle" href="/cakecraft/emp/myPage" role="button">
+						<span class="user-icon">
+						<!-- 세션 값을 사용하여 프로필 이미지 표시 -->
+							<c:choose>
+							    <c:when test="${profileImagePath == 'default_profile.png'}">
+							        <img src="${pageContext.request.contextPath}/profileImg/profile.png">
+							    </c:when>
+							    <c:otherwise>
+							        <img src="${pageContext.request.contextPath}/profileImg/${sessionScope.profileImagePath}" alt="employee image">
+							    </c:otherwise>
+							</c:choose>
+						</span>
+						<span class="user-name" data-empid="${loginEmpBase.empName}">${loginEmpBase.empName} 님 환영합니다! &nbsp;
+						</span>
+					</a>
+				</div>
+				<div class="col d-flex justify-content-center align-items-center pr-20">
+					<button type="button" onclick="logout()" class="btn btn-primary" >로그아웃</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -240,33 +248,28 @@ document.addEventListener("DOMContentLoaded", function () {
 //////////////////사용자의 위치 정보 끝 ///////////////////////
 
 ///////////////////로그아웃 버튼 시작 //////////////////////
-	function logout() {
-		if (localStorage.getItem('rememberedId') !== null) { //로컬스토리지에 rememberedId 값이 있다면
-			localStorage.removeItem('rememberedId');
-			localStorage.removeItem('lastLoginTime'); //마지막 로그인 시간 삭제(자동로그인 방지)
-			localStorage.removeItem('startBtnDisabled'); // 출근 버튼 상태 제거
-	        localStorage.removeItem('endBtnDisabled');
-			//로그아웃 요청 보내기
-			fetch('/cakecraft/logout', {
-				method: 'GET',
-				credentials: 'same-origin' //동일한 출처에서 요청 보내도록 설정
-			}).then(response => {
-				//로그아웃 성공시
-				if (response.ok) {
-					alert('로그아웃 완료');
-					location.reload(); // // 페이지 새로고침하여 로그아웃 적용
-				} else {
-					// 로그아웃 실패 시
-					alert('로그아웃 실패');
-				}
-			});
-		} else {
-			// 로그인 상태가 아닌 경우
-			alert('로그인하세요!');
-		}
+function logout() {
+	if (localStorage.getItem('rememberedId') !== null) {
+		swal({
+			title: '로그아웃 확인',
+			text: '정말로 로그아웃하시겠습니까?',
+			icon: 'question',
+			confirmButtonText: '로그아웃',
+			cancelButtonText: '취소',
+			showCancelButton: true,
+			}).then((result) => {
+			console.log(result);
+		    if (result.value == true) {
+				window.location.href = "${pageContext.request.contextPath}/logout";
+		    	}
+		 	 });
+			} else {
+		swal('로그인하세요!', '', 'info');
 	}
-	
+}
+
 ///////////////////로그아웃 버튼 끝 //////////////////////
+/////////////////// Google Analytics //////////////////////
 	jQuery.noConflict(); 
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}

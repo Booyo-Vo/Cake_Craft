@@ -93,4 +93,7 @@ public interface EmpMapper {
 	// 사원명으로 검색하여 사원정보 조회
 	List<HashMap<String, Object>> getEmpListByNm(String empName);
 	
+	// 연차 개수 변경
+	int updateDayoffCnt(EmpBase empBase);
+	
 }

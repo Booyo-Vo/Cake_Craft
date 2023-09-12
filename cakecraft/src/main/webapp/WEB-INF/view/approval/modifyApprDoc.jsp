@@ -173,7 +173,7 @@ $(document).ready(function() {
                            <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent">${apprDocByNo.documentContent}</textarea>
                         </div>
                         <div class="form-group">
-							<input type="file" name="multipartFile" multiple="multiple">
+							<input type="file" name="multipartFile" id="multipartFile" multiple="multiple">
 						</div>
 					</div>
 				</div>
@@ -192,7 +192,7 @@ $(document).ready(function() {
 				<h1 class="text-center pb-20">
 					<button type="button" class="btn btn-secondary form-group" onclick="removeApprDoc(${apprDocByNo.documentNo})">삭제하기</button>
 					<button type="submit" class="btn btn-secondary form-group">임시저장</button>
-					<a href="" type="button" class="btn btn-primary form-group">제출하기</a>
+					<button type="button" class="btn btn-primary form-group" onclick="removeaddApprDoc(${apprDocByNo.documentNo})">제출하기</button>
 				</h1>
 			</div>
 		</c:if>
@@ -272,6 +272,26 @@ $(document).ready(function() {
 			console.log(result);
 			if (result.value == true) {
 				window.location.href = '${pageContext.request.contextPath}/approval/removeApprDoc?documentNo='+documentNo;
+			}
+		});
+	}
+	
+	// 제출하기 버튼을 눌렀을 때 호출되는 함수
+	function removeaddApprDoc(documentNo) {
+		$("#tempSave").val('N'); // tempSave 값을 N으로 설정	
+		swal({
+			title: '문서를 제출하시겠습니까?',
+			text: "제출된 문서는 삭제할 수 없습니다.",
+			type: 'warning',
+			confirmButtonText: '예',
+			cancelButtonText: '아니오',
+			showCancelButton: true,
+		}).then(function(result){
+			console.log(result);
+			if (result.value == true) {
+				$("#requestForm").attr("action",'/cakecraft/approval/removeaddApprDoc');
+				$("#requestForm").submit();
+				
 			}
 		});
 	}

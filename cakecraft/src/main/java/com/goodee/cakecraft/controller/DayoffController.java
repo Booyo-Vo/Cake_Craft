@@ -1,5 +1,7 @@
 package com.goodee.cakecraft.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class DayoffController {
 	@Autowired
 	private AdminEmpService adminEmpService;
 	
-	// 연차상세내역조회
+	// 연차내역조회
 	@GetMapping("/emp/dayoffById")
 		public String dayoffList(HttpSession session, Model model,
 								@RequestParam String id) {
@@ -40,16 +42,12 @@ public class DayoffController {
 		
 		log.debug(LJY + id  + "<- dayoffById id"+ RESET);	
 		//연차상세내역 받아오기
-		EmpDayoff empDayoff = dayoffService.getdayoffById(id);
+		List<EmpDayoff> empDayoff= dayoffService.getdayoffById(id);
 		log.debug(LJY + empDayoff  + "<- dayoffById empDayoff"+ RESET);	
 		
 		//사원상세내역 받아와서 사원정보받아오기
 		EmpBase empBase = adminEmpService.getAdminEmpById(id); 
-		if (empDayoff != null) {
-		//StartDay, EndDay 뒷자리 세개 잘라내서 초단위 없애기
-		empDayoff.setStartDay(empDayoff.getStartDay().substring(0, empDayoff.getStartDay().length() - 3));
-		empDayoff.setEndDay(empDayoff.getEndDay().substring(0, empDayoff.getEndDay().length() - 3));
-		}
+		
 		//뷰로 값넘기기
 		model.addAttribute("empDayoff", empDayoff);
 		model.addAttribute("empBase", empBase);

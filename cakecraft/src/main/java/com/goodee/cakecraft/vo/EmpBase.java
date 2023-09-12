@@ -17,7 +17,7 @@ public class EmpBase {
 	private String hireDate;
 	private String retireDate;
 	private String empStatus;
-	private int dayoffCnt;
+	private Double dayoffCnt;
 	private String address;
 	private String empPhone;
 	private String regDtime;

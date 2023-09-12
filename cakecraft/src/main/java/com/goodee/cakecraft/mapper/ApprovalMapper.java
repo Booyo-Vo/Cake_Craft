@@ -40,6 +40,9 @@ public interface ApprovalMapper {
 	int selectApprDocCnt();
 	*/
 	
+	// 결재 상태 조회
+	int selectApprStatusCnt(String documentNo, String approvalStatusCd);
+	
 	// 결재문서 상세정보 출력
 	ApprovalDocument selectApprDocByNo(String documentNo);
 	
@@ -73,7 +76,7 @@ public interface ApprovalMapper {
 	int insertApprFile(ApprovalFile apprFile);
 	
 	// 결재 첨부파일 삭제
-	int deleteApprFile(ApprovalFile apprFile);
+	// int deleteApprFile(ApprovalFile apprFile);
 	
 	
 	/* 결재참조자 : ApprovalRef */
@@ -84,7 +87,7 @@ public interface ApprovalMapper {
 	int insertApprRef(Map param);
 	
 	// 결재참조자 삭제
-	int deleteApprRef(ApprovalRef apprRef);
+	// int deleteApprRef(ApprovalRef apprRef);
 	
 	
 	/* 결재이력 : ApprovalHistory */

@@ -20,4 +20,5 @@ public class ApprovalDocument {
 	
 	private String documentNm;
 	private String documentSubNm;
+	private String approvalStatus;
 }

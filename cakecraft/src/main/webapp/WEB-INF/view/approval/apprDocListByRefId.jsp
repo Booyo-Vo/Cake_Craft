@@ -11,20 +11,21 @@ jQuery(document).ready(function($) {
 
 	var mydata = [ //데이터
 		<c:forEach var="adr" items="${apprDocListByRefId}">
-			{no: "${adr.documentNo}", cd: "${adr.documentNm}", subcd: "${adr.documentSubNm}", title: "${adr.documentTitle}", modDtime: "${adr.modDtime}"},
+			{no: "${adr.documentNo}", cd: "${adr.documentNm}", subcd: "${adr.documentSubNm}", title: "${adr.documentTitle}", modDtime: "${adr.modDtime}", status: "${adr.approvalStatus}"},
 		</c:forEach>
 	];
 
 	$("#list").jqGrid({
 		datatype: "local",
 		data: mydata,
-		colNames:['문서번호','문서구분','항목구분','제목','기안일자'],
+		colNames:['문서번호','문서구분','항목구분','제목','기안일자','결재상태'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
 			{name:'no', index:'no', width:50, align: "center"},
 			{name:'cd', index:'cd', width:50 , align: "center" },
 			{name:'subcd', index:'subcd', width:50 , align: "center" },
 			{name:'title', index:'title', width:50, align: "center"},
 			{name:'modDtime', index:'modDtime', width:50, align: "center"},
+			{name:'status', index:'status', width:50, align: "center"},
 
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
