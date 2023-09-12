@@ -67,6 +67,13 @@ $(document).ready(function() {
 		
 		var socialNo = socialNo1 + "-" + socialNo2;
 		var empPhone = empPhone1 + "-" + empPhone2 + "-" + empPhone3;
+		
+		// 공백 검사
+		if (empName.trim() === '' || socialNo.trim() === '' || email.trim() === '' || empPhone.trim() === '' || hireDate.trim() === '' || address.trim() === '') {
+			swal('오류','필수 입력 항목을 모두 입력해주세요.','warning');
+			return;
+		}
+		
 		// 글자수 체크
 		if (socialNo1.length !== 6 || socialNo2.length !== 7) {
 			swal('오류','주민번호를 다시 확인해주세요.','warning');
@@ -79,11 +86,6 @@ $(document).ready(function() {
 		
 		empFormData.append("socialNo", socialNo);
 		empFormData.append("empPhone", empPhone); 
-		// 공백 검사
-		if (empName.trim() === '' || socialNo.trim() === '' || email.trim() === '' || empPhone.trim() === '' || hireDate.trim() === '' || address.trim() === '') {
-			swal('오류','필수 입력 항목을 모두 입력해주세요.','warning');
-			return;
-		}
 		
 	// 사원추가시 생성된 사원번호를 알림창으로 띄우기 위해 -->
 	//Ajax 요청 보내기
