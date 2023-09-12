@@ -82,11 +82,11 @@ public class ApprovalService {
 			String approvalStatus;
 
 			if (countAppr2 == 3) {
-			    approvalStatus = "완료";
+				approvalStatus = "완료";
 			} else if (countAppr3 > 0) {
-			    approvalStatus = "반려";
+				approvalStatus = "반려";
 			} else {
-			    approvalStatus = "대기";
+				approvalStatus = "대기";
 			}
 			apprDoc.setApprovalStatus(approvalStatus);
 		}
@@ -157,11 +157,11 @@ public class ApprovalService {
 			String approvalStatus;
 
 			if (countAppr2 == 3) {
-			    approvalStatus = "완료";
+				approvalStatus = "완료";
 			} else if (countAppr3 > 0) {
-			    approvalStatus = "반려";
+				approvalStatus = "반려";
 			} else {
-			    approvalStatus = "대기";
+				approvalStatus = "대기";
 			}
 			apprDoc.setApprovalStatus(approvalStatus);
 		}
@@ -260,11 +260,11 @@ public class ApprovalService {
 			String approvalStatus;
 
 			if (countAppr2 == 3) {
-			    approvalStatus = "완료";
+				approvalStatus = "완료";
 			} else if (countAppr3 > 0) {
-			    approvalStatus = "반려";
+				approvalStatus = "반려";
 			} else {
-			    approvalStatus = "대기";
+				approvalStatus = "대기";
 			}
 			apprDoc.setApprovalStatus(approvalStatus);
 		}

@@ -11,20 +11,21 @@ jQuery(document).ready(function($) {
 
 	var mydata = [ //데이터
 		<c:forEach var="adr" items="${apprDocList}">
-		{no: "${adr.documentNo}", cd: "${adr.documentNm}", subcd: "${adr.documentSubNm}", title: "${adr.documentTitle}", modDtime: "${adr.modDtime}"},
+			{no: "${adr.documentNo}", cd: "${adr.documentNm}", subcd: "${adr.documentSubNm}", title: "${adr.documentTitle}", regId: "${adr.regId}", modDtime: "${adr.modDtime}"},
 		</c:forEach>
 	];
 
 	$("#list").jqGrid({
 		datatype: "local",
 		data: mydata,
-		colNames:['문서번호','문서구분','항목구분','제목','기안일자'],
+		colNames:['문서번호','문서구분','항목구분','문서제목','기안자','기안일자'],
 		colModel:[ /*sortable:false 를 붙이면 정렬이 되지 않도록 함*/
-			{name:'no', index:'no', width:50, align: "center"},
-			{name:'cd', index:'cd', width:50 , align: "center" },
-			{name:'subcd', index:'subcd', width:50 , align: "center" },
+			{name:'no', index:'no', width:30, align: "center"},
+			{name:'cd', index:'cd', width:20 , align: "center" },
+			{name:'subcd', index:'subcd', width:20 , align: "center" },
 			{name:'title', index:'title', width:50, align: "center"},
-			{name:'modDtime', index:'modDtime', width:50, align: "center"},
+			{name:'regId', index:'regId', width:30, align: "center"},
+			{name:'modDtime', index:'modDtime', width:30, align: "center"},
 
 		],
 		autowidth: true, //테이블의 너비를 자동 조절
@@ -51,7 +52,7 @@ jQuery(document).ready(function($) {
 		}, 100);
 	});
 	$("#searchButton").on("click", function() {
-		var data = $("#searchDataInput").val(); // 입력된 검색어를를 가져와 변수저장
+		var data = $("#searchDataInput").val(); // 입력된 검색어를 가져와 변수저장
 		var searchType = $("#searchTypeSelect").val(); // 검색유형을 선택하는 드롭다운을 가져와 변수저장
 
 		// jqGrid의 필터 설정을 업데이트
@@ -103,8 +104,8 @@ jQuery(document).ready(function($) {
 						</div>
 						<nav aria-label="breadcrumb" role="navigation">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">승인대기문서</li>
+								<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/schedule/schedule">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Waiting for approval</li>
 							</ol>
 						</nav>
 					</div>
@@ -115,7 +116,8 @@ jQuery(document).ready(function($) {
 					<div class="col-sm-4 col-md-2">
 						<select class="custom-select form-control" id="searchTypeSelect">
 							<option value="" selected>-- 선택하세요 --</option>
-							<option value="cd">문서형식</option>
+							<option value="cd">문서구분</option>
+							<option value="subcd">항목구분</option>
 							<option value="title">제목</option>
 						</select>
 					</div>
@@ -123,7 +125,9 @@ jQuery(document).ready(function($) {
 						<input type="text" id="searchDataInput" class="form-control">
 					</div>
 					<div class="col-sm-4 col-md-2">
-						<button class="btn btn-info btn-fill" id="searchButton" value="검색">검색</button>
+						<button class="d-inline-block btn-none" id="searchButton" value="검색">
+							<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
+						</button>
 					</div>
 				</div>
 				<div class="form-group row">
