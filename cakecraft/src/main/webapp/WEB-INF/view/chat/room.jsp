@@ -128,7 +128,7 @@
 	console.log(roomName + ", " + roomId + ", " + username);
 	
 	//1. websocket 내부에 들고있는 stomp를 내어준다
-	const websocket = new WebSocket("ws://localhost:80/cakecraft/stomp"); //배포 전 배포주소로 바꾸기
+	const websocket = new WebSocket("ws://43.202.82.110:80/cakecraft/stomp");
 	const stomp = Stomp.over(websocket);
 	
 	//2. connection이 맺어지면 실행
