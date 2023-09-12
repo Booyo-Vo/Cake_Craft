@@ -27,7 +27,7 @@ public class RestScheduleController {
 								@RequestParam(name="targetMonth") Integer targetMonth) {
 		// ex)4월을 04월로 나타내기 위해 
 		String strM = (targetMonth+1)+""; 
-		if(targetMonth < 10){
+		if(targetMonth < 9){
 			strM = "0"+strM;
 		}
 		
