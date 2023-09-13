@@ -106,14 +106,14 @@ public class ExcelController {
 	public int addExcell(HttpSession session,
 							@RequestParam("file") MultipartFile file) {   
 		log.debug(LJY + "addExcel file:" + file + RESET);
-		
-		int addEmpRow = 0;//반환값 미리선언
+		int excelRow = 0;
 		try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) { //새로운 엑셀파일을 생성
 			Sheet sheet = workbook.getSheetAt(0); // 엑셀 파일의 첫번째 시트 가져오기
-			for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) { //세번째줄 부터 있는 인원수만큼 반복됨
+			excelRow=sheet.getPhysicalNumberOfRows();
+
+			for (int rowIndex = 2; rowIndex <= sheet.getPhysicalNumberOfRows()+1; rowIndex++) { //세번째줄 부터 있는 인원수만큼 반복됨
 				Row row = sheet.getRow(rowIndex);
-				log.debug(LJY + row + "<- addExcell row"+ RESET);
-				if (row != null) { //값 받아오기
+				if (!"".equals(row.getCell(0).getStringCellValue())) { //값 받아오기
 					EmpBase empbase = new EmpBase();
 					empbase.setEmpName(row.getCell(0).getStringCellValue());
 					empbase.setDeptNm(row.getCell(1).getStringCellValue());
@@ -137,17 +137,15 @@ public class ExcelController {
 					log.debug(LJY + loginId + "<- addEmp loginId"+ RESET);
 
 					//사원추가 (service 안에서 이름이 코드로 변경, 사원번호생성, 사원추가, idlist추가가 이루어짐)
-					addEmpRow = adminEmpService.addEmp(empbase);
-					if (addEmpRow > 0) {
+					int addEmpRow = adminEmpService.addEmp(empbase);
 						log.debug(LJY + "addExcel addEmpRow:" + addEmpRow + RESET);
-					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return addEmpRow; // 등록 후 리스트 페이지로 리다이렉트
+		return excelRow; // 등록 후 리스트 페이지로 리다이렉트
 	}
 
 	//엑셀파일 양식 다운로드

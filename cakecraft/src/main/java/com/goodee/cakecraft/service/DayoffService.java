@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goodee.cakecraft.mapper.CommonMapper;
 import com.goodee.cakecraft.mapper.DayoffMapper;
+import com.goodee.cakecraft.mapper.EmpMapper;
 import com.goodee.cakecraft.vo.EmpDayoff;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 public class DayoffService {
@@ -21,6 +24,9 @@ public class DayoffService {
 	
 	@Autowired
 	private DayoffMapper dayoffMapper;
+	
+	@Autowired
+	private EmpMapper empMapper;
 	
 	@Autowired
 	private CommonMapper commonMapper;
@@ -50,5 +56,12 @@ public class DayoffService {
 		}
 		
 		return empDayoffList;
+	}
+	
+	public int defaultDayoffCnt() {
+		int updateDayoffRow = empMapper.updatedefaultDayoffCnt();
+		log.debug(LJY + updateDayoffRow + "<- defaultDayoffCnt updateDayoffRow"+ RESET);
+		
+		return updateDayoffRow;
 	}
 }
