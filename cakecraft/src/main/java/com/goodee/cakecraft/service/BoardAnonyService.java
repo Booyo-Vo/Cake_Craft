@@ -201,23 +201,32 @@ public class BoardAnonyService {
 	
 	// 게시글 삭제 & 첨부파일 삭제
 	public int removeAnony(BoardAnony anony, String path) {
-		// 첨부파일 삭제
-		List<BoardAnonyFile> anonyFileList = anonyFileMapper.selectAnonyFile(anony);
-		if(anonyFileList != null && anonyFileList.size() > 0) {
-			for(BoardAnonyFile af : anonyFileList) {
-				File f = new File(path + af.getAnonyFilename());
-				if(f.exists()) {
-					// 폴더에서 파일 삭제
-					f.delete();
+		int row = 0;
+		// 게시글에 해당하는 모든 댓글 삭제
+		int commentsResult = commentsMapper.deleteCommentsByAnonyNo(anony);
+		log.debug(commentsResult+"commentsResult!!!!!!!!!!!!!!!!!");
+		if(commentsResult != 0) {
+			// 첨부파일 삭제
+			List<BoardAnonyFile> anonyFileList = anonyFileMapper.selectAnonyFile(anony);
+			if(anonyFileList != null && anonyFileList.size() > 0) {
+				for(BoardAnonyFile af : anonyFileList) {
+					File f = new File(path + af.getAnonyFilename());
+					if(f.exists()) {
+						// 폴더에서 파일 삭제
+						f.delete();
+					}
 				}
+				// board_anony_file 테이블에서 삭제
+				anonyFileMapper.deleteAnonyFile(anony);
 			}
-			// board_anony_file 테이블에서 삭제
-			anonyFileMapper.deleteAnonyFile(anony);
+			
+			// 게시글 삭제
+			row = anonyMapper.deleteAnony(anony);
+			if(row == 1) {
+				anonyMapper.deleteLike(anony);
+			}
+			
 		}
-		
-		// 게시글 삭제
-		int row = anonyMapper.deleteAnony(anony);
-				
 		return row;
 	}
 	

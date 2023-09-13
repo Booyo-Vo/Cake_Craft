@@ -127,4 +127,12 @@
 			anony_no = #{anonyNo}
 		</where>
 	</update>
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLike"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		DELETE FROM board_like 
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</delete>
 </mapper>

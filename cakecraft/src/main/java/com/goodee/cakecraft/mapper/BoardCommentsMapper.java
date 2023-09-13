@@ -25,6 +25,9 @@ public interface BoardCommentsMapper {
 	// 댓글 삭제
 	int deleteComments(BoardAnonyComments comments);
 	
+	// 익명게시번호 해당 댓글 전부 삭제 
+	int deleteCommentsByAnonyNo(BoardAnony anony);
+	
 	// 댓글 개수 조회
 	int selectCommentsCount(BoardAnony anony);
 }

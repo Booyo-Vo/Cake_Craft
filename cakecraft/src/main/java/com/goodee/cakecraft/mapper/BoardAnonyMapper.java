@@ -39,4 +39,6 @@ public interface BoardAnonyMapper {
 	// 전체 좋아요 개수 변경
 	int updateLikeCnt(BoardAnony anony);
 	
+	// 좋아요 삭제
+	int deleteLike(BoardAnony anony);
 }

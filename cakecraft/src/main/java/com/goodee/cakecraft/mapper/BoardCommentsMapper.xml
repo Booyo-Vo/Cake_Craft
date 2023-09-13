@@ -79,6 +79,14 @@
 			comments_no = #{commentsNo}
 		</where>
 	</delete>
+	<!-- 익명게시번호 해당 댓글 전부 삭제 -->
+	<delete id="deleteCommentsByAnonyNo"
+			parameterType="com.goodee.cakecraft.vo.BoardAnony">
+		DELETE FROM board_anony_comments 
+		<where>
+			anony_no = #{anonyNo}
+		</where>
+	</delete>
 	<!-- 댓글 개수 조회 -->
 	<select id="selectCommentsCount" 
 			parameterType="com.goodee.cakecraft.vo.BoardAnony"
