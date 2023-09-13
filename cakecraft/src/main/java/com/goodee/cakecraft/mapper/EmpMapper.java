@@ -63,6 +63,9 @@ public interface EmpMapper {
 	// 사원이 보는 마이페이지 출력(empBase + signImg + profileImg)
 	EmpBase selectMyEmpById(String id);
 	
+	// 사인 조회
+	public int signCnt(String id);
+	
 	// 사인 등록
 	public int insertSign(EmpSignImg sign);
 	

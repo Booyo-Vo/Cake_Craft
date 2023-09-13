@@ -9,6 +9,7 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="main-container">
+<div id="printSection">
 	<div class="pd-ltr-20 xs-pd-20-10">
 		<div class="min-height-200px">
 			<div class="invoice-wrap">
@@ -123,7 +124,7 @@
 			</div>
 		</div>
 	</div>
-
+</div>
 	<br>
 
 	<form action="${pageContext.request.contextPath}/approval/modifyApprHist" method="post" id="modAppr">
@@ -146,6 +147,9 @@
 			</div>
 		</c:if>
 	</form>
+	<div class="d-flex justify-content-end mb-3">
+		<button onclick="printPage();" class="btn btn-primary">프린트 출력<i class="icon-copy fa fa-print" aria-hidden="true"></i></button>
+	</div>
 </div>
 
 <script>
@@ -159,6 +163,12 @@
 		$("input[name='approvalStatusCd']").val('3'); 
 		$("#modAppr").submit();
 	}
+	
+	<!--  증명서 출력 -->
+	var printPage = function() {
+		document.body.innerHTML = printSection.innerHTML;
+		window.print();
+	};
 </script>
 </body>
 </html>

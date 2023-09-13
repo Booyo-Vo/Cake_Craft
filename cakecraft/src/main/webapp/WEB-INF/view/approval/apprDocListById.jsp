@@ -9,6 +9,15 @@
 jQuery.noConflict(); 
 jQuery(document).ready(function($) {
 
+	// 사인 개수 조회
+	var signCnt = ${signCnt};
+
+	// signCnt가 0인 경우 "사인을 추가하세요" alert 창 띄우고, 마이페이지로 이동
+	if (signCnt === 0) {
+		alert("사인을 추가하세요");
+		window.location.href = "/cakecraft/emp/myPage";
+	}
+	
 	var mydata = [ //데이터
 		<c:forEach var="ad" items="${apprDocListById}">
 		{no: "${ad.documentNo}", cd: "${ad.documentNm}", subcd: "${ad.documentSubNm}", title: "${ad.documentTitle}", regId: "${ad.regId}", modDtime: "${ad.modDtime}", status: "${ad.approvalStatus}"},
@@ -137,7 +146,7 @@ jQuery(document).ready(function($) {
 						<table id="list"></table>
 						<div id="pager"></div>
 					</div>
-					<div class="col-sm-12 col-md-12">
+					<div class="d-flex justify-content-end mb-3">
 						<a href="/cakecraft/approval/addApprDoc" class="btn btn-primary">기안문작성</a>
 					</div>
 				</div>

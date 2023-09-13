@@ -288,6 +288,13 @@
 	WHERE id = #{id}
 	</select>
 	
+	<!-- 사인 조회 -->
+	<select id="signCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) AS signImg
+		FROM emp_signImg
+		WHERE id = #{id};
+	</select>
+	
 	<!-- *마이페이지 사인 추가 -->
 	<insert id="insertSign" parameterType="com.goodee.cakecraft.vo.EmpSignImg">
 		INSERT INTO emp_signImg(id, sign_filename, sign_type, sign_filesize, reg_dtime, mod_dtime, reg_id, mod_id)

@@ -73,7 +73,12 @@ public class EmpService {
 	    return resultEmpBase;
 	}
 
-
+	
+	// 사인 존재여부 확인
+	public int signCnt(String id) {
+		return empMapper.signCnt(id);
+	}
+	
     // 사인 추가
     public void addSign(String sign, String path, String loginId) {
 		//이미지 데이터 추출

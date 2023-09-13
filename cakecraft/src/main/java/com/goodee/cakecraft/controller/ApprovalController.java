@@ -62,11 +62,16 @@ public class ApprovalController {
 		// 제출완료된 문서만 출력
 		String tempSave = "N";
 		
+		// 기안문서 목록 조회
 		List<ApprovalDocument> apprDocListById = approvalService.getApprDocListById(loginId, tempSave);
+		
+		// 사인 개수 조회
+		int signCnt = empService.signCnt(loginId);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDocListById", apprDocListById);
+		model.addAttribute("signCnt",signCnt);
 		log.debug(SHJ + apprDocListById + " <-- apprDocListById" + RESET);
 		return "/approval/apprDocListById";
 	}
@@ -82,11 +87,16 @@ public class ApprovalController {
 		// 임시저장된 문서만 출력
 		String tempSave = "Y";
 		
+		// 임시저장 문서 목록 조회
 		List<ApprovalDocument> apprDocListByIdTempY = approvalService.getApprDocListByIdTempY(loginId, tempSave);
+		
+		// 사인 개수 조회
+		int signCnt = empService.signCnt(loginId);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDocListByIdTempY", apprDocListByIdTempY);
+		model.addAttribute("signCnt",signCnt);
 		log.debug(SHJ + apprDocListByIdTempY + " <-- apprDocListByIdTempY" + RESET);
 		return "/approval/apprDocListByIdTempY";
 	}
@@ -99,11 +109,16 @@ public class ApprovalController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 결재수신문서 조회
 		List<ApprovalDocument> apprDocListByApprId = approvalService.getApprDocListByApprId(loginId);
+
+		// 사인 개수 조회
+		int signCnt = empService.signCnt(loginId);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDocListByApprId", apprDocListByApprId);
+		model.addAttribute("signCnt",signCnt);
 		log.debug(SHJ + apprDocListByApprId + " <-- apprDocListByApprId" + RESET);
 		return "/approval/apprDocListByApprId";
 	}
@@ -116,11 +131,16 @@ public class ApprovalController {
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
 		
+		// 승인대기문서 조회
 		Map<String, Object> apprDocWaitMap = approvalService.getApprDocWaitNoMap(loginId);
+
+		// 사인 개수 조회
+		int signCnt = empService.signCnt(loginId);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDocList", apprDocWaitMap.get("apprDocList"));
+		model.addAttribute("signCnt",signCnt);
 		log.debug(SHJ + apprDocWaitMap + " <-- apprDocWaitMap" + RESET);
 		return "/approval/apprDocWaitListByNo";
 	}
@@ -132,12 +152,17 @@ public class ApprovalController {
 		// 세션에서 로그인 된 loginId 추출
 		EmpIdList loginMember = (EmpIdList)session.getAttribute("loginMember");
 		String loginId = loginMember.getId();
-
+		
+		// 참조문서 조회
 		List<ApprovalDocument> apprDocListByRefId = approvalService.getApprDocListByRefId(loginId);
+
+		// 사인 개수 조회
+		int signCnt = empService.signCnt(loginId);
 		
 		// 뷰로 값넘기기
 		model.addAttribute("loginId",loginId);
 		model.addAttribute("apprDocListByRefId", apprDocListByRefId);
+		model.addAttribute("signCnt",signCnt);
 		log.debug(SHJ + apprDocListByRefId + " <-- apprDocListByRefId" + RESET);
 		return "/approval/apprDocListByRefId";
 	}
