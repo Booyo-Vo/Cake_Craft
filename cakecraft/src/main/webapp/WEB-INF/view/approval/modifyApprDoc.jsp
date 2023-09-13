@@ -260,6 +260,9 @@ $(document).ready(function() {
 		<input type="hidden" name="tempSave" id="tempSave" value="Y">
 		<!--  문서번호 넘기기 -->
 		<input type="hidden" name="documentNo" id="documentNo" value="${apprDocByNo.documentNo}">
+		<input type="hidden" name="documentCd" id="documentCd" value="">
+		<input type="hidden" name="documentSubCd" id="documentSubCd" value="">
+
 		<!-- 작성자 본인인 경우 : 임시저장/제출하기 버튼 -->
 		<c:if test="${apprDocByNo.id == loginId}">
 			<div>
@@ -367,15 +370,16 @@ $(document).ready(function() {
 	    $.ajax({
 	    	url: "/cakecraft/approval/removeAndAddApprDoc",
 	    	data: {
-	            documentNo: $("#documentNo").val()
+	            "documentNo" : $("#documentNo").val()
 	        },
-	        method: "POST",
+            method: "post",
+            cache: false,
 	        dataType: "json",
 	        success: function (deleteData) {
 	            console.log(deleteData);
 	            if (deleteData.success === "Y") {
 	                // 기존 문서 삭제가 성공한 경우
-	                // 이제 새로운 문서 추가 요청 보내기
+	                // 새로운 문서 추가 요청 보내기
 	                $.ajax({
 	                    url: "/cakecraft/approval/fileAddApprDoc",
 	                    data: formdata,
@@ -392,6 +396,7 @@ $(document).ready(function() {
 	                            $("#documentCd").val(addData.documentCd);
 	                            $("#documentSubCd").val(addData.documentSubCd);
 	                            console.log(documentNo);
+	                            $("#requestForm").attr("action", "/cakecraft/approval/addApprDoc");
 	                            $("#requestForm").submit();
 	                        } else {
 	                            alert("잠시 후 다시 시도해주세요.");

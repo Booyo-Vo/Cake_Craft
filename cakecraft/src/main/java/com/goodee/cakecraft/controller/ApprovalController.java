@@ -390,65 +390,22 @@ public class ApprovalController {
 	@RequestMapping(value = "/approval/removeAndAddApprDoc", method = RequestMethod.POST)
 	public void removeAndAddApprDoc(HttpServletRequest request,
 								HttpServletResponse response,
-								MultipartHttpServletRequest mulRequest,
-					            HttpSession session) {
+								HttpSession session) {
 		try {
 			// 기존 문서 삭제를 위한 apprDoc 객체 생성 및 설정
-	        ApprovalDocument apprDoc = new ApprovalDocument();
-	        apprDoc.setDocumentNo(request.getParameter("documentNo")); // 문서번호 설정
-
-	        // 기존 문서 삭제
-	        int deletedRows = approvalService.removeApprDocTempY(apprDoc);
-
-		        if (deletedRows > 0) {
-		            // 기존 문서 삭제가 성공한 경우에만 새로운 문서 추가
-		            HashMap<String, Object> param = new HashMap<>();
-		            param = CommonController.getParameterMap(request);
-
-		            // 문서 번호를 생성하고 param 맵에 추가
-		            Map<String, String> getDocumentNo = approvalService.insertDocumentNo(param);
-		            param.put("documentNo", getDocumentNo.get("documentNo"));
-
-		            // HTTP 요청에서 "fileList" 파라미터로 전달된 파일 리스트를 가져옴
-		            List<MultipartFile> approvalfile = mulRequest.getFiles("fileList");
-
-		            // 파일 업로드 경로 설정하고 param 맵에 추가
-		            String path = request.getServletContext().getRealPath("/apprupload/");
-		            param.put("path", path);
-
-		            // 세션에서 로그인 된 loginId 추출
-		            EmpIdList loginMember = (EmpIdList) session.getAttribute("loginMember");
-		            String loginId = loginMember.getId();
-
-		            // 결재 문서와 관련된 정보를 DB에 저장하고 결과를 resultMap에 저장
-		            Map<String, Object> resultMap = approvalService.fileAddApprDoc(param, approvalfile, loginId);
-
-		            // 결과를 먼저 returnMap에 저장하고, 나중에 JSON으로 변환
-		            Map<String, Object> returnMap = new HashMap<>();
-		            if ("N".equals(resultMap.get("resultCode"))) {
-		                // 파일 추가에 실패한 경우
-		                returnMap.put("success", "N");
-		            } else {
-		                // 파일 추가에 성공한 경우
-		                returnMap.put("success", "Y");
-		                returnMap.put("documentNo", getDocumentNo.get("documentNo"));
-		                returnMap.put("documentCd", getDocumentNo.get("documentCd"));
-		                returnMap.put("documentSubCd", getDocumentNo.get("documentSubCd"));
-		            }
-
-		            // 서버가 클라이언트에게 정보를 JSON 형식으로 보냄
-		            JSONObject resultJson = new JSONObject(returnMap);
-		            response.getWriter().write(resultJson.toJSONString());
-		        } else {
-		            // 기존 문서 삭제에 실패한 경우
-		            Map<String, Object> returnMap = new HashMap<>();
-		            returnMap.put("success", "N");
-		            JSONObject resultJson = new JSONObject(returnMap);
-		            response.getWriter().write(resultJson.toJSONString());
-		        }
-		    } catch (IOException e) {
-		        // 예외 발생 시 예외 정보 출력
-		        e.printStackTrace();
-		    }
+			ApprovalDocument apprDoc = new ApprovalDocument();
+			apprDoc.setDocumentNo(request.getParameter("documentNo")); // 문서번호 설정
+	
+			// 기존 문서 삭제
+			int deletedRows = approvalService.removeApprDocTempY(apprDoc);
+	
+			Map<String, Object> returnMap = new HashMap<>();
+			returnMap.put("success", "Y");
+			JSONObject resultJson = new JSONObject(returnMap);
+			response.getWriter().write(resultJson.toJSONString());
+		} catch (IOException e) {
+			// 예외 발생 시 예외 정보 출력
+			e.printStackTrace();
 		}
+	}
 }

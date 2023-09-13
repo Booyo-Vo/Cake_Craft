@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goodee.cakecraft.mapper.ApprovalMapper;
@@ -519,7 +520,7 @@ public class ApprovalService {
 						log.debug(SHJ + addApprHistLv3Row + " <-- addApprDoc addApprHistLv3Row"+ RESET);
 						
 						// 3) 참조자가 있다면 추가
-						if(addApprHistLv3Row > 0 && param.get("refId") != null) {
+						if(addApprHistLv3Row > 0 && StringUtils.hasText((CharSequence) param.get("refId"))) {
 							ApprovalRef apprRef = new ApprovalRef();
 							apprRef.setRefId(param.get("refId").toString());
 							apprRef.setDocumentNo(documentNo);
