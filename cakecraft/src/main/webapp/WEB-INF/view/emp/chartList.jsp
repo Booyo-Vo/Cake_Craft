@@ -141,8 +141,8 @@
 				</script>
 			</div>
 		</div>
-			<div class="col-md-6 col-sm-12 mb-30">
-				<div class="pd-20 card-box height-100-p">
+		<div class="col-md-6 col-sm-12 mb-30">
+			<div class="pd-20 card-box height-100-p">
 				<div class="text-center">
 					<h4 class="mb-15 h4">팀별 재직자 수</h4>
 				</div>
@@ -179,9 +179,11 @@
 							display: true
 						},
 						scales: {
-						x: {
-								beginAtZero: true // X축 시작값을 0으로 지정
-							}
+							xAxes: [{
+								ticks: {
+									beginAtZero: true // Y축 시작값을 0으로 지정
+								}
+							}]
 						}
 					}
 				});
