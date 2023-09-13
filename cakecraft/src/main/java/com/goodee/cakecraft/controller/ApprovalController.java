@@ -272,9 +272,12 @@ public class ApprovalController {
 		String loginId = loginMember.getId();
 
 		
-		approvalService.addApprDoc(param, loginId);
-		
-		return "redirect:/approval/apprDocListById";
+		int tempResult = approvalService.addApprDoc(param, loginId);
+		if(tempResult==11) {
+			return "redirect:/approval/apprDocListByIdTempY";
+		} else {
+			return "redirect:/approval/apprDocListById";
+		}
 	}
 	
 	// 문서번호 및 결재파일 추가 액션
@@ -380,7 +383,7 @@ public class ApprovalController {
 		
 		approvalService.removeApprDocTempY(apprDoc);
 		
-		return "/approval/apprDocListByIdTempY";
+		return "redirect:/approval/apprDocListByIdTempY";
 	}
 	
 	// 기존의 임시저장 문서 삭제 후, 새로운 결재문서 추가

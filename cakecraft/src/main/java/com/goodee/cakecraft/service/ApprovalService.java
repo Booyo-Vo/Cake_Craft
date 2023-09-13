@@ -477,6 +477,10 @@ public class ApprovalService {
 			// 디버깅
 			log.debug(SHJ + addApprDocRow + " <-- addApprDoc addApprDocRow"+ RESET);
 			
+			if("Y".equals(param.get("tempSave").toString())) {
+				addApprDocRow = 11;
+			}
+			
 			if(addApprDocRow > 0 && "N".equals(param.get("tempSave").toString())) { // 결재문서 추가 성공 시
 				// 2) 결재이력 추가
 				// 담당자(=level 1) 추가
@@ -529,6 +533,7 @@ public class ApprovalService {
 			}
 			// 문서 추가 성공 시 반환값
 			return addApprDocRow;
+			
 		}
 		// 문서 번호 생성 실패 시 반환값
 		return 0;
