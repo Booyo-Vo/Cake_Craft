@@ -111,7 +111,7 @@ public class ExcelController {
 			Sheet sheet = workbook.getSheetAt(0); // 엑셀 파일의 첫번째 시트 가져오기
 			excelRow=sheet.getPhysicalNumberOfRows();
 
-			for (int rowIndex = 2; rowIndex <= sheet.getPhysicalNumberOfRows(); rowIndex++) { //세번째줄 부터 있는 인원수만큼 반복됨
+			for (int rowIndex = 2; rowIndex <= sheet.getPhysicalNumberOfRows()+1; rowIndex++) { //세번째줄 부터 있는 인원수만큼 반복됨
 				Row row = sheet.getRow(rowIndex);
 				if (!"".equals(row.getCell(0).getStringCellValue())) { //값 받아오기
 					EmpBase empbase = new EmpBase();

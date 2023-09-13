@@ -132,13 +132,19 @@ function addExcel() {
 		contentType: false, 
 		success: function(response) {
 			if (response >= 0) {
-				swal('추가 성공', response + "명의 사원이 성공적으로 추가되었습니다.",'success');
+				swal('추가 성공', response + "명의 사원이 성공적으로 추가되었습니다.",'success').then(() => {
+					window.location.reload();
+				});
 			} else {
-				swal('추가 실패','사원 추가에 실패했습니다 파일을 다시 확인해주세요.','warning');
+				swal('추가 실패','사원 추가에 실패했습니다 파일을 다시 확인해주세요.','warning').then(() => {
+					window.location.reload();
+				});
 			}
 		},
 			error: function() {
-				swal('추가 실패','파일을 다시 확인해주세요.','warning');
+				swal('추가 실패','파일을 다시 확인해주세요.','warning').then(() => {
+					window.location.reload();
+				});
 		}
 	});
 }
