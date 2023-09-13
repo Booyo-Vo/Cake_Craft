@@ -99,4 +99,6 @@ public interface EmpMapper {
 	// 연차 개수 변경
 	int updateDayoffCnt(EmpBase empBase);
 	
+	// 연차 기본값 15개 부여
+	int updatedefaultDayoffCnt();
 }
