@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
 	
 	var mydata = [ //데이터
 		<c:forEach var="adr" items="${apprDocListByRefId}">
-			{no: "${adr.documentNo}", cd: "${adr.documentNm}", subcd: "${adr.documentSubNm}", title: "${adr.documentTitle}", regId: "${ada.regId}", modDtime: "${ada.modDtime}", status: "${adr.approvalStatus}"},
+			{no: "${adr.documentNo}", cd: "${adr.documentNm}", subcd: "${adr.documentSubNm}", title: "${adr.documentTitle}", regId: "${adr.regId}", modDtime: "${adr.modDtime}", status: "${adr.approvalStatus}"},
 		</c:forEach>
 	];
 
