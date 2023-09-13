@@ -50,75 +50,75 @@ $(document).ready(function() {
 });
 </script>
 <script>
-    $(document).ready(function(){
-        // 파일 개수 3개제한
-        $('#addFile').click(function(){
-            if ($('.approvalFiles').length >= 3) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '경고',
-                    text: '최대 3개의 파일만 첨부할 수 있습니다.',
-                });
-            } else if ($('.approvalFiles').last().val() == ''){
-                Swal.fire({
-                    icon: 'warning',
-                    title: '경고',
-                    text: '빈 파일 업로드가 있습니다.',
-                });
-            } else {
-                var newInput = $('<input class="files" type="file" name="multipartFiles" id="multipartFiles" ><br>');
-                $('#files').append(newInput);
-            }
-        });
-        
-        $('#removeFile').click(function(){
-            var visibleFiles = $('.approvalFiles:visible');
-            if (visibleFiles.length === 1) {
-                if (visibleFiles.val() !== "") {
-                    visibleFiles.val("");
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '경고',
-                        text: '더 이상 삭제할 파일이 없습니다.',
-                    });
-                }
-            } else {
-                visibleFiles.last().prev().remove(); // 직전의 <input>을 제거
-                visibleFiles.last().remove(); // 현재 <input>을 제거
-            }
-        });
-        
-        // 파일 용량 3MB 제한 / 확장자 제한
-        $(document).on("change", "input[name='multipartFile']", function() {
-            var maxSize = 3 * 1024 * 1024;
-            var allowedExtensions = ["xlsx", "docs", "hwp", "pdf", "pptx", "ppt", "jpg", "jpeg", "png"];
-            
-            var file = this.files[0];
-            var fileSize = file.size;
-            var fileExtension = file.name.split('.').pop().toLowerCase();
-            
-            if (fileSize > maxSize) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '용량을 확인하세요',
-                    text: '3MB 이내로 등록 가능합니다.',
-                });
-                $(this).val('');
-                return false;
-            }
+	$(document).ready(function(){
+		// 파일 개수 3개제한
+		$('#addFile').click(function(){
+			if ($('.files').length >= 3) {
+				swal({
+					type: 'warning',
+					title: '경고',
+					text: '최대 3개의 파일만 첨부할 수 있습니다.',
+				});
+			} else if ($('.files').last().val() == ''){
+				swal({
+					type: 'warning',
+					title: '경고',
+					text: '파일 선택란이 비어있습니다.',
+				});
+			} else {
+				var newInput = $('<input class="files" type="file" name="multipartFiles" id="multipartFiles" ><br>');
+				$('#files').append(newInput);
+			}
+		});
 
-            if (allowedExtensions.indexOf(fileExtension) === -1) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '확장자를 확인하세요',
-                    text: '업로드 가능 확장자 : xlsx, docs, hwp, pdf, pptx, ppt, jpg, jpeg, png',
-                });
-                $(this).val('');
-                return false;
-            }
-        });
-    });
+		$('#removeFile').click(function(){
+			var visibleFiles = $('.files:visible');
+			if (visibleFiles.length === 1) {
+				if (visibleFiles.val() !== "") {
+					visibleFiles.val("");
+				} else {
+					swal({
+						type: 'warning',
+						title: '경고',
+						text: '더 이상 삭제할 파일이 없습니다.',
+					});
+				}
+			} else {
+				visibleFiles.last().prev().remove(); // 직전의 <input>을 제거
+				visibleFiles.last().remove(); // 현재 <input>을 제거
+			}
+		});
+
+		// 파일 용량 3MB 제한 / 확장자 제한
+		$(document).on("change", "input[name='multipartFile']", function() {
+			var maxSize = 3 * 1024 * 1024;
+			var allowedExtensions = ["xlsx", "docs", "hwp", "pdf", "pptx", "ppt", "jpg", "jpeg", "png"];
+
+			var file = this.files[0];
+			var fileSize = file.size;
+			var fileExtension = file.name.split('.').pop().toLowerCase();
+
+			if (fileSize > maxSize) {
+				swal({
+					type: 'warning',
+					title: '용량을 확인하세요',
+					text: '3MB 이내로 등록 가능합니다.',
+				});
+				$(this).val('');
+				return false;
+			}
+
+			if (allowedExtensions.indexOf(fileExtension) === -1) {
+				swal({
+					type: 'warning',
+					title: '확장자를 확인하세요',
+					text: '업로드 가능 확장자 : xlsx, docs, hwp, pdf, pptx, ppt, jpg, jpeg, png',
+				});
+				$(this).val('');
+				return false;
+			}
+		});
+	});
 </script>
 </head>
 <body>
@@ -300,7 +300,7 @@ $(document).ready(function() {
 	                console.log(data.documentNo);
 	                $("#requestForm").submit();
 	            } else {
-	                alert("잠시후 다시 시도 해주세요.");
+	                alert("잠시 후 다시 시도해주세요.");
 	            }
 	        },
 	        error: function (error) {
@@ -319,7 +319,6 @@ $(document).ready(function() {
 			if($(".files")[i].files[0] != null){
 				formdata.append("fileList", $(".files")[i].files[0]);
 			}
-			
 		}
 		
 		$.ajax({
@@ -340,23 +339,21 @@ $(document).ready(function() {
 					console.log(documentNo);
 					$("#requestForm").submit();			
 					
-				}else{
-					alert("잠시후 다시 시도 해주세요.");
-				 }
+				} else {
+					alert("잠시 후 다시 시도해주세요.");
+				}
 		    },
 		    error: function(error) {
 		        console.log("Error:", error);
 		    }
 		});
-		
-		
 	}
 
 	// 모달창 호출 	
 	function modalcall(value){
 		console.log(value);
 		
-		 // 테이블 초기화 (모든 검색 결과 삭제)
+		// 테이블 초기화 (모든 검색 결과 삭제)
 		$('#employeeTable').empty();
 		// 선택한 값을 입력하는 입력란 초기화
 		$('#selectedValue').val("");

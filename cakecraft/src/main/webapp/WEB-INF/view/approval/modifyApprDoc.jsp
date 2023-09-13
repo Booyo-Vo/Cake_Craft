@@ -23,7 +23,7 @@ $(document).ready(function() {
 					docSubSelect.append($('<option>', {
 						value: docSub.cdNm,
 						text: docSub.cdNm
-						}));
+					}));
 				});
 			});
 		} else {
@@ -48,6 +48,77 @@ $(document).ready(function() {
 		});
 	}
 });
+</script>
+<script>
+	$(document).ready(function(){
+		// 파일 개수 3개제한
+		$('#addFile').click(function(){
+			if ($('.files').length >= 3) {
+				swal({
+					type: 'warning',
+					title: '경고',
+					text: '최대 3개의 파일만 첨부할 수 있습니다.',
+				});
+			} else if ($('.files').last().val() == ''){
+				swal({
+					type: 'warning',
+					title: '경고',
+					text: '파일 선택란이 비어있습니다.',
+				});
+			} else {
+				var newInput = $('<input class="files" type="file" name="multipartFiles" id="multipartFiles" ><br>');
+				$('#files').append(newInput);
+			}
+		});
+
+		$('#removeFile').click(function(){
+			var visibleFiles = $('.files:visible');
+			if (visibleFiles.length === 1) {
+				if (visibleFiles.val() !== "") {
+					visibleFiles.val("");
+				} else {
+					swal({
+						type: 'warning',
+						title: '경고',
+						text: '더 이상 삭제할 파일이 없습니다.',
+					});
+				}
+			} else {
+				visibleFiles.last().prev().remove(); // 직전의 <input>을 제거
+				visibleFiles.last().remove(); // 현재 <input>을 제거
+			}
+		});
+
+		// 파일 용량 3MB 제한 / 확장자 제한
+		$(document).on("change", "input[name='multipartFile']", function() {
+			var maxSize = 3 * 1024 * 1024;
+			var allowedExtensions = ["xlsx", "docs", "hwp", "pdf", "pptx", "ppt", "jpg", "jpeg", "png"];
+
+			var file = this.files[0];
+			var fileSize = file.size;
+			var fileExtension = file.name.split('.').pop().toLowerCase();
+
+			if (fileSize > maxSize) {
+				swal({
+					type: 'warning',
+					title: '용량을 확인하세요',
+					text: '3MB 이내로 등록 가능합니다.',
+				});
+				$(this).val('');
+				return false;
+			}
+
+			if (allowedExtensions.indexOf(fileExtension) === -1) {
+				swal({
+					type: 'warning',
+					title: '확장자를 확인하세요',
+					text: '업로드 가능 확장자 : xlsx, docs, hwp, pdf, pptx, ppt, jpg, jpeg, png',
+				});
+				$(this).val('');
+				return false;
+			}
+		});
+	});
 </script>
 </head>
 <body>
@@ -81,7 +152,7 @@ $(document).ready(function() {
 </div>
 
 <div class="pd-ltr-20 xs-pd-20-10">
-	<form action="/cakecraft/approval/modifyApprDoc" method="post" name="requestForm" id="requestForm">
+	<form action="/cakecraft/approval/modifyApprDoc" method="post" name="requestForm" id="requestForm" enctype="multipart/form-data">
 		<div class="min-height-200px">
 			<div class="invoice-wrap">
 				<div class="invoice-box">
@@ -172,9 +243,12 @@ $(document).ready(function() {
 						<div class="form-group">
                            <textarea class="textarea_editor form-control border-radius-0" name="documentContent" id="documentContent">${apprDocByNo.documentContent}</textarea>
                         </div>
-                        <div class="form-group">
-							<input type="file" name="multipartFile" id="multipartFile" multiple="multiple">
-						</div>
+                        <label for="files">첨부파일</label>
+		                <button type="button" class="btn btn-secondary" id="addFile">추가</button>
+		                <button type="button" class="btn btn-secondary" id="removeFile">삭제</button>
+			            <div class="form-group" id="files">
+			                <input class="files" type="file" name="multipartFiles" id="multipartFiles" multiple="multiple"><br>
+			            </div>
 					</div>
 				</div>
 			</div>
@@ -192,7 +266,7 @@ $(document).ready(function() {
 				<h1 class="text-center pb-20">
 					<button type="button" class="btn btn-secondary form-group" onclick="removeApprDoc(${apprDocByNo.documentNo})">삭제하기</button>
 					<button type="submit" class="btn btn-secondary form-group">임시저장</button>
-					<button type="button" class="btn btn-primary form-group" onclick="removeaddApprDoc(${apprDocByNo.documentNo})">제출하기</button>
+					<button type="button" class="btn btn-primary form-group" onclick="removeaddApprDoc()">제출하기</button>
 				</h1>
 			</div>
 		</c:if>
@@ -278,22 +352,63 @@ $(document).ready(function() {
 	
 	// 제출하기 버튼을 눌렀을 때 호출되는 함수
 	function removeaddApprDoc(documentNo) {
-		$("#tempSave").val('N'); // tempSave 값을 N으로 설정	
-		swal({
-			title: '문서를 제출하시겠습니까?',
-			text: "제출된 문서는 삭제할 수 없습니다.",
-			type: 'warning',
-			confirmButtonText: '예',
-			cancelButtonText: '아니오',
-			showCancelButton: true,
-		}).then(function(result){
-			console.log(result);
-			if (result.value == true) {
-				$("#requestForm").attr("action",'/cakecraft/approval/removeaddApprDoc');
-				$("#requestForm").submit();
-				
-			}
-		});
+	    $("#tempSave").val('N'); // tempSave 값을 N으로 설정	
+	    var formdata = new FormData();
+	    var fileLength = $(".files").length;
+	    formdata.append("documentNm", $("#documentNm").val());
+	    formdata.append("documentSubNm", $("#documentSubNm").val());
+	    for (var i = 0; i < fileLength; i++) {
+	        if ($(".files")[i].files[0] != null) {
+	            formdata.append("fileList", $(".files")[i].files[0]);
+	        }
+	    }
+
+	    // 기존 문서 삭제 요청 보내기
+	    $.ajax({
+	    	url: "/cakecraft/approval/removeAndAddApprDoc",
+	    	data: {
+	            documentNo: $("#documentNo").val()
+	        },
+	        method: "POST",
+	        dataType: "json",
+	        success: function (deleteData) {
+	            console.log(deleteData);
+	            if (deleteData.success === "Y") {
+	                // 기존 문서 삭제가 성공한 경우
+	                // 이제 새로운 문서 추가 요청 보내기
+	                $.ajax({
+	                    url: "/cakecraft/approval/fileAddApprDoc",
+	                    data: formdata,
+	                    processData: false, // 필수
+	                    contentType: false, // 필수
+	                    method: "post",
+	                    cache: false,
+	                    enctype: "multipart/form-data",
+	                    dataType: "json",
+	                    success: function (addData) {
+	                        console.log(addData);
+	                        if (addData.success === "Y") {
+	                            $("#documentNo").val(addData.documentNo);
+	                            $("#documentCd").val(addData.documentCd);
+	                            $("#documentSubCd").val(addData.documentSubCd);
+	                            console.log(documentNo);
+	                            $("#requestForm").submit();
+	                        } else {
+	                            alert("잠시 후 다시 시도해주세요.");
+	                        }
+	                    },
+	                    error: function (error) {
+	                        console.log("Error:", error);
+	                    }
+	                });
+	            } else {
+	                alert("문서 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
+	            }
+	        },
+	        error: function (error) {
+	            console.log("Error:", error);
+	        }
+	    });
 	}
 </script>
 </body>
