@@ -40,7 +40,7 @@
 										<td>
 											<c:if test="${apprInfoLv1.approvalStatusCd == 2}">
 												<div>
-													<img src="${pageContext.request.contextPath}/signImg/${empBase1.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+													<img src="http://localhost${pageContext.request.contextPath}/signImg/${empBase1.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
 												</div>
 												<div>${apprInfoLv1.modDtime}</div>
 											</c:if>
@@ -48,7 +48,7 @@
 										<td>
 											<c:if test="${apprInfoLv2.approvalStatusCd == 2}">
 												<div>
-													<img src="${pageContext.request.contextPath}/signImg/${empBase2.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+													<img src="http://localhost${pageContext.request.contextPath}/signImg/${empBase2.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
 												</div>
 												<div>${apprInfoLv2.modDtime}</div>
 											</c:if>
@@ -56,7 +56,7 @@
 										<td>
 											<c:if test="${apprInfoLv3.approvalStatusCd == 2}">
 												<div>
-													<img src="${pageContext.request.contextPath}/signImg/${empBase3.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+													<img src="http://localhost${pageContext.request.contextPath}/signImg/${empBase3.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
 												</div>
 												<div>${apprInfoLv3.modDtime}</div>
 											</c:if>
@@ -153,10 +153,11 @@
 			</div>
 		</c:if>
 	</form>
-	<div class="d-flex justify-content-end mb-3">
-		<button onclick="printPage();" class="btn btn-primary">프린트 출력<i class="icon-copy fa fa-print" aria-hidden="true"></i></button>
-	</div>
+
 </div>
+	<div  class="d-flex justify-content-end mb-3">
+		<button id = "btnPrint" onclick="printPage();" class="btn btn-primary">프린트 출력<i class="icon-copy fa fa-print" aria-hidden="true"></i></button>
+	</div>
 
 <script>
 	// 승인버튼을 눌렀을 때 호출되는 함수
@@ -170,10 +171,43 @@
 		$("#modAppr").submit();
 	}
 	
-	<!--  증명서 출력 -->
+	<!--  기안서 출력 -->
 	var printPage = function() {
-		document.body.innerHTML = printSection.innerHTML;
+		let initBody = document.body;
+
+		let hiddenBtn = document.querySelector('#btnPrint'); 
+		let hiddenHeader = document.querySelector('.header');
+		//let hiddenCopyright = document.querySelector('.footer');
+		//let hiddenBtnTop = document.querySelector('.btn-top');
+
+		window.onbeforeprint = function () {
+		    //hiddenBtn.style.display = "none";
+		    $('#btnPrint').css('display','none');
+		    hiddenHeader.style.display = "none";
+		    //hiddenCopyright.style.display = "none";
+		    //hiddenBtnTop.style.display = "none"
+		    $('.imgMap-items').css('display', 'none');
+
+		    document.body = document.querySelector('#printSection');
+		}
+
+		window.onafterprint = function () {
+		    //hiddenBtn.style.display = "inline-flex";
+		    
+		    //hiddenHeader.style.display = "block";
+		    $('.header').removeAttr('style');
+		    $('#btnPrint').css('display','inline-flex');
+		    //hiddenCopyright.style.display = "block";
+		    //hiddenBtnTop.style.display = "block";
+		    $('.imgMap-items').css('display', 'block');
+
+		    document.body = initBody;
+		} 
+
 		window.print();
+		
+		//document.body.innerHTML = printSection.innerHTML;
+		//window.print();
 	};
 </script>
 </body>
