@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <jsp:include page="/layout/cdn.jsp"></jsp:include>
+<style>
+* {
+	-webkit-print-color-adjust: exact !important;	/* Chrome, Safari, Edge */
+	color-adjust: exact !important;					/*Firefox*/
+}
+</style>
 </head>
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
@@ -95,7 +101,7 @@
 								<td colspan="3">${apprDoc.documentTitle}</td>
 							</tr>
 							<tr height="300">
-								<td colspan="4">${apprDoc.documentContent}</td>
+								<td colspan="4"><div>${apprDoc.documentContent}</div></td>
 							</tr>
 							<tr>
 								<td>첨부파일</td>
