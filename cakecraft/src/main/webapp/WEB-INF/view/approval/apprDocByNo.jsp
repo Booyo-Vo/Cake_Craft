@@ -158,7 +158,7 @@
 	<div  class="d-flex justify-content-end mb-3">
 		<button id = "btnPrint" onclick="printPage();" class="btn btn-primary">프린트 출력<i class="icon-copy fa fa-print" aria-hidden="true"></i></button>
 	</div>
-
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
 	// 승인버튼을 눌렀을 때 호출되는 함수
 	function apprAccept() {

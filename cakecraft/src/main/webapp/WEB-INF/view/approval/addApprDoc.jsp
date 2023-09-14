@@ -273,6 +273,7 @@ $(document).ready(function() {
 	</form>
 </div>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
 	// 임시저장 버튼을 눌렀을 때 호출되는 함수
 	function tempSaveAndSubmit() {

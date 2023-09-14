@@ -276,6 +276,7 @@ $(document).ready(function() {
 	</form>
 </div>
 </div>
+<jsp:include page="/layout/footer.jsp"></jsp:include>
 <script>
 
 	// 모달창 호출 	
