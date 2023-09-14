@@ -40,7 +40,7 @@
 										<td>
 											<c:if test="${apprInfoLv1.approvalStatusCd == 2}">
 												<div>
-													<img src="http://localhost${pageContext.request.contextPath}/signImg/${empBase1.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+													<img src="${pageContext.request.contextPath}/signImg/${empBase1.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
 												</div>
 												<div>${apprInfoLv1.modDtime}</div>
 											</c:if>
