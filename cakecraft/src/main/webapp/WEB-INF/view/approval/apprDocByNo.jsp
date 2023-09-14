@@ -48,7 +48,7 @@
 										<td>
 											<c:if test="${apprInfoLv2.approvalStatusCd == 2}">
 												<div>
-													<img src="http://localhost${pageContext.request.contextPath}/signImg/${empBase2.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+													<img src="${pageContext.request.contextPath}/signImg/${empBase2.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
 												</div>
 												<div>${apprInfoLv2.modDtime}</div>
 											</c:if>
@@ -56,7 +56,7 @@
 										<td>
 											<c:if test="${apprInfoLv3.approvalStatusCd == 2}">
 												<div>
-													<img src="http://localhost${pageContext.request.contextPath}/signImg/${empBase3.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
+													<img src="${pageContext.request.contextPath}/signImg/${empBase3.signFilename}" alt="signImg" style="width: 70px; height: 50px;">
 												</div>
 												<div>${apprInfoLv3.modDtime}</div>
 											</c:if>
