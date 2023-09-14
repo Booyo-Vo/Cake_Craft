@@ -114,7 +114,7 @@ var jq = jQuery.noConflict();
 								</div>
 							</div>
 							<div class="input-group custom">
-								<input type="password" name="pw" class="form-control form-control-lg" placeholder="**********">
+								<input type="password" name="pw" class="form-control form-control-lg" value="1234">
 								<div class="input-group-append custom">
 									<span class="input-group-text"><i class="dw dw-padlock1"></i></span>
 								</div>
